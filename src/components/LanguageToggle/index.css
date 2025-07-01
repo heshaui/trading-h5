@@ -1,0 +1,20 @@
+.language-toggle {
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--background-secondary);
+  transition: all 0.3s ease;
+}
+
+.language-toggle-label {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.language-selector {
+  --background-color: var(--background-primary);
+  --text-color: var(--text-primary);
+  --border-color: var(--border-color);
+} 

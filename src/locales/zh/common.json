@@ -1,0 +1,76 @@
+{
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "loading": "加载中...",
+    "submit": "提交",
+    "reset": "重置",
+    "search": "搜索",
+    "back": "返回",
+    "more": "更多",
+    "refresh": "刷新"
+  },
+  "nav": {
+    "home": "首页",
+    "market": "行情",
+    "trade": "交易",
+    "assets": "资产",
+    "profile": "我的"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出登录",
+    "username": "用户名",
+    "password": "密码",
+    "email": "邮箱",
+    "confirmPassword": "确认密码",
+    "forgotPassword": "忘记密码",
+    "loginSuccess": "登录成功",
+    "registerSuccess": "注册成功",
+    "loginFailed": "登录失败",
+    "registerFailed": "注册失败"
+  },
+  "trade": {
+    "buy": "买入",
+    "sell": "卖出",
+    "price": "价格",
+    "amount": "数量",
+    "total": "总额",
+    "balance": "余额",
+    "available": "可用",
+    "orders": "订单",
+    "history": "历史",
+    "openOrders": "当前委托",
+    "orderHistory": "历史委托"
+  },
+  "market": {
+    "price": "价格",
+    "change": "涨跌",
+    "volume": "成交量",
+    "high": "最高",
+    "low": "最低",
+    "marketCap": "市值"
+  },
+  "assets": {
+    "totalAssets": "总资产",
+    "availableBalance": "可用余额",
+    "frozenBalance": "冻结余额",
+    "deposit": "充值",
+    "withdraw": "提现",
+    "transfer": "转账",
+    "records": "记录"
+  },
+  "theme": {
+    "light": "浅色模式",
+    "dark": "深色模式",
+    "auto": "跟随系统"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English"
+  }
+} 

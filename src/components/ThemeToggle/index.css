@@ -1,0 +1,19 @@
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--background-secondary);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-label {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.theme-toggle-switch {
+  --checked-color: var(--primary-color);
+} 

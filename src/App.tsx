@@ -6,7 +6,7 @@ import { useTheme } from './hooks/useTheme';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageToggle from './components/LanguageToggle';
 import { Demo } from './pages';
-import './App.css';
+import './App.scss';
 
 const App: React.FC = observer(() => {
   const { t } = useLanguage();

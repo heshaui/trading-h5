@@ -324,7 +324,7 @@ class AppStore {
 
         try {
             // 首先尝试从 lang 获取语言
-            const lang = localStorage.getItem(LOCAL_STORAGE_KEY.LANG);
+            const lang = localStorage.getItem('i18nextLng');
             const languageList = localStorage.getItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST);
             if (languageList) {
                 this.languageList = JSON.parse(languageList)
@@ -620,23 +620,9 @@ class AppStore {
             localStorage.removeItem(LOCAL_STORAGE_KEY.RATE_KEY);
         }
     }
-    // 设置语言
-    setLang(lang: string) {
-        this.lang = lang;
-        if (isBrowser()) {
-            localStorage.setItem(LOCAL_STORAGE_KEY.LANG, lang);
-        }
-    }
     // 获取语言
     getLang() {
         return this.lang;
-    }
-    // 设置语言
-    setLanguageList(langList: string[]) {
-        this.languageList = langList;
-        if (isBrowser()) {
-            localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList));
-        }
     }
     // 获取语言
     getLangList() {

@@ -1,9 +1,10 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 import { LOCAL_STORAGE_KEY } from '../config/apiConfig';
+import appStore from '../store';
 // import { useAuth } from '@/context/AuthContext';
 // import router from 'react-router';
 // import { toast } from 'sonner';
-import appStore from '../store';
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
 /**
  * 通用请求封装
  * @param endpoint 请求的 API 路径，例如 '/user'

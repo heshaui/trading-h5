@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ConfigProvider, Button, Space } from 'antd-mobile';
 import { useLanguage } from './hooks/useLanguage';
-import { useTheme } from './hooks/useTheme';
+// import { useTheme } from './hooks/useTheme';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageToggle from './components/LanguageToggle';
 import { Demo } from './pages';
@@ -10,7 +10,7 @@ import './App.css';
 
 const App: React.FC = observer(() => {
   const { t } = useLanguage();
-  const { isDark } = useTheme();
+  // const { isDark } = useTheme();
   const [showDemo, setShowDemo] = useState(false);
 
   return (

@@ -1,0 +1,58 @@
+{
+    "bulletinCenter": {
+        "title": "公告中心",
+        "announcement": "公告",
+        "menu": {
+            "all": "公告",
+            "latest": "最新动态",
+            "account": "账户",
+            "assets": "资产",
+            "trading": "交易",
+            "new": "新币上线",
+            "delist": "币对下线",
+            "suspension": "充提暂停/恢复",
+            "announcement": "公告",
+            "notification": "通知",
+            "article": "文章",
+            "notice": "公告",
+            "accountAssistant": "账户助手",
+            "transaction": "交易"
+        },
+        "message": {
+            "unreadCount": "公告",
+            "title": "最新动态公告",
+            "noData": "暂无记录",
+            "loading": "正在加载..."
+        },
+        "action": {
+            "search": "搜索",
+            "unreadOnly": "只看未读",
+            "markAllRead": "全部已读"
+        }
+    },
+    "test": {
+        "latest1": {
+            "title": "最新动态公告 1",
+            "content": "最新动态内容 1..."
+        },
+        "latest2": {
+            "title": "最新动态公告 2",
+            "content": "最新动态内容 2..."
+        },
+        "new1": {
+            "title": "新币上线公告 1",
+            "content": "新币上线内容 1..."
+        },
+        "delist1": {
+            "title": "币对下线公告 1",
+            "content": "币对下线内容 1..."
+        },
+        "suspension1": {
+            "title": "充提暂停/恢复公告 1",
+            "content": "充提暂停/恢复内容 1..."
+        }
+    },
+    "empty": {
+        "description": "暂无通知"
+      }
+}

@@ -1,4 +1,160 @@
 {
+  "title": "Welcome",
+  "description": "This is the homepage",
+  "home1": "IMBIT Digital Currency Exchange: Faster, Better, Stronger",
+  "home2": "More",
+  "nickname": "Nickname",
+  "login": "Already have an account?",
+  "userCenter": {
+    "overView": "Overview",
+    "account": "User Settings",
+    "identity": "Identity Verification",
+    "security": "Security Center"
+  },
+  "search": "Search",
+  "filter": "Filter",
+  "ok": "Confirm",
+  "beSure": "I understand",
+  "cancel": "Cancel",
+  "close": "Close",
+  "closeAll": "Close All",
+  "clear": "Clear",
+  "clearAll": "Clear All",
+  "delete": "Delete",
+  "edit": "Edit",
+  "save": "Save",
+  "copy": "Copy",
+  "paste": "Paste",
+  "cut": "Cut",
+  "undo": "Undo",
+  "redo": "Redo",
+  "note": "Important Note",
+  "err": "Operation Failed",
+  "success": "Operation Successful",
+  "inputCode": "Please enter",
+  "resend": "Resend Verification Code",
+  "cantReceive": "Can't receive the code?",
+  "check": "If you haven't received the verification code for a long time, please check the following:",
+  "check1": "Ensure your email is",
+  "check2": "Ensure your phone number is",
+  "check3": "Ensure your phone/email is",
+  "check4": "Check if the verification code is in the spam/junk folder",
+  "check5": "The verification code may be delayed. Please try again after 10 minutes.",
+  "nodata": "No data",
+  "noaddress": "No address",
+  "safeVerification": "Security Verification",
+  "noLogin": {
+    "tip1": "Start Trading",
+    "tip2": "Login",
+    "tip3": "Register Now",
+    "or": "or"
+  },
+  "usersetting": {
+    "modifyOnce": "Can only be modified once within 24 hours",
+    "modifySuccess": "Nickname modified successfully",
+    "modifyNickname": "Modify Nickname",
+    "nicknameRequired": "Please enter a nickname",
+    "modifyNicknameOnce": "Nickname can be modified",
+    "modifyNicknameOnceTip": "Can only be modified once within 24 hours.",
+    "modifyNicknameOnceTip1": "You can only modify it once every {{time}} days.",
+    "modifyNicknameOnceTip2": "Nickname can only contain numbers and letters, and must not exceed 25 characters.",
+    "modifyNicknameOnceTip3": "Do not use your real name or contact information to protect your privacy.",
+    "modifyNicknameOnceTip4": "Nickname must comply with local laws and regulations. IMBIT reserves the right to modify or impose penalties such as account suspension for violations.",
+    "modifyNicknameOnceTip5": "Historical nicknames that do not meet the above standards due to version issues will not be synced to the domain URL.",
+    "modifyAvatar": "Modify Avatar",
+    "modifyAvatarSuccess": "Avatar modified successfully",
+    "uploadAvatar": "Upload",
+    "avatarFormatTip": "Avatar images only support JPG/JPEG, PNG, GIF formats",
+    "avatarFilter": {
+      "all": "All",
+      "male": "Male",
+      "female": "Female",
+      "avatarFormatTip": "Avatar images only support JPG/JPEG, PNG, GIF formats",
+      "invalidFileType": "Invalid file type"
+    },
+    "selectAvatar": "Please select an avatar",
+    "avatarSuccess": "Avatar modified successfully",
+    "birthday": {
+      "title": "Add Birthday",
+      "placeholder": "YYYY/MM/DD",
+      "required": "Please enter your birthday!",
+      "invalidFormat": "Please enter a valid date format (YYYY/MM/DD)!",
+      "modifySuccess": "Birthday modified successfully",
+      "tip": "Please enter the correct date. It cannot be modified after submission."
+    }
+   
+  },
+  "modal": {
+    "confirmCancel": "After confirmation, the withdrawal order will be canceled."
+  },
+  "footer": {
+    "scanDownloadApp": "Scan to download the APP",
+    "downloadApp": "Download APP",
+    "community": "Community"
+  },
+  "depthChart": {
+    "buyOrders": "Buy Orders",
+    "sellOrders": "Sell Orders",
+    "midPrice": "Mid Price"
+  },
+  "router": {
+    "myAssets": "My Assets",
+    "recharge": "Deposit",
+    "withdraw": "Withdraw",
+    "bill": "Transaction History",
+    "spotTrade": "Spot Trading",
+    "spotOrder": "Spot Orders",
+    "flashOrder":"Flash Orders",
+    "overView": "Overview",
+    "safetyCenter": "Security Center",
+    "identity": "Identity Verification",
+    "inviteFriend": "Invite Friends",
+    "setting": "Settings",
+    "logout": "Logout"
+  },
+  "header": {
+    "login": "Login",
+    "register": "Register",
+    "noLanguageData": "No language data available",
+    "noRateData": "No exchange rate data available",
+    "language": "Language",
+    "searchLanguage": "Search Language",
+    "rate": "Exchange Rate",
+    "searchRate": "Search Exchange Rate",
+    "noMatchResult": "No matching results",
+    "noNewNotice": "No new notifications",
+    "loading": "Loading...",
+    "noMenuData": "No menu data available",
+    "notice": {
+      "notice": "Notice",
+      "accountAssistant": "Account Assistant",
+      "assets": "Assets",
+      "transaction": "Transaction",
+      "message": "Message",
+      "viewAll": "View All"
+    },
+    "dayMode": {
+      "day": "Day Mode",
+      "night": "Night Mode"
+    }
+  },
+  "scrollableTabs": {
+    "all": "All"
+  },
+  "imageSelect": {
+    "search": "Search",
+    "noData": "No data",
+    "noSearchData": "No search results",
+    "loading": "Loading...",
+    "selectCoin": "Select Coin",
+    "searchHistory": "Search History",
+    "balance": "Balance"
+  },
+  "flash":{
+    "order":{
+      "title": "Flash Swap Order"
+    }
+  },
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",
@@ -73,4 +229,5 @@
     "zh": "中文",
     "en": "English"
   }
-} 
+
+}

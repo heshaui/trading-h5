@@ -1,0 +1,28 @@
+{
+  "helpCenter": {
+    "helpCenter":"Help Center",
+    "title": "How can we help you?",
+    "search": {
+      "history": ["Perpetual Contracts", "Futures Contracts", "Options Contracts"],
+      "placeholder": "Please enter your question",
+      "noResults": "No search results",
+       "results": "Search results"
+    },
+    "otherSupport": {
+      "title": "Other Support",
+      "onlineCommunication": {
+        "title": "Online Communication",
+        "description": "We provide 24/7 service to always meet your needs."
+      },
+      "email": {
+        "title": "Contact Us via Email",
+        "business": "Business Inquiries: 11123@qq.com",
+        "legal": "Legal Compliance: 123@qq.com"
+      }
+    },
+    "detail": {
+      "noData": "No content",
+      "back": "Back"
+    }
+  }
+}

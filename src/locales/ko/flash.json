@@ -1,0 +1,96 @@
+{
+  "title": "플래시 교환",
+  "tradingPlatform": "거래 플랫폼",
+  "all": "모두",
+  "pay": "지불",
+  "receive": "받기",
+  "max": "최대",
+  "available": "현물 사용 가능",
+  "insufficientBalance": "현물 계정 잔액 부족, 입금하세요",
+  "amountLimit": "한도",
+  "exchangeRate": "환율",
+  "exchangeRateTooltip": "환율은 예상 값이며, 최종 교환 수량은 실제 거래를 기준으로 합니다",
+  "preview": "미리보기",
+  "spotTrading": "현물 거래",
+  "orderHistory": "주문 내역",
+  "authNotice": {
+    "title": "신원 인증 미완료",
+    "description": "신원 인증을 완료하여 모든 기능 잠금 해제",
+    "button": "지금 인증"
+  },
+  "confirmModal": {
+    "title": "교환 확인",
+    "from": "에서",
+    "to": "로",
+    "exchangeRate": "환율",
+    "tradingFee": "거래 수수료",
+    "zeroFee": "수수료 0",
+    "youWillPay": "지불하실 금액",
+    "priceExpired": "이 시세가 만료되었습니다. 새 시세를 받아주세요",
+    "exchange": "교환",
+    "exchangeWithCountdown": "교환 ({{seconds}}초)",
+    "refreshPrice": "시세 새로고침"
+  },
+  "successModal": {
+    "title": "성공",
+    "youReceived": "받으신 금액",
+    "exchangeRate": "환율",
+    "tradingFee": "거래 수수료",
+    "ok": "확인",
+    "goToAssets": "자산으로 이동"
+  },
+  "failureModal": {
+    "title": "주문 실패",
+    "description": "환율이 만료되어 거래가 취소되었습니다!",
+    "ok": "확인",
+    "viewAssets": "자산 보기"
+  },
+  "footer": "언제든지 플래시 교환 서비스를 사용하여 디지털 자산을 교환할 수 있습니다!",
+  "order": {
+    "title": "플래시 교환 주문",
+    "table": {
+      "tradeDate": "거래일",
+      "tradingPair": "거래 쌍",
+      "pay": "지불",
+      "receive": "받기",
+      "price": "가격",
+      "settlementDate": "결제일",
+      "status": "상태"
+    },
+    "status": {
+      "processing": "처리중",
+      "success": "성공",
+      "failed": "실패"
+    },
+    "pagination": {
+      "total": "총 {{total}} 개"
+    },
+    "noData": {
+      "title": "아직 주문이 없나요? 여기를 클릭하여",
+      "buttonText": "교환"
+    }
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "q1": {
+      "question": "플래시 교환 거래 기능을 어떻게 사용하나요?",
+      "answer": "교환하려는 암호화폐를 선택하고 교환 금액을 입력하면 최적의 환율을 제공해드립니다. 현재 환율에 만족하시면 교환을 클릭하시면 받을 암호화폐가 현물 계정으로 전송됩니다. 교환 전에 현물 계정 잔액이 충분한지 확인하시고, 사용 중 문제가 있으시면 고객 서비스에 즉시 문의하세요."
+    },
+    "q2": {
+      "question": "플래시 교환 기능은 수수료가 있나요?",
+      "answer": "플래시 교환은 수수료가 없습니다. 교환을 미리볼 때 표시되는 자산 시세 수량이 계정에서 실제로 받을 수량입니다."
+    },
+    "q3": {
+      "question": "플래시 교환과 현물 거래의 차이점은 무엇인가요?",
+      "answer": "주문 매칭 모드와 달리 플래시 교환은 카운터 시세 모드를 사용하여 거래 수수료가 발생하지 않습니다. 따라서 플래시 교환 가격과 현물 호가 가격 사이에는 일정한 가격 차이가 있습니다. 먼저 사용자가 특정 거래 쌍을 기반으로 시세를 문의하면 시스템이 현재 시장을 기반으로 경쟁력 있는 가격을 제공합니다. 사용자가 카운터의 시세를 수락하면 확인을 클릭한 후 빠르게 거래할 수 있습니다. 거래 전에 잔액이 충분한지 확인하세요."
+    },
+    "q4": {
+      "question": "플래시 교환으로 얻은 자산은 어디서 볼 수 있나요?",
+      "answer": "플래시 교환으로 얻은 암호화폐 자산은 자동으로 현물 계정으로 이체됩니다."
+    },
+    "q5": {
+      "question": "플래시 교환 거래 주문은 어떻게 확인하나요?",
+      "answer": "플래시 교환 페이지 우측 상단의 주문 내역을 클릭하여 확인하거나 주문 센터 - 플래시 교환 주문을 클릭하여 확인할 수 있습니다."
+    }
+  }
+} 

@@ -1,0 +1,156 @@
+{
+  "title": "환영합니다",
+  "description": "이곳은 홈페이지입니다",
+  "home1": "IMBIT 디지털 자산 거래소, 더 빠르게, 더 좋게, 더 강하게",
+  "home2": "더 보기",
+  "nickname": "닉네임",
+  "login": "이미 계정이 있으신가요?",
+  "userCenter": {
+    "overView": "개요",
+    "account": "사용자 설정",
+    "identity": "신원 인증",
+    "security": "보안 센터"
+  },
+  "search": "검색",
+  "filter": "필터",
+  "ok": "확인",
+  "beSure": "알겠습니다",
+  "cancel": "취소",
+  "close": "닫기",
+  "closeAll": "모두 닫기",
+  "clear": "지우기",
+  "clearAll": "모두 지우기",
+  "delete": "삭제",
+  "edit": "편집",
+  "save": "저장",
+  "copy": "복사",
+  "paste": "붙여넣기",
+  "cut": "잘라내기",
+  "undo": "실행 취소",
+  "redo": "다시 실행",
+  "note": "중요 알림",
+  "err": "작업 실패",
+  "success": "작업 성공",
+  "inputCode": "입력해 주세요",
+  "resend": "인증 코드 재전송",
+  "cantReceive": "인증 코드를 받지 못하셨나요?",
+  "check": "오랜 시간 인증 코드를 받지 못했다면, 다음을 확인해 주세요:",
+  "check1": "이메일이 정확한지 확인하세요",
+  "check2": "휴대폰 번호가 정확한지 확인하세요",
+  "check3": "휴대폰 또는 이메일이 정확한지 확인하세요",
+  "check4": "스팸메일함을 확인해 보세요",
+  "check5": "인증 코드가 지연될 수 있습니다 10분 후 다시 시도해 주세요",
+  "nodata": "데이터 없음",
+  "noaddress": "주소 없음",
+  "safeVerification": "보안 인증",
+  "noLogin": {
+    "tip1": "거래 시작하기",
+    "tip2": "로그인",
+    "tip3": "지금 가입하기",
+    "or": "또는"
+  },
+  "usersetting": {
+    "modifyOnce": "24시간 내 1회만 수정 가능",
+    "modifySuccess": "닉네임 수정 성공",
+    "modifyNickname": "닉네임 수정",
+    "nicknameRequired": "닉네임을 입력해 주세요",
+    "modifyNicknameOnce": "닉네임 수정 가능",
+    "modifyNicknameOnceTip": "24시간 내 1회만 수정할 수 있습니다",
+    "modifyNicknameOnceTip1": "당신은 {{time}}일에 한 번만 수정할 수 있습니다.",
+    "modifyNicknameOnceTip2": "닉네임은 숫자와 영문만 가능하며, 25자 이하로 설정해야 합니다",
+    "modifyNicknameOnceTip3": "개인 정보 보호를 위해 실명이나 연락처 사용은 금지됩니다",
+    "modifyNicknameOnceTip4": "닉네임은 해당 국가 또는 지역의 법규를 준수해야 합니다 위반 시 IMBIT는 닉네임 수정이나 계정 제재 조치를 취할 수 있습니다",
+    "modifyNicknameOnceTip5": "버전 문제로 인해 이전 닉네임이 위 기준을 충족하지 않을 수 있으며, 도메인 URL로 동기화되지 않을 수 있습니다",
+    "modifyAvatar": "아바타 변경",
+    "modifyAvatarSuccess": "아바타 변경 성공",
+    "uploadAvatar": "업로드",
+    "avatarFormatTip": "이미지는 JPG/JPEG, PNG, GIF 형식만 지원됩니다",
+    "avatarFilter": {
+      "all": "전체",
+      "male": "남성",
+      "female": "여성",
+      "avatarFormatTip": "이미지는 JPG/JPEG, PNG, GIF 형식만 지원됩니다",
+      "invalidFileType": "유효하지 않은 파일 형식입니다"
+    },
+    "selectAvatar": "아바타를 선택해 주세요",
+    "avatarSuccess": "아바타 변경 성공",
+    "birthday": {
+      "title": "생일 추가",
+      "placeholder": "년/월/일",
+      "required": "생일을 입력해 주세요!",
+      "invalidFormat": "유효한 날짜 형식(년/월/일)을 입력해 주세요!",
+      "modifySuccess": "생일 수정 성공",
+      "tip": "정확한 생년월일을 입력해 주세요 이후 수정이 불가능합니다"
+    }
+  },
+  "modal": {
+    "confirmCancel": "확인 후 출금 요청이 취소됩니다"
+  },
+  "footer": {
+    "scanDownloadApp": "앱 다운로드 QR 스캔",
+    "downloadApp": "앱 다운로드",
+    "community": "커뮤니티"
+  },
+  "depthChart": {
+    "buyOrders": "매수 주문",
+    "sellOrders": "매도 주문",
+    "midPrice": "중간 가격"
+  },
+  "router": {
+    "myAssets": "내 자산",
+    "recharge": "입금",
+    "withdraw": "출금",
+    "bill": "거래 내역",
+    "spotTrade": "현물 거래",
+    "spotOrder": "현물 주문",
+    "flashOrder":"플래시 주문",
+    "overView": "개요",
+    "safetyCenter": "보안 센터",
+    "identity": "신원 인증",
+    "inviteFriend": "친구 초대",
+    "setting": "설정",
+    "logout": "로그아웃"
+  },
+  "header": {
+    "login": "로그인",
+    "register": "회원가입",
+    "noLanguageData": "언어 데이터 없음",
+    "noRateData": "환율 데이터 없음",
+    "language": "언어",
+    "searchLanguage": "언어 검색",
+    "rate": "환율",
+    "searchRate": "환율 검색",
+    "noMatchResult": "일치하는 결과가 없습니다",
+    "noNewNotice": "새로운 알림 없음",
+    "loading": "불러오는 중...",
+    "noMenuData": "메뉴 데이터 없음",
+    "notice": {
+      "notice": "공지",
+      "accountAssistant": "계정 도우미",
+      "assets": "자산",
+      "transaction": "거래",
+      "message": "메시지",
+      "viewAll": "전체 보기"
+    },
+    "dayMode": {
+      "day": "주간 모드",
+      "night": "야간 모드"
+    }
+  },
+  "scrollableTabs": {
+    "all": "전체"
+  },
+  "imageSelect": {
+    "search": "검색",
+    "noData": "데이터 없음",
+    "noSearchData": "검색 결과 없음",
+    "loading": "불러오는 중...",
+    "selectCoin": "통화 선택",
+    "searchHistory": "검색 기록"
+  },
+  "flash":{
+    "order":{
+      "title": "플래시 스왑 주문"
+    }
+  }
+}

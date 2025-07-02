@@ -1,0 +1,384 @@
+{
+    "safeCenter": {
+        "overView": "総合",
+        "account": "ユーザー設定",
+        "identity": "本人確認",
+        "security": "セキュリティセンター"
+    },
+    "overview": {
+        "title": "総合",
+        "auth": "認証済み",
+        "unAuth": "未認証",
+        "audit": "審査中",
+        "reject": "却下済み",
+        "nickname": "ニックネーム",
+        "welcome": "ようこそ、",
+        "famousAphorisms": "暴落は通常暴騰に先立ち、暴騰はいつも暴落で終わり、繰り返される ― アンドレ・コストラニ",
+        "registerAccount": "アカウント登録",
+        "uid": "UID",
+        "accountStatus": "アカウント状態",
+        "normal": "正常",
+        "loginFrozen": "ログイン凍結",
+        "tradeFrozen": "取引凍結",
+        "withdrawFrozen": "引き出し凍結",
+        "personalInfo": "個人情報",
+        "identityAuth": {
+            "title": "本人確認",
+            "verified": "本人確認を完了しました。通貨の旅をはじめましょう！",
+            "unverified": "本人確認を完了すると、取引所の完全なサービスを利用できます",
+            "reVerify": "再認証を提交してください。認証完了後、取引所の完全なサービスをご利用いただけます",
+            "goVerify": "認証に進む",
+            "viewDetails": "詳細を見る"
+        },
+        "securityAuth": {
+            "title": "セキュリティ認証",
+            "securityLevel": "セキュリティ強度",
+            "low": "低",
+            "medium": "中",
+            "high": "高",
+            "tip": "2段階認証を有効にしてアカウントのセキュリティを向上させます",
+            "view": "確認に進む",
+            "bind": "バインドに進む"
+        },
+        "assets": {
+            "title": "資産",
+            "totalAssets": "総資産換算",
+            "todayProfitLoss": "今日の損益",
+            "deposit": "入金",
+            "withdraw": "引き出し"
+        },
+        "recentLogin": {
+            "title": "最近のログイン",
+            "web": "WEB",
+            "android": "ANDROID",
+            "manage": "管理"
+        },
+        "authorizedDevices": {
+            "title": "認証デバイス",
+            "manage": "管理"
+        },
+        "recommend": {
+            "title": "あなたにおすすめ",
+            "manage": "管理",
+            "invite": "新規ユーザーを招待",
+            "inviteNewUser": "一緒にデジタル通貨の旅を始めましょう！",
+            "inviteCode": "招待コード",
+            "inviteFriend": "友人を招待して報酬を獲得",
+            "inviteLink": "リンク"
+        }
+    },
+    "identity": {
+        "title": "本人確認",
+        "title1": "KYC認証とは？",
+        "content1": "KYC (Know Your Customer) は、顧客の身元情報と背景を確認するための本人確認と調査プロセスです。金融機関やサービス提供者が洗浄防止(AML) とテロ資金供給防止(CFT) の規制に準拠するよう確保するために行われます。アカウントのセキュリティ確保や、詐欺や不正行為のリスク軽減に役立ちます。",
+        "title2": "なぜKYC認証が必要なのですか？",
+        "content2": "KYCは、あなたのアカウントのセキュリティと権利を保護するためです。身元情報と背景を確認することで、他人による身元詐用による詐欺や不正行為を防止します。",
+        "title3": "本人確認に問題が発生した場合、どのようにして支援を受けられますか？",
+        "content3": "KYCの過程で問題が発生した場合は、カスタマーサポートまでお問い合わせください。サポートチームが全力でサポートと解答を提供いたします。具体的な問題点と関連情報をお知らせください。これにより、認証の完了をサポートできます。",
+        "title4": "よくある質問",
+        "withdrawal": "暗号通貨の引き出し",
+        "recharge": "暗号通貨の入金",
+        "standardAuth": {
+            "title": "標準本人確認",
+            "unverifiedTip": "わずか3-5分で、標準本人確認を完了して詐欺や不正リスクから保護しましょう",
+            "requiredInfo": "本人確認には以下の情報が必要です：",
+            "basicInfo": "基本情報",
+            "idVerification": "本人確認"
+        },
+        "status": {
+            "verified": "認証済み",
+            "reviewing": "審査中",
+            "rejected": "却下済み",
+            "unverified": "未認証"
+        },
+        "button": {
+            "goVerify": "認証に進む",
+            "reviewing": "審査中",
+            "reVerify": "再認証"
+        },
+        "benefits": {
+            "title": "認証特典",
+            "service": "サービス",
+            "unverified": "未認証",
+            "afterVerification": "標準本人確認を完了後"
+        },
+        "certified": {
+            "title": "証明書の確認",
+            "accountBenefits": "アカウント特典",
+            "personalInfo": "個人情報",
+            "allow": "許可",
+            "forbidden": "禁止",
+            "info": {
+                "realName": "本名",
+                "idType": "証明書の種類",
+                "country": "国",
+                "idNumber": "証明書番号",
+                "countries": {
+                    "mainland": "中国本土",
+                    "hongkong": "中国香港"
+                }
+            },
+            "idTypes": {
+                "idCard": "身分証明書",
+                "passport": "普通旅券",
+                "hkMacauPass": "港澳通行証",
+                "taiwanPass": "台湾通行証",
+                "taiwanId": "台湾身分証明書",
+                "foreignerId": "外国人永久居住証明書",
+                "driverLicense": "運転免許証"
+            }
+        },
+        "realName": {
+            "title": "認証情報",
+            "setUPTitle1": "基本情報",
+            "setUPTitle2": "写真のアップロード",
+            "setUPTitle3": "提出済み",
+            "identityAuth": "本人確認"
+        },
+        "idv": {
+            "title": "証明書の確認",
+            "inputTip": "入力情報が証明書の情報と一致していることを必ず確認してください",
+            "country": {
+                "title": "国または地域",
+                "placeholder": "選択してください"
+            },
+            "idType": {
+                "title": "証明書の種類",
+                "placeholder": "選択してください"
+            },
+            "idNumber": {
+                "title": "証明書番号",
+                "placeholder": "入力してください"
+            },
+            "name": {
+                "surname": "姓",
+                "firstName": "名",
+                "placeholder": "入力してください"
+            },
+            "birthday": {
+                "title": "誕生日",
+                "placeholder": "年/月/日"
+            },
+            "button": {
+                "next": "次のステップ"
+            }
+        },
+        "sumbit": {
+            "title": "審査中",
+            "content": "あなたの申請を審査中です。審査通過後、メールでご連絡いたします。審査待ちの間、ウェブサイト/Appをご覧ください",
+            "next": "次のステップ",
+            "goHome": "ホームに戻る"
+        },
+        "upload": {
+            "title": "写真のアップロード",
+            "next": "次のステップ",
+            "prev": "前のステップ",
+            "error1": "正しい画像形式ではありません！",
+            "error2": "画像は8MB以下でなければなりません！",
+            "error3": "必要な証明書の写真をすべてアップロードしてください",
+            "error4": "無効なファイル形式です",
+            "success": "送信成功",
+            "frontFile": "証明書表紙",
+            "backFile": "証明書裏面",
+            "selfieFile": "証明書を手にした写真",
+            "uploadFile": "ファイルをアップロード",
+            "tip1": "8MB以下のJPG、JPEGまたはPNG形式の画像をサポートしています。",
+            "tip2": "証明書の写真は鮮明で、修正や遮蔽は一切許可されず、顔像、証明書番号、氏名がはっきりと確認できる必要があります。",
+            "tip3": "写真は無冠で、化粧をしていないことが望ましい。証明書を手にした人の顔立ちははっきりと写っており、腕が完全に露出している必要があります。"
+        }
+    },
+    "security": {
+        "title": "セキュリティセンター",
+        "basicSecurity": "基本セキュリティ",
+        "securityLog": "セキュリティログ",
+        "googleAuth": "Google Authenticator（推奨）",
+        "googleAuthDesc": "ログイン、引き出し、セキュリティ設定の変更などのセキュリティ認証に使用されます。SMS認証コードが届かない場合が多い場合は、Google Authenticatorのバインドをおすすめします。",
+        "enabled": "有効",
+        "notBound": "未バインド",
+        "unbind": "アンバインド",
+        "enabled_status": "有効化済み",
+        "bind": "バインド",
+        "phoneAuth": "携帯電話認証",
+        "phoneAuthDesc": "SMS認証コードによりアカウントと取引のセキュリティが保護されます。携帯電話番号の変更後、決済、引き出しなどの機能が24時間利用停止されます。",
+        "phoneAuthDesc2": "SMS認証コードによりアカウントと取引のセキュリティが保護されます。携帯電話番号の変更後、決済、引き出しなどの機能が{{time}}時間利用停止されます。",
+        "modify": "変更",
+        "closeVerify": "認証を閉じる",
+        "emailAuth": "メール認証",
+        "emailAuthDesc": "メール認証コードによりアカウントと取引のセキュリティが保護されます。メールアドレスの変更後、決済、引き出しなどの機能が24時間利用停止されます。",
+        "emailAuthDesc2": "メール認証コードによりアカウントと取引のセキュリティが保護されます。メールアドレスの変更後、決済、引き出しなどの機能が{{time}}時間利用停止されます。",
+        "loginPassword": "ログインパスワード",
+        "loginPasswordDesc": "再設定時に現在のアカウントから自動的にログアウトします",
+        "set": "設定済み",
+        "notSet": "未設定",
+        "setAction": "設定",
+        "securityDevice": "セキュリティデバイス",
+        "securityDeviceDesc": "ログインが許可された認証済みデバイスを管理します。",
+        "deviceCount": "認証デバイス数：",
+        "manage": "管理",
+        "securityLogDesc": "ログイン時のIPアドレスセキュリティなどに使用されます。",
+        "lastLoginIp": "最近のログインIPアドレス：",
+        "view": "確認",
+        "cancel": "キャンセル",
+        "confirm": "確認",
+        "paste": "貼り付け",
+        "email": "メール認証",
+        "phone": "携帯電話番号認証",
+        "google": "Google認証コード",
+        "sent": "認証コードを送信",
+        "sent2": "認証コードが送信されました",
+        "resend": "再送信",
+        "resend2": "認証コードが以下のアドレスに送信されました",
+        "countdown": "s 再送信",
+        "phoneCode": "携帯電話認証コード",
+        "emailCode": "メール認証コード",
+        "googleCode": "Google認証コード",
+        "inputCode": "認証コードを入力してください",
+        "inputPhoneCode": "携帯電話認証コードを入力してください",
+        "inputEmailCode": "メール認証コードを入力してください",
+        "inputGoogleCode": "Google認証コードを入力してください",
+        "codeError": "認証コードを入力してください！",
+        "error3": "認証コードが届かない？",
+        "error1": "認証コードは有効期限内です",
+        "error2": "認証コードの取得に失敗しました:",
+        "findPassword": "パスワードを回復",
+        "unbindGoogle2": "Google認証解除",
+        "bindGoogle2": "Google認証設定",
+        "modifyPassword": "パスワードの変更",
+        "identityAuth": "本人確認申請",
+        "closePhone": "携帯認証を閉じる",
+        "bindPhone": "携帯番号の設定/変更",
+        "bindEmail": "メールアドレスの設定/変更",
+        "changeCheck": {
+            "cancel": "キャンセル",
+            "continue": "続行",
+            "title": "携帯番号を変更しますか？",
+            "msg": "資産のセキュリティを保護するため、携帯番号変更後24時間間、出金が禁止されます。",
+            "msg11": "資産のセキュリティを保護するため、携帯番号変更後{{time}}時間間、出金が禁止されます。",
+            "title1": "携帯認証を閉じますか？",
+            "msg1": "確認後、携帯からの認証コードを利用できなくなります。",
+            "title2": "メールアドレスを変更しますか？",
+            "msg2": "資産のセキュリティを保護するため、メールアドレス変更後24時間間、出金が禁止されます。",
+            "msg21": "資産のセキュリティを保護するため、メールアドレス変更後{{time}}時間間、出金が禁止されます。",
+            "title3": "パスワードを変更しますか？",
+            "msg3": "資産のセキュリティを保護するため、パスワード変更後24時間間、出金が禁止されます。",
+            "msg31": "資産のセキュリティを保護するため、パスワード変更後{{time}}時間間、出金が禁止されます。",
+            "title4": "Google認証器を解除しますか？",
+            "msg4": "資産のセキュリティを保護するため、Google認証器解除後24時間間、出金が禁止されます。",
+            "msg41": "資産のセキュリティを保護するため、Google認証器解除後{{time}}時間間、出金が禁止されます。"
+        },
+        "bindGoogle": {
+            "title1": "Android/iOS 向けGoogle Authenticatorのダウンロード",
+            "tip1": "iOSユーザーはApp Storeで「Authenticator」を検索してダウンロード",
+            "tip2": "Androidユーザーはアプリストアまたはモバイルブラウザで「Google Authenticator」を検索してダウンロード",
+            "title2": "Google Authenticatorに秘密鍵を追加してバックアップ",
+            "tip3": "Google Authenticatorを開き、以下のQRコードをスキャンまたは手動で秘密鍵を入力して認証トークンを追加",
+            "tip4": "秘密鍵は携帯交換時または紛失時にGoogle Authenticatorを復元するために使用します。設定前に必ず秘密鍵をバックアップ保存してください。",
+            "title3": "Google認証コードの確認",
+            "googleCodeNull": "Google認証コードを入力してください",
+            "copyKey": "秘密鍵をコピー",
+            "next": "次のステップ",
+            "bind": "設定",
+            "cancel": "キャンセル",
+            "modalTitle": "認証コードを入力してGoogle認証器を有効化"
+        },
+        "delect": {
+            "title": "このデバイスを削除しますか？",
+            "btn": "削除",
+            "msg": "削除後、このデバイスはログイン状態から退出します！"
+        },
+        "lockSafe": {
+            "title": "セキュリティ確認",
+            "error1": "認証コードは有効期限内です",
+            "error2": "認証コードの取得に失敗しました:",
+            "lockError": "パスワードを入力してください！",
+            "lockError2": "2回入力したパスワードが一致しません！",
+            "setPassword": "パスワードの設定",
+            "modifyPassword": "パスワードの変更",
+            "newPassword": "新しいパスワード",
+            "inputPassword": "新しいパスワードを入力してください",
+            "error3": "8-100文字",
+            "error4": "少なくとも1つの数字と大文字のアルファベット",
+            "checkPassword": "パスワードの確認",
+            "checkPassword2": "パスワードを確認してください"
+        },
+        "mailSafe": {
+            "title": "セキュリティ確認",
+            "inputEmail": "メールアドレスを入力してください",
+            "inputEmail2": "メールアドレスを先に入力してください",
+            "setMail": "メールアドレスの設定",
+            "modifyMail": "メールアドレスの変更",
+            "mail": "メールアドレス",
+            "mailNullError": "メールアドレスを入力してください！",
+            "newMail": "新しいメールアドレス",
+            "checkMail": "新しいメールアドレスの確認",
+            "inputNewMail": "新しいメールアドレスを入力してください",
+            "newMailNullError": "新しいメールアドレスを入力してください！",
+            "checkMailNullError": "認証コードを入力してください！"
+        },
+        "phoneSafe": {
+            "title": "セキュリティ確認",
+            "inputPhone": "携帯番号を入力してください",
+            "inputPhone2": "携帯番号を先に入力してください",
+            "phoneNullError": "携帯番号を入力してください！",
+            "newPhone": "新しい携帯番号",
+            "setPhone": "携帯番号の設定",
+            "modifyPhone": "携帯番号の変更",
+            "country": "国/地域",
+            "inputNewPhone": "新しい携帯番号を入力してください",
+            "newPhoneCheck": "新しい携帯番号の確認"
+        },
+        "unbindGoogle": {
+            "title": "セキュリティ確認",
+            "confirmUnbind": "Google認証の解除を確認しますか？",
+            "warmTip": "重要なお知らせ：",
+            "tipContent": "アカウントセキュリティの保護のため、Google二段階認証を解除した後、24時間間、暗号資産の引き出しができません。",
+            "tipContent2": "アカウントセキュリティの保護のため、Google二段階認証を解除した後、{{time}}時間間、暗号資産の引き出しができません。",
+            "unbind": "解除",
+            "cancel": "キャンセル"
+        },
+        "loginRecord": {
+            "type": "種類",
+            "time": "時刻",
+            "status": "状態",
+            "address": "ログイン場所",
+            "loginSuccess": "ログイン成功",
+            "loginFailed": "ログイン失敗"
+        },
+        "safeSet": {
+            "type": "種類",
+            "time": "時刻",
+            "operation": "操作",
+            "nodata": "データなし",
+            "deviceManage": "デバイス管理",
+            "loginTime": "ログイン時刻",
+            "ipAddress": "IPアドレス",
+            "loginLocation": "ログイン場所",
+            "currentDevice": "現在のデバイス",
+            "securityDevice": "セキュリティデバイス",
+            "deviceManageDesc": "これらのデバイスはログインが許可された認証済みデバイスです",
+            "deviceCount": "認証済みデバイス数：",
+            "manage": "管理",
+            "securityLogDesc": "ログイン時のIPアドレスセキュリティ等に使用されます。",
+            "loginRecord": "ログイン記録",
+            "safeSetRecord": "セキュリティ設定記録",
+            "securityLog": "セキュリティログ"
+        }
+    },
+    "account": {
+        "title": "ユーザー設定",
+        "userCenter": "マイページ",
+        "nickname": "ニックネーム",
+        "nicknameDesc": "個人情報にカスタムニックネームを設定",
+        "avatar": "アバター",
+        "avatarDesc": "アバターを設定してアカウントに個性を加えましょう。NFTマーケットで自分のNFTアバターを購入することもできます",
+        "birthday": "誕生日",
+        "birthdayDesc": "誕生日",
+        "modify": "変更",
+        "add": "追加",
+        "address": "引き出し先アドレス",
+        "addressDesc": "引き出し先アドレスを追加して信頼登録すると、引き出し時にメール/SMS/Google認証が不要になります",
+        "manage": "管理",
+        "withdraw": "引き出し"
+    },
+    "success": "成功"
+}

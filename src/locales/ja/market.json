@@ -1,0 +1,102 @@
+{
+  "pageTitle": "市場相場",
+  "marketData": {
+    "pageTitle": "市場相場",
+    "rankings": "ランキング",
+    "marketTrends": "相場動向"
+  },
+  "rankingList": {
+    "tradingPair": "取引ペア",
+    "latestPrice": "最新価格",
+    "change24h": "24時間変動率",
+    "hotCoins": "人気ランキング",
+    "risingCoins": "上昇率ランキング",
+    "fallingCoins": "下落率ランキング"
+  },
+  "marketList": {
+    "tabs": {
+      "favorites": "お気に入り",
+      "allCoins": "全通貨",
+      "spotMarket": "現物市場"
+    },
+    "categories": {
+      "mainBoard": "メインボード",
+      "innovationZone": "イノベーションゾーン",
+      "newCoins": "新規上場",
+      "ai": "AI",
+      "meme": "ミーム",
+      "nft": "NFT",
+      "web3": "Web3",
+      "payments": "ペイメント",
+      "launchpad": "ローンチパッド"
+    },
+    "tableHeaders": {
+      "name": "名称",
+      "price": "価格",
+      "change24h": "24時間変動率",
+      "marketCap": "時価総額",
+      "action": "操作",
+      "highLow24h": "24時間高値/安値",
+      "volume24h": "24時間取引量",
+      "trade": "取引"
+    },
+    "operationTips": {
+      "addSuccess": "追加成功",
+      "removeSuccess": "削除成功",
+      "loginToFavorite": "お気に入りに追加するにはログインしてください",
+      "action": "操作",
+      "emptyData": "データなし",
+      "emptyFavorites": "お気に入りが空です",
+      "loginNow": "今すぐログイン",
+      "goToMarket": "市場へ移動",
+      "noData": "データがありません"
+    }
+  },
+  "header": {
+    "favorites": "お気に入り",
+    "spot": "現物",
+    "search": "検索",
+    "mainArea": "メインエリア",
+    "innovationArea": "イノベーションエリア",
+    "newCoinArea": "新規通貨エリア",
+    "ai": "AI",
+    "meme": "ミーム",
+    "nft": "NFT",
+    "defi": "DeFi",
+    "web3": "Web3",
+    "payments": "決済",
+    "launchpad": "ローンチパッド",
+    "layer2": "Layer2",
+    "solana": "Solana",
+    "rwa": "RWA",
+    "launchpool": "ローンチプール",
+    "gameMetaverse": "ゲームメタバース",
+    "storage": "ストレージ",
+    "loadingError": "通貨ペアデータの読み込みに失敗しました",
+    "updateFavoriteError": "お気に入り状態の更新に失敗しました",
+    "favoriteError": "お気に入り操作中にエラーが発生しました",
+    "addToFavorites": "お気に入りに追加",
+    "removeFromFavorites": "お気に入りから削除",
+    "change24h": "24時間変動率",
+    "high24h": "24時間最高価",
+    "low24h": "24時間最低価",
+    "volume24h": "24時間取引量",
+    "amount24h": "24時間取引額",
+    "billion": "B",
+    "tenThousand": "万",
+    "million": "M",
+    "kthousand": "K",
+    "name": "名称",
+    "lastPrice": "最新価格",
+    "time": "時刻",
+    "price": "価格",
+    "amount": "数量",
+    "total": "取引額",
+    "all": "全て",
+    "loginNow": "今すぐログイン",
+    "goToMarket": "市場へ移動",
+    "noData": "データなし",
+    "searchInput": "検索キーワードを入力",
+    "routerErr": "対応する通貨ペアがありません"
+  }
+}

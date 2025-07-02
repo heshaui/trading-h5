@@ -1,0 +1,157 @@
+{
+  "title": "Welcome-日本語",
+  "description": "This is the homepage-日本語",
+  "home1": "IMBITデジタル通貨取引所　より速く、より良く、より強く",
+  "home2": "もっと見る",
+  "nickname": "ニックネーム",
+  "login":"アカウントをお持ちですか？",
+  "userCenter":{
+    "overView":"概要",
+    "account":"ユーザー設定",
+    "identity":"本人確認",
+    "security":"セキュリティセンター"
+},
+  "search": "検索",
+  "filter": "フィルター",
+  "ok": "確認",
+  "beSure": "理解しました",
+  "cancel": "キャンセル",
+  "close": "閉じる",
+  "closeAll": "すべて閉じる",
+  "clear": "クリア",
+  "clearAll": "すべてクリア",
+  "delete": "削除",
+  "edit": "編集",
+  "save": "保存",
+  "copy": "コピー",
+  "paste": "貼り付け",
+  "cut": "切り取り",
+  "undo": "元に戻す",
+  "redo": "やり直す",
+  "note": "重要なお知らせ",
+  "err": "操作失敗",
+  "success": "操作成功",
+  "inputCode": "入力してください",
+  "resend": "認証コードを再送信",
+  "cantReceive": "認証コードを受け取れませんか？",
+  "check": "長時間認証コードが受け取れない場合は、以下を確認してください：",
+  "check1": "メールアドレスが正しいか確認してください",
+  "check2": "電話番号が正しいか確認してください",
+  "check3": "電話番号/メールアドレスが正しいか確認してください",
+  "check4": "認証コードが迎宅メールに入っていないか確認してください",
+  "check5": "認証コードの送信が遅れる場合があります。10分後に再試行してください",
+  "nodata": "データがありません",
+  "noaddress": "アドレスがありません",
+  "safeVerification": "セキュリティ認証",
+  "noLogin":{
+    "tip1":"取引を始める",
+    "tip2":"ログイン",
+    "tip3":"今すぐ登録",
+    "or":"または"
+  },
+  "usersetting":{
+    "modifyOnce": "24時間内に1回のみ変更可能",
+    "modifySuccess": "ニックネームの変更が成功しました",
+    "modifyNickname": "ニックネームを変更",
+    "nicknameRequired": "ニックネームを入力してください",
+    "modifyNicknameOnce": "ニックネームを変更できます",
+    "modifyNicknameOnceTip": "24時間内に1回のみ変更可能です。",
+    "modifyNicknameOnceTip1": "あなたは {{time}} 日に 1 回だけ変更できます。",
+    "modifyNicknameOnceTip2": "ニックネームは数字、アルファベットのみをサポートし、25文字を超えないようにしてください。",
+    "modifyNicknameOnceTip3": "個人情報の漏洩を防ぐため、実名や連絡先などを使用しないでください。",
+    "modifyNicknameOnceTip4": "ニックネームの内容は、お住まいの国や地域の法律に適合している必要があります。違反した場合、IMBITはニックネームを変更したり、アカウントのコメント禁止や停止などの措置を取る権利を有します。",
+    "modifyNicknameOnceTip5": "過去のニックネームは、バージョンの関係で上記の規定に適合していない場合があり、ドメインURLに同期できないことがあります。",
+    "modifyAvatar": "アバターを変更",
+    "modifyAvatarSuccess": "アバターの変更が成功しました",
+    "uploadAvatar": "アップロード",
+    "avatarFormatTip": "画像アバターはjpg/jpeg、png、gif形式のみサポートしています",
+    "avatarFilter": {
+      "all": "すべて",
+      "male": "男性",
+      "female": "女性",
+      "avatarFormatTip": "画像アバターはjpg/jpeg、png、gif形式のみサポートしています",
+      "invalidFileType": "無効なファイル形式"
+    },
+    "selectAvatar": "アバターを選択してください",
+    "avatarSuccess": "アバターの変更が成功しました",
+    "birthday": {
+      "title": "誕生日を追加",
+      "placeholder": "年/月/日",
+      "required": "誕生日を入力してください!",
+      "invalidFormat": "有効な日付形式（年/月/日）を入力してください！",
+      "modifySuccess": "誕生日の変更が成功しました",
+      "tip": "正しい日付を入力してください。入力後は変更できません。"
+    }
+   
+  },
+  "modal":{
+    "confirmCancel":"キャンセルを確認すると、出金注文はキャンセルされます。"
+  },
+  "footer":{
+    "scanDownloadApp":"スキャンしてAPPをダウンロード",
+    "downloadApp":"APPをダウンロード",
+    "community":"コミュニティ"
+  },
+  "depthChart": {
+    "buyOrders": "買い注文",
+    "sellOrders": "売り注文",
+    "midPrice": "中間価格"
+  },
+  "router":{
+    "myAssets":"マイ資産",
+    "recharge":"入金",
+    "withdraw":"出金",
+    "bill":"明細書",
+    "spotTrade":"スポット取引",
+    "spotOrder":"スポット注文",
+    "flashOrder":"フラッシュ注文",
+    "overView":"概要",
+    "safetyCenter":"セキュリティセンター",
+    "identity":"本人確認",
+    "inviteFriend":"友達を招待",
+    "setting":"設定",
+    "logout":"ログアウト"
+  },
+  "header":{
+    "login":"ログイン",
+    "register":"登録",
+    "noLanguageData": "言語データがありません",
+    "noRateData": "為替レートデータがありません",
+    "language": "言語",
+    "searchLanguage": "言語を検索",
+    "rate": "為替レート",
+    "searchRate": "為替レートを検索",
+    "noMatchResult": "一致する結果がありません",
+    "noNewNotice": "新しい通知はありません",
+    "loading": "読み込み中...",
+    "noMenuData": "メニューデータがありません",
+    "notice":{
+      "notice": "お知らせ",
+      "accountAssistant": "アカウントアシスタント",
+      "assets": "資産",
+      "transaction": "取引",
+      "message": "メッセージ",
+      "viewAll": "すべて表示"
+    },
+    "dayMode":{
+      "day":"デイモード",
+      "night":"ナイトモード"
+    }
+  },
+  "scrollableTabs":{
+    "all": "すべて"
+  },
+  "imageSelect": {
+    "search": "検索",
+    "noData": "データがありません",
+    "noSearchData": "検索結果がありません",
+    "loading": "読み込み中...",
+    "selectCoin": "通貨を選択",
+    "searchHistory": "検索履歴"
+  },
+  "flash":{
+    "order":{
+      "title": "フラッシュスワップ注文"
+    }
+  }
+}

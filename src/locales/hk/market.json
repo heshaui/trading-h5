@@ -1,0 +1,102 @@
+{
+  "pageTitle": "市场行情",
+  "marketData": {
+    "pageTitle": "市场行情",
+    "rankings": "榜单",
+    "marketTrends": "行情"
+  },
+  "rankingList": {
+    "tradingPair": "币对",
+    "latestPrice": "最新价",
+    "change24h": "24H涨跌",
+    "hotCoins": "热门榜",
+    "risingCoins": "涨幅榜",
+    "fallingCoins": "跌幅榜"
+  },
+  "marketList": {
+    "tabs": {
+      "favorites": "自选",
+      "allCoins": "所有币种",
+      "spotMarket": "现货市场"
+    },
+    "categories": {
+      "mainBoard": "主板",
+      "innovationZone": "创新区",
+      "newCoins": "新币区",
+      "ai": "AI",
+      "meme": "Meme",
+      "nft": "NFT",
+      "web3": "Web3",
+      "payments": "Payments",
+      "launchpad": "Launchpad"
+    },
+    "tableHeaders": {
+      "name": "名称",
+      "price": "价格",
+      "change24h": "24H涨跌",
+      "marketCap": "市值",
+      "action": "操作",
+      "highLow24h": "24H最高/24H最低",
+      "volume24h": "24H成交额",
+      "trade": "交易"
+    },
+    "operationTips": {
+      "addSuccess": "添加成功",
+      "removeSuccess": "移除成功",
+      "loginToFavorite": "请先登录再收藏",
+      "action": "操作",
+      "emptyData": "空数据",
+      "emptyFavorites": "空自选列表",
+      "loginNow": "立即登录",
+      "goToMarket": "前往市场",
+      "noData": "暂无数据"
+    }
+  },
+  "header": {
+    "favorites": "自选",
+    "spot": "现货",
+    "search": "搜索",
+    "mainArea": "主流区",
+    "innovationArea": "创新区",
+    "newCoinArea": "新币区",
+    "ai": "AI",
+    "meme": "Meme",
+    "nft": "NFT",
+    "defi": "DeFi",
+    "web3": "Web3",
+    "payments": "Payments",
+    "launchpad": "Launchpad",
+    "layer2": "Layer2",
+    "solana": "Solana",
+    "rwa": "RWA",
+    "launchpool": "Launchpool",
+    "gameMetaverse": "游戏元宇宙",
+    "storage": "存储",
+    "loadingError": "加载货币对数据失败",
+    "updateFavoriteError": "更新收藏状态失败",
+    "favoriteError": "收藏操作发生错误",
+    "addToFavorites": "添加收藏",
+    "removeFromFavorites": "取消收藏",
+    "change24h": "24H 涨跌",
+    "high24h": "24H 最高价",
+    "low24h": "24H 最低价",
+    "volume24h": "24H 成交量",
+    "amount24h": "24H 交易额",
+    "billion": "亿",
+    "tenThousand": "万",
+    "million": "百万",
+    "kthousand": "千",
+    "name": "名称",
+    "lastPrice": "最新价",
+    "time": "时间",
+    "price": "价格",
+    "amount": "数量",
+    "total": "成交额",
+    "all": "全部",
+    "loginNow": "立即登录",
+    "goToMarket": "前往市场",
+    "noData": "暂无数据",
+    "searchInput": "请输入搜索",
+    "routerErr": "暂无对应币对"
+  }
+}

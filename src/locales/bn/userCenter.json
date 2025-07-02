@@ -1,0 +1,384 @@
+{
+    "safeCenter": {
+        "overView": "Overview",
+        "account": "User Settings",
+        "identity": "Identity Verification",
+        "security": "Security Center"
+    },
+    "overview": {
+        "title": "Overview",
+        "auth": "Verified",
+        "unAuth": "Unverified",
+        "audit": "Under Review",
+        "reject": "Rejected",
+        "nickname": "Nickname",
+        "welcome": "Welcome back,",
+        "famousAphorisms": "Crashes are usually preceded by sharp rises, and sharp rises always end in crashes, repeating over and over again — André Kostolany",
+        "registerAccount": "Register Account",
+        "uid": "UID",
+        "accountStatus": "Account Status",
+        "normal": "Normal",
+        "loginFrozen": "Login Frozen",
+        "tradeFrozen": "Trading Frozen",
+        "withdrawFrozen": "Withdrawal Frozen",
+        "personalInfo": "Personal Information",
+        "identityAuth": {
+            "title": "Identity Verification",
+            "verified": "Identity verification completed. Start your crypto journey!",
+            "unverified": "Complete identity verification to access full exchange services",
+            "reVerify": "Please resubmit verification to access full exchange services",
+            "goVerify": "Verify Now",
+            "viewDetails": "View Details"
+        },
+        "securityAuth": {
+            "title": "Security Verification",
+            "securityLevel": "Security Level",
+            "low": "Low",
+            "medium": "Medium",
+            "high": "High",
+            "tip": "Enable two-factor authentication to enhance account security",
+            "view": "View",
+            "bind": "Bind Now"
+        },
+        "assets": {
+            "title": "Assets",
+            "totalAssets": "Total Assets (Equivalent)",
+            "todayProfitLoss": "Today's P&L",
+            "deposit": "Deposit",
+            "withdraw": "Withdraw"
+        },
+        "recentLogin": {
+            "title": "Recent Login",
+            "web": "WEB",
+            "android": "ANDROID",
+            "manage": "Manage"
+        },
+        "authorizedDevices": {
+            "title": "Authorized Devices",
+            "manage": "Manage"
+        },
+        "recommend": {
+            "title": "Recommended for You",
+            "manage": "Manage",
+            "invite": "Invite New Users",
+            "inviteNewUser": "Join us and start your digital currency journey!",
+            "inviteCode": "Invitation Code",
+            "inviteFriend": "Earn rewards by inviting friends",
+            "inviteLink": "Link"
+        }
+    },
+    "identity": {
+        "title": "Identity Verification",
+        "title1": "What is KYC Verification?",
+        "content1": "KYC (Know Your Customer) is an identity verification and investigation process designed to verify customer identity information and background, ensuring financial institutions or service providers comply with Anti-Money Laundering (AML) and Counter-Terrorist Financing (CFT) regulations. It helps ensure account security and reduces the risk of fraud and illegal activities.",
+        "title2": "Why do I need KYC verification?",
+        "content2": "KYC is implemented to protect your account security and rights. It safeguards your identity information and background, preventing others from impersonating you for fraudulent or illegal activities.",
+        "title3": "Having issues with identity verification? Need help?",
+        "content3": "If you encounter any problems during the KYC process, please contact our customer service for assistance. Our support team is ready to provide you with the necessary help and answers. Please provide specific questions and relevant information to help us assist you more efficiently.",
+        "title4": "FAQ",
+        "withdrawal": "Cryptocurrency Withdrawal",
+        "recharge": "Cryptocurrency Deposit",
+        "standardAuth": {
+            "title": "Standard Identity Verification",
+            "unverifiedTip": "Complete standard identity verification in just 3-5 minutes to protect yourself from fraud and illegal risks",
+            "requiredInfo": "Identity verification requires the following information:",
+            "basicInfo": "Basic Information",
+            "idVerification": "Identity Verification"
+        },
+        "status": {
+            "verified": "Verified",
+            "reviewing": "Under Review",
+            "rejected": "Rejected",
+            "unverified": "Unverified"
+        },
+        "button": {
+            "goVerify": "Verify Now",
+            "reviewing": "Under Review",
+            "reVerify": "Re-verify"
+        },
+        "benefits": {
+            "title": "Verification Benefits",
+            "service": "Service",
+            "unverified": "Not Verified",
+            "afterVerification": "After Standard Verification"
+        },
+        "certified": {
+            "title": "Document Verification",
+            "accountBenefits": "Account Benefits",
+            "personalInfo": "Personal Information",
+            "allow": "Allowed",
+            "forbidden": "Forbidden",
+            "info": {
+                "realName": "Full Name",
+                "idType": "Document Type",
+                "country": "Country",
+                "idNumber": "Document Number",
+                "countries": {
+                    "mainland": "Mainland China",
+                    "hongkong": "Hong Kong, China"
+                }
+            },
+            "idTypes": {
+                "idCard": "National ID Card",
+                "passport": "Passport",
+                "hkMacauPass": "HK/Macau Pass",
+                "taiwanPass": "Taiwan Pass",
+                "taiwanId": "Taiwan ID",
+                "foreignerId": "Foreign Permanent Resident ID",
+                "driverLicense": "Driver's License"
+            }
+        },
+        "realName": {
+            "title": "Verification Information",
+            "setUPTitle1": "Basic Information",
+            "setUPTitle2": "Upload Photos",
+            "setUPTitle3": "Submitted",
+            "identityAuth": "Identity Verification"
+        },
+        "idv": {
+            "title": "Document Verification",
+            "inputTip": "Please ensure the information entered matches your document exactly",
+            "country": {
+                "title": "Country",
+                "placeholder": "Select"
+            },
+            "idType": {
+                "title": "Document Type",
+                "placeholder": "Select"
+            },
+            "idNumber": {
+                "title": "Document Number",
+                "placeholder": "Enter"
+            },
+            "name": {
+                "surname": "Surname",
+                "firstName": "Given Name",
+                "placeholder": "Enter"
+            },
+            "birthday": {
+                "title": "Date of Birth",
+                "placeholder": "YYYY/MM/DD"
+            },
+            "button": {
+                "next": "Next"
+            }
+        },
+        "sumbit": {
+            "title": "Under Review",
+            "content": "We are reviewing your application. We will notify you via email once approved. Feel free to browse our website/app while you wait.",
+            "next": "Next",
+            "goHome":"goHome"
+        },
+        "upload": {
+            "title": "Upload Photos",
+            "next": "Next",
+            "prev": "Previous",
+            "error1": "Invalid image format!",
+            "error2": "Image must be smaller than 8MB!",
+            "error3": "Please upload all required document photos",
+            "error4": "Invalid file type",
+            "success": "Submitted successfully",
+            "frontFile": "Front of Document",
+            "backFile": "Back of Document",
+            "selfieFile": "Selfie with Document",
+            "uploadFile": "Upload File",
+            "tip1": "Supports JPG, JPEG, or PNG files under 8MB.",
+            "tip2": "Document photos must be clear, unaltered, and show full face, document number, and name clearly visible.",
+            "tip3": "Photos must show full face without hats. Minimal makeup recommended. Arms must be fully visible."
+        }
+    },
+    "security": {
+        "title": "Security Center",
+        "basicSecurity": "Basic Security",
+        "securityLog": "Security Log",
+        "googleAuth": "Google Authenticator (Recommended)",
+        "googleAuthDesc": "Used for login, withdrawal, and security settings verification. If you frequently don't receive SMS verification codes, we recommend binding Google Authenticator.",
+        "enabled": "Enable",
+        "notBound": "Not Bound",
+        "unbind": "Unbind",
+        "enabled_status": "Enabled",
+        "bind": "Bind",
+        "phoneAuth": "Phone Verification",
+        "phoneAuthDesc": "SMS verification codes will protect your account and transaction security. After changing your bound phone number, payment and withdrawal functions will be disabled for 24 hours.",
+        "phoneAuthDesc2": "SMS verification codes will protect your account and transaction security. After changing your bound phone number, payment and withdrawal functions will be disabled for {{time}} hours.",
+        "modify": "Modify",
+        "closeVerify": "Disable Verification",
+        "emailAuth": "Email Verification",
+        "emailAuthDesc": "Email verification codes will protect your account and transaction security. After changing your bound email, payment and withdrawal functions will be disabled for 24 hours.",
+        "emailAuthDesc2": "Email verification codes will protect your account and transaction security. After changing your bound email, payment and withdrawal functions will be disabled for {{time}} hours.",
+        "loginPassword": "Login Password",
+        "loginPasswordDesc": "Auto logout from current account when reset",
+        "set": "Set",
+        "notSet": "Not Set",
+        "setAction": "Setup",
+        "securityDevice": "Security Device",
+        "securityDeviceDesc": "Manage devices authorized to log in.",
+        "deviceCount": "Authorized devices count:",
+        "manage": "Manage",
+        "securityLogDesc": "For login and IP address security.",
+        "lastLoginIp": "Last login IP address:",
+        "view": "View",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "paste": "Paste",
+        "email": "Email Verification",
+        "phone": "Phone Verification",
+        "google": "Google Verification Code",
+        "sent": "Send Verification Code",
+        "sent2": "Verification code sent to",
+        "resend": "Resend",
+        "resend2": "Verification code has been sent to",
+        "countdown": "s Resend",
+        "phoneCode": "Phone Verification Code",
+        "emailCode": "Email Verification Code",
+        "googleCode": "Google Verification Code",
+        "inputCode": "Please enter verification code",
+        "inputPhoneCode": "Please enter phone verification code",
+        "inputEmailCode": "Please enter email verification code",
+        "inputGoogleCode": "Please enter Google verification code",
+        "codeError": "Verification code cannot be empty!",
+        "error3": "Not receiving verification code?",
+        "error1": "Verification code is still valid",
+        "error2": "Error getting verification code:",
+        "findPassword": "Recover Password",
+        "unbindGoogle2": "Unbind Google",
+        "bindGoogle2": "Bind Google",
+        "modifyPassword": "Change Password",
+        "identityAuth": "Identity Verification Application",
+        "closePhone": "Disable Phone Verification",
+        "bindPhone": "Bind/Change Phone Number",
+        "bindEmail": "Bind/Change Email",
+        "changeCheck": {
+            "cancel": "Cancel",
+            "continue": "Continue",
+            "title": "Are you sure you want to change your phone number?",
+            "msg": "To protect your assets, withdrawals will be disabled for 24 hours after changing your phone number.",
+            "msg11": "To protect your assets, withdrawals will be disabled for {{time}} hours after changing your phone number.",
+            "title1": "Are you sure you want to disable phone verification?",
+            "msg1": "After confirmation, you will no longer be able to receive verification codes via phone.",
+            "title2": "Are you sure you want to change your email?",
+            "msg2": "To protect your assets, withdrawals will be disabled for 24 hours after changing your email.",
+            "msg21": "To protect your assets, withdrawals will be disabled for {{time}} hours after changing your email.",
+            "title3": "Are you sure you want to change your password?",
+            "msg3": "To protect your assets, withdrawals will be disabled for 24 hours after changing your password.",
+            "msg31": "To protect your assets, withdrawals will be disabled for {{time}} hours after changing your password.",
+            "title4": "Are you sure you want to unbind Google Authenticator?",
+            "msg4": "To protect your assets, withdrawals will be disabled for 24 hours after unbinding Google Authenticator.",
+            "msg41": "To protect your assets, withdrawals will be disabled for {{time}} hours after unbinding Google Authenticator."
+        },
+        "bindGoogle": {
+            "title1": "Android/iOS Google Authenticator Download",
+            "tip1": "iOS users can search for 'Authenticator' in the App Store",
+            "tip2": "Android users can search for 'Google Authenticator' in app stores or mobile browsers",
+            "title2": "Add and backup key in Google Authenticator",
+            "tip3": "Open Google Authenticator, scan the QR code below or manually enter the key to add verification token",
+            "tip4": "The key is used to recover Google Authenticator when your phone is replaced or lost. Please make sure to backup this key before binding.",
+            "title3": "Verify Google verification code",
+            "googleCodeNull": "Please enter Google verification code",
+            "copyKey": "Copy Key",
+            "next": "Next",
+            "bind": "Bind",
+            "cancel": "Cancel",
+            "modalTitle": "Enter verification code to enable Google Authenticator"
+        },
+        "delect": {
+            "title": "Confirm deleting this device?",
+            "btn":"Delete",
+            "msg": "After removal, this device will be logged out!"
+        },
+        "lockSafe": {
+            "title": "Security Verification",
+            "error1": "Verification code is still valid",
+            "error2": "Error getting verification code:",
+            "lockError": "Password cannot be empty!",
+            "lockError2": "The two passwords do not match!",
+            "setPassword": "Set Password",
+            "modifyPassword": "Change Password",
+            "newPassword": "New Password",
+            "inputPassword": "Please enter new password",
+            "error3": "8-100 characters",
+            "error4": "At least one number and one uppercase letter",
+            "checkPassword": "Confirm Password",
+            "checkPassword2": "Please confirm password"
+        },
+        "mailSafe": {
+            "title": "Security Verification",
+            "inputEmail": "Please enter email",
+            "inputEmail2": "Please enter email first",
+            "setMail": "Set Email",
+            "modifyMail": "Change Email",
+            "mail": "Email",
+            "mailNullError": "Email cannot be empty!",
+            "newMail": "New Email",
+            "checkMail": "New Email Verification",
+            "inputNewMail": "Please enter new email",
+            "newMailNullError": "New email cannot be empty!",
+            "checkMailNullError": "Verification code cannot be empty!"
+        },
+        "phoneSafe": {
+            "title": "Security Verification",
+            "inputPhone": "Please enter phone number",
+            "inputPhone2": "Please enter phone number first",
+            "phoneNullError": "Phone number cannot be empty!",
+            "newPhone": "New Phone Number",
+            "setPhone": "Set Phone Number",
+            "modifyPhone": "Change Phone Number",
+            "country": "Country/Region",
+            "inputNewPhone": "Please enter new phone number",
+            "newPhoneCheck": "New Phone Number Verification"
+        },
+        "unbindGoogle": {
+            "title": "Security Verification",
+            "confirmUnbind": "Confirm unbinding Google verification?",
+            "warmTip": "Friendly Reminder:",
+            "tipContent": "To protect your account security, withdrawals will be disabled for 24 hours after unbinding Google two-factor authentication.",
+            "tipContent2": "To protect your account security, withdrawals will be disabled for {{time}} hours after unbinding Google two-factor authentication.",
+            "unbind": "Unbind",
+            "cancel": "Cancel"
+        },
+        "loginRecord": {
+            "type": "Type",
+            "time": "Time",
+            "status": "Status",
+            "address": "Login Location",
+            "loginSuccess": "Login Successful",
+            "loginFailed": "Login Failed"
+        },
+        "safeSet": {
+            "type": "Type",
+            "time": "Time",
+            "operation": "Operation",
+            "nodata": "No Data",
+            "deviceManage": "Device Management",
+            "loginTime": "Login Time",
+            "ipAddress": "IP Address",
+            "loginLocation": "Login Location",
+            "currentDevice": "Current Device",
+            "securityDevice": "Security Device",
+            "deviceManageDesc": "These devices have been authorized to log in to your account",
+            "deviceCount": "Authorized devices count:",
+            "manage": "Manage",
+            "securityLogDesc": "For login and IP address security.",
+            "loginRecord": "Login Records",
+            "safeSetRecord": "Security Settings Records",
+            "securityLog": "Security Log"
+        }
+    },
+    "account": {
+        "title": "User Settings",
+        "userCenter": "Personal Center",
+        "nickname": "Nickname",
+        "nicknameDesc": "Set a custom nickname for your profile",
+        "avatar": "Avatar",
+        "avatarDesc": "Set an avatar to personalize your account. You can purchase your own NFT avatar in the NFT marketplace",
+        "birthday": "Birthday",
+        "birthdayDesc": "Date of Birth",
+        "modify": "Modify",
+        "add": "Add",
+        "address": "Withdrawal Address",
+        "addressDesc": "After adding and trusting a withdrawal address, email/SMS/Google verification will no longer be required for withdrawals",
+        "manage": "Manage",
+        "withdraw":"withdraw"
+    },
+    "success":"success"
+}

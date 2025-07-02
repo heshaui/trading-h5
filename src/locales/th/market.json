@@ -1,0 +1,102 @@
+{
+  "pageTitle": "Market Overview",
+  "marketData": {
+    "pageTitle": "Market Overview",
+    "rankings": "Rankings",
+    "marketTrends": "Market Trends"
+  },
+  "rankingList": {
+    "tradingPair": "Trading Pair",
+    "latestPrice": "Latest Price",
+    "change24h": "24H Change",
+    "hotCoins": "Trending",
+    "risingCoins": "Top Gainers",
+    "fallingCoins": "Top Losers"
+  },
+  "marketList": {
+    "tabs": {
+      "favorites": "Favorites",
+      "allCoins": "All Coins",
+      "spotMarket": "Spot Market"
+    },
+    "categories": {
+      "mainBoard": "Main Board",
+      "innovationZone": "Innovation Zone",
+      "newCoins": "New Listings",
+      "ai": "AI",
+      "meme": "Meme",
+      "nft": "NFT",
+      "web3": "Web3",
+      "payments": "Payments",
+      "launchpad": "Launchpad"
+    },
+    "tableHeaders": {
+      "name": "Name",
+      "price": "Price",
+      "change24h": "24H Change",
+      "marketCap": "Market Cap",
+      "action": "Action",
+      "highLow24h": "24H High/Low",
+      "volume24h": "24H Volume",
+      "trade": "Trade"
+    },
+    "operationTips": {
+      "addSuccess": "Added successfully",
+      "removeSuccess": "Removed successfully",
+      "loginToFavorite": "Please login to add favorites",
+      "action": "Action",
+      "emptyData": "No data",
+      "emptyFavorites": "Empty favorites",
+      "loginNow": "Login now",
+      "goToMarket": "Go to market",
+      "noData": "No data available"
+    }
+  },
+  "header": {
+    "favorites": "Favorites",
+    "spot": "Spot",
+    "search": "Search",
+    "mainArea": "Main Area",
+    "innovationArea": "Innovation Area",
+    "newCoinArea": "New Coin Area",
+    "ai": "AI",
+    "meme": "Meme",
+    "nft": "NFT",
+    "defi": "DeFi",
+    "web3": "Web3",
+    "payments": "Payments",
+    "launchpad": "Launchpad",
+    "layer2": "Layer2",
+    "solana": "Solana",
+    "rwa": "RWA",
+    "launchpool": "Launchpool",
+    "gameMetaverse": "Game Metaverse",
+    "storage": "Storage",
+    "loadingError": "Failed to load trading pairs",
+    "updateFavoriteError": "Failed to update favorites",
+    "favoriteError": "Error in favorite operation",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "change24h": "24H Change",
+    "high24h": "24H High",
+    "low24h": "24H Low",
+    "volume24h": "24H Volume",
+    "amount24h": "24H Amount",
+    "billion": "B",
+    "tenThousand": "K",
+    "million": "M",
+    "kthousand": "K",
+    "name": "Name",
+    "lastPrice": "Last Price",
+    "time": "Time",
+    "price": "Price",
+    "amount": "Amount",
+    "total": "Total",
+    "all": "All",
+    "loginNow": "Login now",
+    "goToMarket": "Go to market",
+    "noData": "No data available",
+    "searchInput": "Please enter search terms",
+    "routerErr": "No corresponding currency pair"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "title": "閃兌",
+  "tradingPlatform": "交易平台",
+  "pay": "支付",
+  "receive": "獲得",
+  "max": "最大",
+  "available": "現貨可用",
+  "insufficientBalance": "現貨賬戶餘額不足，前往充值",
+  "amountLimit": "限額",
+  "exchangeRate": "兌換比例",
+  "exchangeRateTooltip": "兌換比例為預估值，最終兌換數量已實際成交為準",
+  "preview": "預覽",
+  "spotTrading": "現貨交易",
+  "orderHistory": "訂單記錄",
+  "authNotice": {
+    "title": "未完成身份認證",
+    "description": "完成身份認證，解鎖全部功能",
+    "button": "立即認證"
+  },
+  "confirmModal": {
+    "title": "確認兌換",
+    "from": "從",
+    "to": "至",
+    "exchangeRate": "兌換率",
+    "tradingFee": "交易手續費",
+    "zeroFee": "0手續費",
+    "youWillPay": "您將支付",
+    "priceExpired": "該報價已過期，請重新獲取報價",
+    "exchange": "兌換",
+    "exchangeWithCountdown": "兌換 ({{seconds}}S)",
+    "refreshPrice": "刷新報價"
+  },
+  "successModal": {
+    "title": "成功",
+    "youReceived": "您已收到",
+    "exchangeRate": "兌換率",
+    "tradingFee": "交易手續費",
+    "ok": "好的",
+    "goToAssets": "前往資產"
+  },
+  "failureModal": {
+    "title": "下單失敗",
+    "description": "兌換率失效，交易取消！",
+    "ok": "好的",
+    "viewAssets": "查看資產"
+  },
+  "footer": "您可以隨時使用閃兌服務換取數字資產！",
+  "order": {
+    "title": "閃兌訂單",
+    "table": {
+      "tradeDate": "交易日期",
+      "tradingPair": "交易對",
+      "pay": "支付",
+      "receive": "獲得",
+      "price": "價格",
+      "settlementDate": "結算日期",
+      "status": "狀態"
+    },
+    "status": {
+      "processing": "處理中",
+      "success": "成功",
+      "failed": "失敗"
+    },
+    "pagination": {
+      "total": "共 {{total}} 條"
+    },
+    "noData": {
+      "title": "您還沒有訂單哦？點擊此處前往",
+      "buttonText": "兌換"
+    }
+  },
+  "faq": {
+    "title": "常見問題",
+    "q1": {
+      "question": "如何使用閃兌交易功能?",
+      "answer": "選擇您需要兌換的幣種並輸入兌換金額，我們將提供最優匯率。如果您對當前匯率滿意，點擊兌換後，獲得幣種將發送至您的現貨賬戶。兌換前請確保現貨賬戶餘額充足，如果您在使用過程中有任何問題請及時與我們的客服溝通。"
+    },
+    "q2": {
+      "question": "閃兌功能是否收取手續費？",
+      "answer": "閃兌不收取手續費，預覽兌換時，顯示的資產報價數量是您賬戶中將實際收到的數量。"
+    },
+    "q3": {
+      "question": "閃兌和現貨交易有什麼不同？",
+      "answer": "不同於訂單撮合模式，閃兌使用的是櫃檯報價模式，不產生任何交易手續費。因此，閃兌價格與現貨盤口價格存在一定的差價。首先用戶基於特定幣對進行詢價，系統會根據當前市場提供一個有競爭力的價格，如果用戶接受了櫃檯的報價，點擊確認後就可以快速交易。交易之前確保您的餘額充足。"
+    },
+    "q4": {
+      "question": "閃兌獲得的資產在哪裡查看？",
+      "answer": "閃兌獲得幣種資產將自動劃轉至您的現貨賬戶。"
+    },
+    "q5": {
+      "question": "如何查看閃兌交易訂單？",
+      "answer": "您可以在閃兌頁面點擊右上角訂單記錄查看，或者點擊訂單中心- 閃兌訂單進行查看。"
+    }
+  }
+} 

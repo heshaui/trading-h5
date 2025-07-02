@@ -1,0 +1,20 @@
+{
+  "notice": {
+    "title": "공지 센터",
+    "menu": {
+      "loading": "불러오는 중...",
+      "announcement": "공지사항"
+    },
+    "top": {
+      "notification": "알림",
+      "search": {
+        "placeholder": "검색"
+      },
+      "unread": "읽지 않은 항목만 보기",
+      "markAllRead": "모두 읽음 처리"
+    },
+    "empty": {
+      "description": "알림이 없습니다"
+    }
+  }
+}

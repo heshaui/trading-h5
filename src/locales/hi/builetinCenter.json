@@ -1,0 +1,58 @@
+{
+    "bulletinCenter": {
+        "title": "Bulletin Center",
+        "announcement": "Announcement",
+        "menu": {
+            "all": "Announcements",
+            "latest": "Latest Updates",
+            "new": "New Coin Listings",
+            "assets": "Assets",
+            "account": "Account",
+            "trading": "Trading",
+            "delist": "Coin Pair Delistings",
+            "suspension": "Deposit/Withdrawal Suspension/Resumption",
+            "announcement": "Announcements",
+            "notification": "Notifications",
+            "article": "Articles",
+            "notice": "Notice",
+            "accountAssistant": "Account Assistant",
+            "transaction": "Transaction"
+        },
+        "message": {
+            "unreadCount": "Announcements",
+            "title": "Latest Update Announcements",
+            "noData": "No Records",
+            "loading": "Loading..."
+        },
+        "action": {
+            "search": "Search",
+            "unreadOnly": "Unread Only",
+            "markAllRead": "Mark All as Read"
+        }
+    },
+    "test": {
+        "latest1": {
+            "title": "Latest Update Announcement 1",
+            "content": "Latest update content 1..."
+        },
+        "latest2": {
+            "title": "Latest Update Announcement 2",
+            "content": "Latest update content 2..."
+        },
+        "new1": {
+            "title": "New Coin Listing Announcement 1",
+            "content": "New coin listing content 1..."
+        },
+        "delist1": {
+            "title": "Coin Pair Delisting Announcement 1",
+            "content": "Coin pair delisting content 1..."
+        },
+        "suspension1": {
+            "title": "Deposit/Withdrawal Suspension/Resumption Announcement 1",
+            "content": "Deposit/Withdrawal suspension/resumption content 1..."
+        }
+    },
+    "empty": {
+        "description": "No Records"
+      }
+}

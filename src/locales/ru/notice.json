@@ -1,0 +1,20 @@
+{
+  "notice": {
+    "title": "Announcement Center",
+    "menu": {
+      "loading": "Loading...",
+      "announcement": "Announcement"
+    },
+    "top": {
+      "notification": "Notification",
+      "search": {
+        "placeholder": "Search"
+      },
+      "unread": "Unread Only",
+      "markAllRead": "Mark All as Read"
+    },
+    "empty": {
+      "description": "No notifications"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { applyThemeVariables } from '@/hooks/dayModeChange';
 
 export type ThemeMode = 'light' | 'dark';
 
@@ -35,13 +36,19 @@ class ThemeStore {
 
   private applyTheme() {
     const root = document.documentElement;
-    if (this.theme === 'dark') {
+    const isDarkMode = this.theme === 'dark';
+    
+    // 应用基础主题类
+    if (isDarkMode) {
       root.classList.add('dark');
       root.setAttribute('data-theme', 'dark');
     } else {
       root.classList.remove('dark');
       root.setAttribute('data-theme', 'light');
     }
+    
+    // 应用主题变量到CSS
+    applyThemeVariables(isDarkMode);
   }
 
   get isDark() {

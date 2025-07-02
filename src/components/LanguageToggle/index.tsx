@@ -30,20 +30,11 @@ const LanguageToggle: React.FC = () => {
         </Button>
   };
 
-  const options = supportedLanguages.map(lang => ({
-    label: languageNames[lang as keyof typeof languageNames],
-    value: lang,
-  }));
   const actions: Action[] =supportedLanguages.map(lang => ({
     key: lang,
     text: popupContent(lang),
     }));
-  
-  const handleLanguageChange = async (value: string[]) => {
-    if (value[0] && value[0] !== currentLanguage) {
-      await changeLanguage(value[0]);
-    }
-  };
+
 
 
   // const popupContent = (

@@ -3,7 +3,7 @@ import { Selector, SpinLoading, Button, Popover, List, Image } from 'antd-mobile
 import { useLanguage } from '../../hooks/useLanguage';
 import { supportedLanguages, languageNames } from '../../utils/languageLoader';
 import iconDown from '../assets/icons/public/icon_earth_line.png';
-import './index.css';
+import './index.scss';
 import { Action } from 'antd-mobile/es/components/popover'
 import { DownOutline } from 'antd-mobile-icons';
 

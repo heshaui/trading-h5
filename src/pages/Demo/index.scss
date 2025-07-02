@@ -9,7 +9,7 @@
   padding: 20px;
   text-align: center;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-color-hover));
-  color: white;
+  color: #fff;
   box-shadow: var(--shadow-medium);
 }
 
@@ -127,28 +127,28 @@
 }
 
 /* 响应式设计 */
-@media (max-width: 768px) {
-  .app-header {
-    padding: 16px;
-  }
+// @media (max-width: 768px) {
+//   .app-header {
+//     padding: 16px;
+//   }
   
-  .app-title {
-    font-size: 24px;
-  }
+//   .app-title {
+//     font-size: 24px;
+//   }
   
-  .app-subtitle {
-    font-size: 14px;
-  }
+//   .app-subtitle {
+//     font-size: 14px;
+//   }
   
-  .app-main {
-    padding: 20px 12px;
-  }
+//   .app-main {
+//     padding: 20px 12px;
+//   }
   
-  .demo-grid {
-    grid-template-columns: 1fr;
-  }
+//   .demo-grid {
+//     grid-template-columns: 1fr;
+//   }
   
-  .settings-grid {
-    grid-template-columns: 1fr;
-  }
-}
+//   .settings-grid {
+//     grid-template-columns: 1fr;
+//   }
+// }

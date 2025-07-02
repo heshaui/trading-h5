@@ -7,6 +7,7 @@ import ThemeToggle from './components/ThemeToggle';
 import LanguageToggle from './components/LanguageToggle';
 import { Demo } from './pages';
 import './App.css';
+import './styles/public.css'
 
 const App: React.FC = observer(() => {
   const { t } = useLanguage();

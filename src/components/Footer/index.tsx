@@ -101,9 +101,9 @@ const Footer = () => {
       }));
   };
 
-  useEffect(() => {
-    fetchSocialMedia();
-  }, []);
+//   useEffect(() => {
+//     fetchSocialMedia();
+//   }, []);
 	return (
 		<>页脚</>
 	)

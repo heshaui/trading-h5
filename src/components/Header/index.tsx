@@ -1,6 +1,10 @@
+import styles from './index.module.scss'
 const Header = () => {
 	return (
-		<>页头</>
+		<header className={styles.container}>
+			<div></div>
+			<div></div>
+		</header>
 	)
 }
 

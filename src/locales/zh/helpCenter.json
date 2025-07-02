@@ -1,0 +1,28 @@
+{
+  "helpCenter": {
+    "helpCenter":"帮助中心",
+    "title": "我们能帮您什么？",
+    "search": {
+      "history": ["永续合约", "期货合约", "期权合约"],
+      "placeholder": "请输入您的问题",
+      "noResults": "暂无搜索结果",
+      "results": "搜索结果"
+    },
+    "otherSupport": {
+      "title": "其他支持",
+      "onlineCommunication": {
+        "title": "在线沟通",
+        "description": "我们提供全天候服务，始终满足您的需求。"
+      },
+      "email": {
+        "title": "通过电子邮件联系我们",
+        "business": "商户洽谈: XXXXXXXXX",
+        "legal": "法律合规: XXXXXXXXX"
+      }
+    },
+    "detail": {
+      "noData": "暂无内容",
+      "back": "返回"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+    "welcome": "欢迎回来，IMUSER-NavyXU",
+    "quote": "'崩盘通常以暴涨为前导，而暴涨都以崩盘收尾，一再重复'",
+    "user": {
+      "uid": "UID：---",
+      "register": "注册账号",
+      "identity": "身份认证",
+      "status": {
+        "title": "账号状态",
+        "normal": "正常",
+        "verified": "已认证",
+        "rejected": "已驳回",
+        "verifying": "认证中",
+        "unverified": "未认证"
+      }
+    },
+    "profile": {
+      "button": "个人资料"
+    },
+    "identity_verify": {
+      "title": "身份认证",
+      "desc": "完成身份认证后可以享受交易所完整服务",
+      "button": "去认证"
+    },
+    "security_verify": {
+      "title": "安全认证",
+      "desc": "启用双重认证提高账户安全性",
+      "button": "去绑定"
+    },
+    "assets": {
+      "title": "资产",
+      "total": "总资产折合",
+      "today_profit": "今日盈亏",
+      "deposit": "充值",
+      "withdraw": "提现"
+    },
+    "recent_login": {
+      "title": "最近登录",
+      "location": "中国香港"
+    },
+    "authorized_devices": {
+      "title": "授权设备",
+      "manage": "管理"
+    },
+    "recommendation": {
+      "title": "为你推荐",
+      "invite": {
+        "title": "邀请新用户",
+        "desc": "邀请加入我们一起开启数字货币之旅吧 ！",
+        "rewards": "邀请好友获得",
+        "code": "邀请码"
+      }
+    }
+  }

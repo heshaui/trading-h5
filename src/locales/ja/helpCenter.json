@@ -1,0 +1,28 @@
+{
+  "helpCenter": {
+    "helpCenter":"ヘルプセンター",
+    "title": "何をお手伝いしましょうか？",
+    "search": {
+      "history": ["無期限契約", "先物契約", "オプション契約"],
+      "placeholder": "ご質問を入力してください",
+      "noResults": "検索結果がありません",
+      "results": "検索結果"
+    },
+    "otherSupport": {
+      "title": "その他のサポート",
+      "onlineCommunication": {
+        "title": "オンラインチャット",
+        "description": "当社は24時間サービスを提供し、お客様のニーズに常にお応えします。"
+      },
+      "email": {
+        "title": "メールでお問い合わせ",
+        "business": "ビジネスのお問い合わせ: XXXXXXXXX",
+        "legal": "法務・コンプライアンス: XXXXXXXXX"
+      }
+    },
+    "detail": {
+      "noData": "コンテンツがありません",
+      "back": "戻る"
+    }
+  }
+}

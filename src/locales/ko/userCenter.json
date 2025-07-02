@@ -1,0 +1,384 @@
+{
+    "safeCenter": {
+        "overView": "개요",
+        "account": "사용자 설정",
+        "identity": "신원 인증",
+        "security": "보안 센터"
+    },
+    "overview": {
+        "title": "개요",
+        "auth": "인증 완료",
+        "unAuth": "미인증",
+        "audit": "심사 중",
+        "reject": "반려됨",
+        "nickname": "닉네임",
+        "welcome": "다시 오신 것을 환영합니다,",
+        "famousAphorisms": "폭락은 보통 급등으로 시작되며, 급등은 폭락으로 끝난다 — 안드레•코스톨라니",
+        "registerAccount": "계정 등록",
+        "uid": "UID",
+        "accountStatus": "계정 상태",
+        "normal": "정상",
+        "loginFrozen": "로그인 제한",
+        "tradeFrozen": "거래 제한",
+        "withdrawFrozen": "출금 제한",
+        "personalInfo": "개인 정보",
+        "identityAuth": {
+            "title": "신원 인증",
+            "verified": "신원 인증을 완료했습니다. 암호화폐 여정을 시작해 보세요!",
+            "unverified": "신원 인증을 완료하면 거래소의 전체 서비스를 이용할 수 있습니다",
+            "reVerify": "다시 인증을 제출해 주세요. 완료 후 전체 서비스를 이용할 수 있습니다",
+            "goVerify": "인증하기",
+            "viewDetails": "자세히 보기"
+        },
+        "securityAuth": {
+            "title": "보안 인증",
+            "securityLevel": "보안 수준",
+            "low": "낮음",
+            "medium": "중간",
+            "high": "높음",
+            "tip": "2단계 인증을 활성화하여 계정 보안을 강화하세요",
+            "view": "보기",
+            "bind": "연결하기"
+        },
+        "assets": {
+            "title": "자산",
+            "totalAssets": "총 자산 환산",
+            "todayProfitLoss": "오늘의 손익",
+            "deposit": "입금",
+            "withdraw": "출금"
+        },
+        "recentLogin": {
+            "title": "최근 로그인",
+            "web": "웹",
+            "android": "안드로이드",
+            "manage": "관리"
+        },
+        "authorizedDevices": {
+            "title": "인증된 기기",
+            "manage": "관리"
+        },
+        "recommend": {
+            "title": "추천",
+            "manage": "관리",
+            "invite": "신규 사용자 초대",
+            "inviteNewUser": "우리와 함께 디지털 자산 여정을 시작해요!",
+            "inviteCode": "초대 코드",
+            "inviteFriend": "친구 초대하고 보상 받기",
+            "inviteLink": "링크"
+        }
+    },
+    "identity": {
+        "title": "신원 인증",
+        "title1": "KYC 인증이란 무엇인가요?",
+        "content1": "KYC(Know Your Customer)는 고객의 신원 정보와 배경을 확인하는 인증 및 조사 절차로, 금융기관 또는 서비스 제공자가 자금세탁방지(AML) 및 테러자금조달방지(CFT) 규정을 준수하도록 보장합니다. 이는 계정 보안을 확보하고 사기 및 불법 활동의 위험을 줄이는 데 도움이 됩니다.",
+        "title2": "왜 KYC 인증이 필요한가요?",
+        "content2": "KYC는 귀하의 계정 보안과 권리를 보호하기 위한 절차입니다. 신원 정보와 배경을 보호함으로써 타인이 귀하의 신원을 도용하여 사기나 불법 행위를 하지 못하도록 막을 수 있습니다.",
+        "title3": "KYC 인증 중 문제가 발생하면 어떻게 도움을 받을 수 있나요?",
+        "content3": "KYC 절차 중 문제가 발생하면 고객센터에 문의해 주세요. 저희 고객지원팀이 성심껏 지원해 드리며, 보다 빠른 처리를 위해 구체적인 문제와 관련 정보를 제공해 주세요.",
+        "title4": "자주 묻는 질문",
+        "withdrawal": "암호화폐 출금",
+        "recharge": "암호화폐 입금",
+        "standardAuth": {
+            "title": "표준 신원 인증",
+            "unverifiedTip": "단 3~5분이면 표준 신원 인증을 완료하여 사기 및 불법 위험으로부터 보호받을 수 있습니다.",
+            "requiredInfo": "신원 인증을 위해 다음 정보를 제공해야 합니다:",
+            "basicInfo": "기본 정보",
+            "idVerification": "신원 확인"
+        },
+        "status": {
+            "verified": "인증 완료",
+            "reviewing": "심사 중",
+            "rejected": "반려됨",
+            "unverified": "미인증"
+        },
+        "button": {
+            "goVerify": "인증하러 가기",
+            "reviewing": "심사 중",
+            "reVerify": "다시 인증하기"
+        },
+        "benefits": {
+            "title": "인증 혜택",
+            "service": "서비스",
+            "unverified": "아직 인증되지 않음",
+            "afterVerification": "표준 신원 인증 완료 후"
+        },
+        "certified": {
+            "title": "신분증 확인",
+            "accountBenefits": "계정 혜택",
+            "personalInfo": "개인 정보",
+            "allow": "허용",
+            "forbidden": "금지",
+            "info": {
+                "realName": "실명",
+                "idType": "신분증 종류",
+                "country": "국가",
+                "idNumber": "신분증 번호",
+                "countries": {
+                    "mainland": "중국 본토",
+                    "hongkong": "홍콩"
+                }
+            },
+            "idTypes": {
+                "idCard": "주민 신분증",
+                "passport": "일반 여권",
+                "hkMacauPass": "홍콩·마카오 통행증",
+                "taiwanPass": "대만 통행증",
+                "taiwanId": "대만 신분증",
+                "foreignerId": "외국인 영주 신분증",
+                "driverLicense": "운전면허증"
+            }
+        },
+        "realName": {
+            "title": "인증 정보",
+            "setUPTitle1": "기본 정보",
+            "setUPTitle2": "사진 업로드",
+            "setUPTitle3": "제출 완료",
+            "identityAuth": "신원 인증"
+        },
+        "idv": {
+            "title": "신분증 확인",
+            "inputTip": "입력한 정보가 신분증 정보와 일치하는지 확인해 주세요",
+            "country": {
+                "title": "국가 또는 지역",
+                "placeholder": "선택하세요"
+            },
+            "idType": {
+                "title": "신분증 종류",
+                "placeholder": "선택하세요"
+            },
+            "idNumber": {
+                "title": "신분증 번호",
+                "placeholder": "입력하세요"
+            },
+            "name": {
+                "surname": "성",
+                "firstName": "이름",
+                "placeholder": "입력하세요"
+            },
+            "birthday": {
+                "title": "생년월일",
+                "placeholder": "년/월/일"
+            },
+            "button": {
+                "next": "다음 단계"
+            }
+        },
+        "sumbit": {
+            "title": "심사 중",
+            "content": "신청서를 심사 중입니다. 심사 완료 후 이메일로 알려드리겠습니다. 기다리시는 동안 저희 웹사이트와 앱을 둘러보세요.",
+            "next": "다음 단계",
+            "goHome": "홈으로 가기"
+        },
+        "upload": {
+            "title": "사진 업로드",
+            "next": "다음 단계",
+            "prev": "이전 단계",
+            "error1": "올바른 이미지 형식이 아닙니다!",
+            "error2": "이미지는 8MB 이하만 가능합니다!",
+            "error3": "필수 서류 사진을 모두 업로드해 주세요",
+            "error4": "잘못된 파일 형식입니다",
+            "success": "제출 성공",
+            "frontFile": "신분증 앞면",
+            "backFile": "신분증 뒷면",
+            "selfieFile": "신분증을 들고 있는 사진",
+            "uploadFile": "파일 업로드",
+            "tip1": "8MB 이하의 JPG, JPEG, PNG 파일을 지원합니다.",
+            "tip2": "사진은 선명해야 하며, 수정이나 가림이 없어야 하고, 얼굴·번호·이름이 잘 보여야 합니다.",
+            "tip3": "사진은 모자를 쓰지 않은 상태로, 화장은 없는 것이 좋고, 얼굴 윤곽과 팔이 전부 보여야 합니다."
+        }
+    },
+    "security": {
+        "title": "보안 센터",
+        "basicSecurity": "기초 보안",
+        "securityLog": "보안 로그",
+        "googleAuth": "Google Authenticator (추천)",
+        "googleAuthDesc": "로그인, 출금, 보안 설정 변경 시 인증에 사용됩니다. 문자 인증코드를 자주 받지 못할 경우 Google Authenticator 사용을 권장합니다.",
+        "enabled": "활성화됨",
+        "notBound": "미연결",
+        "unbind": "연결 해제",
+        "enabled_status": "활성화됨",
+        "bind": "연결",
+        "phoneAuth": "휴대폰 인증",
+        "phoneAuthDesc": "SMS 인증코드는 계정과 거래 보안을 보호합니다. 휴대폰 번호 변경 시 24시간 동안 결제 및 출금이 제한됩니다.",
+        "phoneAuthDesc2": "SMS 인증코드는 계정과 거래 보안을 보호합니다. 휴대폰 번호 변경 시 {{time}}시간 동안 결제 및 출금이 제한됩니다.",
+        "modify": "수정",
+        "closeVerify": "인증 비활성화",
+        "emailAuth": "이메일 인증",
+        "emailAuthDesc": "이메일 인증코드는 계정과 거래 보안을 보호합니다. 이메일 변경 시 24시간 동안 결제 및 출금이 제한됩니다.",
+        "emailAuthDesc2": "이메일 인증코드는 계정과 거래 보안을 보호합니다. 이메일 변경 시 {{time}}시간 동안 결제 및 출금이 제한됩니다.",
+        "loginPassword": "로그인 비밀번호",
+        "loginPasswordDesc": "재설정 시 현재 계정에서 자동 로그아웃됩니다.",
+        "set": "설정됨",
+        "notSet": "미설정",
+        "setAction": "설정",
+        "securityDevice": "보안 기기",
+        "securityDeviceDesc": "로그인 권한이 있는 기기를 관리합니다.",
+        "deviceCount": "인증된 기기 수:",
+        "manage": "관리",
+        "securityLogDesc": "로그인 및 IP 보안을 위한 기록입니다.",
+        "lastLoginIp": "최근 로그인 IP 주소:",
+        "view": "보기",
+        "cancel": "취소",
+        "confirm": "확인",
+        "paste": "붙여넣기",
+        "email": "이메일 인증",
+        "phone": "휴대폰 인증",
+        "google": "Google 인증코드",
+        "sent": "인증코드 전송",
+        "sent2": "인증코드가 전송되었습니다",
+        "resend": "재전송",
+        "resend2": "인증코드가 다시 전송되었습니다",
+        "countdown": "초 후 재전송",
+        "phoneCode": "휴대폰 인증코드",
+        "emailCode": "이메일 인증코드",
+        "googleCode": "Google 인증코드",
+        "inputCode": "인증코드를 입력해 주세요",
+        "inputPhoneCode": "휴대폰 인증코드를 입력해 주세요",
+        "inputEmailCode": "이메일 인증코드를 입력해 주세요",
+        "inputGoogleCode": "Google 인증코드를 입력해 주세요",
+        "codeError": "인증코드는 비워둘 수 없습니다!",
+        "error3": "인증코드를 받지 못하셨나요?",
+        "error1": "인증코드가 아직 유효합니다",
+        "error2": "인증코드 수신 중 오류:",
+        "findPassword": "비밀번호 찾기",
+        "unbindGoogle2": "Google 인증 해제",
+        "bindGoogle2": "Google 인증 연결",
+        "modifyPassword": "비밀번호 변경",
+        "identityAuth": "신원 인증 신청",
+        "closePhone": "휴대폰 인증 비활성화",
+        "bindPhone": "휴대폰 번호 연결/변경",
+        "bindEmail": "이메일 연결/변경",
+        "changeCheck": {
+            "cancel": "취소",
+            "continue": "계속",
+            "title": "휴대폰 번호를 변경하시겠습니까?",
+            "msg": "자산 보호를 위해, 변경 후 24시간 동안 출금이 제한됩니다.",
+            "msg11": "자산 보호를 위해, 변경 후 {{time}}시간 동안 출금이 제한됩니다.",
+            "title1": "휴대폰 인증을 해제하시겠습니까?",
+            "msg1": "확인하면 더 이상 휴대폰으로 인증코드를 받을 수 없습니다.",
+            "title2": "이메일을 변경하시겠습니까?",
+            "msg2": "자산 보호를 위해, 변경 후 24시간 동안 출금이 제한됩니다.",
+            "msg21": "자산 보호를 위해, 변경 후 {{time}}시간 동안 출금이 제한됩니다.",
+            "title3": "비밀번호를 변경하시겠습니까?",
+            "msg3": "자산 보호를 위해, 변경 후 24시간 동안 출금이 제한됩니다.",
+            "msg31": "자산 보호를 위해, 변경 후 {{time}}시간 동안 출금이 제한됩니다.",
+            "title4": "Google Google Authenticator를 해제하시겠습니까?",
+            "msg4": "자산 보호를 위해, 해제 후 24시간 동안 출금이 제한됩니다.",
+            "msg41": "자산 보호를 위해, 해제 후 {{time}}시간 동안 출금이 제한됩니다."
+        },
+        "bindGoogle": {
+            "title1": "Android/iOS Google Authenticator  다운로드",
+            "tip1": "iOS 사용자는 App Store에서 'Authenticator'를 검색하여 다운로드하세요",
+            "tip2": "Android 사용자는 앱스토어나 브라우저에서 'Google Authenticator'를 검색하세요",
+            "title2": "Google Authenticator 에 키 추가 및 백업",
+            "tip3": "GoogleAuthenticator를 열고 아래 QR 코드를 스캔하거나 키를 수동으로 입력하여 인증 토큰을 추가하세요",
+            "tip4": "휴대폰 분실 또는 교체 시 Google Authenticator를 복구하려면 이 키가 필요하므로, 반드시 백업해 두세요",
+            "title3": "Google 인증코드 확인",
+            "googleCodeNull": "Google 인증코드를 입력해 주세요",
+            "copyKey": "키 복사",
+            "next": "다음",
+            "bind": "연결",
+            "cancel": "취소",
+            "modalTitle": "Google Authenticator를 활성화하려면 인증코드를 입력하세요"
+        },
+        "delect": {
+            "title": "이 기기를 삭제하시겠습니까?",
+            "btn": "삭제",
+            "msg": "삭제 후, 이 기기는 자동 로그아웃됩니다!"
+        },
+        "lockSafe": {
+            "title": "보안 인증",
+            "error1": "인증코드는 아직 유효합니다",
+            "error2": "인증코드 수신 중 오류 발생:",
+            "lockError": "비밀번호는 비워둘 수 없습니다!",
+            "lockError2": "입력한 두 비밀번호가 일치하지 않습니다!",
+            "setPassword": "비밀번호 설정",
+            "modifyPassword": "비밀번호 변경",
+            "newPassword": "새 비밀번호",
+            "inputPassword": "새 비밀번호를 입력하세요",
+            "error3": "8~100자 이내",
+            "error4": "숫자와 대문자를 최소 1자씩 포함해야 합니다",
+            "checkPassword": "비밀번호 확인",
+            "checkPassword2": "비밀번호를 다시 입력하세요"
+        },
+        "mailSafe": {
+            "title": "보안 인증",
+            "inputEmail": "이메일을 입력해 주세요",
+            "inputEmail2": "먼저 이메일을 입력해 주세요",
+            "setMail": "이메일 설정",
+            "modifyMail": "이메일 변경",
+            "mail": "이메일",
+            "mailNullError": "이메일은 비워둘 수 없습니다!",
+            "newMail": "새 이메일",
+            "checkMail": "새 이메일 인증",
+            "inputNewMail": "새 이메일을 입력해 주세요",
+            "newMailNullError": "새 이메일은 비워둘 수 없습니다!",
+            "checkMailNullError": "인증코드는 비워둘 수 없습니다!"
+        },
+        "phoneSafe": {
+            "title": "보안 인증",
+            "inputPhone": "휴대폰 번호를 입력해 주세요",
+            "inputPhone2": "먼저 휴대폰 번호를 입력해 주세요",
+            "phoneNullError": "휴대폰 번호는 비워둘 수 없습니다!",
+            "newPhone": "새 휴대폰 번호",
+            "setPhone": "휴대폰 번호 설정",
+            "modifyPhone": "휴대폰 번호 변경",
+            "country": "국가/지역",
+            "inputNewPhone": "새 휴대폰 번호를 입력해 주세요",
+            "newPhoneCheck": "새 번호 인증"
+        },
+        "unbindGoogle": {
+            "title": "보안 인증",
+            "confirmUnbind": "Google Authenticator를 해제하시겠습니까?",
+            "warmTip": "알림:",
+            "tipContent": "계정 보안을 위해 Google 2단계 인증 해제 후 24시간 동안 출금이 제한됩니다.",
+            "tipContent2": "계정 보안을 위해 Google 2단계 인증 해제 후 {{time}}시간 동안 출금이 제한됩니다.",
+            "unbind": "해제",
+            "cancel": "취소"
+        },
+        "loginRecord": {
+            "type": "유형",
+            "time": "시간",
+            "status": "상태",
+            "address": "로그인 위치",
+            "loginSuccess": "로그인 성공",
+            "loginFailed": "로그인 실패"
+        },
+        "safeSet": {
+            "type": "유형",
+            "time": "시간",
+            "operation": "작업",
+            "nodata": "데이터 없음",
+            "deviceManage": "기기 관리",
+            "loginTime": "로그인 시간",
+            "ipAddress": "IP 주소",
+            "loginLocation": "로그인 위치",
+            "currentDevice": "현재 기기",
+            "securityDevice": "보안 기기",
+            "deviceManageDesc": "이 기기들은 로그인 권한이 부여되어 있습니다",
+            "deviceCount": "인증된 기기 수:",
+            "manage": "관리",
+            "securityLogDesc": "로그인 및 IP 보안을 위한 기록입니다",
+            "loginRecord": "로그인 기록",
+            "safeSetRecord": "보안 설정 기록",
+            "securityLog": "보안 로그"
+        }
+    },
+    "account": {
+        "title": "사용자 설정",
+        "userCenter": "개인 센터",
+        "nickname": "닉네임",
+        "nicknameDesc": "프로필에 사용할 사용자 지정 닉네임을 설정하세요",
+        "avatar": "아바타",
+        "avatarDesc": "계정을 개인화할 수 있도록 아바타를 설정하세요. NFT 마켓플레이스에서 나만의 NFT 아바타를 구매할 수 있습니다",
+        "birthday": "생일",
+        "birthdayDesc": "생년월일",
+        "modify": "수정",
+        "add": "추가",
+        "address": "출금 주소",
+        "addressDesc": "출금 주소를 추가하고 신뢰하면, 출금 시 이메일/SMS/Google 인증이 생략됩니다",
+        "manage": "관리",
+        "withdraw": "출금"
+    },
+    "success":"성공"
+}

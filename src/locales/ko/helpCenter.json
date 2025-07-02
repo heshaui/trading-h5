@@ -1,0 +1,32 @@
+{
+  "helpCenter": {
+    "helpCenter": "도움말 센터",
+    "title": "무엇을 도와드릴까요?",
+    "search": {
+      "history": [
+        "무기한 계약",
+        "선물 계약",
+        "옵션 계약"
+      ],
+      "placeholder": "질문을 입력해 주세요",
+      "noResults": "검색 결과가 없습니다",
+      "results": "검색 결과"
+    },
+    "otherSupport": {
+      "title": "기타 지원",
+      "onlineCommunication": {
+        "title": "온라인 상담",
+        "description": "언제나 여러분의 필요를 충족할 수 있도록 24시간 연중무휴 서비스를 제공합니다"
+      },
+      "email": {
+        "title": "이메일로 문의하기",
+        "business": "비즈니스 문의: 11123@qq.com",
+        "legal": "법률 준수: 123@qq.com"
+      }
+    },
+    "detail": {
+      "noData": "내용이 없습니다",
+      "back": "뒤로가기"
+    }
+  }
+}

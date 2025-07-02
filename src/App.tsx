@@ -4,7 +4,7 @@ import { ConfigProvider } from 'antd-mobile';
 import { BrowserRouter } from 'react-router-dom';
 import AutoRoutes from '@/routes/AutoRoutes';
 import './App.scss';
-
+import './styles/public.scss'
 const App: React.FC = observer(() => {
   return (
     <ConfigProvider>

@@ -1,0 +1,54 @@
+{
+    "bulletinCenter": {
+        "title": "お知らせセンター",
+        "announcement": "お知らせ",
+        "menu": {
+            "all": "すべてのお知らせ",
+            "latest": "最新情報",
+            "new": "新規コイン上場",
+            "assets": "資産",
+            "trading": "取引",
+            "delist": "コインペアの下場",
+            "suspension": "入出金一時停止/再開",
+            "announcement": "お知らせ",
+            "notification": "通知",
+            "article": "記事",
+            "notice": "公告",
+            "accountAssistant": "アカウント アシスタント",
+            "transaction": "取引"
+        },
+        "message": {
+            "unreadCount": "お知らせ",
+            "title": "最新情報お知らせ",
+            "noData": "記録なし",
+            "loading": "読み込み中..."
+        },
+        "action": {
+            "search": "検索",
+            "unreadOnly": "未読のみ表示",
+            "markAllRead": "すべて既読にする"
+        }
+    },
+    "test": {
+        "latest1": {
+            "title": "最新情報お知らせ 1",
+            "content": "最新情報の内容 1..."
+        },
+        "latest2": {
+            "title": "最新情報お知らせ 2",
+            "content": "最新情報の内容 2..."
+        },
+        "new1": {
+            "title": "新規コイン上場お知らせ 1",
+            "content": "新規コイン上場の内容 1..."
+        },
+        "delist1": {
+            "title": "コインペアの下場お知らせ 1",
+            "content": "コインペアの下場内容 1..."
+        },
+        "suspension1": {
+            "title": "入出金一時停止/再開お知らせ 1",
+            "content": "入出金一時停止/再開の内容 1..."
+        }
+    }
+}

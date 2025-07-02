@@ -1,0 +1,54 @@
+{
+  "welcome": "ようこそ、IMUSER-NavyXU",
+  "quote": "'ボムは通常暴騰で先導され、暴騰はいつもボムで終わり、繰り返される'",
+  "user": {
+    "uid": "UID：---",
+    "register": "登録アカウント",
+    "identity": "本人確認",
+    "status": {
+      "title": "アカウント状態",
+      "normal": "正常",
+      "verified": "認証済み",
+      "rejected": "却下済み",
+      "verifying": "認証中",
+      "unverified": "未認証"
+    }
+  },
+  "profile": {
+    "button": "プロフィール"
+  },
+  "identity_verify": {
+    "title": "本人確認",
+    "desc": "本人確認を完了すると、取引所の完全なサービスを利用できます",
+    "button": "認証に進む"
+  },
+  "security_verify": {
+    "title": "セキュリティ認証",
+    "desc": "2段階認証を有効にしてアカウントのセキュリティを向上させます",
+    "button": "バインドに進む"
+  },
+  "assets": {
+    "title": "資産",
+    "total": "総資産換算",
+    "today_profit": "今日の損益",
+    "deposit": "入金",
+    "withdraw": "引き出し"
+  },
+  "recent_login": {
+    "title": "最近のログイン",
+    "location": "中国香港"
+  },
+  "authorized_devices": {
+    "title": "認証デバイス",
+    "manage": "管理"
+  },
+  "recommendation": {
+    "title": "あなたにおすすめ",
+    "invite": {
+      "title": "新規ユーザーを招待",
+      "desc": "一緒にデジタル通貨の旅を始めましょう！",
+      "rewards": "友人を招待して獲得",
+      "code": "招待コード"
+    }
+  }
+}

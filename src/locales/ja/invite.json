@@ -1,0 +1,72 @@
+{
+    "invite": {
+        "title": "招待",
+        "title1": "友人を招待してリベートを獲得",
+        "title2": "報酬",
+        "tip2": "友人と一緒に追加報酬を稼ごう",
+        "inviteCode": "招待コード",
+        "inputInviteCode": "招待コードを入力してください",
+        "inputInviteCode2": "招待コードを入力してください！",
+        "inviteLink": "招待リンク",
+        "inputInviteLink": "招待リンクを入力してください",
+        "inputInviteLink2": "招待リンクを入力してください！",
+        "inviteBtn": "すぐに招待",
+        "recommend": "友人を推薦",
+        "recommendDesc": "あなたの招待リンクを友人に共有してください",
+        "inviteActive": "招待活性化",
+        "inviteActiveDesc": "友人が登録し、累計入金が少なくとも50USDT",
+        "inviteActiveDesc2": "友人が登録し、累計入金が少なくとも{{count}}{{coinName}}",
+        "complete": "認証完了",
+        "completeDesc": "友人が本人確認を完了",
+        "myInvite": "私の招待",
+        "inviteDetails": "招待詳細",
+        "inviteReward": "招待報酬",
+        "inviteRewardDesc": "友人を招待成功したら、報酬を獲得できます",
+        "inviteRewardDesc2": "報酬は友人が認証を完了した後に支給されます",
+        "inviteRewardDesc3": "報酬は友人が認証を完了した後に支給されます",
+        "qtitle1": "どのようにしてコミッションを獲得できますか？",
+        "ruleTitle": "報酬規則",
+        "ruleDesc1": "友人をMetawaveに招待し、プラットフォームから報酬を獲得できます",
+        "ruleDesc12": "友人を{{platformName}}に招待し、プラットフォームから報酬を獲得できます",
+        "ruleDesc2": "第一步：「友人を招待」ページにアクセスし、招待リンクまたは招待コードを友人に共有してください。",
+        "ruleDesc3": "第二步：友人が正常に登録後、登録日から14日以内に累計入金が100USDT以上かつ本人確認を完了した場合、友人の現物取引手数料の20%をリベートとして獲得できます。このページで招待状況とタスクの完了状況を追跡できます。",
+        "ruleDesc31": "第二步：友人が正常に登録後、登録日から{{date}}日以内に累計入金が{{count}}{{coinName}}以上かつ本人確認を完了した場合、友人の現物取引手数料の{{rebateRatio}}%をリベートとして獲得できます。このページで招待状況とタスクの完了状況を追跡できます。",
+        "ruleDesc32": "第二步：友人が正常に登録後、登録日から{{date}}日以内に累計入金が{{count}}{{coinName}}以上の場合、友人の現物取引手数料の{{rebateRatio}}%をリベートとして獲得できます。このページで招待状況とタスクの完了状況を追跡できます。",
+        "ruleDesc4": "報酬支給時間：毎日02:00（UTC+8）に前日の招待報酬を現物アカウントに支給します。未受領の場合は、直ちにカスタマーサポートまでご連絡ください。",
+        "myInvite2": {
+            "title": "私の招待",
+            "tip1": "招待総数",
+            "tip2": "招待成功数",
+            "tip3": "累計リベート（USDT）",
+            "tip4": "累計リベート（{{coinName}}）",
+            "tip5": "累計リベート"
+        },
+        "inviteDetail": {
+            "userId": "友人ID",
+            "account": "登録アカウント",
+            "status": "招待状態",
+            "regeistTime": "登録日",
+            "success": "成功",
+            "fail": "失敗",
+            "inviteBtn": "すぐに招待"
+        },
+        "inviteRewards": {
+            "time": "支給時間",
+            "account": "登録アカウント",
+            "reward": "リベート金額",
+            "usdt": "USDT換算値",
+            "noData": "データなし",
+            "inviteBtn": "すぐに招待"
+        },
+        "inviteModal": {
+            "okBtn": "了解",
+            "title": "友人を招待して獲得",
+            "title2": "取引報酬",
+            "tip1": "登録14日以内に累計入金が100USDT以上かつ本人確認を完了すると、友人の現物取引手数料を獲得できます",
+            "tip11": "登録{{time}}日以内に累計入金が{{count}}{{coinName}}以上かつ本人確認を完了すると、友人の現物取引手数料を獲得できます",
+            "tip12": "登録{{time}}日以内に累計入金が{{count}}{{coinName}}以上の場合、友人の現物取引手数料を獲得できます",
+            "tip2": "リベート",
+            "qrCode": "友人を招待して取引報酬を獲得"
+        }
+    }
+}

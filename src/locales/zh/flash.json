@@ -1,0 +1,96 @@
+{
+  "title": "闪兑",
+  "tradingPlatform": "交易平台",
+  "all": "全部",
+  "pay": "支付",
+  "receive": "获得",
+  "max": "最大",
+  "available": "现货可用",
+  "insufficientBalance": "现货账户余额不足，前往充值",
+  "amountLimit": "限额",
+  "exchangeRate": "兑换比例",
+  "exchangeRateTooltip": "兑换比例为预估值，最终兑换数量已实际成交为准",
+  "preview": "预览",
+  "spotTrading": "现货交易",
+  "orderHistory": "订单记录",
+  "authNotice": {
+    "title": "未完成身份认证",
+    "description": "完成身份认证，解锁全部功能",
+    "button": "立即认证"
+  },
+  "confirmModal": {
+    "title": "确认兑换",
+    "from": "从",
+    "to": "至",
+    "exchangeRate": "兑换率",
+    "tradingFee": "交易手续费",
+    "zeroFee": "0手续费",
+    "youWillPay": "您将支付",
+    "priceExpired": "该报价已过期，请重新获取报价",
+    "exchange": "兑换",
+    "exchangeWithCountdown": "兑换 ({{seconds}}S)",
+    "refreshPrice": "刷新报价"
+  },
+  "successModal": {
+    "title": "成功",
+    "youReceived": "您已收到",
+    "exchangeRate": "兑换率",
+    "tradingFee": "交易手续费",
+    "ok": "好的",
+    "goToAssets": "前往资产"
+  },
+  "failureModal": {
+    "title": "下单失败",
+    "description": "兑换率失效，交易取消！",
+    "ok": "好的",
+    "viewAssets": "查看资产"
+  },
+  "footer": "您可以随时使用闪兑服务换取数字资产！",
+  "order": {
+    "title": "闪兑订单",
+    "table": {
+      "tradeDate": "交易日期",
+      "tradingPair": "交易对",
+      "pay": "支付",
+      "receive": "获得",
+      "price": "价格",
+      "settlementDate": "结算日期",
+      "status": "状态"
+    },
+    "status": {
+      "processing": "处理中",
+      "success": "成功",
+      "failed": "失败"
+    },
+    "pagination": {
+      "total": "共 {{total}} 条"
+    },
+    "noData": {
+      "title": "您还没有订单哦？点击此处前往",
+      "buttonText": "兑换"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "q1": {
+      "question": "如何使用闪兑交易功能?",
+      "answer": "选择您需要兑换的币种并输入兑换金额，我们将提供最优汇率。如果您对当前汇率满意，点击兑换后，获得币种将发送至您的现货账户。兑换前请确保现货账户余额充足，如果您在使用过程中有任何问题请及时与我们的客服沟通。"
+    },
+    "q2": {
+      "question": "闪兑功能是否收取手续费？",
+      "answer": "闪兑不收取手续费，预览兑换时，显示的资产报价数量是您账户中将实际收到的数量。"
+    },
+    "q3": {
+      "question": "闪兑和现货交易有什么不同？",
+      "answer": "不同于订单撮合模式，闪兑使用的是柜台报价模式，不产生任何交易手续费。因此，闪兑价格与现货盘口价格存在一定的差价。首先用户基于特定币对进行询价，系统会根据当前市场提供一个有竞争力的价格，如果用户接受了柜台的报价，点击确认后就可以快速交易。交易之前确保您的余额充足。"
+    },
+    "q4": {
+      "question": "闪兑获得的资产在哪里查看？",
+      "answer": "闪兑获得币种资产将自动划转至您的现货账户。"
+    },
+    "q5": {
+      "question": "如何查看闪兑交易订单？",
+      "answer": "您可以在闪兑页面点击右上角订单记录查看，或者点击订单中心- 闪兑订单进行查看。"
+    }
+  }
+}

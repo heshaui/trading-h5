@@ -18,3 +18,13 @@
   --text-color: var(--text-primary);
   --border-color: var(--border-color);
 } 
+.button-language{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  padding: 10px 12px;
+  min-width: 168px;
+  height: 44px;
+  border-radius: 4px;
+}

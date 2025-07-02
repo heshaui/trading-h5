@@ -1,0 +1,144 @@
+{
+  "title": "Welcome-中文",
+  "description": "This is the homepage-中文",
+  "home1": "IMBIT数字货币交易所更快、更好、更强",
+  "home2": "更多",
+  "nickname": "昵称",
+  "login":"已有账号？",
+  "userCenter":{
+    "overView":"总览",
+    "account":"用户设置",
+    "identity":"身份认证",
+    "security":"安全中心"
+},
+  "search": "搜索",
+  "filter": "筛选",
+  "ok": "确认",
+  "beSure": "我知道了",
+  "cancel": "取消",
+  "close": "关闭",
+  "closeAll": "关闭所有",
+  "clear": "清除",
+  "clearAll": "清除所有",
+  "delete": "删除",
+  "edit": "编辑",
+  "save": "保存",
+  "copy": "复制",
+  "paste": "粘贴",
+  "cut": "剪切",
+  "undo": "撤销",
+  "redo": "重做",
+  "note": "重要提示",
+  "err": "操作失败",
+  "success": "操作成功",
+  "inputCode": "请输入",
+  "resend": "重新发送验证码",
+  "cantReceive": "无法收到验证码？",
+  "check": "若长时间没有收到验证码，请检查以下事项：",
+  "check1": "确保您的邮箱为",
+  "check2": "确保您的手机为",
+  "check3": "确保您的手机/邮箱为",
+  "check4": "检查验证码是否位于垃圾箱中",
+  "check5": "验证码可能存在延迟，过了10分钟后再试",
+  "nodata": "暂无数据",
+  "noaddress": "暂无地址",
+  "safeVerification": "安全验证",
+  "noLogin":{
+    "tip1":"开始交易",
+    "tip2":"登录",
+    "tip3":"立即注册",
+    "or":"或"
+  },
+  "usersetting":{
+    "modifyOnce": "24h内只能修改1次",
+    "modifySuccess": "昵称修改成功",
+    "modifyNickname": "修改昵称",
+    "nicknameRequired": "请输入昵称",
+    "modifyNicknameOnce": "可修改昵称",
+    "modifyNicknameOnceTip": "24h内仅可修改1次。",
+    "modifyNicknameOnceTip1": "您每{{time}}天可修改1次。",
+    "modifyNicknameOnceTip2": "昵称仅支持数字、字母，不得超出25字符。",
+    "modifyNicknameOnceTip3": "不可使用个人真实姓名及联系方式等，以防泄漏您的隐私。",
+    "modifyNicknameOnceTip4": "昵称内容必须符合所在国家或地区的法律规定。如有违规，IMBIT有权对其修改或实施对账号禁言、封号等惩罚性措施。",
+    "modifyNicknameOnceTip5": "历史昵称可能因为版本关系，存在不符合上述规范的情况，将无法同步至域名url。",
+    "modifyAvatar": "修改头像",
+    "modifyAvatarSuccess": "头像修改成功",
+    "uploadAvatar": "上传",
+    "avatarFormatTip": "图片头像仅支持jpg/jpeg、png、gif格式",
+    "avatarFilter": {
+      "all": "全部",
+      "male": "男",
+      "female": "女",
+      "avatarFormatTip": "图片头像仅支持jpg/jpeg、png、gif格式",
+      "invalidFileType": "无效的文件类型"
+    },
+    "selectAvatar": "请选择或选择头像",
+    "avatarSuccess": "头像修改成功",
+    "birthday": {
+      "title": "添加生日",
+      "placeholder": "年/月/日",
+      "required": "请输入生日!",
+      "invalidFormat": "请输入有效的日期格式（年/月/日）！",
+      "modifySuccess": "生日修改成功",
+      "tip": "请您输入正确日期，填写后将无法修改。"
+    }
+   
+  },
+  "modal":{
+    "confirmCancel":"确认撤销后，提现订单将被取消。"
+  },
+  "footer":{
+    "scanDownloadApp":"扫码下载APP",
+    "downloadApp":"下载APP",
+    "community":"社区"
+  },
+  "depthChart": {
+    "buyOrders": "买盘",
+    "sellOrders": "卖盘",
+    "midPrice": "中间价格"
+  },
+  "router":{
+    "myAssets":"我的资产",
+    "recharge":"充币",
+    "withdraw":"提币",
+    "bill":"账单明细",
+    "spotTrade":"现货交易",
+    "spotOrder":"现货订单",
+    "flashOrder":"闪兑订单",
+    "overView":"总览",
+    "safetyCenter":"安全中心",
+    "identity":"身份认证",
+    "inviteFriend":"邀请好友",
+    "setting":"设置",
+    "logout":"退出登录"
+  },
+  "header":{
+    "login":"登录",
+    "register":"注册",
+    "noLanguageData": "暂无语言数据",
+    "noRateData": "暂无汇率数据",
+    "language": "语言",
+    "searchLanguage": "搜索语言",
+    "rate": "汇率",
+    "searchRate": "搜索汇率",
+    "noMatchResult": "暂无匹配结果",
+    "noNewNotice": "暂无新的通知",
+    "loading": "加载中...",
+    "noMenuData": "暂无菜单数据",
+    "notice":{
+      "notice": "公告",
+      "accountAssistant": "账户助手",
+      "assets": "资产",
+      "transaction": "交易",
+      "message": "消息",
+      "viewAll": "查看全部"
+    },
+    "dayMode":{
+      "day":"日间模式",
+      "night":"夜间模式"
+    }
+  },
+  "scrollableTabs":{
+    "all": "全部"
+  }
+}

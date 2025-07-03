@@ -1,0 +1,24 @@
+.user-header {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--user-header-border-color);
+  .user-header-left {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .left-icon {
+      font-size: 24px;
+      margin-right: 18px;
+    }
+  }
+  .right-icon {
+    font-size: 24px;
+  }
+} 

@@ -38,7 +38,7 @@ const routes = pageModules.keys().map((key: string) => {
     path,
     element: <Component />,
     layout,
-	requireAuth
+	  requireAuth
   };
 });
 

@@ -4,7 +4,7 @@ import appStore from '../store';
 // import router from 'react-router';
 // import { toast } from 'sonner';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE;
+const BASE_URL = process.env.REACT_APP_API_BASE;
 /**
  * 通用请求封装
  * @param endpoint 请求的 API 路径，例如 '/user'
@@ -33,7 +33,7 @@ export async function request<T>(
   
   // 仅在开发环境下添加 ambit-saas 头部
   if (process.env.NODE_ENV === 'development') {
-    defaultHeaders['ambit-saas'] = process.env.NEXT_PUBLIC_AMBIT_SAAS||'2e5bbf22907d4a31992e9641079af195';
+    defaultHeaders['ambit-saas'] = process.env.REACT_APP_AMBIT_SAAS||'2e5bbf22907d4a31992e9641079af195';
   }
 
  // 发送 FormData 时才添加 Content-Type: application/json

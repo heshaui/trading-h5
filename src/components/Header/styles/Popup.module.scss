@@ -1,0 +1,29 @@
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: var(--theme-color);
+  }
+  
+  &:active {
+    background-color:  var(--theme-05);;
+  }
+} 
+
+.title_color{
+  color: var(--text-color5);
+}
+.tip_color{
+  color: var(--text-color6);
+}
+.popContainer{
+  background-color: var(--background9);
+  padding: 20px 5%;
+}

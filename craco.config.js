@@ -43,4 +43,39 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  // 添加开发服务器代理配置
+  devServer: {
+    proxy: {
+      '/ambit-auth': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ambit-home-web': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ambit-inform-web': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ambit-user-web': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ambit-oss': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ambit-assets-web': {
+        target: 'https://ljx.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 };

@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { Selector, SpinLoading, Button, Popover, List, Image } from 'antd-mobile';
 import { useLanguage } from '../../hooks/useLanguage';
 import { supportedLanguages, languageNames } from '../../utils/languageLoader';
-import iconDown from '../assets/icons/public/icon_earth_line.png';
+import iconDown from '../../assets/icons/public/icon_earth_line.png';
+import iconDownDark from '../../assets/icons/public/icon_earth_dark.png';
 import './index.scss';
 import { Action } from 'antd-mobile/es/components/popover'
 import { DownOutline } from 'antd-mobile-icons';
+import appStore from '@/store';
+import { useThemeMode } from '@/hooks/useThemeMode';
 
 const LanguageToggle: React.FC = () => {
   const { currentLanguage, changeLanguage, isLoading } = useLanguage();
   const [visible, setVisible] = useState(false);
-
+  const { isDayMode } = useThemeMode();
   const handleLanguageSelect = (lang: string) => {
     if (lang !== currentLanguage) {
       changeLanguage(lang);
@@ -54,11 +57,12 @@ const LanguageToggle: React.FC = () => {
   // );
 
   return (
-    <div className="language-toggle">
-      <span className="language-toggle-label">
+    <div>
+    {/* // <div className="language-toggle"> */}
+      {/* <span className="language-toggle-label">
         语言 / Language
         {isLoading && <SpinLoading style={{ marginLeft: 8 }} />}
-      </span>
+      </span> */}
 
       {/* 使用 Selector 组件（推荐） */}
       {/* <Selector
@@ -80,9 +84,9 @@ const LanguageToggle: React.FC = () => {
           <button
           className='button-language font-16'
           >
-            <div className='flex-x align-center flex-1'>
+            <div className='flex-x align-center flex-1 font-w-500'>
               <Image
-              src={iconDown}
+              src={isDayMode?iconDownDark:iconDown}
               alt=""
               width={24}
               height={24}
@@ -91,7 +95,7 @@ const LanguageToggle: React.FC = () => {
             {languageNames[currentLanguage as keyof typeof languageNames]}
             </div>
             
-            <DownOutline fontSize={18}/>
+            <DownOutline fontSize={18} color="var(--text-color5)"/>
             </button>
       </Popover.Menu>
     </div>

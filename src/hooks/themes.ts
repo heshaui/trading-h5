@@ -199,6 +199,8 @@ export const getThemeVariables = () => {
             '--border-color5': '#E5E5E5',
             '--border-color6': '#E5E5E5',
             '--border-color7': '#DCDCDC',
+            '--border-color8': '#DCDCDC',
+            '--border-color9': '#DCDCDC',
             '--bgc-color':getColorWithOpacity(themeColor, 0.1), // '#FFF5F1',
             '--help-center-banner': 'url("/images/help_center/banner.png")',
             '--help-center-input-text': '#9E9E9E',
@@ -223,6 +225,7 @@ export const getThemeVariables = () => {
             '--background-tertiary': '#fafafa',
             
             '--text-primary': '#262626',
+            '--text-primary-light': '#ffffff',
             '--text-secondary': '#595959',
             '--text-tertiary': '#8c8c8c',
             '--text-disabled': '#bfbfbf',
@@ -233,6 +236,7 @@ export const getThemeVariables = () => {
             '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.03)',
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.1)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.15)',
+
         },
         dark: {
             '--background': '#0a0a0a',
@@ -303,6 +307,8 @@ export const getThemeVariables = () => {
             '--border-color5': '#29292F',
             '--border-color6': '#37373A',
             '--border-color7': '#DCDCDC00',
+            '--border-color8': '#5B5D6A',
+            '--border-color9': '#0C0D0C1A',
             '--bgc-color': getColorWithLowerBrightness(themeColor, 0.2), //'#281D1A',
             '--help-center-banner': 'url("/images/help_center/banner_dark.png")',
             '--help-center-input-text': '#979897',
@@ -327,6 +333,7 @@ export const getThemeVariables = () => {
             '--background-tertiary': '#262626',
             
             '--text-primary': '#ffffff',
+            '--text-primary-light': '#262626',
             '--text-secondary': '#a6a6a6',
             '--text-tertiary': '#737373',
             '--text-disabled': '#4d4d4d',
@@ -337,6 +344,8 @@ export const getThemeVariables = () => {
             '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.1)',
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.2)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.3)',
+        
+
         }
     };
 }

@@ -60,7 +60,8 @@ class AppStore {
     // 添加 flash 配置状态
     flashConfig: any = { minTradeU: 0, maxTradeU: 0 };
     isLoadingFlashConfig: boolean = false;
-    usdtRate: usdtRateType={} as usdtRateType
+    usdtRate: usdtRateType={} as usdtRateType;
+    theme:'light' | 'dark'|null=null;
 
     constructor() {
         // 使状态响应式
@@ -80,9 +81,17 @@ class AppStore {
             this.initBanlanceShow(); //初始化资产显示状态
             this.initFlashConfigFromStorage(); // 初始化闪兑配置
             this.initUsdtRateFromStorage(); //初始化USDT和USD汇率
+            this.initTheme(); //初始化主题
         }
     }
-
+    initTheme() {
+        if (!isBrowser()) return;
+        const theme = localStorage.getItem('theme') || null;
+        this.theme = theme as 'light' | 'dark' | null;
+    }
+    getTheme() {
+        return this.theme;
+    }
     initToken() {
         if (!isBrowser()) return;
         this.userToken = localStorage.getItem(LOCAL_STORAGE_KEY.USER_TOKEN) || null;

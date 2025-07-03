@@ -70,7 +70,7 @@ const App: React.FC = observer(() => {
             <h3>{t('theme.light')}</h3>
             <div className="settings-grid">
               <ThemeToggle />
-              <LanguageToggle />
+              {/* <LanguageToggle /> */}
             </div>
           </div>
         </footer>

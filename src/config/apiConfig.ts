@@ -39,25 +39,3 @@ export const KV_KEYS = [
     // 可以根据需要添加更多配置项
 ];
 
-export const ROUTER_KEY_ASSETS = {
-    ACCOUNT:"/assets/assetsAccount", //资产页面/现货账户
-	WITHDRAW_MONEY:"/assets/assetsAccount/withdrawMoney", //提现页面
-	TOP_UP:"/assets/assetsAccount/topUp", //充值页面
-    BILL:"/assets/billDetails", //账单页面
-    ADDADRESS:"/assets/address", //添加地址页面
-
-    FUTURE_ACCOUNT:"/assets/futureAccount", //合约账户
-};
-export const ROUTER_KEY_SPOT = {
-    INDEX:"/exchange", //首页
-    SPOT_ORDER: "/spotOrder", //现货订单
-};
-export const ROUTER_KEY_OPEN = {
-    LOGIN:"/login", //登录页面
-    REGISTER:"/register", //注册页面
-};
-export const ROUTER_KEY_USERCENTER = {
-    USERCENTER:"/userCenter", //用户中心
-    IDENTITY:"/userCenter/identity", //身份认证
-};
-

@@ -1,3 +1,81 @@
-.coninter {
-	
+.userInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 48px;
+}
+.userInfo_pic {
+    width: 48px;
+    height: 48px;
+}
+
+.userInfo_name {
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--text-color5);
+    margin-bottom: 4px;
+}
+
+.userInfo_uid {
+    line-height: 22px;
+    font-weight: 400;
+    color: var(--text-color6);
+    font-size: 14px;
+}
+
+.userInfo_btn {
+    min-width: 88px;
+    height: 36px;
+    border-radius: 23px;
+    padding: 8px 16px;
+    background: var(--btncolor6);
+    color: var(--text-color5);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+.otherInfo {
+    display: flex;
+    justify-content: space-between;
+    line-height: 20px;
+    margin-top: 20px;
+}
+
+.otherLeft {
+    display: flex;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-color6);
+}
+
+.otherRight {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color5);
+}
+
+.tip_color {
+    width: 16px;
+    height: 16px;
+    color: var(--text-color6);
+    margin-left: 4px;
+}
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #F73710;
+}
+
+.warning_color {
+    color: var(--waring-color);
+}
+
+
+.default_icon {
+    color: #A4A5AC;
 }

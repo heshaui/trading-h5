@@ -1,15 +1,33 @@
-// import appStore from "../stores";
+import appStore from "@/store";
 import { LOCAL_STORAGE_KEY } from "../config/apiConfig";
+
+// 主题色缓存
+let cachedThemeColor: string | null = null;
+
 // 从本地存储获取主题色
 export const getThemeColorFromStorage = (): string => {
     if (typeof window !== 'undefined') {
         try {
-            // const themeData = appStore.getKvConfigAll() || JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KV_CONFIG) || '') 
-            const themeData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KV_CONFIG) || '') 
+            const themeData = appStore.getKvConfigAll() || JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.KV_CONFIG) || '') 
             if (themeData) {
                 const parsedTheme = themeData
                 if (parsedTheme && parsedTheme.theme && parsedTheme.theme.color) {
-                    return parsedTheme.theme.color || '#FF5F1F'
+                    const newThemeColor = parsedTheme.theme.color || '#FF5F1F';
+                    
+                    // 检查主题色是否发生变化
+                    if (cachedThemeColor && cachedThemeColor !== newThemeColor) {
+                        console.log(`🎨 主题色已更新: ${cachedThemeColor} → ${newThemeColor}`);
+                        // 触发主题色更新事件
+                        window.dispatchEvent(new CustomEvent('themeColorUpdate', { 
+                            detail: { 
+                                oldColor: cachedThemeColor, 
+                                newColor: newThemeColor 
+                            } 
+                        }));
+                    }
+                    
+                    cachedThemeColor = newThemeColor;
+                    return newThemeColor;
                 } else {
                     return '#FF5F1F'
                 }
@@ -22,6 +40,28 @@ export const getThemeColorFromStorage = (): string => {
         }
     }
     return '#FF5F1F'; // 默认主题色
+};
+
+// 手动更新主题色（供外部调用）
+export const updateThemeColor = (newColor?: string) => {
+    const oldColor = cachedThemeColor;
+    cachedThemeColor = null; // 清除缓存，强制重新获取
+    
+    const actualNewColor = newColor || getThemeColorFromStorage();
+    
+    if (oldColor !== actualNewColor) {
+        console.log(`🔄 手动更新主题色: ${oldColor} → ${actualNewColor}`);
+        // 触发主题色更新事件
+        window.dispatchEvent(new CustomEvent('themeColorUpdate', { 
+            detail: { 
+                oldColor, 
+                newColor: actualNewColor,
+                manual: true
+            } 
+        }));
+    }
+    
+    return actualNewColor;
 };
 
 // 生成带有透明度的颜色
@@ -169,7 +209,30 @@ export const getThemeVariables = () => {
             '--background-menu': '#FFFFFF',
             '--background-menu-item': '#F4F4F4',
             '--card-shadow': '#A5A5A533',
-            '--dropdown-menu-hover': '#F4F4F4'
+            '--dropdown-menu-hover': '#F4F4F4',
+
+
+            '--primary-color': '#1677ff',
+            '--primary-color-hover': '#4096ff',
+            // '--success-color': '#52c41a',
+            '--warning-color': '#faad14',
+            // '--error-color': '#ff4d4f',
+            
+            '--background-primary': '#ffffff',
+            '--background-secondary': '#f5f5f5',
+            '--background-tertiary': '#fafafa',
+            
+            '--text-primary': '#262626',
+            '--text-secondary': '#595959',
+            '--text-tertiary': '#8c8c8c',
+            '--text-disabled': '#bfbfbf',
+            
+            // '--border-color': '#d9d9d9',
+            '--border-color-light': '#f0f0f0',
+            
+            '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.03)',
+            '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.1)',
+            '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.15)',
         },
         dark: {
             '--background': '#0a0a0a',
@@ -250,7 +313,30 @@ export const getThemeVariables = () => {
             '--background-menu': '#232328',
             '--background-menu-item': '#0C0D0C',
             '--card-shadow': '#01367433',
-            '--dropdown-menu-hover': '#454545'
+            '--dropdown-menu-hover': '#454545',
+
+
+            '--primary-color': '#1668dc',
+            '--primary-color-hover': '#3c89e8',
+            // '--success-color': '#49aa19',
+            '--warning-color': '#d89614',
+            // '--error-color': '#dc4446',
+  
+            '--background-primary': '#141414',
+            '--background-secondary': '#1f1f1f',
+            '--background-tertiary': '#262626',
+            
+            '--text-primary': '#ffffff',
+            '--text-secondary': '#a6a6a6',
+            '--text-tertiary': '#737373',
+            '--text-disabled': '#4d4d4d',
+  
+            // '--border-color': '#424242',
+            '--border-color-light': '#303030',
+            
+            '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.1)',
+            '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.2)',
+            '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.3)',
         }
     };
 }

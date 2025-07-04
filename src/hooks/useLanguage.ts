@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { loadLanguage } from '../utils/i18n';
 
-export const useLanguage = () => {
-  const { i18n, t } = useTranslation();
+export const useLanguage = (namespace?: string | string[]) => {
+  const { i18n, t } = useTranslation(namespace);
   const [isLoading, setIsLoading] = useState(false);
   
   const changeLanguage = async (lng: string) => {

@@ -8,7 +8,7 @@ interface UserHeaderProps {
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({ title }) => {
-  const { t } = useLanguage();
+  const { t } = useLanguage('userCenter');
   const iconMap: Record<string, string> = {
     'safeCenter.overView': 'pixelarticons:dashboard',
     'safeCenter.security': 'mingcute:safety-certificate-line',
@@ -20,7 +20,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ title }) => {
     <div className="user-header">
       <div className="user-header-left">
         <Iconify icon={iconMap[title]} className="left-icon" />
-        <span>{t(title)}</span>
+        <span>{t('safeCenter.overView')}</span>
       </div>
       <Iconify icon="icon-park-outline:down" className="right-icon"/>
     </div>

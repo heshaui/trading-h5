@@ -1,3 +1,133 @@
 .container {
 	padding: 20px 16px;
 }
+
+/* 用户信息 */
+.userInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 48px;
+}
+.userInfo_pic {
+    width: 48px;
+    height: 48px;
+}
+
+.userInfo_name {
+    line-height: 22px;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--text-color5);
+    margin-bottom: 4px;
+}
+
+.userInfo_uid {
+    line-height: 22px;
+    font-weight: 400;
+    color: var(--text-color6);
+    font-size: 14px;
+}
+
+.userInfo_btn {
+    min-width: 88px;
+    height: 36px;
+    border-radius: 23px;
+    padding: 8px 16px;
+    background: var(--btncolor6);
+    color: var(--text-color5);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+}
+
+.otherInfo {
+    display: flex;
+    justify-content: space-between;
+    line-height: 20px;
+    margin-top: 20px;
+}
+
+.otherLeft {
+    display: flex;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-color6);
+}
+
+.otherRight {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color5);
+}
+
+.tip_color {
+    color: var(--text-color6);
+}
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #F73710;
+}
+
+.warning_color {
+    color: var(--waring-color);
+}
+
+
+.default_icon {
+    color: #A4A5AC;
+}
+
+/* 资产 */
+.mt30 {
+	margin-top: 30px;
+}
+
+.assetTit {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 25px;
+	line-height: 25px;
+	font-size: 18px;
+	color: var(--text-color5);
+	font-weight: 500;
+	margin-bottom: 10px;
+}
+
+.assetBtn {
+	text-align: right;
+	padding: 0;
+}
+
+.assetIcon {
+	font-size: 20px;
+}
+
+.assets_chart {
+    width: 120px;
+    height: 57px;
+    flex-shrink: 0;
+}
+
+.btn {
+    min-width: 80px;
+    height: 28px;
+    padding: 5px 28px;
+    border-radius: 40px;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 500;
+}
+
+.saveBtn {
+    background-color: var(--theme-color);
+    color: #fff;
+}
+.cancleBtn {
+    background: var(--btncolor6)
+}

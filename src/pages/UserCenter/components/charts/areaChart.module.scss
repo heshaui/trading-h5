@@ -1,0 +1,19 @@
+.chartBox {
+    width: 120px;
+    height: 57px;
+}
+.area_tooltip{
+    background-color: #0C0D0C;
+    border: none;
+    padding: 4px 6px;
+    border-radius: 4px;
+    color: #fff;
+    width: 64px;
+}
+.tooltip_circle{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--theme-color);
+    display: inline-block;
+}

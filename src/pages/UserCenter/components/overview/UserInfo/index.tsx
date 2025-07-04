@@ -1,29 +1,30 @@
-import React, { CSSProperties, useState, useEffect } from 'react';
-import { Image } from 'antd-mobile';
-import { Toast } from 'antd-mobile';
+import React, { useState, useEffect } from 'react';
+import { Image, Toast } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
 
-import { LoginInfoType, LoginLogListType, carouselImageContentsType, CarouselPicType } from '@/type/userCenter/overview'
+import { LoginInfoType } from '@/type/userCenter/overview'
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTheme } from '@/hooks/useTheme';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
 import { getLoginInfo } from '@/services/overview';
 import { encryptString } from '@/utils/encrypt';
-import { Iconify, SvgIcon } from "@/components/icon"
+import { Iconify } from "@/components/icon"
 import IdentifyStatus from './IdentifyStatus';
-import styles from './index.module.scss';
+import styles from '@/pages/UserCenter/overview/index.module.scss';
 
 import iconAvatarDark from '@/components/assets/images/userCenter/overview/icon_avatarUrl_dark.png';
 import iconAvatarLight from '@/components/assets/images/userCenter/overview/icon_avatarUrl_day.png';
 
 const UserInfo: React.FC = () => {
   const navigate = useNavigate();
-  const { t, currentLanguage } = useLanguage();
+  const { t, currentLanguage } = useLanguage('userCenter');
   const { isDark } = useTheme();
   const [loginInfo, setLoginInfo] = useState<LoginInfoType>({} as LoginInfoType);
   const [loadingSkeleton, setLoadingSkeleton] = useState(true)
   const { copyFn } = useCopyToClipboard();
+
+  // 获取用户信息
   const getLoginInfoData = async () => {
       setLoadingSkeleton(true)
       try {
@@ -41,25 +42,6 @@ const UserInfo: React.FC = () => {
           })
       }
 
-  }
-  // 用户状态
-  const statusText = (status: number) => {
-      switch (status) {
-          case 1:
-              // 已认证
-              return t('overview.auth');
-          case 0:
-              // 已驳回
-              return t('overview.reject');
-          case 2:
-              // 未认证
-              return t('overview.unAuth');
-          case 3:
-              // 审核中
-              return t('overview.audit');
-          default:
-              return '--';
-      }
   }
   // 账号状态
   const getStatusText = (info: typeof loginInfo | undefined): string => {
@@ -90,7 +72,8 @@ const UserInfo: React.FC = () => {
         getLoginInfoData()
   }, [currentLanguage]);
   return (
-    <div className={styles.container}>
+    <div>
+      {/* 用户信息 */}
       <div className={styles.userInfo}>
         <div className="flex">
           <div className="mr-2">
@@ -123,20 +106,23 @@ const UserInfo: React.FC = () => {
             </button>
         </div>
       </div>
+      {/* 注册账号 */}
       <div className={styles.otherInfo}>
         {/* 注册账号 */}
         <div className={styles.otherLeft}>{t('overview.registerAccount')}</div>
         <div className={styles.otherRight}>{encryptString(loginInfo?.registerAccount)}</div>
       </div>
+      {/* 身份认证 */}
       <div className={styles.otherInfo}>
         <div className={styles.otherLeft}
             onClick={() => goIdentity(loginInfo?.realnessStatus)}>
             {/* 身份认证 */}
             {t('overview.identityAuth.title')}
-            <Iconify icon="mingcute:right-line" className={styles.tip_color} />
+            <Iconify icon="mingcute:right-line" className={`${styles.tip_color} font-16 ml-1 font-w-500`} />
         </div>
         <IdentifyStatus realnessStatus={loginInfo?.realnessStatus} />
       </div>
+      {/* 账号状态 */}    
       <div className={styles.otherInfo}>
         {/* 账号状态 */}       
         <div className={styles.otherLeft}>{t('overview.accountStatus')}</div>

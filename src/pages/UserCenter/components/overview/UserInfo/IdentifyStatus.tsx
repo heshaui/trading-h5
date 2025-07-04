@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Iconify } from "@/components/icon"
-import { useLanguage } from '@/hooks/useLanguage';
-import styles from './index.module.scss';
+import { useTranslation } from 'react-i18next';
+import styles from '@/pages/UserCenter/overview/index.module.scss';
 
 type RealnessStatus = 0 | 1 | 2 | 3;
 
@@ -40,8 +40,8 @@ interface Props {
   show?: boolean;
 }
 
-const IdentifyStatus: FC<Props> = ({ realnessStatus = 1, show = true }) => {
-  const { t } = useLanguage();
+const IdentifyStatus: FC<Props> = ({ realnessStatus = 2, show = true }) => {
+  const { t } = useTranslation('userCenter');
   const map = statusMap(t);
 
   if (!show || realnessStatus === undefined || !(realnessStatus in map)) return null;

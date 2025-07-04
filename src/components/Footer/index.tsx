@@ -39,7 +39,7 @@ interface FooterItem {
 	children?: FooterItem[];
 }
 const Footer = () => {
-	const { t, i18n } = useTranslation("common");
+	const { t } = useTranslation("common");
 	const langKey = appStore.getLang() ? getLongLangCode(appStore.getLang()) : "en_US";
 	const allConfig = appStore.getKvConfigAll();
 	const footerConfig = appStore.getKvConfig("footer_setting");
@@ -49,7 +49,7 @@ const Footer = () => {
 	const [selectFooter, setSelectFooter] = useState<string | null>(null)
 	// 添加社交媒体列表状态
 	const [socialMediaList, setSocialMediaList] = useState<SocialMediaItem[]>([]);
-	const { logoUrl, setLogoUrl } = useLogoImage("");
+	const { logoUrl } = useLogoImage("");
 	// 添加折叠状态管理
 	const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 	const { isDayMode } = useThemeMode();
@@ -278,7 +278,7 @@ const Footer = () => {
 							{/* 社区 */}
 							{t("footer.community")}
 						</div>
-						<div className="flex-x">
+						<div className="flex-x flex-wrap">
 							{renderSocialMediaIcons()}
 						</div>
 					</div>

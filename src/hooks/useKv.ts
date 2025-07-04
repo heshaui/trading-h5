@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getKvObject } from '@/services/kv';
 import { useThemeMode } from '@/hooks/useThemeMode';
 // import defaultTheme from '@/theme/themeConfig';
@@ -27,7 +27,7 @@ export const useWebConfig = () => {
     // 处理配置数据的函数
     const processConfigData = (data: Record<string, any>) => {
         const parsedConfig: Record<string, any> = {};
-        
+
         Object.entries(data).forEach(([key, value]) => {
             if (typeof value === 'string') {
                 const parsedValue = parseJsonString(value);
@@ -87,41 +87,25 @@ export const useLogoImage = (defaultLogo: string = '') => {
     // const { config, loading } = useWebConfig();
     const config = appStore.getKvConfigAll();
     const { isDayMode } = useThemeMode(); // 获取当前主题模式
+    // const logoConfig = appStore.getKvConfig("logo");
+    const logoConfig = async () => {
+        const logo = config?.logo;
+        if (isDayMode) {
+            const isValidUrl = await checkImageUrl(logo?.light?.headerLogo)
+            setLogoUrl(isValidUrl ? logo?.light?.headerLogo : defaultLogo)
+        } else {
+            const isValidUrl = await checkImageUrl(logo?.dark?.headerLogo)
+            setLogoUrl(isValidUrl ? logo?.dark?.headerLogo : defaultLogo)
+        }
+    }
+    // ,[config?.logo,isDayMode])
+
 
     useEffect(() => {
-        let isMounted = true;
-        const processLogo = async () => {
-            try {
-                if (!config.logo) return;
 
-                // 从localStorage获取登录状态
-                const isLoggedIn = !!localStorage.getItem(LOCAL_STORAGE_KEY.USER_TOKEN);
-                const loginStatus = isLoggedIn ? 'after_login' : 'before_login';
+        logoConfig()
 
-                // 获取logo配置
-                const logoConfig = config.logo;
-                // 根据主题模式选择不同的 Logo
-                // 日间模式使用 dark 配置，夜间模式使用 light 配置
-                const imageUrl = isDayMode
-                    ? logoConfig?.dark?.headerLogo
-                    : logoConfig?.light?.headerLogo;
-
-                if (imageUrl) {
-                    const isValidUrl = await checkImageUrl(imageUrl);
-                    setLogoUrl(isValidUrl ? imageUrl : defaultLogo);
-                }
-            } catch (error) {
-                console.error('处理Logo失败:', error);
-            }
-        };
-        // 处理Logo
-        processLogo();
-
-        return () => {
-            isMounted = false;
-        };
-
-    }, [config,  defaultLogo, isDayMode]);
+    }, [config?.logo, isDayMode, defaultLogo]);
 
     return { logoUrl, setLogoUrl };
 };
@@ -200,7 +184,7 @@ export const useFeeDirection = () => {
     const [feeDirection, setFeeDirection] = useState<string>('');
 
     useEffect(() => {
-        if (config.fee_direction) { 
+        if (config.fee_direction) {
             setFeeDirection(config.fee_direction);
         }
     }, [config]);

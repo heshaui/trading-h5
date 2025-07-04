@@ -10,10 +10,10 @@ const ThemeToggle: React.FC = observer(() => {
   const { t } = useLanguage();
 
   return (
-    <div className="theme-toggle">
-      <span className="theme-toggle-label">
+    <div className="theme-toggle flex-x algin-center justify-between">
+      {/* <span className="theme-toggle-label">
         {isDark ? t('theme.dark') : t('theme.light')}
-      </span>
+      </span> */}
       <Switch
         checked={isDark}
         onChange={toggleTheme}

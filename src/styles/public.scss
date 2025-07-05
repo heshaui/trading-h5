@@ -262,7 +262,9 @@
   margin-top: 40px;
 }
 
-
+.mb-0 {
+  margin-bottom: 0px;
+}
 .mb-1 {
   margin-bottom: 4px;
 }
@@ -306,6 +308,9 @@
   margin-bottom: 44px;
 }
 
+.ml-0 {
+  margin-left: 0px;
+}
 .ml-1 {
   margin-left: 4px;
 }
@@ -441,6 +446,9 @@
   margin-right: 40px;
 }
 
+.pl-0 {
+  padding-left: 0px;
+}
 .pl-1{
   padding-left: 4px;
 }
@@ -669,4 +677,15 @@
   .isHidden {
     display: none;
   }
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--background9);
+  border: none;
+}
+
+.theme_color{
+    color: var(--theme-color);
 }

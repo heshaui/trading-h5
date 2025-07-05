@@ -36,45 +36,73 @@ const EquipmentPage: React.FC = () => {
 
 
     useEffect(() => {
-        getUserDeviceNoListData()
+        // getUserDeviceNoListData()
+        setUserDeviceNoList([
+            {
+                deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
+                id: 0,
+                userId: 0,
+                platformType: 0,
+                ip: '192.198.109.09',
+                address: '中国香港',
+                token: '',
+                tokenTime: '',
+                createTime: Date.now(),
+                updateTime: 0,
+                tenantId: ''
+            },
+            {
+                deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
+                id: 0,
+                userId: 0,
+                platformType: 0,
+                ip: '192.198.109.09',
+                address: '中国香港',
+                token: '',
+                tokenTime: '',
+                createTime: Date.now(),
+                updateTime: 0,
+                tenantId: ''
+            },
+        ])
     }, [currentLanguage]);
 
 
 
     return (< >
         {/* 授权设备 */}
-        <div className={`${styles.card_bgc} mt-6`}>
+        <div className="mt-6">
             <div className={`flex-row justify-between font-18 font-w-500`} >
                 {/* 授权设备 */}
                 {t('overview.authorizedDevices.title')}
-                <Iconify icon="mingcute:arrow-right-line" className='cursor-pointer' size={20}
+                <Iconify icon="mingcute:arrow-right-line" className="text-[20px]"
                     onClick={() => navigate('/userCenter/safeCenter/equipment')}
                 />
             </div>
             <div className={`flex-1`} >
                 <ul>
                     {userDeviceNoList && userDeviceNoList.map((item: any) => (
-                        <li className='flex-row justify-between mt-5' key={item.id}>
-                            <p className='font-14 font-w-500 flex-col'>
-                                <span className='font-w-500'>
+                        <li className='mt-5 border-b border-[var(--border-color4)] last:border-b-0 pb-[16px] last:pb-0' key={item.id}>
+                            <p className='font-14 font-w-500 flex-col line-20 mb-[10px]'>
+                                <span className='mb-[2px]'>
                                     {/* Chrome 12 125.0.0.0(Mac OS X) */}
                                     {/* {`${item.deviceNo || '--'}(${item.platformType || '--'})`} */}
                                     {`${item.deviceNo || '--'}`}
                                 </span>
-                                <span className={`${styles.tip_color} font-12 font-w-400`}>
+                                <span className="text-[12px] font-normal text-[#a4a5ac] leading-[17px]">
                                     {/* 2020-02-20 12:12:01 中国香港 */}
                                     {/* {item.createTime ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss') : '--'} */}
                                     {item.createTime ? `${dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')} ${item.address || '--'}` : '--'}
                                 </span>
                             </p>
-                            <p className='font-14 font-w-500 flex-col align-end'>
-                                <span className={`font-w-500 ${styles.theme_color} pointer`}
+                            <p className='font-14 font-w-500 flex-col'>
+                                <span className="font-w-500 theme_color pointer line-20 mb-[2px]"
                                     onClick={() => navigate(`/userCenter/safeCenter/equipment?deviceId=${item.id}`)}
                                 >
                                     {/* 管理 */}
                                     {t('overview.authorizedDevices.manage')}
                                 </span>
-                                <span className={`${styles.tip_color} font-12 font-w-400 mt-0_5`}>
+                                <span className="text-[12px] font-normal text-[#a4a5ac] leading-[17px]">
                                     {/* 223.168.123.111 */}
                                     {item.ip || '--'}
                                 </span>

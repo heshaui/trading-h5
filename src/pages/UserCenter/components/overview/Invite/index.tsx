@@ -6,6 +6,7 @@ import { Image } from 'antd-mobile'
 import { useLanguage } from '@/hooks/useLanguage';
 import appStore from '@/store';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
+import InviteCard from './InviteCard';
 
 interface InviteInfoType {
     inviteCode: string,
@@ -36,36 +37,40 @@ const InvitePage: React.FC = () => {
         getLoginInfoData();
     }, [])
     return (< >
-        <div className={`${styles.card_bgc}  mt-6 ${styles.aside_invite2} flex-y flex-1`}>
-            <div className={`flex-row justify-between font-18 font-w-500 mb-3 ${styles.box_padding}`} >
-
+        <InviteCard />
+        <div className="border border-[var(--border-color4)] rounded-md mt-[20px]">
+            <div className="px-[20px] border-b border-[var(--border-color4)] h-[50px] leading-[50px] text-[18px] font-medium">
                 {t('overview.recommend.inviteFriend')}
             </div>
-            <div className={`${styles.qr_code} flex-x align-center  flex-1`}>
-				<Image src={inviteInfo.inviteLink} />
-                <div className={`flex-1 ${styles.invite_code_box} flex-col justify-between`}>
-                    <div >
-                        <p className='font-14 font-w-400'>{t('overview.recommend.inviteCode')}</p>
-                        <div className={`${styles.invite_code} font-12 flex align-center justify-between`}>
-                            <span className={`${styles.tip_color}`}>{inviteInfo.inviteCode || '--'}</span>
-                            <Iconify icon="bx:copy" className='cursor-pointer' size={20}
-                                onClick={() => copyFn(inviteInfo.inviteCode || '')}
-                            />
+            <div className="px-[20px] py-[28px] flex justify-between items-center">
+                <div className="border border-[var(--border-color4)] bg-[#fff] rounded w-[68px] h-[68px] flex justify-center items-center shrink-0">
+                    <Image 
+                        src={inviteInfo.inviteLink ?? '/404'} 
+                        className="!w-[60px] !h-[60px]"
+                    />
+                </div>
+                <div className="flex-1 ml-5 min-w-0">
+                    <p className="text-sm font-normal mb-[6px]">{t('overview.recommend.inviteCode')}</p>
+                    <div className="border border-[var(--border-color4)] rounded flex items-center px-[10px] h-[37px]">
+                        <div className="flex-1 text-[12px] font-normal text-[#9e9e9e] line-1 mr-[10px]">
+                            {inviteInfo.inviteCode || '--'}
                         </div>
+                        <Iconify icon="bx:copy" className="text-[18px] shrink-0"
+                            onClick={() => copyFn(inviteInfo.inviteCode || '')}
+                        />
                     </div>
-                    <div  >
-                        <p className='font-14 font-w-400' >{t('overview.recommend.inviteLink')}</p>
-                        <div className={`${styles.invite_code} font-12 flex align-center justify-between`}>
-                            <span className={`${styles.tip_color} ${styles.line1} line-2 mr-1`}>{`${inviteInfo.inviteLink}`}</span>
-                            <Iconify icon="bx:copy" className='cursor-pointer' size={20}
-                                onClick={() => copyFn(`${inviteInfo.inviteLink}`)}
-                            />
+                    <p className="text-sm font-normal mb-[6px] mt-[14px]">{t('overview.recommend.inviteLink')}</p>
+                    <div className="border border-[var(--border-color4)] rounded flex items-center px-[10px] h-[37px]">
+                        <div className="flex-1 text-[12px] font-normal text-[#9e9e9e] truncate mr-[10px] min-w-0">
+                            {inviteInfo.inviteLink}
                         </div>
+                        <Iconify icon="bx:copy" className="text-[18px] shrink-0"
+                            onClick={() => copyFn(inviteInfo.inviteLink || '')}
+                        />
                     </div>
                 </div>
             </div>
         </div>
-
     </>
     );
 };

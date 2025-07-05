@@ -1,0 +1,96 @@
+{
+  "title": "Flash Exchange",
+  "tradingPlatform": "Trading Platform",
+  "all": "All",
+  "pay": "Pay",
+  "receive": "Receive",
+  "max": "Max",
+  "available": "Spot Available",
+  "insufficientBalance": "Insufficient spot account balance, please deposit",
+  "amountLimit": "Limit",
+  "exchangeRate": "Exchange Rate",
+  "exchangeRateTooltip": "The exchange rate is an estimate, the final exchange amount is subject to actual transaction",
+  "preview": "Preview",
+  "spotTrading": "Spot Trading",
+  "orderHistory": "Order History",
+  "authNotice": {
+    "title": "Identity Verification Incomplete",
+    "description": "Complete identity verification to unlock all features",
+    "button": "Verify Now"
+  },
+  "confirmModal": {
+    "title": "Confirm Exchange",
+    "from": "From",
+    "to": "To",
+    "exchangeRate": "Exchange Rate",
+    "tradingFee": "Trading Fee",
+    "zeroFee": "0 Fee",
+    "youWillPay": "You will pay",
+    "priceExpired": "This quote has expired, please get a new quote",
+    "exchange": "Exchange",
+    "exchangeWithCountdown": "Exchange ({{seconds}}S)",
+    "refreshPrice": "Refresh Price"
+  },
+  "successModal": {
+    "title": "Success",
+    "youReceived": "You have received",
+    "exchangeRate": "Exchange Rate",
+    "tradingFee": "Trading Fee",
+    "ok": "OK",
+    "goToAssets": "Go to Assets"
+  },
+  "failureModal": {
+    "title": "Order Failed",
+    "description": "Exchange rate expired, transaction cancelled!",
+    "ok": "OK",
+    "viewAssets": "View Assets"
+  },
+  "footer": "You can use the flash exchange service to swap digital assets anytime!",
+  "order": {
+    "title": "Flash Exchange Orders",
+    "table": {
+      "tradeDate": "Trade Date",
+      "tradingPair": "Trading Pair",
+      "pay": "Pay",
+      "receive": "Receive",
+      "price": "Price",
+      "settlementDate": "Settlement Date",
+      "status": "Status"
+    },
+    "status": {
+      "processing": "Processing",
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "pagination": {
+      "total": "Total {{total}} items"
+    },
+    "noData": {
+      "title": "No orders yet? Click here to go to",
+      "buttonText": "Exchange"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": {
+      "question": "How to use the flash exchange trading feature?",
+      "answer": "Select the currency you want to exchange and enter the exchange amount, we will provide the best exchange rate. If you are satisfied with the current rate, click exchange and the received currency will be sent to your spot account. Please ensure your spot account balance is sufficient before exchanging. If you have any questions during use, please contact our customer service in time."
+    },
+    "q2": {
+      "question": "Does the flash exchange feature charge fees?",
+      "answer": "Flash exchange does not charge fees. When previewing the exchange, the displayed asset quote amount is the actual amount you will receive in your account."
+    },
+    "q3": {
+      "question": "What's the difference between flash exchange and spot trading?",
+      "answer": "Unlike the order matching mode, flash exchange uses a counter quote mode without any trading fees. Therefore, there is a certain price difference between flash exchange prices and spot order book prices. First, users make inquiries based on specific trading pairs, and the system will provide a competitive price based on the current market. If users accept the counter's quote, they can trade quickly after clicking confirm. Make sure your balance is sufficient before trading."
+    },
+    "q4": {
+      "question": "Where to view the assets obtained from flash exchange?",
+      "answer": "The currency assets obtained from flash exchange will be automatically transferred to your spot account."
+    },
+    "q5": {
+      "question": "How to view flash exchange trading orders?",
+      "answer": "You can view them by clicking on the order history in the upper right corner of the flash exchange page, or by clicking on Order Center - Flash Exchange Orders."
+    }
+  }
+} 

@@ -1,0 +1,55 @@
+{
+    "bulletinCenter": {
+        "title": "공지",
+        "announcement": "공지사항",
+        "menu": {
+            "all": "전체 공지",
+            "latest": "최신 소식",
+            "new": "신규 코인 상장",
+            "assets": "자산",
+            "trading": "거래",
+            "account": "계정",
+            "delist": "거래쌍 상장 폐지",
+            "suspension": "입출금 중단/재개",
+            "announcement": "공지사항",
+            "notification": "알림",
+            "article": "기사",
+            "notice": "공지",
+            "accountAssistant": "계정 도우미",
+            "transaction": "거래"
+        },
+        "message": {
+            "unreadCount": "공지사항",
+            "title": "최신 소식 공지사항",
+            "noData": "기록 없음",
+            "loading": "불러오는 중..."
+        },
+        "action": {
+            "search": "검색",
+            "unreadOnly": "안 읽은 것만 보기",
+            "markAllRead": "모두 읽음 처리"
+        }
+    },
+    "test": {
+        "latest1": {
+            "title": "최신 소식 공지 1",
+            "content": "최신 소식 내용 1..."
+        },
+        "latest2": {
+            "title": "최신 소식 공지 2",
+            "content": "최신 소식 내용 2..."
+        },
+        "new1": {
+            "title": "신규 코인 상장 공지 1",
+            "content": "신규 코인 상장 내용 1..."
+        },
+        "delist1": {
+            "title": "거래쌍 상장 폐지 공지 1",
+            "content": "거래쌍 상장 폐지 내용 1..."
+        },
+        "suspension1": {
+            "title": "입출금 중단/재개 공지 1",
+            "content": "입출금 중단/재개 내용 1..."
+        }
+    }
+}

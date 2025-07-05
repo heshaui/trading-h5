@@ -1,0 +1,20 @@
+{
+  "notice": {
+    "title": "お知らせセンター",
+    "menu": {
+      "loading": "読み込み中...",
+      "announcement": "お知らせ"
+    },
+    "top": {
+      "notification": "通知",
+      "search": {
+        "placeholder": "検索"
+      },
+      "unread": "未読のみ表示",
+      "markAllRead": "全て既読にする"
+    },
+    "empty": {
+      "description": "通知がありません"
+    }
+  }
+}

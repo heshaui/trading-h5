@@ -1,0 +1,102 @@
+{
+  "pageTitle": "시장 동향",
+  "marketData": {
+    "pageTitle": "시장 동향",
+    "rankings": "순위",
+    "marketTrends": "시세 동향"
+  },
+  "rankingList": {
+    "tradingPair": "거래 쌍",
+    "latestPrice": "최신 가격",
+    "change24h": "24시간 변동률",
+    "hotCoins": "인기 순위",
+    "risingCoins": "상승률 순위",
+    "fallingCoins": "하락률 순위"
+  },
+  "marketList": {
+    "tabs": {
+      "favorites": "즐겨찾기",
+      "allCoins": "전체 코인",
+      "spotMarket": "현물 시장"
+    },
+    "categories": {
+      "mainBoard": "메인보드",
+      "innovationZone": "이노베이션 존",
+      "newCoins": "신규 상장",
+      "ai": "AI",
+      "meme": "밈",
+      "nft": "NFT",
+      "web3": "Web3",
+      "payments": "결제",
+      "launchpad": "런치패드"
+    },
+    "tableHeaders": {
+      "name": "이름",
+      "price": "가격",
+      "change24h": "24시간 변동률",
+      "marketCap": "시가 총액",
+      "action": "작업",
+      "highLow24h": "24시간 최고가/최저가",
+      "volume24h": "24시간 거래량",
+      "trade": "거래"
+    },
+    "operationTips": {
+      "addSuccess": "추가 성공",
+      "removeSuccess": "제거 성공",
+      "loginToFavorite": "즐겨찾기를 위해 로그인하세요",
+      "action": "작업",
+      "emptyData": "데이터 없음",
+      "emptyFavorites": "빈 즐겨찾기",
+      "loginNow": "지금 로그인",
+      "goToMarket": "시장으로 이동",
+      "noData": "데이터가 없습니다"
+    }
+  },
+  "header": {
+    "favorites": "즐겨찾기",
+    "spot": "현물",
+    "search": "검색",
+    "mainArea": "메인 구역",
+    "innovationArea": "혁신 구역",
+    "newCoinArea": "신규 코인 구역",
+    "ai": "AI",
+    "meme": "meme",
+    "nft": "NFT",
+    "defi": "DeFi",
+    "web3": "Web3",
+    "payments": "결제",
+    "launchpad": "런치패드",
+    "layer2": "Layer2",
+    "solana": "Solana",
+    "rwa": "RWA",
+    "launchpool": "런치풀",
+    "gameMetaverse": "게임 메타버스",
+    "storage": "스토리지",
+    "loadingError": "거래쌍 데이터를 불러오는 데 실패했습니다.",
+    "updateFavoriteError": "즐겨찾기 상태 업데이트에 실패했습니다.",
+    "favoriteError": "즐겨찾기 작업 중 오류가 발생했습니다.",
+    "addToFavorites": "즐겨찾기에 추가",
+    "removeFromFavorites": "즐겨찾기 제거",
+    "change24h": "24시간 변동",
+    "high24h": "24시간 최고가",
+    "low24h": "24시간 최저가",
+    "volume24h": "24시간 거래량",
+    "amount24h": "24시간 거래액",
+    "billion": "B",
+    "tenThousand": "만",
+    "million": "M",
+    "kthousand": "K",
+    "name": "이름",
+    "lastPrice": "최신가",
+    "time": "시간",
+    "price": "가격",
+    "amount": "수량",
+    "total": "체결 금액",
+    "all": "전체",
+    "loginNow": "지금 로그인",
+    "goToMarket": "시장으로 이동",
+    "noData": "데이터 없음",
+    "searchInput": "검색어 입력",
+    "routerErr": "해당 화폐 페어가 없습니다"
+  }
+}

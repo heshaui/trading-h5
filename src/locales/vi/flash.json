@@ -1,0 +1,70 @@
+{
+  "title": "Hoán đổi nhanh",
+  "tradingPlatform": "Nền tảng giao dịch",
+  "pay": "Thanh toán",
+  "receive": "Nhận",
+  "max": "Tối đa",
+  "available": "Spot có sẵn",
+  "insufficientBalance": "Số dư tài khoản spot không đủ, vui lòng nạp tiền",
+  "amountLimit": "Giới hạn",
+  "exchangeRate": "Tỷ giá hối đoái",
+  "exchangeRateTooltip": "Tỷ giá hối đoái là ước tính, số lượng hoán đổi cuối cùng dựa trên giao dịch thực tế",
+  "preview": "Xem trước",
+  "spotTrading": "Giao dịch spot",
+  "orderHistory": "Lịch sử đơn hàng",
+  "authNotice": {
+    "title": "Xác minh danh tính chưa hoàn thành",
+    "description": "Hoàn thành xác minh danh tính để mở khóa tất cả tính năng",
+    "button": "Xác minh ngay"
+  },
+  "confirmModal": {
+    "title": "Xác nhận hoán đổi",
+    "from": "Từ",
+    "to": "Đến",
+    "exchangeRate": "Tỷ giá hối đoái",
+    "tradingFee": "Phí giao dịch",
+    "zeroFee": "0 phí",
+    "youWillPay": "Bạn sẽ thanh toán",
+    "priceExpired": "Báo giá này đã hết hạn, vui lòng lấy báo giá mới",
+    "exchange": "Hoán đổi",
+    "exchangeWithCountdown": "Hoán đổi ({{seconds}}s)"
+  },
+  "successModal": {
+    "title": "Thành công",
+    "youReceived": "Bạn đã nhận",
+    "exchangeRate": "Tỷ giá hối đoái",
+    "tradingFee": "Phí giao dịch",
+    "ok": "OK",
+    "goToAssets": "Đi đến tài sản"
+  },
+  "failureModal": {
+    "title": "Đơn hàng thất bại",
+    "description": "Tỷ giá hối đoái đã hết hạn, giao dịch bị hủy!",
+    "ok": "OK",
+    "viewAssets": "Xem tài sản"
+  },
+  "footer": "Bạn có thể sử dụng dịch vụ hoán đổi nhanh để trao đổi tài sản kỹ thuật số bất cứ lúc nào!",
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "q1": {
+      "question": "Làm thế nào để sử dụng tính năng giao dịch hoán đổi nhanh?",
+      "answer": "Chọn loại tiền bạn muốn hoán đổi và nhập số lượng hoán đổi, chúng tôi sẽ cung cấp tỷ giá tốt nhất. Nếu bạn hài lòng với tỷ giá hiện tại, nhấp hoán đổi và loại tiền nhận được sẽ được gửi đến tài khoản spot của bạn. Vui lòng đảm bảo số dư tài khoản spot của bạn đủ trước khi hoán đổi. Nếu bạn có bất kỳ câu hỏi nào trong quá trình sử dụng, vui lòng liên hệ với dịch vụ khách hàng của chúng tôi kịp thời."
+    },
+    "q2": {
+      "question": "Tính năng hoán đổi nhanh có tính phí không?",
+      "answer": "Hoán đổi nhanh không tính phí. Khi xem trước hoán đổi, số lượng báo giá tài sản hiển thị là số lượng thực tế bạn sẽ nhận được trong tài khoản của mình."
+    },
+    "q3": {
+      "question": "Sự khác biệt giữa hoán đổi nhanh và giao dịch spot là gì?",
+      "answer": "Khác với chế độ khớp lệnh, hoán đổi nhanh sử dụng chế độ báo giá quầy mà không có phí giao dịch. Do đó, có sự khác biệt giá nhất định giữa giá hoán đổi nhanh và giá sổ lệnh spot. Đầu tiên, người dùng thực hiện truy vấn giá dựa trên cặp giao dịch cụ thể, hệ thống sẽ cung cấp giá cạnh tranh dựa trên thị trường hiện tại. Nếu người dùng chấp nhận báo giá của quầy, họ có thể giao dịch nhanh chóng sau khi nhấp xác nhận. Đảm bảo số dư của bạn đủ trước khi giao dịch."
+    },
+    "q4": {
+      "question": "Xem tài sản thu được từ hoán đổi nhanh ở đâu?",
+      "answer": "Tài sản tiền tệ thu được từ hoán đổi nhanh sẽ được tự động chuyển đến tài khoản spot của bạn."
+    },
+    "q5": {
+      "question": "Làm thế nào để xem đơn hàng giao dịch hoán đổi nhanh?",
+      "answer": "Bạn có thể xem chúng bằng cách nhấp vào lịch sử đơn hàng ở góc trên bên phải của trang hoán đổi nhanh, hoặc nhấp vào Trung tâm đơn hàng - Đơn hàng hoán đổi nhanh."
+    }
+  }
+} 

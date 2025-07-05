@@ -1,30 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, Space, Toast } from 'antd-mobile';
-import { useLanguage } from '../../hooks/useLanguage';
-import { useTheme } from '../../hooks/useTheme';
-import './index.css';
+import { ConfigProvider, Button, Space } from 'antd-mobile';
+import { useLanguage } from '@/hooks/useLanguage';
+import { useTheme } from '@/hooks/useTheme';
+import ThemeToggle from '@/components/ThemeToggle';
+import LanguageToggle from '@/components/LanguageToggle';
+import Demo from './components/Card';
+import './index.scss';
 
-const Demo: React.FC = observer(() => {
+const App: React.FC = observer(() => {
   const { t } = useLanguage();
   const { isDark } = useTheme();
-
-
+  const [showDemo, setShowDemo] = useState(false);
 
   return (
-    <div className="demo-page">
-
-
-
-      <Card title={t('common.more')} className="demo-card">
-        <div className="info-section">
-          <p>{t('theme.light')}: {isDark ? t('theme.dark') : t('theme.light')}</p>
-          <p>{t('common.loading')}</p>
-          <p>{t('auth.loginSuccess')}</p>
-        </div>
-      </Card>
-    </div>
+    <ConfigProvider>
+      <div>
+        <header className="app-header">
+          <h1 className="app-title">{t('nav.home')}</h1>
+          <div className="app-subtitle">
+            {t('btnText.loading')}
+          </div>
+        </header>
+        
+        <main className="app-main">
+          <div className="welcome-section">
+            <h2>{t('auth.login')}</h2>
+            <p>{t('btnText.confirm')}</p>
+            <Space direction="vertical" style={{ marginTop: 20 }}>
+              <Button 
+                color="primary" 
+                size="large"
+                onClick={() => setShowDemo(!showDemo)}
+              >
+                {showDemo ? t('btnText.back') : t('btnText.more')}
+              </Button>
+            </Space>
+          </div>
+          
+          {showDemo ? (
+            <Demo />
+          ) : (
+            <div className="demo-section">
+              <h3>{t('trade.buy')} / {t('trade.sell')}</h3>
+              <div className="demo-grid">
+                <div className="demo-card">
+                  <h4>{t('market.price')}</h4>
+                  <p>¥ 45,234.56</p>
+                </div>
+                <div className="demo-card">
+                  <h4>{t('market.change')}</h4>
+                  <p className="text-success">+2.34%</p>
+                </div>
+                <div className="demo-card">
+                  <h4>{t('assets.totalAssets')}</h4>
+                  <p>¥ 12,345.67</p>
+                </div>
+                <div className="demo-card">
+                  <h4>{t('assets.availableBalance')}</h4>
+                  <p>¥ 8,765.43</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+        
+        <footer className="app-footer">
+          <div className="settings-section">
+            <h3>{t('theme.light')}</h3>
+            <div className="settings-grid">
+              <ThemeToggle />
+              {/* <LanguageToggle /> */}
+            </div>
+          </div>
+        </footer>
+      </div>
+    </ConfigProvider>
   );
 });
 
-export default Demo; 
+export default App; 

@@ -1,0 +1,20 @@
+{
+  "notice": {
+    "title": "公告中心",
+    "menu": {
+      "loading": "加载中...",
+      "announcement": "公告"
+    },
+    "top": {
+      "notification": "通知",
+      "search": {
+        "placeholder": "搜索"
+      },
+      "unread": "只看未读",
+      "markAllRead": "全部已读"
+    },
+    "empty": {
+      "description": "暂无通知"
+    }
+  }
+}

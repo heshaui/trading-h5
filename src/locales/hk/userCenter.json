@@ -1,0 +1,384 @@
+{
+    "safeCenter": {
+        "overView": "总览",
+        "account": "用户设置",
+        "identity": "身份认证",
+        "security": "安全中心"
+    },
+    "overview": {
+        "title": "总览",
+        "auth": "已认证",
+        "unAuth": "未认证",
+        "audit": "审核中",
+        "reject": "已驳回",
+        "nickname": "昵称",
+        "welcome": "欢迎回来,",
+        "famousAphorisms": "崩盘通常以暴涨为前导，而暴涨都以崩盘收尾，一再重复 — 安德烈•科斯托兰尼",
+        "registerAccount": "注册账号",
+        "uid": "UID",
+        "accountStatus": "账号状态",
+        "normal": "正常",
+        "loginFrozen": "登录冻结",
+        "tradeFrozen": "交易冻结",
+        "withdrawFrozen": "提现冻结",
+        "personalInfo": "个人资料",
+        "identityAuth": {
+            "title": "身份认证",
+            "verified": "已完成身份认证，开始您的货币之旅吧！",
+            "unverified": "完成身份认证后可以享受交易所完整服务",
+            "reVerify": "请重新提交认证，完成认证后可以享受交易所完整的服务",
+            "goVerify": "去认证",
+            "viewDetails": "查看详情"
+        },
+        "securityAuth": {
+            "title": "安全认证",
+            "securityLevel": "安全强度",
+            "low": "低",
+            "medium": "中",
+            "high": "高",
+            "tip": "启用双重认证提高账户安全性",
+            "view": "去查看",
+            "bind": "去绑定"
+        },
+        "assets": {
+            "title": "资产",
+            "totalAssets": "总资产折合",
+            "todayProfitLoss": "今日盈亏",
+            "deposit": "充值",
+            "withdraw": "提现"
+        },
+        "recentLogin": {
+            "title": "最近登录",
+            "web": "WEB",
+            "android": "ANDROID",
+            "manage": "管理"
+        },
+        "authorizedDevices": {
+            "title": "授权设备",
+            "manage": "管理"
+        },
+        "recommend": {
+            "title": "为你推荐",
+            "manage": "管理",
+            "invite": "邀请新用户",
+            "inviteNewUser": "邀请加入我们一起开启数字货币之旅吧！",
+            "inviteCode": "邀请码",
+            "inviteFriend": "邀请好友获得奖励",
+            "inviteLink": "链接"
+        }
+    },
+    "identity": {
+        "title": "身份认证",
+        "title1": "什么是KYC验证？",
+        "content1": "KYC (Know Your Customer)是一种身份验证和调查过程，旨在核实客户的身份信息和背景，以确保金融机构或服务提供商遵守反洗(AML) 和反恐怖融资(CFT) 法规。它有助于保证账户安全，减少欺诈和非法活勤的风险。",
+        "title2": "为什么我需要进行KYC 验证？",
+        "content2": "KYC 是了保您的赈户安全和权益。保障您的身份信息和背景，防止他人冒用您的身份谁行欺菲或非法活勤。",
+        "title3": "身份验证遇到问题，如何获取帮助？",
+        "content3": "如果您在 KYC 程中遇到任何问题，请向我们的客服寻求帮助。我们的客服团队将竭诚为您提供支持和解答。请提供具体问题和相关信息，以便我们能够更快速地帮助您完成认证。",
+        "title4": "常见问题",
+        "withdrawal": "加密货币提现",
+        "recharge": "加密货币充值",
+        "standardAuth": {
+            "title": "标准身份认证",
+            "unverifiedTip": "仅需3-5分钟，完成标准身份认证保护您免受欺诈和非法风险",
+            "requiredInfo": "身份认证需要提供一下信息：",
+            "basicInfo": "基本信息",
+            "idVerification": "身份认证"
+        },
+        "status": {
+            "verified": "已认证",
+            "reviewing": "审核中",
+            "rejected": "已驳回",
+            "unverified": "未认证"
+        },
+        "button": {
+            "goVerify": "去认证",
+            "reviewing": "审核中",
+            "reVerify": "重新认证"
+        },
+        "benefits": {
+            "title": "认证权益",
+            "service": "服务",
+            "unverified": "尚未认证",
+            "afterVerification": "完成标准身份认证后"
+        },
+        "certified": {
+            "title": "证件验证",
+            "accountBenefits": "账户权益",
+            "personalInfo": "个人信息",
+            "allow": "允许",
+            "forbidden": "禁止",
+            "info": {
+                "realName": "真实姓名",
+                "idType": "证件类型",
+                "country": "国家",
+                "idNumber": "证件号",
+                "countries": {
+                    "mainland": "中国大陆",
+                    "hongkong": "中国香港"
+                }
+            },
+            "idTypes": {
+                "idCard": "居民身份证",
+                "passport": "普通护照",
+                "hkMacauPass": "港澳通行证",
+                "taiwanPass": "台湾通行证",
+                "taiwanId": "台湾身份证",
+                "foreignerId": "外国人永久居住身份证",
+                "driverLicense": "驾驶证"
+            }
+        },
+        "realName": {
+            "title": "认证信息",
+            "setUPTitle1": "基本信息",
+            "setUPTitle2": "上传照片",
+            "setUPTitle3": "已提交",
+            "identityAuth": "身份认证"
+        },
+        "idv": {
+            "title": "证件验证",
+            "inputTip": "请务必确保输入信息与证件信息一致",
+            "country": {
+                "title": "国家或地区",
+                "placeholder": "请选择"
+            },
+            "idType": {
+                "title": "证件类型",
+                "placeholder": "请选择"
+            },
+            "idNumber": {
+                "title": "证件号码",
+                "placeholder": "请输入"
+            },
+            "name": {
+                "surname": "姓",
+                "firstName": "名",
+                "placeholder": "请输入"
+            },
+            "birthday": {
+                "title": "出生日期",
+                "placeholder": "年/月/日"
+            },
+            "button": {
+                "next": "下一步"
+            }
+        },
+        "sumbit": {
+            "title": "审核中",
+            "content": "我们正在审核您的申请。通过审核之后，我们会发送邮件通知您。 等候期间，欢迎浏览我们的网页/App",
+            "next": "下一步",
+            "goHome": "回到首页"
+        },
+        "upload": {
+            "title": "上传照片",
+            "next": "下一步",
+            "prev": "上一步",
+            "error1": "不是正确的图片格式！",
+            "error2": "图片必须小于8MB!",
+            "error3": "请上传所有必要的证件照片",
+            "error4": "无效的文件类型",
+            "success": "提交成功",
+            "frontFile": "证件正面",
+            "backFile": "证件背面",
+            "selfieFile": "手持证件照",
+            "uploadFile": "上传文件",
+            "tip1": "支持小于8M的JPG、JPEG或PNG格式图片。",
+            "tip2": "证件照片要求清晰，不允许任何修改和遮挡，必须能看清人像、证件号和姓名。",
+            "tip3": "照片需免冠，建议未化妆，手持证件人的五官清晰可鉴，完整漏出手臂。"
+        }
+    },
+    "security": {
+        "title": "安全中心",
+        "basicSecurity": "基础安全",
+        "securityLog": "安全日志",
+        "googleAuth": "谷歌验证器(推荐)",
+        "googleAuthDesc": "用于登录、提现、修改安全设置等安全验证。若经常收不到短信验证码，建议绑定谷歌验证器。",
+        "enabled": "启用",
+        "notBound": "未绑定",
+        "unbind": "解绑",
+        "enabled_status": "已启用",
+        "bind": "绑定",
+        "phoneAuth": "手机验证",
+        "phoneAuthDesc": "短信验证码将保护您的账户与交易安全。修改绑定手机号后，支付、提现等功能将禁用24小时。",
+        "phoneAuthDesc2": "短信验证码将保护您的账户与交易安全。修改绑定手机号后，支付、提现等功能将禁用{{time}}小时。",
+        "modify": "修改",
+        "closeVerify": "关闭验证",
+        "emailAuth": "邮箱验证",
+        "emailAuthDesc": "邮箱验证码将保护您的账户与交易安全。修改绑定邮箱后，支付、提现等功能将禁用24小时。",
+        "emailAuthDesc2": "邮箱验证码将保护您的账户与交易安全。修改绑定邮箱后，支付、提现等功能将禁用{{time}}小时。",
+        "loginPassword": "登录密码",
+        "loginPasswordDesc": "重置时自动退出当前账号",
+        "set": "已设置",
+        "notSet": "未设置",
+        "setAction": "设置",
+        "securityDevice": "安全设备",
+        "securityDeviceDesc": "管理已授权允许登录的设备。",
+        "deviceCount": "授权设备数：",
+        "manage": "管理",
+        "securityLogDesc": "用于登录等IP地址安全。",
+        "lastLoginIp": "最近登录IP地址：",
+        "view": "查看",
+        "cancel": "取消",
+        "confirm": "确认",
+        "paste": "粘贴",
+        "email": "邮箱验证",
+        "phone": "手机号验证",
+        "google": "谷歌验证码",
+        "sent": "发送验证码",
+        "sent2": "验证码发送至",
+        "resend": "重新发送",
+        "resend2": "验证码已发送至",
+        "countdown": "s 重发",
+        "phoneCode": "手机验证码",
+        "emailCode": "邮箱验证码",
+        "googleCode": "谷歌验证码",
+        "inputCode": "请输入验证码",
+        "inputPhoneCode": "请输入手机验证码",
+        "inputEmailCode": "请输入邮箱验证码",
+        "inputGoogleCode": "请输入谷歌验证码",
+        "codeError": "验证码不能为空！",
+        "error3": "收不到验证码？",
+        "error1": "验证码还在有效期内",
+        "error2": "获取验证码出错:",
+        "findPassword": "找回密码",
+        "unbindGoogle2": "解绑谷歌",
+        "bindGoogle2": "绑定谷歌",
+        "modifyPassword": "修改密码",
+        "identityAuth": "身份认证申请",
+        "closePhone": "关闭手机验证",
+        "bindPhone": "绑定/修改手机号",
+        "bindEmail": "绑定/修改邮箱",
+        "changeCheck": {
+            "cancel": "取消",
+            "continue": "继续",
+            "title": "您确认修改手机号吗？",
+            "msg": "为保障您的资产安全，修改手机号后，24H将禁止出金。",
+            "msg11": "为保障您的资产安全，修改手机号后，{{time}}H将禁止出金。",
+            "title1": "您确认关闭手机验证吗？",
+            "msg1": "确认后，您将无法使用手机获取到验证码。",
+            "title2": "您确认修改邮箱吗？",
+            "msg2": "为保障您的资产安全，修改邮箱后，24H将禁止出金。",
+            "msg21": "为保障您的资产安全，修改邮箱后，{{time}}H将禁止出金。",
+            "title3": "您确认修改密码吗？",
+            "msg3": "为保障您的资产安全，修改密码后，24H将禁止出金。",
+            "msg31": "为保障您的资产安全，修改密码后，{{time}}H将禁止出金。",
+            "title4": "您确认解绑谷歌验证器吗？",
+            "msg4": "为保障您的资产安全，解绑谷歌身份验证器后，24H将禁止出金。",
+            "msg41": "为保障您的资产安全，解绑谷歌身份验证器后，{{time}}H将禁止出金。"
+        },
+        "bindGoogle": {
+            "title1": "Android/iOS 谷歌验证器下载",
+            "tip1": "i0S用户在App Store搜索'Authenticator'下载",
+            "tip2": "Andriod用户在应用商店或手机浏览器搜索'谷歌验证器'下载",
+            "title2": "在谷歌验证器中添加密钥并备份",
+            "tip3": "打开谷歌验证器，扫描下方二维码或手动输入下述密钥添加验证令牌",
+            "tip4": "密钥用于手机更换或丢失时找回谷歌验证器，绑定前请务必将下述密钥备份保存。",
+            "title3": "验证谷歌验证码",
+            "googleCodeNull": "请输入谷歌验证码",
+            "copyKey": "复制密钥",
+            "next": "下一步",
+            "bind": "绑定",
+            "cancel": "取消",
+            "modalTitle": "输入验证码开启谷歌验证器"
+        },
+        "delect": {
+            "title": "确认删除这台设备吗？",
+            "btn": "删除",
+            "msg": "移除后，该设备将退出登录态！"
+        },
+        "lockSafe": {
+            "title": "安全验证",
+            "error1": "验证码还在有效期内",
+            "error2": "获取验证码出错:",
+            "lockError": "密码不能为空！",
+            "lockError2": "两次输入的密码不匹配！",
+            "setPassword": "设置密码",
+            "modifyPassword": "修改密码",
+            "newPassword": "新密码",
+            "inputPassword": "请输入新密码",
+            "error3": "8-100个字符",
+            "error4": "至少一个数字和一个大写字母",
+            "checkPassword": "确认密码",
+            "checkPassword2": "请确认密码"
+        },
+        "mailSafe": {
+            "title": "安全验证",
+            "inputEmail": "请输入邮箱",
+            "inputEmail2": "请先输入邮箱",
+            "setMail": "设置邮箱",
+            "modifyMail": "修改邮箱",
+            "mail": "邮箱",
+            "mailNullError": "邮箱不能为空！",
+            "newMail": "新邮箱",
+            "checkMail": "新邮箱验证",
+            "inputNewMail": "请输入新邮箱",
+            "newMailNullError": "新邮箱不能为空！",
+            "checkMailNullError": "验证码不能为空！"
+        },
+        "phoneSafe": {
+            "title": "安全验证",
+            "inputPhone": "请输入手机号",
+            "inputPhone2": "请先输入手机号",
+            "phoneNullError": "手机号不能为空！",
+            "newPhone": "新手机号",
+            "setPhone": "设置手机号",
+            "modifyPhone": "修改手机号",
+            "country": "国家/地区",
+            "inputNewPhone": "请输入新手机号",
+            "newPhoneCheck": "新手机号验证"
+        },
+        "unbindGoogle": {
+            "title": "安全验证",
+            "confirmUnbind": "确定解绑谷歌验证？",
+            "warmTip": "温馨提示：",
+            "tipContent": "为了保护账户安全，在解绑谷歌双重身份验证后，24小时内无法提币。",
+            "tipContent2": "为了保护账户安全，在解绑谷歌双重身份验证后，{{time}}小时内无法提币。",
+            "unbind": "解绑",
+            "cancel": "取消"
+        },
+        "loginRecord": {
+            "type": "类型",
+            "time": "时间",
+            "status": "状态",
+            "address": "登录所在地",
+            "loginSuccess": "登录成功",
+            "loginFailed": "登录失败"
+        },
+        "safeSet": {
+            "type": "类型",
+            "time": "时间",
+            "operation": "操作",
+            "nodata": "暂无数据",
+            "deviceManage": "设备管理",
+            "loginTime": "登录时间",
+            "ipAddress": "IP地址",
+            "loginLocation": "登录所在地",
+            "currentDevice": "当前设备",
+            "securityDevice": "安全设备",
+            "deviceManageDesc": "这些设备已被授权允许登录您的账户",
+            "deviceCount": "授权设备数：",
+            "manage": "管理",
+            "securityLogDesc": "用于登录等IP地址安全。",
+            "loginRecord": "登录记录",
+            "safeSetRecord": "安全设置记录",
+            "securityLog": "安全日志"
+        }
+    },
+    "account": {
+        "title": "用户设置",
+        "userCenter": "个人中心",
+        "nickname": "昵称",
+        "nicknameDesc": "为你的个人资料设置自定义昵称",
+        "avatar": "头像",
+        "avatarDesc": "设置头像为你的账户增添个人化元素，可在 NFT 市场购买属于自己的 NFT 头像",
+        "birthday": "生日",
+        "birthdayDesc": "破壳日",
+        "modify": "修改",
+        "add": "添加",
+        "address": "提现地址",
+        "addressDesc": "添加并信任提币地址后，提币时将不再验证邮箱/短信/谷歌",
+        "manage": "管理",
+        "withdraw": "提现"
+    },
+    "success": "成功"
+}

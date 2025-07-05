@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './index.scss';
 import './utils/i18n';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <React.StrictMode> {/* 严格模式-接口调用两次 */}
     <StoreContext.Provider value={rootStore}>
       <App />
     </StoreContext.Provider>

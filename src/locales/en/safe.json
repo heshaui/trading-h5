@@ -1,0 +1,31 @@
+{
+  "title": "Security Center",
+  "basic_security": "Basic Security",
+  "google_auth": {
+      "title": "Google Authenticator (Recommended)",
+      "desc": "Used for security verification during login, withdrawals, and security settings changes. Recommended if you frequently don't receive SMS codes."
+  },
+  "phone_verify": {
+      "title": "Phone Verification",
+      "desc": "SMS codes protect your account and transactions. After changing your phone number, features like payments and withdrawals will be disabled for 24 hours.",
+      "desc2": "SMS codes protect your account and transactions. After changing your phone number, features like payments and withdrawals will be disabled for {{time}} hours."
+  },
+  "email_verify": {
+      "title": "Email Verification",
+      "desc": "Email codes protect your account and transactions. After changing your email, features like payments and withdrawals will be disabled for 24 hours.",
+      "desc2": "Email codes protect your account and transactions. After changing your email, features like payments and withdrawals will be disabled for {{time}} hours."
+  },
+  "login_password": {
+      "title": "Login Password",
+      "desc": "You will be automatically logged out after resetting."
+  },
+  "security_log": "Security Logs",
+  "security_device": {
+      "title": "Trusted Devices",
+      "desc": "Manage devices authorized to access your account."
+  },
+  "security_log_item": {
+      "title": "Security Logs",
+      "desc": "Monitor login IP addresses and security events."
+  }
+}

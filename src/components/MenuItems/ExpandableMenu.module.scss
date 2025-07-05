@@ -1,0 +1,148 @@
+.expandableMenu {
+    width: 100%;
+    background-color: transparent;
+}
+
+.menuItem {
+    // border-bottom: 1px solid var(--border-color9);
+    
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.menuButton {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    // transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+    color: var(--text-color5);
+    
+    &:hover {
+        // background-color: var(--theme-color);
+    color: var(--theme-color);
+
+    }
+    
+    &:active {
+        // background-color: var(--theme-05);
+        color: var(--theme-color);
+    }
+}
+
+.menuContent {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 12px;
+    width: 100%;
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.menuTitle {
+    flex: 1;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    // line-height: 1.4;
+}
+
+.arrowWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+// 子菜单项样式
+.childItem {
+    // background-color: var(--bg-color2);
+    // border-bottom: 1px solid var(--border-color8);
+    color: var(--text-color6);
+}
+
+// .childButton {
+//     &:hover {
+//         background-color: var(--bg-color3);
+//     }
+// }
+
+.childContent {
+    padding: 12px 16px 12px 40px; // 左侧增加缩进
+}
+.title_color{
+    color: var(--text-color5);
+  }
+  .tip_color{
+    color: var(--text-color6);
+  }
+.childTitle {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-color5);
+}
+
+// 展开动画容器
+.childrenContainer {
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    
+    &.collapsed {
+        max-height: 0;
+        opacity: 0;
+    }
+    
+    &.expanded {
+        max-height: 1000px; // 足够大的值来容纳子菜单
+        opacity: 1;
+    }
+}
+
+.childrenWrapper {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+// 淡入动画
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .menuContent {
+        padding: 14px 16px;
+    }
+    
+    .childContent {
+        padding: 10px 16px 10px 36px;
+    }
+    
+    .menuTitle {
+        font-size: 15px;
+    }
+    
+    .childTitle {
+        font-size: 13px;
+    }
+} 

@@ -1,0 +1,54 @@
+{
+  "welcome": "다시 오신 것을 환영합니다, IMUSER-NavyXU님",
+  "quote": "'폭락은 보통 급등 이후에 일어나며, 급등은 결국 폭락으로 끝납니다. 이 현상은 반복됩니다.'",
+  "user": {
+      "uid": "UID: ---",
+      "register": "계정 등록",
+      "identity": "신원 인증",
+      "status": {
+          "title": "계정 상태",
+          "normal": "정상",
+          "verified": "인증됨",
+          "rejected": "거절됨",
+          "verifying": "심사 중",
+          "unverified": "미인증"
+      }
+  },
+  "profile": {
+      "button": "프로필"
+  },
+  "identity_verify": {
+      "title": "신원 인증",
+      "desc": "신원 인증을 완료하면 모든 거래소 서비스를 이용할 수 있습니다.",
+      "button": "지금 인증하기"
+  },
+  "security_verify": {
+      "title": "보안 인증",
+      "desc": "2단계 인증을 활성화하여 계정 보안을 강화하세요.",
+      "button": "설정하기"
+  },
+  "assets": {
+      "title": "자산",
+      "total": "총자산 (환산)",
+      "today_profit": "오늘의 손익",
+      "deposit": "입금",
+      "withdraw": "출금"
+  },
+  "recent_login": {
+      "title": "최근 로그인",
+      "location": "중국 홍콩"
+  },
+  "authorized_devices": {
+      "title": "허용된 기기",
+      "manage": "관리"
+  },
+  "recommendation": {
+      "title": "추천 항목",
+      "invite": {
+          "title": "신규 사용자 초대",
+          "desc": "지금 가입하고 디지털 자산 여정을 시작해보세요!",
+          "rewards": "친구를 초대하면 보상을 받을 수 있어요.",
+          "code": "초대 코드"
+      }
+  }
+}

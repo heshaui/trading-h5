@@ -1,0 +1,54 @@
+{
+  "welcome": "Welcome back, IMUSER-NavyXU",
+  "quote": "'Crashes are usually preceded by sharp rises, and sharp rises always end in crashes, repeating over and over again'",
+  "user": {
+      "uid": "UID: ---",
+      "register": "Register Account",
+      "identity": "Identity Verification",
+      "status": {
+          "title": "Account Status",
+          "normal": "Normal",
+          "verified": "Verified",
+          "rejected": "Rejected",
+          "verifying": "Verifying",
+          "unverified": "Unverified"
+      }
+  },
+  "profile": {
+      "button": "Profile"
+  },
+  "identity_verify": {
+      "title": "Identity Verification",
+      "desc": "Complete identity verification to enjoy full exchange services",
+      "button": "Verify Now"
+  },
+  "security_verify": {
+      "title": "Security Verification",
+      "desc": "Enable two-factor authentication to enhance account security",
+      "button": "Set Up"
+  },
+  "assets": {
+      "title": "Assets",
+      "total": "Total Assets (Equivalent)",
+      "today_profit": "Today's P&L",
+      "deposit": "Deposit",
+      "withdraw": "Withdraw"
+  },
+  "recent_login": {
+      "title": "Recent Login",
+      "location": "Hong Kong, China"
+  },
+  "authorized_devices": {
+      "title": "Authorized Devices",
+      "manage": "Manage"
+  },
+  "recommendation": {
+      "title": "Recommended for You",
+      "invite": {
+          "title": "Invite New Users",
+          "desc": "Join us and start your digital currency journey!",
+          "rewards": "Earn rewards for inviting friends",
+          "code": "Invitation Code"
+      }
+  }
+}

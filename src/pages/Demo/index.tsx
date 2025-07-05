@@ -19,21 +19,21 @@ const App: React.FC = observer(() => {
         <header className="app-header">
           <h1 className="app-title">{t('nav.home')}</h1>
           <div className="app-subtitle">
-            {t('common.loading')}
+            {t('btnText.loading')}
           </div>
         </header>
         
         <main className="app-main">
           <div className="welcome-section">
             <h2>{t('auth.login')}</h2>
-            <p>{t('common.confirm')}</p>
+            <p>{t('btnText.confirm')}</p>
             <Space direction="vertical" style={{ marginTop: 20 }}>
               <Button 
                 color="primary" 
                 size="large"
                 onClick={() => setShowDemo(!showDemo)}
               >
-                {showDemo ? t('common.back') : t('common.more')}
+                {showDemo ? t('btnText.back') : t('btnText.more')}
               </Button>
             </Space>
           </div>
@@ -70,7 +70,7 @@ const App: React.FC = observer(() => {
             <h3>{t('theme.light')}</h3>
             <div className="settings-grid">
               <ThemeToggle />
-              <LanguageToggle />
+              {/* <LanguageToggle /> */}
             </div>
           </div>
         </footer>

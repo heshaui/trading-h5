@@ -5,7 +5,7 @@ export const useThemeMode = () => {
         // 初始化时从 localStorage 获取状态
         if (typeof window !== 'undefined') {
             const savedMode = localStorage.getItem('theme');
-            return savedMode === 'true';
+            return savedMode === 'light';
         }
         return true;
     });
@@ -14,7 +14,7 @@ export const useThemeMode = () => {
         // 监听主题变化事件
         const handleThemeChange = () => {
             const currentMode = localStorage.getItem('theme');
-            setIsDayMode(currentMode === 'true');
+            setIsDayMode(currentMode === 'light');
         };
 
         window.addEventListener('themeChange', handleThemeChange);

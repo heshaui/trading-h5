@@ -13,9 +13,10 @@ import {
 } from './currencyPairService';
 import { CurrencyPairType, CoinType } from "@/type/assets/spot/exchange"
 import { getExchangeGroup, getExchangeCoinList, getUserExchangeCoinTypeList } from '@/services/spot';
-import { inviteInfoType,usdtRateType } from "@/type/userCenter/overview"
+import { inviteInfoType, usdtRateType } from "@/type/userCenter/overview"
 import { registerInfoType } from "@/type/store"
 import { getConfig } from '@/services/flash';
+import { fetchRateData, fetchLangData } from './langAndRate';
 // const { isLoggedIn} = useAuth()
 // 添加这个辅助函数来检查是否在浏览器环境
 const isBrowser = () => typeof window !== 'undefined';
@@ -56,11 +57,12 @@ class AppStore {
     kvConfig: Record<string, any> = {};
     inviteInfo: inviteInfoType = {} as inviteInfoType;
     banlanceShow: boolean = true;
-    
+
     // 添加 flash 配置状态
     flashConfig: any = { minTradeU: 0, maxTradeU: 0 };
     isLoadingFlashConfig: boolean = false;
-    usdtRate: usdtRateType={} as usdtRateType
+    usdtRate: usdtRateType = {} as usdtRateType;
+    theme: 'light' | 'dark' | null = null;
 
     constructor() {
         // 使状态响应式
@@ -80,9 +82,17 @@ class AppStore {
             this.initBanlanceShow(); //初始化资产显示状态
             this.initFlashConfigFromStorage(); // 初始化闪兑配置
             this.initUsdtRateFromStorage(); //初始化USDT和USD汇率
+            this.initTheme(); //初始化主题
         }
     }
-
+    initTheme() {
+        if (!isBrowser()) return;
+        const theme = localStorage.getItem('theme') || null;
+        this.theme = theme as 'light' | 'dark' | null;
+    }
+    getTheme() {
+        return this.theme;
+    }
     initToken() {
         if (!isBrowser()) return;
         this.userToken = localStorage.getItem(LOCAL_STORAGE_KEY.USER_TOKEN) || null;
@@ -403,7 +413,20 @@ class AppStore {
             });
         }
     }
-
+    // 获取语言列表
+    async loadGetLangList() {
+        const result = await fetchLangData();
+        if (result.success) {
+            this.setLangList(result.data);
+        }
+    }
+    // 获取汇率列表
+    async loadGetRateList() {
+        const result = await fetchRateData();
+        if (result.success) {
+            this.setRateData(result.data);
+        }
+    }
     // 设置币对列表
     setCurrencyPairs(pairs: CurrencyPairType[]) {
         this.currencyPairs = pairs;
@@ -561,7 +584,7 @@ class AppStore {
                 runInAction(() => {
                     this.coinList = result.data;
                     this.setCoinList(result.data);
-            
+
                 });
                 return result.data;
             } else {
@@ -627,6 +650,12 @@ class AppStore {
     // 获取语言
     getLangList() {
         return this.languageList;
+    }
+    setLangList(langList: any[]) {
+        this.languageList = langList;
+        if (isBrowser()) {
+            localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList));
+        }
     }
     initKvConfig() {
         if (!isBrowser()) return;
@@ -734,7 +763,7 @@ class AppStore {
             this.isLoadingFlashConfig = true;
             const data = {};
             const res = await getConfig(data);
-            
+
             if (res.code === '0') {
                 this.setFlashConfig(res.data);
                 return res.data;
@@ -771,7 +800,7 @@ class AppStore {
     async loadUsdtRate() {
         const result = await fetchUsdtPrice();
         if (result.success) {
-                this.setUsdtRate(result.data);
+            this.setUsdtRate(result.data);
 
         }
     }

@@ -1,0 +1,119 @@
+.experience_page {
+    background-color: var(--homeground2);
+    color: var(--text-color5);
+    min-height: calc(100vh - 48px);
+}
+
+.experience_main {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    /* padding: 80px 0; */
+    overflow: hidden;
+}
+
+.experience_main_box {
+    // width: 620px;
+    font-family: DIN;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 190px;
+    padding: 0 2.5%;
+}
+
+.assistant_main_title1 {
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--hometext3);
+}
+
+.assistant_main_title2 {
+    color: var(--hometext2);
+    margin-top: 1.6vh;
+    font-size: 14px;
+}
+
+.experience_main_email {
+    margin-top: 84px;
+}
+
+.experience_main_pic {
+    // max-width:600px ;
+    // max-height: 620px;
+    height: 100%;
+    width: 50%;
+}
+
+/* 输入框组件覆盖 */
+// .custom_input_home:focus,
+// .custom_input_home:focus-within {
+//     border-color:var( --theme-color) !important;
+//     box-shadow: 0 0 0 2px var(--theme-shadow) !important;
+// }
+
+// /* 鼠标聚焦且移出样式 */
+// .custom_input_home:focus:not(:hover) {
+//     background-color: transparent !important;
+//     color: var( --text-color5) !important;
+// }
+
+// /* 鼠标滑过 */
+// .custom_input_home:hover {
+//     border-color: var( --theme-color) !important;
+// }
+
+.custom_input_home {
+    width: 95%;
+    height: 50px;
+    border-radius: 45px;
+    background-color: transparent;
+    color: var(--text-color5);
+    border: 1px solid var(--border-color10);
+    ::placeholder {
+        text-indent: 1em;
+        color: var(--text-color6) !important;
+    }
+
+    :global(.adm-input-element) {
+        color: var(--text-color5);
+        text-indent: 1em;
+
+    }
+}
+
+// .custom_input_home:hover {
+//     background-color: transparent !important;
+// }
+
+
+/* 按钮组件覆盖 */
+.experience_main_btn {
+    width: 50vw;
+    height: 50px;
+    border-radius: 42px;
+    background-color: var(--btnbgcolor);
+    /* color: var(--btncolor) ; */
+    color: #fff;
+    border: none;
+}
+
+
+.experience_experience_main>img {
+    height: 60%;
+    width: 40%;
+    max-width: 620px;
+    max-height: 627px;
+}
+
+// @media (min-width:2560px) {
+//     .experience_page {
+//         display: flex;
+//         flex-direction: column;
+//         align-items: center;
+//     }
+
+//     .experience_main {
+//         width: 60%;
+//         height: 80%;
+//     }
+// }

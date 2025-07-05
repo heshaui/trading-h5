@@ -1,0 +1,113 @@
+.footerContainer {
+  padding: 50px 5% ;
+  // display: flex;
+  width: 100%;
+  /* background-color: #0c0d0c; */
+  max-width: 1200px;
+}
+.footer_container_box{
+  width: 100%;
+  background-color: var(--text-primary-light);
+  
+  // padding-bottom: 0.01vh;
+}
+.footerContainer .logoAndButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 60px;
+}
+.footerContainer .logoAndButton .logo {
+  /* width: 145px; */
+  height: 28px;
+}
+.footer_left {
+  min-width: 145px;
+}
+.footerContainer .logoAndButton .logo img {
+  /* max-width: 140px; */
+  width: "auto";
+  height: 100%;
+}
+.footerContainer .logoAndButton p {
+  margin: 8px 0 0 0;
+  color: #a4a5ac;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.footerContainer .footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.footer_content {
+  width: 100%;
+}
+.footerContainer .footerList h5 {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #a4a5ac;
+}
+.footerContainer .footerList ul li {
+  font-size: 12px;
+  color: #a4a5ac;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.footerContainer .footerList ul li:first-child {
+  margin-top: 0;
+}
+.footerContainer .footerList ul li:hover {
+  color: var(--text-color5);
+}
+.footer {
+  flex-wrap: wrap;
+  justify-content: flex-start !important;
+}
+.title_color {
+  color: var(--text-color5);
+}
+.tip_color{
+  color: var(--text-color6);
+}
+.button_download{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  padding: 10px 12px;
+  min-width: 168px;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color8);
+  color:  var(--text-color5);
+}
+
+/* 底部菜单折叠功能样式 */
+.footer_title_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.footer_child_item {
+  color: var(--text-color6);
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: var(--text-color5);
+  }
+}
+
+/* 动画关键帧 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -3,8 +3,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useTheme } from '@/hooks/useTheme';
 import { useNavigate } from 'react-router-dom';
 
-import InviteLightIcon from '@/components/assets/images/userCenter/overview/icon_invite_day.png'
-import InviteDarkIcon from '@/components/assets/images/userCenter/overview/icon_invite_dark.png'
+import InviteLightIcon from '@/assets/images/userCenter/overview/icon_invite_day.png'
+import InviteDarkIcon from '@/assets/images/userCenter/overview/icon_invite_dark.png'
 
 const InviteCard: React.FC = () => {
     const { t } = useLanguage('userCenter');

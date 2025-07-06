@@ -6,11 +6,13 @@ import SafeLogPage from '../components/overview/SafeLogin';
 import EquipmentPage from '../components/overview/Equipment';
 import InvitePage from '../components/overview/Invite';
 import styles from './index.module.scss'
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Overview: React.FC = () => {
+	const { t } = useLanguage('userCenter');
 	return (
 		<div>
-			<UserHeader title="safeCenter.overView" />
+			<UserHeader title={t("safeCenter.overView")} />
 			<div className={styles.container}>
 				<UserInfo />
 				<Assets />

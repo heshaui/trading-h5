@@ -22,3 +22,27 @@
     font-size: 24px;
   }
 } 
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  border-radius: 0 50px 50px 0;
+  font-size: 14px;
+  font-weight: 500;
+  .left-border {
+    width: 6px;
+    height: 100%;
+    border-radius: 0 3px 3px 0;
+    margin-right: 9px;
+  }
+  &.active {
+    background: linear-gradient(90deg, transparent 0%, var(--theme-05) 100%);
+    color: var(--theme-color);
+    .left-border {
+      background: var(--theme-color);
+    }
+  }
+  &:hover {
+    color: var(--theme-color);
+  }
+}

@@ -5,7 +5,6 @@ import AssetsAreaChart from '../../charts/AreaChart';
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
-import { ROUTER_KEY_ASSETS } from '@/config/apiConfig';
 import { getUserBalanceAll, getUserBalanceByDay,  } from '@/services/assets';
 import { DataType } from '@/type/assets/assetsAccount/assets'
 import { add, roundDown, cut, nul } from '@/utils'
@@ -190,7 +189,7 @@ const AssetsPage: React.FC = observer(() => {
             <div className={styles.assetTit} >
                 {/* 资产 */}
                 {t('overview.assets.title')}
-                <button type='button' className={styles.assetBtn} onClick={() => navigate(ROUTER_KEY_ASSETS.ACCOUNT)}>
+                <button type='button' className={styles.assetBtn} onClick={() => navigate('/assets')}>
                     <Iconify icon="mingcute:arrow-right-line" className={styles.assetIcon} />
                 </button>
             </div>
@@ -232,13 +231,13 @@ const AssetsPage: React.FC = observer(() => {
             </div>
             <div className='mt-5'>
                 <button type='button' className={`${styles.btn} mr-4 ${styles.saveBtn}`}
-                    onClick={() => navigate(ROUTER_KEY_ASSETS.TOP_UP)}
+                    onClick={() => navigate('/')}
                 >
                     {/* 充值 */}
                     {t('overview.assets.deposit')}
                 </button>
                 <button type='button' className={`${styles.cancleBtn}  ${styles.btn}`}
-                    onClick={() => navigate(ROUTER_KEY_ASSETS.WITHDRAW_MONEY)}
+                    onClick={() => navigate('/')}
                 >
                     {/* 提现 */}
                     {t('overview.assets.withdraw')}

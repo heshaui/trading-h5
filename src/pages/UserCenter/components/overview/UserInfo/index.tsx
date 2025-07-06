@@ -13,8 +13,8 @@ import { Iconify } from "@/components/icon"
 import IdentifyStatus from './IdentifyStatus';
 import styles from '@/pages/UserCenter/overview/index.module.scss';
 
-import iconAvatarDark from '@/components/assets/images/userCenter/overview/icon_avatarUrl_dark.png';
-import iconAvatarLight from '@/components/assets/images/userCenter/overview/icon_avatarUrl_day.png';
+import iconAvatarDark from '@/assets/images/userCenter/overview/icon_avatarUrl_dark.png';
+import iconAvatarLight from '@/assets/images/userCenter/overview/icon_avatarUrl_day.png';
 
 const UserInfo: React.FC = () => {
   const navigate = useNavigate();

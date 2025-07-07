@@ -1,0 +1,45 @@
+.mail_input {
+    color: var(--text-color5) !important;
+    background-color: transparent !important;
+}
+
+/* 输入框组件覆盖 */
+.mail_input:focus,
+.mail_input:focus-within {
+    /* border-color: var(--text-color3) !important; */
+    box-shadow: none;
+    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+
+/* 鼠标聚焦且移出样式 */
+.mail_input:focus:not(:hover) {
+    background-color: var(--homeground);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* 鼠标滑过 */
+.mail_input:hover {
+    border-color: var(--text-color3);
+}
+
+.customSelect {
+    height: 50px;
+    min-width: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 0 12px;
+    border: 1px solid var(--border-color4);
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--text-color5);
+}
+.valueSelect{
+    display: inline-block;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

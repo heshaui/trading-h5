@@ -1,6 +1,6 @@
 .headerContainer {
   width: 100%;
-  background-color: var(--text-primary-light);
+  background-color: var(--homeground2);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -8,8 +8,7 @@
   
   // 添加安全距离
   padding-top: env(safe-area-inset-top);
-  padding-left: max(env(safe-area-inset-left), 5%);
-  padding-right: max(env(safe-area-inset-right), 5%);
+
 }
 
 .headerContent {
@@ -21,6 +20,9 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 8px 0; // 内容区域内边距
+  border-bottom: 0.5px solid var(--border-color11);
+  padding-left: max(env(safe-area-inset-left), 5%);
+  padding-right: max(env(safe-area-inset-right), 5%);
 }
 .logo{
     width: 140px;
@@ -66,7 +68,7 @@
 
 // 响应式设计和安全距离优化
 @media screen and (max-width: 768px) {
-  .headerContainer {
+  .headerContent {
     // 移动端确保安全距离
     padding-left: max(env(safe-area-inset-left), 16px);
     padding-right: max(env(safe-area-inset-right), 16px);
@@ -89,7 +91,7 @@
 
 // 支持刘海屏等特殊设备
 @supports (padding: max(0px)) {
-  .headerContainer {
+  .headerContent {
     // 确保在支持env()的设备上正确应用安全距离
     padding-top: max(env(safe-area-inset-top), 0px);
     padding-left: max(env(safe-area-inset-left), 5%);
@@ -100,7 +102,7 @@
 // iOS设备特殊处理
 @media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
   // iPhone X/XS
-  .headerContainer {
+  .headerContent {
     padding-top: 44px; // 状态栏高度
   }
 }

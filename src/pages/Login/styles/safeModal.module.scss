@@ -1,0 +1,47 @@
+.modal_box{
+    background-color: var(--background5);
+}
+.modal_btn {
+    font-weight: 500;
+    font-size: 14px;
+    width: 100%;
+    height: 40px;
+}
+
+.title {
+    color: var(--text-color5);
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.msg_color {
+    color: #A4A5AC;
+}
+.text_color {
+    color: var(--text-color3);
+}
+.disable_color {
+    color: var(--text-color4);
+}
+.title_color{
+    color: var(--text-color5);
+    font-size: 16px;
+}
+.tip_color {
+    color: var(--text-color4);
+    font-size: 12px;
+}
+.code_err{
+    display: inline-block;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+}
+.input_box{
+    background: var(--background5);
+    color: var(--text-color6);
+}
+.input_box:focus:not(:hover) {
+    background-color: var(--homeground5) !important;
+    color: var(--text-color6) !important;
+}

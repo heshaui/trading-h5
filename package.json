@@ -9,6 +9,7 @@
     "eject": "craco eject"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@iconify/react": "4.1.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

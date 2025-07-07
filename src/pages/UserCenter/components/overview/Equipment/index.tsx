@@ -76,7 +76,7 @@ const EquipmentPage: React.FC = () => {
                 {/* 授权设备 */}
                 {t('overview.authorizedDevices.title')}
                 <Iconify icon="mingcute:arrow-right-line" className="text-[20px]"
-                    onClick={() => navigate('/userCenter/safeCenter/equipment')}
+                    onClick={() => navigate('/userCenter/security/safeEquipment')}
                 />
             </div>
             <div className={`flex-1`} >
@@ -97,7 +97,7 @@ const EquipmentPage: React.FC = () => {
                             </p>
                             <p className='font-14 font-w-500 flex-col'>
                                 <span className="font-w-500 theme_color pointer line-20 mb-[2px]"
-                                    onClick={() => navigate(`/userCenter/safeCenter/equipment?deviceId=${item.id}`)}
+                                    onClick={() => navigate(`/userCenter/security/safeEquipment?deviceId=${item.id}`)}
                                 >
                                     {/* 管理 */}
                                     {t('overview.authorizedDevices.manage')}

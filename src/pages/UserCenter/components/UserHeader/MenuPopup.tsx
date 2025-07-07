@@ -45,7 +45,7 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose }) => {
         {
             title: t('router.safetyCenter'),
             icon: 'mingcute:safety-certificate-line',
-            path: '/userCenter/safetyCenter'
+            path: '/userCenter/security'
         },
         {
             title: t('router.identity'),
@@ -85,7 +85,7 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose }) => {
             <ul className="pr-[20px]">
                 {
                     menuList.map((menu: MenuType) => {
-                        const active = currentPath.includes(menu.path)
+                        const active = currentPath === menu.path
                         return (
                             <li 
                                 key={menu.path}

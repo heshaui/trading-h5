@@ -174,7 +174,10 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
       >
         <div style={{ padding: '16px',}}>
           <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0 }}>选择国家/地区</h3>
+            <h3 style={{ margin: 0 }}>
+              {/* 选择国家/地区 */}
+              {t('titleText.selectCountry')}
+              </h3>
             <Button 
               size="small" 
               onClick={handlePopupClose}

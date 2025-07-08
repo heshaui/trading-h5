@@ -1,0 +1,76 @@
+.modal_box{
+    background-color: var(--background5);
+}
+.modal_btn {
+    font-weight: 500;
+    font-size: 14px;
+    width: 170px;
+    height: 40px;
+}
+.modal_btn2 {
+    font-weight: 500;
+    font-size: 14px;
+    width: 170px;
+    height: 40px;
+    border-radius: 56px;
+    background-color: var(--cancel-btn);
+    color: var(--cancel-color);
+}
+
+.title {
+    width: 75%;
+    color: var(--text-color5);
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+}
+
+.msg_color {
+    color: #A4A5AC;
+}
+.text_color {
+    color: var(--text-color3);
+}
+.title_color{
+    color: var(--text-color5);
+    font-size: 16px;
+}
+.tip_color {
+    color: var(--text-color4);
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+.code_err{
+    display: inline-block;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+}
+.icon_box{
+    height: 160px;
+    width: 160px;
+}
+
+.userCenterPopContainer{
+    background-color: var(--background12);
+    padding: 20px 5%;
+  }
+.login_form_item {
+    padding: 0;
+    // margin-bottom: 20px;
+  }
+.submit_btn {
+    width: 275px;
+    height: 50px;
+    border-radius: 36px;
+    margin-left: 10px;
+}
+
+.goback_btn {
+    border-radius: 36px;
+    width: 115px;
+    height: 50px;
+    border: 1px solid var(--text-color4);
+    color: var(--btncolor2);
+}

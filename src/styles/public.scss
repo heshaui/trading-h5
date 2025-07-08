@@ -1,3 +1,21 @@
+.button-color,
+.btn-color {
+    background: var(--btncolor5);
+    border-radius: 36px;
+    color: #ffffff;
+}
+
+.button-color-disable,
+.btn-disable {
+    background: var(--cancel-btn);
+    border-radius: 36px;
+    color: var(--cancel-color);
+}
+
+.btn-color-default {
+    border-radius: 36px;
+    color: var(--btncolor5);
+}
 .default_btn{
   background-color: var(--theme-color);
   color: #fff;
@@ -58,7 +76,7 @@
 .default_icon {
   color: #A4A5AC;
 }
-.theme_color {
+.theme_color,.theme-color {
   color: var(--theme-color);
 }
 .hover_theme:hover{
@@ -207,6 +225,9 @@
 
 .h-overmax {
   min-height: 100vh;
+}
+.h-max {
+  min-height: calc(100vh - 48px);
 }
 .page-h{
   min-height: calc(100vh - 80px);

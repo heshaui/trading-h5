@@ -18,6 +18,7 @@ import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import PhoneCodeSelector from "@/components/PhoneCodeSelector";
+import SafeModal from "@/components/PopUp/loginModal";
 
 
 interface useInfoType {
@@ -54,14 +55,8 @@ function Phonebox() {
 		const visitorId = await result.get();
 		return visitorId.visitorId;
 	};
+
 	const onFinish = async () => {
-		form
-			.validateFields()
-			.then(async (values) => {
-				console.log(values, 111);
-			})
-	}
-	const onFinish2 = async () => {
 		form
 			.validateFields()
 			.then(async (values) => {
@@ -245,7 +240,7 @@ function Phonebox() {
 					className={`${styles.login_form_item}`}
 				>
 					<Input
-					clearable={true}
+						clearable={true}
 						type="password"
 						placeholder={t('passwordPlaceholder')}
 						maxLength={30}
@@ -255,7 +250,7 @@ function Phonebox() {
 				<div className="w-full flex-x align-center justify-end">
 					<button
 						type="button"
-						className={`${styles.forget_password_button}`}
+						className={`${styles.forget_password_button} font-16`}
 						onClick={() => goResetPassword()}
 					>
 						{/* 忘记密码 */}
@@ -271,7 +266,7 @@ function Phonebox() {
 				{/* 登录 */}
 				{t('loginButton')}
 			</button> :
-				<button type="submit" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
+				<button type="button" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
 					{/* 登录 */}
 					{t('loginButton')}
 				</button>}
@@ -281,7 +276,7 @@ function Phonebox() {
 					{t('noAcount')}
 					<button
 						type="button"
-						className="text-color"
+						className="theme_color"
 						onClick={() => goRegister()}
 					>
 						{/* 注册 */}
@@ -289,11 +284,11 @@ function Phonebox() {
 					</button>
 				</p>
 			</div>
-			{/* <SafeModal
-					open={codeModelOpen}
-					acountInfo={loginInfo}
-					onCancel={handCodeCancel}
-				/> */}
+			<SafeModal
+				open={codeModelOpen}
+				acountInfo={loginInfo}
+				onCancel={handCodeCancel}
+			/>
 		</div>
 	);
 }

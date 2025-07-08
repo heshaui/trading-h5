@@ -184,8 +184,8 @@
 }
 
 .mail_input {
-    color: var(--text-color5) !important;
-    background-color: var(--background11) !important;
+    color: var(--text-color5) ;
+    background-color: var(--background11) ;
 }
 
 /* 输入框组件覆盖 */
@@ -232,6 +232,11 @@
 .login_form_item {
     padding: 0;
     // margin-bottom: 20px;
+    :global {
+        .adm-input-element{
+            color: var(--text-color5) !important;
+        }
+    }
 }
 .mail_input{
     height: 50px;

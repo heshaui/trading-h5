@@ -59,7 +59,7 @@ function Login() {
 
 
 	return (
-		<div className={`relative flex h-overmax w-full flex-row ${styles.page_box}`} >
+		<div className={`relative flex h-max  w-full flex-row ${styles.page_box}`} >
 
 			<div className="m-auto flex flex-ai-center w-full flex-col flex-1 position-relative">
 				<div style={{ width: "100%" }}>

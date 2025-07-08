@@ -229,7 +229,10 @@ const EmailAutoComplete = forwardRef<any, EmailAutoProps>(({
               {!inputValue && showHistory && historyEmails.length > 0 && (
                 <div className={styles.suggestionHeader}>
                   <Iconify icon="eva:clock-outline" size={14} />
-                  <span className={styles.headerText}>历史输入</span>
+                  <span className={styles.headerText}>
+                    {/* 历史输入 */}
+                    {t('titleText.historyInput')}
+                    </span>
                 </div>
               )}
               {suggestions.map((suggestion, index) => (
@@ -241,7 +244,10 @@ const EmailAutoComplete = forwardRef<any, EmailAutoProps>(({
                   {/* {getSuggestionIcon(suggestion.type)} */}
                   <span className={styles.suggestionText}>{suggestion.label}</span>
                   {suggestion.type === 'history' && (
-                    <span className={styles.suggestionTag}>历史</span>
+                    <span className={styles.suggestionTag}>
+                        {/* 历史 */}
+                        {t('titleText.history')}
+                        </span>
                   )}
                 </div>
               ))}
@@ -262,17 +268,23 @@ const EmailAutoWrapper: React.FC<{
   showHistory?: boolean;
   maxHistoryCount?: number;
   disabled?: boolean;
-}> = ({ className, placeholder, showHistory, maxHistoryCount, disabled }) => {
+  value?: string;
+  onChange?: (value: string) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
+}> = ({ className, placeholder, showHistory, maxHistoryCount, disabled, value, onChange, onBlur, onFocus }) => {
   return (
-    <Form.Item name="email" noStyle>
-      <EmailAutoComplete
-        className={className}
-        placeholder={placeholder}
-        showHistory={showHistory}
-        maxHistoryCount={maxHistoryCount}
-        disabled={disabled}
-      />
-    </Form.Item>
+    <EmailAutoComplete
+      className={className}
+      placeholder={placeholder}
+      showHistory={showHistory}
+      maxHistoryCount={maxHistoryCount}
+      disabled={disabled}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      onFocus={onFocus}
+    />
   );
 };
 

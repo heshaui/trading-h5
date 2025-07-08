@@ -6,6 +6,7 @@ import styles from './styles/Header.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import MenuIcon from './MenuIcon';
 import UserIcon from './UserIcon';
+import appStore from '@/store';
 
 const Header = () => {
 	const { logoUrl } = useLogoImage("");
@@ -29,8 +30,9 @@ const Header = () => {
 					<Image
 						src={logoUrl || ""}
 						alt="home logo"
-						width={140}
-						height={28} // 固定高度
+						// width={140}
+						// height={28} // 固定高度
+						className={`${styles.logoImg}`}
 					// style={{ height: "28px", width: '140px' }} // 使用style控制宽度自适应
 					// onError={() => setLogoUrl('')} // 图片加载失败时使用默认值
 					/>
@@ -38,10 +40,10 @@ const Header = () => {
 
 				{/* 右侧图标 */}
 				<div className={styles.iconGroup}>
-					<div className={` flex-x-cc pr-4`}>
+				<div className={`${styles.iconButtonBox} flex-x-cc pr-4`}>
 						<UserIcon />
 					</div>
-					<div className={`${styles.iconButtonBox} flex-x-cc pl-4`}>
+					<div className={` flex-x-cc pl-3`}>
 						<MenuIcon />
 					</div>
 				</div>

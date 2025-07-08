@@ -1,4 +1,70 @@
 {
+  "common": {
+    "router": {
+      "market": "Market",
+      "transaction": "Transaction",
+      "spot": "Spot",
+      "flash": "Flash",
+      "futures": "Futures",
+      "finance": "Finance",
+      "language": "Language",
+      "theme": "Theme Mode",
+      "zh": "Simplified Chinese",
+      "en": "English",
+      "download": "Download IMSaas App",
+      "overview": "Overview",
+      "security": "Security Authentication",
+      "identity": "Identity Verification",
+      "setting": "Settings",
+      "inviteFriend": "Invite Friends"
+    },
+    "langAndRate": {
+      "lang": "Language",
+      "rate": "Exchange Rate",
+      "search": "Search"
+    }
+  },
+  "btnText": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "reset": "Reset",
+    "search": "Search",
+    "back": "Back",
+    "more": "More",
+    "refresh": "Refresh",
+    "filter": "Filter",
+    "ok": "Confirm",
+    "beSure": "I understand",
+    "close": "Close",
+    "closeAll": "Close All",
+    "clear": "Clear",
+    "clearAll": "Clear All",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo",
+    "note": "Important Note",
+    "err": "Operation Failed",
+    "success": "Operation Successful",
+    "inputCode": "Please enter",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "titleText": {
+    "historyInput": "History Input",
+    "history": "History",
+    "selectCountry": "Select Country/Region"
+  },
+ 
+  
+  
   "title": "Welcome",
   "description": "This is the homepage",
   "home1": "IMBIT Digital Currency Exchange: Faster, Better, Stronger",
@@ -155,20 +221,7 @@
       "title": "Flash Swap Order"
     }
   },
-  "common": {
-    "confirm": "Confirm",
-    "cancel": "Cancel",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "loading": "Loading...",
-    "submit": "Submit",
-    "reset": "Reset",
-    "search": "Search",
-    "back": "Back",
-    "more": "More",
-    "refresh": "Refresh"
-  },
+
   "nav": {
     "home": "Home",
     "market": "Market",

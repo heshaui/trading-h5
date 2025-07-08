@@ -18,6 +18,7 @@ import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import EmailAuto from "@/components/EmailAuto";
+import SafeModal from "@/components/PopUp/loginModal";
 
 
 interface useInfoType {
@@ -156,6 +157,9 @@ function Mailbox() {
                     setLoading(false)
                 }
 
+            })
+            .catch(error => {
+                console.log(error)
             })
         // form.resetFields(); //重置表单
         // setLoading(true);
@@ -305,10 +309,10 @@ function Mailbox() {
                 </p>
             </div>
             {/* <ErrModal open={errModelOpen} errMsg={errMsg} onCancel={handCancel} /> */}
-            {/* <SafeModal open={codeModelOpen}
+            <SafeModal open={codeModelOpen}
                     acountInfo={loginInfo}
                     onCancel={handCodeCancel}
-                /> */}
+                />
         </div>
     );
 }

@@ -45,7 +45,7 @@
 //   gap: 16px;
 }
 .iconButtonBox{
-    border-left: 1px solid var(--border-color8);
+    border-right: 1px solid var(--border-color8);
 }
 .iconButton {
   background: none;
@@ -65,7 +65,10 @@
     background-color: rgba(255, 255, 255, 0.2);
   }
 }
-
+.logoImg{
+    width: 140px;
+    height: 28px;
+}
 // 响应式设计和安全距离优化
 @media screen and (max-width: 768px) {
   .headerContent {

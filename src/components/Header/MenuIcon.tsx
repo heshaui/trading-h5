@@ -90,7 +90,7 @@ const MenuIcon: React.FC = observer(() => {
 
     // 处理菜单项点击
     const handleMenuItemClick = (item: MenuItemType) => {
-        console.log('菜单项点击:', item.title);
+        console.log('菜单项点击:', item);
         // 这里可以添加路由跳转或其他逻辑
     };
     return (<>

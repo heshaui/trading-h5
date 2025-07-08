@@ -1,20 +1,41 @@
 import React from 'react';
-import UserHeader from '../components/UserHeader';
-import SafeCenter from '../components/security/SafeCenter/index.';
+import { Iconify } from '@/components/icon'
 import { useLanguage } from '@/hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
+import CustomTab from '@/components/CustomTab';
+import LoginRecord from "../components/security/SafeLog/LoginRecord";
+import SafeSet from "../components/security/SafeLog/SafeSet";
+import './index.scss'
 
+export const layout = 'header-only';
 const Security: React.FC = () => {
 	const { t } = useLanguage('userCenter');
+	const navigate = useNavigate();
+	const tabsItems = [
+		{
+			key: '1',
+			title: t('security.safeSet.loginRecord'),//'语言',
+			children: <LoginRecord />
+		},
+		{
+			key: '2',
+			title: t('security.safeSet.safeSetRecord'),//'语言',
+			children: <SafeSet />
+		},
+	]
 	return (
-		<div>
-			<UserHeader title={t('safeCenter.security')} />
-			<div className="py-6 px-4 bg-[var(--btnbgcolor3)]">
-				<h3 className="leading-7 text-[20px] font-medium mb-4">{ t('safeCenter.security') }</h3>
-				<div className="bg-[var(--background8)] rounded-lg pt-5">
-					<SafeCenter />
-				</div>
-			</div>
-		</div>
+		<>
+			<h3 className="pl-4 text-[20px] h-[60px] flex items-center font-medium border-b border-b-[var(--border-color6)]" onClick={() => navigate(-1)}>
+				<Iconify icon="icon-park-outline:left" className="text-[24px]"/>
+				<span className="ml-1">{ t('security.securityDevice') }</span>
+			</h3>
+			<CustomTab
+				tabsItems={ tabsItems }
+				stretch={false}
+				activeLineMode='fixed'
+				className="safeTabs"
+            />
+		</>
 	);
 };
 

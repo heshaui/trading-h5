@@ -309,99 +309,99 @@ const SafeCenter: React.FC = observer(() => {
 	const getSafeCenterData = async () => {
 		setLoading(true);
 		try {
-		const res = await getSafeCenter();
-		const { code, data } = res;
-		if (code === "0") {
-			setLoadingSkeleton(false);
-			setSafeData(data);
-			const localUserInfo = JSON.parse(
-			localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || "{}"
-			);
-			localStorage.setItem(
-			LOCAL_STORAGE_KEY.USER_INFO,
-			JSON.stringify(Object.assign({}, localUserInfo, data))
-			);
-			const securityMethodsCount = checkMethodsCount(data);
-			const baseSafeData = initBaseSafeList.map((item: SafeListItem) => {
-			if (data.hasOwnProperty(item.type)) {
-				// 判断是否有足够的安全验证方式允许解绑
-				// 只有当安全验证方式数量大于2时才允许解绑
-				const canUnbind = securityMethodsCount > 2;
-				if (item.type === "googleCode") {
-				const value = data[item.type];
-				// 如果只有一种安全验证方式，且当前是googleCode，则过滤掉close按钮
-				const filteredBindBtn = !canUnbind
-					? item.bindBtn.filter((btn) => btn.key !== "close")
-					: item.bindBtn.filter((btn) => btn.key !== "open");
-				return {
-					...item,
-					bindValue: t("security.enabled"), //'启用',
-					isBind: Boolean(value),
-					bindBtn: filteredBindBtn,
-				};
-				}
-				if (item.type === "password") {
-				const value = data[item.type];
-				return {
-					...item,
-					bindValue: t("security.set"), //'已设置',
-					isBind: Boolean(value),
-				};
-				}
-				if (item.type === "phone" || item.type === "email") {
-				const value = data[item.type];
-				// 如果只有2种安全验证方式，且当前是phone或email，则过滤掉close按钮
-				const filteredBindBtn = !canUnbind
-					? item.bindBtn.filter((btn) => btn.key !== "close")
-					: item.bindBtn;
-				return {
-					...item,
-					bindValue: encryptString(value),
-					isBind: Boolean(value),
-					bindBtn: filteredBindBtn,
-				};
-				}
-				const value = data[item.type];
-				return {
-				...item,
-				bindValue: value,
-				isBind: Boolean(value),
-				};
-			}
-			return item;
-			});
-			const securityLogData = initSecurityLogList.map(
-			(item: SecurityLogItem) => {
+			const res = await getSafeCenter();
+			const { code, data } = res;
+			if (code === "0") {
+				setLoadingSkeleton(false);
+				setSafeData(data);
+				const localUserInfo = JSON.parse(
+					localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || "{}"
+				);
+				localStorage.setItem(
+					LOCAL_STORAGE_KEY.USER_INFO,
+					JSON.stringify(Object.assign({}, localUserInfo, data))
+				);
+				const securityMethodsCount = checkMethodsCount(data);
+				const baseSafeData = initBaseSafeList.map((item: SafeListItem) => {
 				if (data.hasOwnProperty(item.type)) {
-				const value = data[item.type];
-				return {
+					// 判断是否有足够的安全验证方式允许解绑
+					// 只有当安全验证方式数量大于2时才允许解绑
+					const canUnbind = securityMethodsCount > 2;
+					if (item.type === "googleCode") {
+					const value = data[item.type];
+					// 如果只有一种安全验证方式，且当前是googleCode，则过滤掉close按钮
+					const filteredBindBtn = !canUnbind
+						? item.bindBtn.filter((btn) => btn.key !== "close")
+						: item.bindBtn.filter((btn) => btn.key !== "open");
+					return {
+						...item,
+						bindValue: t("security.enabled"), //'启用',
+						isBind: Boolean(value),
+						bindBtn: filteredBindBtn,
+					};
+					}
+					if (item.type === "password") {
+					const value = data[item.type];
+					return {
+						...item,
+						bindValue: t("security.set"), //'已设置',
+						isBind: Boolean(value),
+					};
+					}
+					if (item.type === "phone" || item.type === "email") {
+					const value = data[item.type];
+					// 如果只有2种安全验证方式，且当前是phone或email，则过滤掉close按钮
+					const filteredBindBtn = !canUnbind
+						? item.bindBtn.filter((btn) => btn.key !== "close")
+						: item.bindBtn;
+					return {
+						...item,
+						bindValue: encryptString(value),
+						isBind: Boolean(value),
+						bindBtn: filteredBindBtn,
+					};
+					}
+					const value = data[item.type];
+					return {
 					...item,
-					value: value,
 					bindValue: value,
 					isBind: Boolean(value),
-				};
+					};
 				}
 				return item;
-			}
-			);
-			// console.log(baseSafeData, 1);
-			// console.log(securityLogData, 2);
+				});
+				const securityLogData = initSecurityLogList.map(
+				(item: SecurityLogItem) => {
+					if (data.hasOwnProperty(item.type)) {
+					const value = data[item.type];
+					return {
+						...item,
+						value: value,
+						bindValue: value,
+						isBind: Boolean(value),
+					};
+					}
+					return item;
+				}
+				);
+				// console.log(baseSafeData, 1);
+				// console.log(securityLogData, 2);
 
-			setBaseSafeList(baseSafeData);
-			setSecurityLogList(securityLogData);
-		} else {
+				setBaseSafeList(baseSafeData);
+				setSecurityLogList(securityLogData);
+			} else {
+				Toast.show({
+					icon: 'fail',
+					content: res.message,
+				})
+			}
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
 			Toast.show({
 				icon: 'fail',
-				content: res.message,
+				content: String(error),
 			})
-		}
-		setLoading(false);
-		} catch (error) {
-		setLoading(false);
-		Toast.show({
-			icon: 'fail',
-			content: String(error),
-		})
 		}
 	};
 	// 重新获取安全中心数据
@@ -416,7 +416,7 @@ const SafeCenter: React.FC = observer(() => {
 	};
 
 	useEffect(() => {
-		getSafeCenterData();
+		// getSafeCenterData();
 	}, [langKey]);
 
 	return (

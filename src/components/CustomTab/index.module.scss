@@ -19,6 +19,11 @@
   :global(.adm-tabs-tab-active){
     color: var(--text-color5);
   }
-
+  :global(.adm-tabs-tab-line){
+    background: var(--text-color5);
+  }
+  :global(.adm-tabs-content) {
+    color: var(--text-color5);
+  }
 }
 }

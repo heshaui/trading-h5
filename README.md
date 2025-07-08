@@ -11,10 +11,10 @@ pages/
 ## 布局
 目前三种：
 MainLayout：包含页头、页脚       默认
-BlankLayout: 空页面            需要在页面配置 const layout = 'blank' 或者 const meta = {layout: 'blank'}
-HeaderOnlyLayout: 只有页头      需要在页面配置 const layout = 'header-only' 或者 const meta = {layout: 'header-only'}
+BlankLayout: 空页面            需要在页面配置 export const layout = 'blank' 或者 export const meta = {layout: 'blank'}
+HeaderOnlyLayout: 只有页头      需要在页面配置 export const layout = 'header-only' 或者 export const meta = {layout: 'header-only'}
 
 ## 页面权限
 两种：未登录可查看，登录可查看
 登录可查看——默认
-未登录可查看——需在页面配置 const meta = {layout: '', requireAuth: false}
+未登录可查看——需在页面配置 export const meta = {layout: '', requireAuth: false}

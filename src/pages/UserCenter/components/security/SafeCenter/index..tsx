@@ -19,6 +19,8 @@ import SecurityIcon from '@/assets/images/userCenter/safe/icon_security_og.svg';
 import CheckIcon from '@/assets/images/userCenter/safe/check.svg';
 import CloseIcon from '@/assets/images/userCenter/safe/close.svg';
 
+import BindGoogleModal from '../Modal/BindGoogleModal';
+
 
 // 按钮配置接口
 interface ButtonConfig {
@@ -547,6 +549,13 @@ const SafeCenter: React.FC = observer(() => {
 					})
 				}
 			</ul>
+			{/* 绑定谷歌 */}
+			<BindGoogleModal
+				open={BindGoogleModalOpen}
+				acountInfo={safeData}
+				onOk={() => handOk()}
+				onCancel={() => setBindGoogleModalOpen(false)}
+			/>
 		</>
 	);
 });

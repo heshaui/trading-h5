@@ -8,6 +8,7 @@ import { useWebConfig } from '@/hooks/useKv';
 import './App.scss';
 import './styles/public.scss'
 import './styles/init.scss'
+import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
 import appStore from '@/store';
 import { useEffect } from 'react';

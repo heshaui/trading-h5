@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { Toast } from 'antd-mobile';
 import { getUserDeviceNoList, delectUserDeviceNo } from "@/services/safeCenter";
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
+import DeleteModal from '../components/security/Modal/DelEquipmentModal';
 
 interface DataLogsType {
     id: number,
@@ -420,6 +421,11 @@ const SafeEquipment: React.FC = () => {
 					description='暂无数据'
 				/>
 			}
+			<DeleteModal 
+				open={open}
+				onOk={handleOk}
+				onCancel={() => setOpen(false)}
+			/>
 		</div>
 	)
 };

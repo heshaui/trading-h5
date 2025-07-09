@@ -1,0 +1,32 @@
+.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
+.ant-input-outlined:hover {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.ant-input::placeholder {
+    color: var(--text-color4);
+    font-size: 16px;
+}
+
+.custom-steps {
+    &.ant-steps .ant-steps-item-process .ant-steps-item-icon {
+        background-color: var(--theme-color);
+        border-color: var(--theme-color);
+    }
+
+    &.ant-steps .ant-steps-item-tail::after {
+        background: var(--border-color10) !important;
+    }
+    .ant-steps-item-finish .ant-steps-item-tail::after {
+        background: var(--theme-color) !important;
+    }
+
+    &.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
+        background: var(--theme-03) !important;
+        border-color: var(--theme-03) !important;
+        .ant-steps-icon {
+            color: var(--theme-color) !important;
+        }
+    }
+}

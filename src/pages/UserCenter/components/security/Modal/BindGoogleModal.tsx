@@ -1,14 +1,7 @@
 import { Modal, ConfigProvider, Form, Input, Steps, QRCode } from "antd";
-// import { type CSSProperties, useState, useEffect } from "react";;
-import type { ModalProps } from "antd/es/modal/interface";
 import { Toast, Popup } from 'antd-mobile';
-// import { Iconify } from "@/components/icon/index";
-// import store from "@/store"
-// import { useRouter } from 'next/router';
 import styles from "./styles/setGoogle.module.scss";
-// import Image from 'next/image'
 import { Iconify } from "@/components/icon/index";
-// import PhoneCodeSelector from "@/components/PhoneCodeSelector"
 import { useState, useEffect } from "react";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { getGoogleKey, bindGoogle } from "@/services/safeCenter";
@@ -17,7 +10,7 @@ import { getGoogleKey, bindGoogle } from "@/services/safeCenter";
 //     getEmailCode,
 //     unbindGoogle
 // } from '@/services/safeCenter'
-import { encryptData, encryptEmail, encryptPhoneNumber } from "@/utils/encrypt";
+import { encryptData } from "@/utils/encrypt";
 import { useLanguage } from '@/hooks/useLanguage';
 interface acountType {
   countryCode?: string;
@@ -74,12 +67,12 @@ function BindGoogleModal({ open, onCancel, type, onOk, acountInfo }: Props) {
   const handOk = async () => {
     // onOk(type)
     // 0:修改手机号 1:关闭手机验证 2:修改邮箱 3:修改密码 4:关闭谷歌验证 5:绑定邮箱
-    form.validateFields().then(async (values) => {
+    form.validateFields().then(async (values: { googleCode: any; }) => {
       setLoading(true);
       try {
         const params = {
           googleCode: values.googleCode || "",
-          platformType: "Web",
+          platformType: "H5",
         };
         const dataEncrypt = await encryptData(params);
         const res = await bindGoogle(dataEncrypt);

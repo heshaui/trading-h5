@@ -66,7 +66,7 @@ function Phonebox() {
 				// const data = {
 				// 	type: "p",
 				// 	phone: values.phoneNumber,
-				// 	deviceType: "web",
+				// 	deviceType: "H5",
 				// 	password: values.password,
 				// 	authCodePhone: "",
 				// 	countryCode: values.areaCode
@@ -88,7 +88,7 @@ function Phonebox() {
 						const data = {
 							type: "p",
 							phone: values.phoneNumber,
-							deviceType: "Web",
+							deviceType: "H5",
 							password: values.password,
 							authCodePhone: "",
 							countryCode: values.areaCode,
@@ -109,7 +109,7 @@ function Phonebox() {
 						//     ...res.data,
 						//     type: "m",
 						//     email: values.email,
-						//     deviceType: "web",
+						//     deviceType: "H5",
 						//     password: values.password,
 						//     authCodeMail: "",
 
@@ -250,7 +250,7 @@ function Phonebox() {
 				<div className="w-full flex-x align-center justify-end">
 					<button
 						type="button"
-						className={`${styles.forget_password_button} font-16`}
+						className={`${styles.forget_password_button} font-14`}
 						onClick={() => goResetPassword()}
 					>
 						{/* 忘记密码 */}
@@ -260,17 +260,17 @@ function Phonebox() {
 			</Form>
 			{!loading ? <button
 				type="submit"
-				className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
+				className={`${styles.login_button} font-16 flex-x-cc w-full button-color mt-5`}
 				onClick={onFinish}
 			>
 				{/* 登录 */}
 				{t('loginButton')}
 			</button> :
-				<button type="button" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
+				<button type="button" className={`${styles.login_loading} font-16 flex-x-cc w-full button-color mt-5`}>
 					{/* 登录 */}
 					{t('loginButton')}
 				</button>}
-			<div className="flex-cc mt-4">
+			<div className="flex-cc mt-4 font-14">
 				<p>
 					{/* 没有账号？ */}
 					{t('noAcount')}

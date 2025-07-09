@@ -105,6 +105,7 @@ const UserIcon: React.FC = observer(() => {
         appStore.clearUserInfo()
         appStore.clearToken()
         navigate('/login')
+        setVisible(false)
     }
     return (<>
         <button
@@ -184,6 +185,7 @@ const UserIcon: React.FC = observer(() => {
                                 className={`${styles.loginBtn} cancel_btn2 font-16 mr-3 flex-1 flex-x-cc`}
                                 onClick={()=>{
                                     navigate('/register')
+                                    setVisible(false)
                                 }} >
 
                                 {t('btnText.register')}
@@ -192,6 +194,7 @@ const UserIcon: React.FC = observer(() => {
                                 className={`${styles.loginBtn} btn-color font-16  flex-1 flex-x-cc`}
                                 onClick={()=>{
                                     navigate('/login')
+                                    setVisible(false)
                                 }} >
 
                                 {t('btnText.login')}

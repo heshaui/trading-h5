@@ -1,0 +1,58 @@
+.msg_color {
+    color: #676867;
+    font-size: 14px;
+}
+
+.icon_box {
+    height: 160px;
+    width: 160px;
+}
+.title_color2 {
+    color: #FFFFFF;
+}
+.strong_color {
+    color: var(--btncolor5)
+}
+
+/* modal 主体 */
+.modal_content {
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.modal_body {
+    padding: 24px 20px 0 20px !important;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal_footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+    /* border-radius: 0 0 10px 10px; */
+}
+
+.modal_footer_box {
+    width: 100%;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid #37373A;
+}
+
+.modal_footerBtn {
+    min-width: 80px;
+    padding: 8px 28px;
+    border-radius: 53px;
+    width: 100%;
+}
+
+.modal_body,
+.modal_header,
+.modal_footer_box {
+    background-color: var(--background13) !important;
+}
+.modal_QRCode{
+    border: 1px solid #37373A;
+    border-radius: 8px;
+}

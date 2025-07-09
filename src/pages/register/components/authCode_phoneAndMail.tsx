@@ -129,7 +129,7 @@ function AuthCode() {
       if (registerInfo.type === "m") {
         const dataInfo = {
           number: registerInfo.email || "",
-          deviceType: "web",
+          deviceType: "H5",
         };
         const dataEncrypt = await encryptData(dataInfo);
         const res = await getRegisterMailCode(dataEncrypt);
@@ -150,7 +150,7 @@ function AuthCode() {
         const dataInfo = {
           number: registerInfo.phone || "",
           code: registerInfo.countryCode?.replace("+", ""),
-          deviceType: "web",
+          deviceType: "H5",
         };
         const dataEncrypt = await encryptData(dataInfo);
         const res = await getRegisterSmsCode(dataEncrypt);

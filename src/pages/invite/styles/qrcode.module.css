@@ -1,0 +1,51 @@
+
+.errModal_btn {
+    font-weight: 500;
+    font-size: 14px;
+    width: 170;
+    height: 36;
+}
+
+.title {
+    color: var(--text-color5);
+    font-weight: 500;
+    font-size: 16px;
+    background: var(--background5);
+    border-bottom: 1px solid var(--border-color6);
+    padding: 0 20px 20px 20px;
+}
+
+.msg_color {
+    color: #676867;
+    font-size: 14px;
+}
+.icon_box{
+    height: 160px;
+    width: 160px;
+}
+.modal_content{
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+.modal_body{
+    padding: 24px 20px  0 20px !important;
+}
+.modal_footer{
+    padding: 0 20px !important;
+}
+.modal_footerBtn{
+    min-width: 80px;
+    padding: 8px 28px;
+    border-radius: 53px;
+}
+.suffix_icon{
+    color: var(--cancel-color);
+}
+.input_box{
+    background: var(--background5);
+    color: var(--text-color6);
+}
+.input_box:focus:not(:hover) {
+    background-color: var(--homeground5) !important;
+    color: var(--text-color6) !important;
+}

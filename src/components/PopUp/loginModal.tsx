@@ -282,7 +282,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                 const dataInfo = {
                     number: acountInfo.email || "",
                     // code: "",
-                    deviceType: "web",
+                    deviceType: "H5",
                 };
 
                 const dataEncrypt = await encryptData(dataInfo);
@@ -309,7 +309,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                 const dataInfo = {
                     number: acountInfo.phone || "",
                     code: acountInfo.countryCode?.replace("+", ""),
-                    deviceType: "web",
+                    deviceType: "H5",
                 };
                 const dataEncrypt = await encryptData(dataInfo);
                 const res = await getLoginSmsCode(dataEncrypt);
@@ -566,12 +566,12 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             <Form.Item
                                 name="googleCode"
                                 rules={[{ required: true, message: t("safeModal.codeNull") }]}
-                                className={`${styles.login_form_item} position-relative`}
+                                className={`${styles.login_form_item} position-relative mr-3`}
                             >
                                 <Input
                                     autoComplete="off"
-                                    className={`${styles.mail_input} `}
-                                    style={{ width: "100%", height: "40px", color: "var(--text-color5)" }}
+                                    className={`${styles.mail_input} w-full mr-3`}
+                                    style={{  color: "var(--text-color5)" }}
                                     placeholder={t("safeModal.inputPlaceholder")}
                                     clearable={true}
                                     type='number'

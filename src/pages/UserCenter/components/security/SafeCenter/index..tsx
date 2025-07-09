@@ -20,11 +20,14 @@ import CheckIcon from '@/assets/images/userCenter/safe/check.svg';
 import CloseIcon from '@/assets/images/userCenter/safe/close.svg';
 
 import BindGoogleModal from '../Modal/BindGoogleModal';
+import UnbindGoogleModal from '../Modal/UnbindGoogleModal';
 import SetPhoneModal from '../Modal/SetPhoneModal';
 import SetMailModal from "../Modal/SetMailModal";
 import CheckModal from '../Modal/CheckModal';
 import SetLockModal from '../Modal/SetLockModal';
 import LockSafeModal from '../Modal/LockSafeModal';
+import MailSafeModal from '../Modal/MailSafeModal';
+import PhoneSafeModal from '../Modal/PhoneSafeModal';
 
 
 // 按钮配置接口
@@ -320,7 +323,7 @@ const SafeCenter: React.FC = observer(() => {
 			setMailSafeModalOpen(true);
 			setSafeType("2");
 		} else if (type.toString() === "3" || type.toString() === "5") {
-		// 修改密码-2验证安全弹窗
+			// 修改密码-2验证安全弹窗
 			setLockSafeModalOpen(true);
 			setSafeType("3");
 		} else if (type.toString() === "4") {
@@ -498,7 +501,7 @@ const SafeCenter: React.FC = observer(() => {
 	};
 
 	useEffect(() => {
-		// getSafeCenterData();
+		getSafeCenterData();
 	}, [langKey]);
 
 	return (
@@ -512,7 +515,7 @@ const SafeCenter: React.FC = observer(() => {
 						(
 							<li className="px-5">
 								<Skeleton.Title />
-        						<Skeleton.Paragraph />
+        						<Skeleton.Paragraph animated />
 							</li>
 						) :
 						(
@@ -594,7 +597,7 @@ const SafeCenter: React.FC = observer(() => {
 						(
 							<li className="px-5">
 								<Skeleton.Title />
-        						<Skeleton.Paragraph />
+        						<Skeleton.Paragraph animated />
 							</li>
 						) : 
 						(
@@ -636,6 +639,13 @@ const SafeCenter: React.FC = observer(() => {
 				onOk={() => handOk()}
 				onCancel={() => setBindGoogleModalOpen(false)}
 			/>
+			{/* 解绑谷歌 */}
+			<UnbindGoogleModal
+				open={unbindGoogleModalOpen}
+				acountInfo={safeData}
+				onOk={() => handOk()}
+				onCancel={() => setUnbindGoogleModalOpen(false)}
+			/>
 			{/* 设置/修改手机号 */}
 			<SetPhoneModal
 				open={phoneModalOpen}
@@ -673,6 +683,20 @@ const SafeCenter: React.FC = observer(() => {
 				onOk={handsvcOk}
 				acountInfo={safeData}
 				onCancel={() => setLockSafeModalOpen(false)}
+			/>
+			<MailSafeModal
+				open={mailSafeModalOpen}
+				type={safeType}
+				onOk={handsvcOk}
+				acountInfo={safeData}
+				onCancel={() => setMailSafeModalOpen(false)}
+			/>
+			<PhoneSafeModal
+				open={phoneSafeModalOpen}
+				type={safeType}
+				onOk={handsvcOk}
+				acountInfo={safeData}
+				onCancel={() => setPhoneSafeModalOpen(false)}
 			/>
 		</>
 	);

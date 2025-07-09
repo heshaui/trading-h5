@@ -36,35 +36,35 @@ const EquipmentPage: React.FC = () => {
 
 
     useEffect(() => {
-        // getUserDeviceNoListData()
-        setUserDeviceNoList([
-            {
-                deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-                id: 0,
-                userId: 0,
-                platformType: 0,
-                ip: '192.198.109.09',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: ''
-            },
-            {
-                deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-                id: 0,
-                userId: 0,
-                platformType: 0,
-                ip: '192.198.109.09',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: ''
-            },
-        ])
+        getUserDeviceNoListData()
+        // setUserDeviceNoList([
+        //     {
+        //         deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
+        //         id: 0,
+        //         userId: 0,
+        //         platformType: 0,
+        //         ip: '192.198.109.09',
+        //         address: '中国香港',
+        //         token: '',
+        //         tokenTime: '',
+        //         createTime: Date.now(),
+        //         updateTime: 0,
+        //         tenantId: ''
+        //     },
+        //     {
+        //         deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
+        //         id: 0,
+        //         userId: 0,
+        //         platformType: 0,
+        //         ip: '192.198.109.09',
+        //         address: '中国香港',
+        //         token: '',
+        //         tokenTime: '',
+        //         createTime: Date.now(),
+        //         updateTime: 0,
+        //         tenantId: ''
+        //     },
+        // ])
     }, [currentLanguage]);
 
 

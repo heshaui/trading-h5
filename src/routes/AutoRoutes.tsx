@@ -22,7 +22,7 @@ const normalizePath = (filePath: string): string => {
     .replace(/\.tsx$/, '')             // 去掉后缀
     .replace(/\/index$/, '')           // /xxx/index → /xxx
     .replace(/^\/index$/, '/')         // index.tsx → 根路由 /
-	.replace(/^\/Home$/, '/')		   // 将 Home 变成 '/'
+	  .replace(/^\/Home$/, '/')		      // 将 Home 变成 '/'
     .toLowerCase();                    // 小写处理
 };
 // 2. 生成路由配置
@@ -32,7 +32,7 @@ const routes = pageModules.keys().map((key: string) => {
   const Component = React.lazy(() => Promise.resolve({ default: mod.default }));
   const layout = mod.layout || mod.meta?.layout || 'main';
   // 登录后才能访问
-  const requireAuth = mod.meta?.requireAuth ?? false;
+  const requireAuth = mod.meta?.requireAuth ?? true;
   let path = normalizePath(key);
 
   return {

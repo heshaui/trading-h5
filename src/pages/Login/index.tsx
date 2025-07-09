@@ -18,6 +18,12 @@ interface LoginPicType {
 		url: string
 	}
 }
+
+export const meta = {
+	layout: 'blank',
+	requireAuth: false
+}
+
 function Login() {
 	const navigate = useNavigate();
 	const { t } = useLanguage('login');

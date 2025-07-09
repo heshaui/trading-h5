@@ -69,7 +69,7 @@ const UserInfo: React.FC = () => {
       }
   }
   useEffect(() => {
-        getLoginInfoData()
+      getLoginInfoData()
   }, [currentLanguage]);
   return (
     <div>

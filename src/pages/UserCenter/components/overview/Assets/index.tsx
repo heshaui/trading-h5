@@ -28,38 +28,7 @@ const AssetsPage: React.FC = observer(() => {
     const rateKey = appStore.getRateKey()?.replace(/\s+/g, ''); // 汇率key
     const userInfo = appStore.getUserInfo();
     const [tableData, setTableData] = useState<DataType[]>([]);
-    const [balanceByDay, setBalanceByDay] = useState<chartDataType[]>([
-        {
-            balance: '1',
-            time: '2025-06-25 10:00',
-            recharge: '测试',
-            symbol: '金额'
-        },
-        {
-            balance: '2',
-            time: '2025-06-25 11:00',
-            recharge: '测试',
-            symbol: '金额'
-        },
-        {
-            balance: '3',
-            time: '2025-06-25 12:00',
-            recharge: '测试',
-            symbol: '金额'
-        },
-        {
-            balance: '2',
-            time: '2025-06-25 13:00',
-            recharge: '测试',
-            symbol: '金额'
-        },
-        {
-            balance: '1',
-            time: '2025-06-25 14:00',
-            recharge: '测试',
-            symbol: '金额'
-        }
-    ]);
+    const [balanceByDay, setBalanceByDay] = useState<chartDataType[]>([]);
     const [balanceAll, setBalanceAll] = useState<BalanceAllType>({} as BalanceAllType);
     const [balanceDay, setBalanceDay] = useState<YesterdayBalanceType>({} as YesterdayBalanceType);
 
@@ -174,7 +143,7 @@ const AssetsPage: React.FC = observer(() => {
     
     useEffect(() => {
         getUserBalanceAllData();
-        // getUserBalanceDay()
+        getUserBalanceDay()
     }, [rateKey]);
     useEffect(() => {
         try {

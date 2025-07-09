@@ -120,7 +120,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
       const dataInfo = {
         number: acountInfo?.phone,
         code: acountInfo?.countryCode?.replace("+", ""),
-        deviceType: "web",
+        deviceType: "H5",
       };
       const dataEncrypt = await encryptData(dataInfo);
       const res = await getPasswordSmsCode(dataEncrypt);
@@ -158,7 +158,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
     try {
       const dataInfo = {
         number: acountInfo?.email,
-        deviceType: "web",
+        deviceType: "H5",
       };
       console.log(dataInfo, 11);
 
@@ -262,7 +262,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
   };
   const ModalFooter = () => {
     return (
-      <div className="flex-col flex-ai-start mt-10 mb-3 m-[100%]">
+      <div className="flex-col flex-ai-start mt-10 mb-3 w-[100%]">
         <button
           type="submit"
           className={`${styles.modal_footerBtn} default_btn`}
@@ -282,7 +282,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
                 </Button> */}
         <button
           type="button"
-          className={`text-color mt-5`}
+          className="text-[14px] mt-5 theme_color font-medium"
           onClick={() => setPointout(true)}
         >
           {t("security.error3")}
@@ -305,7 +305,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
         <span>{t("security.lockSafe.title")}</span>
         <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
       </p>
-      <div className="p-4 m-[100%]" >
+      <div className="p-4 w-[100%]" >
           {/* t() */}
           <Form
             name="nickname"

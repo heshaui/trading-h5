@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import { getUserLoginLogList } from "@/services/safeCenter";
-import { Toast, InfiniteScroll } from 'antd-mobile';
+import { Toast, InfiniteScroll, Skeleton } from 'antd-mobile';
 import dayjs from 'dayjs';
 import { useLanguage } from '@/hooks/useLanguage';
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
@@ -75,81 +75,17 @@ function LoginRecord() {
 
     useEffect(() => {
         getLoginData()
-        setLoginData([
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                status: '1'
-            },
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                status: '1'
-            },
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                status: '1'
-            },
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                status: '1'
-            },
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                status: '1'
-            }
-        ])
     }, [langKey])
 
-    return (
+    return loading ? 
+    (
+        <div className="p-4">
+            <Skeleton.Title />
+            <Skeleton.Paragraph lineCount={15} animated />
+        </div>
+    )
+    :
+    (
         loginData && loginData.length ?
         <>
             <ul>

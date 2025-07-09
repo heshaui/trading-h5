@@ -4,7 +4,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon'
 import { Skeleton } from 'antd-mobile'
 import { NoData } from "@/components/noData";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useQueryParams from '@/hooks/useQueryParams';
 import dayjs from 'dayjs';
 import { Toast } from 'antd-mobile';
 import { getUserDeviceNoList, delectUserDeviceNo } from "@/services/safeCenter";
@@ -46,7 +47,7 @@ export const layout = 'header-only';
 const SafeEquipment: React.FC = () => {
 	const { t } = useLanguage('userCenter');
 	const navigate = useNavigate();
-	const { userId, deviceId } = useParams();
+	const { userId, deviceId } = useQueryParams();
 	const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 	const [activeId, setActiveId] = useState<number | null>(null);
@@ -97,9 +98,10 @@ const SafeEquipment: React.FC = () => {
         });
         if (res.code === '0') {
 			let data = res.data.list
-			if (deviceId) data = res.data.list.find((item: DataType) => item.id === Number(deviceId));
+			console.log(deviceId)
+			if (deviceId) data = res.data.list.find((item: DataType) => item.id == Number(deviceId));
             setDeviceNoData(data)
-			setActiveId(data[0].id)
+			data[0].userLoginLogs?.length && setActiveId(data[0].id)
         }
         } catch (error) {
             Toast.show({
@@ -113,218 +115,14 @@ const SafeEquipment: React.FC = () => {
 
 	// 初始加载数据
     useEffect(() => {
-        // getDeviceNoData();
-		setDeviceNoData([
-			{
-				id: 0,
-				userId: 0,
-				platformType: 0,
-				deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-				ip: '192.10.1.1',
-				address: '中国香港',
-				token: '',
-				tokenTime: '',
-				createTime: Date.now(),
-				updateTime: 0,
-				tenantId: '',
-				fingerprinting: '',
-				isCurrent: true,
-				userLoginLogs: [
-					{
-						id: 0,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 1,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 2,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-				]
-			},
-			{
-				id: 1,
-				userId: 0,
-				platformType: 0,
-				deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-				ip: '192.10.1.1',
-				address: '中国香港',
-				token: '',
-				tokenTime: '',
-				createTime: Date.now(),
-				updateTime: 0,
-				tenantId: '',
-				fingerprinting: '',
-				isCurrent: false,
-				userLoginLogs: [
-					{
-						id: 0,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 1,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 2,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-				]
-			},
-			{
-				id: 2,
-				userId: 0,
-				platformType: 0,
-				deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-				ip: '192.10.1.1',
-				address: '中国香港',
-				token: '',
-				tokenTime: '',
-				createTime: Date.now(),
-				updateTime: 0,
-				tenantId: '',
-				fingerprinting: '',
-				isCurrent: false,
-				userLoginLogs: [
-					{
-						id: 0,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 1,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-					{
-						id: 2,
-						userId: 0,
-						platformType: 0,
-						deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-						ip: '192.109.109.09',
-						address: '中国香港',
-						token: '',
-						tokenTime: '',
-						createTime: 0,
-						updateTime: 0,
-						tenantId: '',
-						fingerprinting: '',
-						isCurrent: false
-					},
-				]
-			},
-			{
-				id: 3,
-				userId: 0,
-				platformType: 0,
-				deviceNo: 'Chrome 12 125.0.0.0(Mac OS X)',
-				ip: '192.10.1.1',
-				address: '中国香港',
-				token: '',
-				tokenTime: '',
-				createTime: Date.now(),
-				updateTime: 0,
-				tenantId: '',
-				fingerprinting: '',
-				isCurrent: false,
-				userLoginLogs: []
-			}
-		])
+        getDeviceNoData();
     }, []);
 
 	return loading ? 
 	(
 		<div className="p-4">
 			<Skeleton.Title />
-			<Skeleton.Paragraph lineCount={15} />
+			<Skeleton.Paragraph lineCount={15} animated />
 		</div>
 	)
 	:

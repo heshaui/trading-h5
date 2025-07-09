@@ -273,192 +273,192 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
   };
 
   return (
-	<Popup
-		visible={open}
-		onClose={onCancel}
-		closeOnMaskClick
-		position='left'
-		bodyStyle={{ width: '100vw' }}
-		bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
-	>
-		<p className={`${styles.title}`}>
-			<span>
-				{type === "set"
-				? t("security.phoneSafe.setPhone")
-				: t("security.phoneSafe.modifyPhone")}
-			</span>
-			<Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
-		</p>
-		<div className="p-4">
-			{/* t() */}
-			<Form
-				name="nickname"
-				form={form}
-				size="large"
-				style={{ width: "100%" }}
-				initialValues={{ areaCode: "+1" }}
-			>
-				<div className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}>
-				{/* 国家/地区 */}
-				{t("security.phoneSafe.country")}
-				</div>
-				<Form.Item>
-				<div className="flex">
-					<PhoneCodeSelector className={`${styles.input_box}`} />
-					<Form.Item
-					noStyle
-					name="phoneNumber"
-					rules={[
-						{
-						required: true,
-						message: t("security.phoneSafe.phoneNullError"),
-						},
-					]}
-					>
-					<Input
-						autoComplete="off"
-						styles={{ input: { color: "var(--text-color5)" } }}
-						placeholder={t("security.phoneSafe.inputNewPhone")}
-						allowClear={true}
-						className={`${styles.input_box} modal-input ml-2`}
-					/>
-					</Form.Item>
-				</div>
-				</Form.Item>
+    <Popup
+      visible={open}
+      onClose={onCancel}
+      closeOnMaskClick
+      position='left'
+      bodyStyle={{ width: '100vw' }}
+      bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+    >
+      <p className={`${styles.title}`}>
+        <span>
+          {type === "set"
+          ? t("security.phoneSafe.setPhone")
+          : t("security.phoneSafe.modifyPhone")}
+        </span>
+        <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+      </p>
+      <div className="p-4">
+        {/* t() */}
+        <Form
+          name="nickname"
+          form={form}
+          size="large"
+          style={{ width: "100%" }}
+          initialValues={{ areaCode: "+1" }}
+        >
+          <div className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}>
+          {/* 国家/地区 */}
+          {t("security.phoneSafe.country")}
+          </div>
+          <Form.Item>
+          <div className="flex">
+            <PhoneCodeSelector className={`${styles.input_box}`} />
+            <Form.Item
+            noStyle
+            name="phoneNumber"
+            rules={[
+              {
+              required: true,
+              message: t("security.phoneSafe.phoneNullError"),
+              },
+            ]}
+            >
+            <Input
+              autoComplete="off"
+              styles={{ input: { color: "var(--text-color5)" } }}
+              placeholder={t("security.phoneSafe.inputNewPhone")}
+              allowClear={true}
+              className={`${styles.input_box} modal-input ml-2`}
+            />
+            </Form.Item>
+          </div>
+          </Form.Item>
 
-				<div className={`font-16 font-w-400 mb-2_5  ${styles.tip_title}`}>
-				{/* 新手机号验证 */}
-				{t("security.phoneSafe.newPhoneCheck")}
-				</div>
-				<Form.Item
-				name="code"
-				rules={[{ required: true, message: t("security.codeError") }]}
-				>
-				<Input
-					autoComplete="off"
-					styles={{ input: { color: "var(--text-color5)" } }}
-					allowClear
-					placeholder={t("security.inputCode")}
-					// prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-					suffix={
-					<button
-						type="button"
-						className={
-						isCounting
-							? `${styles.tip_color1_input}`
-							: `${styles.text_color}`
-						}
-						onClick={getPhoneCode}
-					>
-						{isCounting ? (
-						`${countdown} ${t("security.countdown")}`
-						) : firstCheck ? (
-						<span className={`${styles.default_color}`}>
-							{t("security.sent")}
-						</span>
-						) : (
-						t("security.resend")
-						)}
-					</button>
-					}
-					className={`${styles.authcode_input} ${styles.input_box} modal-input`}
-					style={{ borderRadius: "8px" }}
-					maxLength={6}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-					handleInputChange(e, "phone")
-					}
-					value={phoneCodeInputValue}
-				/>
-				{/* <button className='text-color mt-1'>粘贴</button> */}
-				</Form.Item>
-				{type === "set" && acountInfo?.googleCode && (
-				<>
-					<div
-					className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}
-					>
-					{/* 谷歌验证码 */}
-					{t("security.google")}
-					</div>
-					<Form.Item
-					noStyle
-					name="googleCode"
-					rules={[{ required: true, message: t("security.codeError") }]}
-					>
-					<Input
-						autoComplete="off"
-						styles={{ input: { color: "var(--text-color5)" } }}
-						placeholder={t("security.inputCode")}
-						allowClear={true}
-						className={`${styles.input_box} modal-input`}
-						maxLength={6}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						handleInputChange(e, "google")
-						}
-						value={googleCodeInputValue}
-					/>
-					</Form.Item>
-				</>
-				)}
-				{type === "set" && acountInfo?.email && !acountInfo?.googleCode && (
-				<>
-					<div
-					className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}
-					>
-					{/* 邮箱验证 */}
-					{t("security.email")}
-					</div>
-					<p
-					className={`${styles.tip_color} font-12 font-w-400 mt-1 mb-2_5`}
-					>
-					{firstCheck2 ? t("security.sent2") : t("security.resend2")}
-					<span>&nbsp;{encryptEmail(acountInfo.email)}</span>
-					</p>
-					<Form.Item
-					name="emailCode"
-					rules={[{ required: true, message: t("security.codeError") }]}
-					>
-					<Input
-						autoComplete="off"
-						styles={{ input: { color: "var(--text-color5)" } }}
-						allowClear
-						placeholder={t("security.inputCode")}
-						// prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-						suffix={
-						<button
-							type="button"
-							className={
-							isCounting2
-								? `${styles.tip_color1_input}`
-								: `${styles.text_color}`
-							}
-							onClick={getMailCode}
-						>
-							{isCounting2 ? (
-							`${countdown2} ${t("security.countdown")}`
-							) : firstCheck2 ? (
-							<span className={`${styles.default_color}`}>
-								{t("security.sent")}
-							</span>
-							) : (
-							t("security.resend")
-							)}
-						</button>
-						}
-						className={`${styles.authcode_input} ${styles.input_box} modal-input`}
-						style={{ borderRadius: "8px" }}
-						maxLength={6}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						handleInputChange(e, "email")
-						}
-						value={emailCodeInputValue}
-					/>
-					</Form.Item>
-				</>
-				)}
-			</Form>
-			<ModalFooter />
-		</div>
-	</Popup>
+          <div className={`font-16 font-w-400 mb-2_5  ${styles.tip_title}`}>
+          {/* 新手机号验证 */}
+          {t("security.phoneSafe.newPhoneCheck")}
+          </div>
+          <Form.Item
+          name="code"
+          rules={[{ required: true, message: t("security.codeError") }]}
+          >
+          <Input
+            autoComplete="off"
+            styles={{ input: { color: "var(--text-color5)" } }}
+            allowClear
+            placeholder={t("security.inputCode")}
+            // prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+            suffix={
+            <button
+              type="button"
+              className={
+              isCounting
+                ? `${styles.tip_color1_input}`
+                : `${styles.text_color}`
+              }
+              onClick={getPhoneCode}
+            >
+              {isCounting ? (
+              `${countdown} ${t("security.countdown")}`
+              ) : firstCheck ? (
+              <span className={`${styles.default_color}`}>
+                {t("security.sent")}
+              </span>
+              ) : (
+              t("security.resend")
+              )}
+            </button>
+            }
+            className={`${styles.authcode_input} ${styles.input_box} modal-input`}
+            style={{ borderRadius: "8px" }}
+            maxLength={6}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInputChange(e, "phone")
+            }
+            value={phoneCodeInputValue}
+          />
+          {/* <button className='text-color mt-1'>粘贴</button> */}
+          </Form.Item>
+          {type === "set" && acountInfo?.googleCode && (
+          <>
+            <div
+            className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}
+            >
+            {/* 谷歌验证码 */}
+            {t("security.google")}
+            </div>
+            <Form.Item
+            noStyle
+            name="googleCode"
+            rules={[{ required: true, message: t("security.codeError") }]}
+            >
+            <Input
+              autoComplete="off"
+              styles={{ input: { color: "var(--text-color5)" } }}
+              placeholder={t("security.inputCode")}
+              allowClear={true}
+              className={`${styles.input_box} modal-input`}
+              maxLength={6}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(e, "google")
+              }
+              value={googleCodeInputValue}
+            />
+            </Form.Item>
+          </>
+          )}
+          {type === "set" && acountInfo?.email && !acountInfo?.googleCode && (
+          <>
+            <div
+            className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}
+            >
+            {/* 邮箱验证 */}
+            {t("security.email")}
+            </div>
+            <p
+            className={`${styles.tip_color} font-12 font-w-400 mt-1 mb-2_5`}
+            >
+            {firstCheck2 ? t("security.sent2") : t("security.resend2")}
+            <span>&nbsp;{encryptEmail(acountInfo.email)}</span>
+            </p>
+            <Form.Item
+            name="emailCode"
+            rules={[{ required: true, message: t("security.codeError") }]}
+            >
+            <Input
+              autoComplete="off"
+              styles={{ input: { color: "var(--text-color5)" } }}
+              allowClear
+              placeholder={t("security.inputCode")}
+              // prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+              suffix={
+              <button
+                type="button"
+                className={
+                isCounting2
+                  ? `${styles.tip_color1_input}`
+                  : `${styles.text_color}`
+                }
+                onClick={getMailCode}
+              >
+                {isCounting2 ? (
+                `${countdown2} ${t("security.countdown")}`
+                ) : firstCheck2 ? (
+                <span className={`${styles.default_color}`}>
+                  {t("security.sent")}
+                </span>
+                ) : (
+                t("security.resend")
+                )}
+              </button>
+              }
+              className={`${styles.authcode_input} ${styles.input_box} modal-input`}
+              style={{ borderRadius: "8px" }}
+              maxLength={6}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(e, "email")
+              }
+              value={emailCodeInputValue}
+            />
+            </Form.Item>
+          </>
+          )}
+        </Form>
+        <ModalFooter />
+      </div>
+    </Popup>
   );
 }
 

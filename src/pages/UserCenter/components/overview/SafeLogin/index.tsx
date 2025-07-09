@@ -37,35 +37,7 @@ const SafeLogPage: React.FC = () => {
 
 
     useEffect(() => {
-        setLoginLogList([
-        {
-            deviceNo: 'WEB',
-            id: 0,
-            userId: 0,
-            platformType: 0,
-            ip: '192.150.0.9',
-            address: '中国',
-            token: '',
-            tokenTime: '',
-            createTime: Date.now(),
-            updateTime: 0,
-            tenantId: ''
-        },
-        {
-            deviceNo: 'WEB',
-            id: 0,
-            userId: 0,
-            platformType: 0,
-            ip: '192.150.0.9',
-            address: '中国',
-            token: '',
-            tokenTime: '',
-            createTime: Date.now(),
-            updateTime: 0,
-            tenantId: ''
-        }
-    ])
-        // getLoginLogListData()
+        getLoginLogListData()
     }, [currentLanguage]);
 
 
@@ -76,7 +48,7 @@ const SafeLogPage: React.FC = () => {
                 {/* 最近登录 */}
                 {t('overview.recentLogin.title')}
                 <Iconify icon="mingcute:arrow-right-line" className={styles.assetIcon}
-                    onClick={() => navigate('/userCenter/safeCenter/safe_log')}
+                    onClick={() => navigate('/userCenter/security/safeLog')}
                 />
             </div>
             <div className={`flex-1`} >
@@ -87,7 +59,7 @@ const SafeLogPage: React.FC = () => {
                                 <span className='font-w-500 line-20 mb-[2px]'>
                                     {/* WEB */}
                                     {/* {`${item.deviceNo || '--'}(${item.platformType || '--'})`} */}
-                                    {`${item.deviceNo || '--'}`}
+                                    {`${item.platformType || '--'}`}
                                 </span>
                                 <span className="text-[12px] font-normal text-[#a4a5ac] leading-[17px]">
                                     {/* 中国香港 */}

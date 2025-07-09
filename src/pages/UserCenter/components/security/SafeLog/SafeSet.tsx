@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { getUserSafeSettingLoginLogList } from "@/services/safeCenter";
-import { Toast, InfiniteScroll } from 'antd-mobile';
+import { Toast, InfiniteScroll, Skeleton } from 'antd-mobile';
 import dayjs from 'dayjs';
 import { useLanguage } from '@/hooks/useLanguage';
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
@@ -91,81 +91,17 @@ function SafeSet() {
 
     useEffect(() => {
         getLoginData()
-		setLoginData([
-            {
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                settingType: 'retrieve_password'
-            },
-			{
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                settingType: 'retrieve_password'
-            },
-			{
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                settingType: 'retrieve_password'
-            },
-			{
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                settingType: 'retrieve_password'
-            },
-			{
-                id: 0,
-                userId: 0,
-                platformType: 'WEB',
-                deviceNo: '',
-                ip: '111.111.111.212',
-                address: '中国香港',
-                token: '',
-                tokenTime: '',
-                createTime: Date.now(),
-                updateTime: 0,
-                tenantId: '',
-                settingType: 'retrieve_password'
-            },
-        ])
     }, [langKey])
 
-    return (
+    return loading ? 
+    (
+        <div className="p-4">
+            <Skeleton.Title />
+            <Skeleton.Paragraph lineCount={15} animated />
+        </div>
+    )
+    :
+    (
 			loginData && loginData.length ?
 			<>
 				<ul>
@@ -195,7 +131,7 @@ function SafeSet() {
 			</>
 			:
 			<NoData />
-		);
+	);
 }
 
 export default SafeSet;

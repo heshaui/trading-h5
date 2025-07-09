@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { Iconify } from '@/components/icon';
 
 const NoAuth: React.FC = () => {
     const { t } = useLanguage('userCenter');
@@ -19,11 +20,11 @@ const NoAuth: React.FC = () => {
                     <div className="text-[12px] text-[var(--text-color6)] mb-5">仅需3-5分钟，完成标准身份认证保护您免受欺诈和非法风险</div>
                     <div className="text-[18px] font-medium mb-[10px]">身份认证需要提供一下信息：</div>
                     <div className="flex ">
-                        <div className="flex">
+                        <div className="flex items-center tip_color">
                             <img className="w-[16px] h-[16px] mr-1" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
                             基本信息
                         </div>
-                        <div className="flex">
+                        <div className="flex items-center tip_color">
                             <img className="w-[16px] h-[16px] mr-1" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
                             基本信息
                         </div>
@@ -43,7 +44,7 @@ const NoAuth: React.FC = () => {
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[20px] flex justify-between">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">尚未认证</span> 
-                           <img className="w-[20px] h-[20px]" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
+                           <Iconify icon="ep:circle-close-filled" className="text-[20px] text-[#a4a5ac]" />
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between ">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">完成标准身份认证后</span> 
@@ -58,11 +59,11 @@ const NoAuth: React.FC = () => {
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[20px] flex justify-between ">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">尚未认证</span> 
-                           <img className="w-[20px] h-[20px]" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
+                           <Iconify icon="ep:circle-close-filled" className="text-[20px] text-[#a4a5ac]" />
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between ">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">完成标准身份认证后</span> 
-                           <img className="w-[20px] h-[20px]" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
+                           <Iconify icon="ep:circle-check-filled" className="text-[20px] text-[#00c788]" />
                         </p>
                         
                     </li>
@@ -73,11 +74,11 @@ const NoAuth: React.FC = () => {
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[20px] flex justify-between ">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">尚未认证</span> 
-                           <img className="w-[20px] h-[20px]" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
+                           <Iconify icon="ep:circle-close-filled" className="text-[20px] text-[#a4a5ac]" />
                         </p>
                         <p className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between ">
                            <span className="text-[12px] font-normal text-[var(--text-color6)]">完成标准身份认证后</span> 
-                           <img className="w-[20px] h-[20px]" src="https://meta2025.oss-ap-northeast-2.aliyuncs.com/2025/05/14/35b050a0-d36f-403d-90b1-e678c8c03b5b.svg"></img>
+                           <Iconify icon="ep:circle-check-filled" className="text-[20px] text-[#00c788]" />
                         </p>
                         
                     </li>

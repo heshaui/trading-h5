@@ -24,3 +24,7 @@ const Home:React.FC = observer(() => {
 })
 
 export default Home;
+
+export const meta = {
+	requireAuth: false
+}

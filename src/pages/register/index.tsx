@@ -10,6 +10,11 @@ import styles from './styles/login.module.scss'
 import PhoneEmailAuthcode from "./components/authCode_phoneAndMail";
 import { useLanguage } from '@/hooks/useLanguage';
 import appStore from '@/store';
+
+export const meta = {
+	layout: 'blank',
+	requireAuth: false
+}
 function Register() {
 	const navigate = useNavigate();
 	const { t } = useLanguage('login');

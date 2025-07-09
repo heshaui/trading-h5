@@ -20,6 +20,11 @@ import CheckIcon from '@/assets/images/userCenter/safe/check.svg';
 import CloseIcon from '@/assets/images/userCenter/safe/close.svg';
 
 import BindGoogleModal from '../Modal/BindGoogleModal';
+import SetPhoneModal from '../Modal/SetPhoneModal';
+import SetMailModal from "../Modal/SetMailModal";
+import CheckModal from '../Modal/CheckModal';
+import SetLockModal from '../Modal/SetLockModal';
+import LockSafeModal from '../Modal/LockSafeModal';
 
 
 // 按钮配置接口
@@ -299,6 +304,81 @@ const SafeCenter: React.FC = observer(() => {
 	];
 	const [securityLogList, setSecurityLogList] = useState<SecurityLogItem[]>(initSecurityLogList);
 
+	// 确认弹窗后续操作
+	const handCheckModal = async (type: string) => {
+		// 0:修改手机号 1:关闭手机验证 2:修改邮箱 3:设置/修改密码 4:关闭谷歌验证 5:设置密码
+		if (type.toString() === "0") {
+			// 手机修改-2验证安全弹窗
+			setPhoneSafeModalOpen(true);
+			setSafeType("0");
+		} else if (type.toString() === "1") {
+			// 关闭手机-2安全验证弹窗
+			setPhoneSafeModalOpen(true);
+			setSafeType("1");
+		} else if (type.toString() === "2") {
+			// 修改邮箱-2验证安全弹窗
+			setMailSafeModalOpen(true);
+			setSafeType("2");
+		} else if (type.toString() === "3" || type.toString() === "5") {
+		// 修改密码-2验证安全弹窗
+			setLockSafeModalOpen(true);
+			setSafeType("3");
+		} else if (type.toString() === "4") {
+			setUnbindGoogleModalOpen(true);
+		}
+	};
+
+	// 安全校验完毕
+	const handsvcOk = async (type: string) => {
+		// 0:修改手机号 1:关闭手机验证 2:修改邮箱
+		if (type === "0") {
+			// 手机修改-3添加/修改手机号弹窗
+			setPhoneModalOpen(true);
+			setPhoneType("change");
+		} else if (type === "1") {
+			// 手机关闭-2关闭接口
+			await handPhoneClose();
+		} else if (type === "2") {
+			// 邮箱修改-3修改邮箱弹窗
+			setMailModalOpen(true);
+			setMailType("change");
+		} else if (type === "3") {
+			// 密码修改-3添加/修改密码弹窗
+			setLockModalOpen(true);
+			setLockType("change");
+		}
+	};
+
+	// 关闭手机
+	const handPhoneClose = async () => {
+		try {
+		const dataInfo = {
+			isPhoneAuth: 0,
+			type: 3,
+			platformType: "Web",
+		};
+		const dataEncrypt = await encryptData(dataInfo);
+		const res = await getPhoneClose(dataEncrypt);
+		if (res.code === "0") {
+			Toast.show({
+                icon: 'success',
+                content: t("success") || res.message,
+            })
+			await getSafeCenterData();
+		} else {
+			Toast.show({
+				icon: 'fail',
+				content: res.message,
+			})
+		}
+		} catch (error) {
+			Toast.show({
+				icon: 'fail',
+				content: String(error),
+			})
+		}
+	};
+
 	 // 检查安全验证方式的数量
 	const checkMethodsCount = (data: SafeDataType) => {
 		let count = 0;
@@ -555,6 +635,44 @@ const SafeCenter: React.FC = observer(() => {
 				acountInfo={safeData}
 				onOk={() => handOk()}
 				onCancel={() => setBindGoogleModalOpen(false)}
+			/>
+			{/* 设置/修改手机号 */}
+			<SetPhoneModal
+				open={phoneModalOpen}
+				type={phoneType}
+				acountInfo={safeData}
+				onOk={() => handOk()}
+				onCancel={() => setPhoneModalOpen(false)}
+			/>
+			{/* 设置/修改邮箱 */}
+			<SetMailModal
+				open={mailModalOpen}
+				type={mailType}
+				acountInfo={safeData}
+				onOk={() => handOk()}
+				onCancel={() => setMailModalOpen(false)}
+			/>
+			{/* 修改确认弹窗 */}
+			<CheckModal
+				open={checkModalOpen}
+				type={checkType}
+				onOk={handCheckModal}
+				onCancel={() => setCheckModalOpen(false)}
+			/>
+			{/* 设置/修改密码 */}
+			<SetLockModal
+				open={lockModalOpen}
+				type={lockType}
+				onOk={() => changeLock()}
+				onCancel={() => setLockModalOpen(false)}
+			/>
+			{/* 安全验证-设置/修改密码 */}
+			<LockSafeModal
+				open={lockSafeModalOpen}
+				type={safeType}
+				onOk={handsvcOk}
+				acountInfo={safeData}
+				onCancel={() => setLockSafeModalOpen(false)}
 			/>
 		</>
 	);

@@ -84,7 +84,7 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose }) => {
             pendingPathRef.current = null
         }, 300) // 300ms 是 Popup 动画时间，保持一致
     }
-}
+  }
 // afterClose={handleAfterClose}
 //   const handleAfterClose = () => {
 //     if (pendingPathRef.current) {

@@ -50,7 +50,7 @@ module.exports = {
         {
           libraryName: 'antd',
           libraryDirectory: 'es',
-          style: true,
+          style: true
         },
         'antd',
       ],

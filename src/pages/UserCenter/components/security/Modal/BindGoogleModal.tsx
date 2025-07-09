@@ -1,4 +1,4 @@
-import { Modal, ConfigProvider, Form, Input, Steps, QRCode } from "antd";
+import { Form, Input, Steps, QRCode } from "antd";
 import { Toast, Popup } from 'antd-mobile';
 import styles from "./styles/setGoogle.module.scss";
 import { Iconify } from "@/components/icon/index";

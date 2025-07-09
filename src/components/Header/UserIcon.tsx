@@ -30,6 +30,7 @@ const UserIcon: React.FC = observer(() => {
     const kvConfig = appStore.getKvConfigAll();
     const location = useLocation();
     const currentPath = location.pathname;
+    const token = appStore.getToken();
     const handleUserClick = () => {
         // 处理用户图标点击事件
         setVisible(true)
@@ -68,12 +69,12 @@ const UserIcon: React.FC = observer(() => {
     ]
     const userCenterList = useMemo(() => {
         return UserCenterList.filter(item => {
-            if (kvConfig?.account_configuration && kvConfig?.account_configuration === '0') {
+            if ((kvConfig?.account_configuration && kvConfig?.account_configuration === '0')||!token) {
                 return item.key !== '/invite'
             }
             return true
         });
-    }, [kvConfig?.account_configuration, currentPath]);
+    }, [kvConfig?.account_configuration, currentPath,token]);
     const ListComponent = (list: ListItem[], currentValue?: string) => {
         if (list.length === 0) {
             return <NoData className={`mt-5`} />
@@ -101,6 +102,9 @@ const UserIcon: React.FC = observer(() => {
     }
     const loginOut = () => {
         // setVisible(false)
+        appStore.clearUserInfo()
+        appStore.clearToken()
+        navigate('/login')
     }
     return (<>
         <button
@@ -135,7 +139,7 @@ const UserIcon: React.FC = observer(() => {
                         <CloseOutline fontSize={24} />
                     </button>
                 </div>
-                <div className='pt-4'>
+                {token?<div className='pt-4'>
                     <div className={`${styles.userInfoHeader} flex-x algin-center`}>
                         <div className='flex-x-cc'>
                             <Image src={userInfo?.avatarUrl ? userInfo?.avatarUrl :
@@ -163,8 +167,37 @@ const UserIcon: React.FC = observer(() => {
                                 {t('btnText.logout')}
                             </button>
                         </li>
+                        {/* <li className={`${styles.listItem} ${styles.logoutItem}`}>
+                            <button
+                                className={`${styles.listButton} ${styles.title_color} font-16  w-full text-left`}
+                                onClick={()=>{
+                                    navigate('/login')
+                                }} >
+
+                                {t('btnText.login')}
+                            </button>
+                        </li> */}
                     </ul>
+                    
+                </div>:<div className='pt-4 flex-x-cc h-max'>
+                            <button
+                                className={`${styles.loginBtn} cancel_btn2 font-16 mr-3 flex-1 flex-x-cc`}
+                                onClick={()=>{
+                                    navigate('/register')
+                                }} >
+
+                                {t('btnText.register')}
+                            </button>
+                            <button
+                                className={`${styles.loginBtn} btn-color font-16  flex-1 flex-x-cc`}
+                                onClick={()=>{
+                                    navigate('/login')
+                                }} >
+
+                                {t('btnText.login')}
+                            </button>
                 </div>
+                }
             </div>
         </Popup>
     </>

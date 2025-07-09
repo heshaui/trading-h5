@@ -58,6 +58,11 @@
        "login": "登录",
        "register": "注册"
     },
+    "titleText":{
+      "historyInput": "历史输入",
+      "history": "历史",
+      "selectCountry": "选择国家/地区"
+    },
    
   
 

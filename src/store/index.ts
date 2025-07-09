@@ -108,7 +108,10 @@ class AppStore {
     }
     clearToken() {
         this.userToken = null;
-        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_TOKEN);
+        this.userInfo = {} as UserInfoType;
+        if (isBrowser()) {
+            localStorage.removeItem(LOCAL_STORAGE_KEY.USER_TOKEN);
+        }
     }
 
     // 更新订单标志

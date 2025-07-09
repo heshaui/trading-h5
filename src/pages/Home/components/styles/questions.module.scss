@@ -1,7 +1,8 @@
 .questions_page {
     background-color: var(--homeground2);
     color: var(--hometext);
-    height: 100vh;
+    min-height: calc(100vh - 48px);
+    padding-bottom: 50px;
 }
 
 .questions_main,
@@ -15,12 +16,53 @@
 .questions_main_title1 {
     font-size: 40px;
     font-weight: 500;
+    margin-top: 50px;
     color: var(--hometext3);
 }
 
 .main_questions_box {
     width: 100%;
     margin-top: 8vh;
+    color: var(--hometext3);
+    
+    :global {
+    
+        .adm-list {
+            // --border-top: 1px solid var(--border-color);
+            // --border-bottom: 1px solid var(--border-color);
+            --border-top: none;
+            --border-bottom: none;
+        }
+
+        .adm-list-body {
+            background-color: transparent;
+        }
+
+        .adm-list-item:active:not(.adm-list-item-disabled) {
+            background-color: transparent;
+        }
+
+        .adm-list-item {
+            background-color: var(--homeground2);
+            border: 1px solid var(--border-color);
+            // border-bottom: none;
+            border-radius: 10px;
+            margin-bottom: 0px;
+        }
+
+        .adm-collapse-panel-content-inner {
+            .adm-list-item {
+                border-top: none;
+                border-radius: 0 0 10px 10px;
+                margin-bottom: 10px;
+
+            }
+        }
+
+        .adm-list-item-content {
+            border-top: 1px solid transparent;
+        }
+    }
 }
 
 /* 列表文本样式 */
@@ -52,17 +94,125 @@
 .icon_color {
     color: var(--border-color3);
 }
+
 /* 去掉 ant-collapse-item 底部白线 */
 
-@media (min-width: 2560px) {
-    .questions_page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+/* 自定义折叠面板样式 */
+.collapse_item {
+    margin-bottom: 12px;
+    background: var(--btnbgcolor2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    &:hover {
+        border-color: var(--border-color);
     }
-
-    .questions_main {
-        width: 60%;
-        max-width: 1440px;
+    
+    &.active {
+        border-color: var(--border-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 }
+
+.collapse_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 20px;
+    cursor: pointer;
+    background: var(--btnbgcolor2);
+    transition: all 0.3s ease;
+    user-select: none;
+    
+    &:hover {
+        background: var(--homeground2);
+        transform: translateY(-1px);
+    }
+    
+    &:active {
+        transform: translateY(0);
+        background: var(--homeground2);
+    }
+}
+
+.collapse_title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--hometext3);
+    flex: 1;
+    line-height: 1.4;
+}
+
+.collapse_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &.rotate {
+        transform: rotate(45deg);
+    }
+}
+
+.collapse_content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--homeground2);
+    
+    &.expanded {
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+.collapse_content_inner {
+    padding: 16px 20px;
+    // border-top: 1px solid var(--border-color);
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    p {
+        margin: 0;
+        color: var(--hometext3);
+        font-size: 16px;
+        line-height: 1.6;
+    }
+}
+
+/* 淡入动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 图标颜色 */
+.icon_color3 {
+    color: var(--hometext3);
+    transition: color 0.3s ease;
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+    .collapse_title {
+        font-size: 16px;
+    }
+    
+    .collapse_header {
+        padding: 14px 16px;
+    }
+    
+    .collapse_content_inner {
+        padding: 14px 16px;
+        
+        p {
+            font-size: 14px;
+        }
+    }
+}
+

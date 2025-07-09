@@ -1,0 +1,226 @@
+.resetPage{
+    padding: 0 5%;
+}
+.warning_box {
+    color: var(--waring-color);
+    background-color: var(--waring-bg) !important;
+    /* width: 400px; */
+    min-height: 41px;
+    padding: 12px 10px;
+    border-radius: 8px;
+}
+.warning_page{
+    max-width: 450px;
+}
+.next_btn {
+    width: 100%;
+    height: 50px;
+}
+
+.goBack_btn {
+    border-radius: 36px;
+    width: 115px;
+    height: 50px;
+    color: var(--tip-color1);
+    border: 1px solid var(--tip-color1);
+}
+
+.goBack_btn:hover {
+    border: 1px solid var(--text-color3);
+    color: var(--waring-color) ;
+}
+
+
+.acount_input {
+    /* width: 400px ; */
+    height: 50px !important;
+    border-radius: 8px;
+    color:var(--text-color5) !important;
+}
+
+
+.text_color {
+    color: var(--text-color4);
+    font-size: 12px;
+}
+
+
+.tabs_label {
+    width: 89px;
+    height: 36px;
+    padding: 4px;
+    border-radius: 36px;
+    /* color: var(--textcolor); */
+    font-size: 16px;
+    font-weight: 500;
+
+}
+
+/* 输入框组件覆盖 */
+.mail_input:focus,
+.mail_input:focus-within {
+    border-color: var(--text-color3) !important;
+    box-shadow: none;
+    /* box-shadow: 0 0 0 1px var(--text-color3) !important; */
+}
+
+/* 鼠标聚焦且移出样式 */
+.mail_input:focus:not(:hover) {
+    background-color: var(--homeground);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* 鼠标滑过 */
+.mail_input:hover {
+    border-color: var(--text-color3);
+}
+// .mail_input{
+//     color:var(--text-color5) !important;
+//     background-color: var(--background11) !important;
+// }
+.title_color{
+    color:var(--text-color5)
+}
+.tip_title{
+    color: var(--text-color5);
+}
+.tip_color{
+    color: var(--text-color4);
+}
+.mail_input{
+    color:var(--text-color5);
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    text-indent: 1em;
+    padding-left: 0.5em;
+}
+.login_form {
+    border-radius: 5px;
+    width: 100%;
+    :global {
+
+        .adm-list-body,
+        .adm-list-item {
+            background-color: transparent;
+        }
+
+        .adm-list-item-content {
+            border: none;
+            padding: 0;
+        }
+
+        .adm-list-default .adm-list-body {
+            border: none;
+        }
+    }
+}
+
+.login_form_item {
+    padding: 0;
+    // margin-bottom: 20px;
+    :global {
+        .adm-input-element{
+            color: var(--text-color5) !important;
+        }
+    }
+}
+.custom_segmented{
+    background-color: var(--background) !important;
+    color: var(--textcolor) !important;
+}
+
+.custom_segmented {
+    color: var(--textcolor) !important;
+}
+
+.custom_segmented {
+    :global {
+        .adm-segmented-item-selected {
+            background-color: var(--theme-color);
+            border-radius: 36px;
+            color: #ffffff;
+        }
+
+        .adm-segmented-thumb-motion-appear-active {
+            background-color: var(--theme-color);
+            border-radius: 36px;
+            color: #ffffff;
+        }
+    }
+}
+
+.mail_input2{
+    height: 50px;
+    border-radius: 8px 0 0 8px;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    text-indent: 1em;
+    padding-left: 0.5em;
+  }
+  /* 输入框组件覆盖 */
+  // .mail_input:focus,
+  // .mail_input:focus-within {
+  //     border-color: var(--text-color3) !important;
+  //     box-shadow: none;
+  //     /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+  // }
+  
+  // /* 鼠标聚焦且移出样式 */
+  // .mail_input:focus:not(:hover) {
+  //     background-color: var(--homeground);
+  //     color: #fff;
+  //     box-shadow: none;
+  // }
+  
+  // /* 鼠标滑过 */
+  // .mail_input:hover {
+  //     border-color: var(--text-color3);
+  // }
+  .code_btn{
+    height: 48px;
+    border-left: none;
+    // padding-left: 0;
+    // width: 30%;
+  }
+  .login_form {
+    border-radius: 5px;
+    width: 100%;
+    :global {
+  
+        .adm-list-body,
+        .adm-list-item {
+            background-color: transparent;
+        }
+  
+        .adm-list-item-content {
+            border: none;
+            padding: 0;
+            align-items: flex-start;
+        }
+  
+        .adm-list-default .adm-list-body {
+            border: none;
+        }
+        .adm-list-item-content{
+          border-radius: 8px;
+          // border: 1px solid var(--border-color);
+          .adm-list-item-content-main{
+            padding: 0;
+          }
+        }
+        .adm-list-item-content-extra{
+          padding-left: 0;
+          border-radius: 0 8px 8px 0;
+          border: 1px solid var(--border-color);
+          border-left: none;
+          box-sizing: border-box;
+        }
+    }
+  }
+  
+  .login_form_item {
+    padding: 0;
+    // margin-bottom: 20px;
+  }

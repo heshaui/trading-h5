@@ -9,7 +9,7 @@ import { Action } from 'antd-mobile/es/components/popover'
 import { DownOutline ,CloseOutline} from 'antd-mobile-icons';
 import appStore from '@/store';
 import { useThemeMode } from '@/hooks/useThemeMode';
-import CustomTab from '../CustomTab';
+import { CustomTab } from '@/components/CustomCom';
 import { NoData } from '@/components/noData';
 interface ListItem {
   key: string;

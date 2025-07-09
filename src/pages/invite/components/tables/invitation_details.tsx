@@ -11,7 +11,8 @@ import { useThemeMode } from '@/hooks/useThemeMode';
 import { getInviteList } from "@/services/invite";
 import { NoData } from "@/components/noData";
 import { useLanguage } from '@/hooks/useLanguage';
-import CustomTable, { ColumnType } from '@/components/CustomTable';
+import { CustomTable } from '@/components/CustomCom';
+import type { ColumnType } from '@/components/CustomCom/CustomTable';
 
 interface DataType {
     id: number,
@@ -80,7 +81,7 @@ function InvitationDetails({ onReturn }: InviteProps) {
             dataIndex: "regeistTime",
             align: "right",
             width: 160,
-            sorter: true,
+            // sorter: true,
             render: (_text: any) => {
                 return <span>{_text ? dayjs(_text).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>;
             },
@@ -135,6 +136,7 @@ function InvitationDetails({ onReturn }: InviteProps) {
                     pageSize: pageParam.pageSize,
                     total: total,
                     onChange: pageChange,
+                    hideOnSinglePage: true,
                 }}
                 locale={{
                     emptyText: (

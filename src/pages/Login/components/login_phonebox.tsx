@@ -17,8 +17,8 @@ import { getLoginCheck } from "@/services/login";
 import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
-import PhoneCodeSelector from "@/components/PhoneCodeSelector";
-import SafeModal from "@/components/PopUp/loginModal";
+import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop";
+import SafeModal from "@/components/LoginAboutPop/loginModal";
 
 
 interface useInfoType {

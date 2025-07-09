@@ -1,20 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Button, Popover, Popup, Image, Tabs } from 'antd-mobile';
-import { useLanguage } from '../../hooks/useLanguage';
-import { supportedLanguages, languageNames } from '../../utils/languageLoader';
-import iconDown from '../../assets/icons/public/icon_earth_line.png';
-import iconDownDark from '../../assets/icons/public/icon_earth_dark.png';
 import styles from './index.module.scss';
-import { Action } from 'antd-mobile/es/components/popover'
-import { DownOutline } from 'antd-mobile-icons';
-import appStore from '@/store';
-import { useThemeMode } from '@/hooks/useThemeMode';
-import { CloseOutline } from 'antd-mobile-icons';
 import { Iconify } from '@/components/icon';
 
 export interface ColumnType<T = any> {
-  title: string;
-  dataIndex: string;
+  title: string|React.ReactNode;
+  dataIndex?: string;
   key: string;
   width?: number | string;
   align?: 'left' | 'center' | 'right';
@@ -108,8 +98,8 @@ const CustomTable = <T extends Record<string, any>>({
       sortedArray.sort(column.sorter);
     } else {
       sortedArray.sort((a, b) => {
-        const aValue = a[column.dataIndex];
-        const bValue = b[column.dataIndex];
+        const aValue = a[column.key];
+        const bValue = b[column.key];
         
         if (aValue < bValue) return -1;
         if (aValue > bValue) return 1;
@@ -158,14 +148,14 @@ const CustomTable = <T extends Record<string, any>>({
     const order = isActive ? sortState.order : null;
 
     return (
-      <span className={styles.sortIcons}>
+      <span className={`${styles.sortIcons} table-sort-icons`}>
         <Iconify
           icon="ph:caret-up-fill"
-          className={`${styles.sortIcon} ${order === 'ascend' ? styles.active : ''}`}
+          className={`${styles.sortIcon} ${order === 'ascend' ? styles.active : ''} table-sort-icon-up`}
         />
         <Iconify
           icon="ph:caret-down-fill"
-          className={`${styles.sortIcon} ${order === 'descend' ? styles.active : ''}`}
+          className={`${styles.sortIcon} ${order === 'descend' ? styles.active : ''} table-sort-icon-down`}
         />
       </span>
     );
@@ -173,7 +163,7 @@ const CustomTable = <T extends Record<string, any>>({
 
   // 渲染单元格内容
   const renderCellContent = (column: ColumnType<T>, record: T, index: number) => {
-    const value = record[column.dataIndex];
+    const value = record[column.key];
     
     if (column.render) {
       return column.render(value, record, index);
@@ -199,13 +189,13 @@ const CustomTable = <T extends Record<string, any>>({
     };
 
     return (
-      <div className={`${styles.pagination} ${pageClassName}`}>
+      <div className={`${styles.pagination} ${pageClassName} table-pagination`}>
         <button
-          className={styles.pageBtn}
+          className={`${styles.pageBtn} table-pagination-btn-left`}
           disabled={current <= 1}
           onClick={() => handlePageChange(current - 1)}
         >
-          <Iconify icon="ph:caret-left" />
+          <Iconify icon="ph:caret-left" className="table-pagination-icon-left" />
         </button>
         
         <span className={styles.pageInfo}>
@@ -213,11 +203,11 @@ const CustomTable = <T extends Record<string, any>>({
         </span>
         
         <button
-          className={styles.pageBtn}
+          className={`${styles.pageBtn} table-pagination-btn-right`}
           disabled={current >= totalPages}
           onClick={() => handlePageChange(current + 1)}
         >
-          <Iconify icon="ph:caret-right" />
+          <Iconify icon="ph:caret-right" className="table-pagination-icon-right" />
         </button>
       </div>
     );
@@ -226,26 +216,26 @@ const CustomTable = <T extends Record<string, any>>({
   // 列模式渲染（传统表格）
   const renderColumnMode = () => (
     <div className={`${styles.tableWrapper} ${className}`}>
-      {loading && <div className={styles.loading}>加载中...</div>}
+      {loading && <div className={`${styles.loading} table-loading`}>加载中...</div>}
       
       <table className={styles.table}>
-        <thead className={`${styles.tableHead} ${headerClassName}`}>
+        <thead className={`${styles.tableHead} ${headerClassName} table-header`}>
           <tr>
-            {expandable && <th className={styles.expandColumn}></th>}
+            {expandable && <th className={`${styles.expandColumn} table-expand-column`}></th>}
             {columns.map(column => (
               <th
                 key={column.key}
-                className={styles.tableHeader}
+                className={`${styles.tableHeader} table-header-item`}
                 style={{ 
                   width: column.width,
                   textAlign: column.align || 'left'
                 }}
               >
-                <div className={styles.headerContent}>
-                  <span>{column.title}</span>
+                <div className={`${styles.headerContent} table-header-content`}>
+                  <span className="table-header-title">{column.title}</span>
                   {column.sorter && (
                     <span
-                      className={styles.sortTrigger}
+                      className={`${styles.sortTrigger} table-sort-trigger`}
                       onClick={() => handleSort(column.key)}
                     >
                       {renderSortIcon(column.key)}
@@ -257,12 +247,12 @@ const CustomTable = <T extends Record<string, any>>({
           </tr>
         </thead>
         
-        <tbody className={`${styles.tableBody} ${bodyClassName}`}>
+        <tbody className={`${styles.tableBody} ${bodyClassName} table-body`}>
           {sortedData.length === 0 ? (
             <tr>
               <td 
                 colSpan={columns.length + (expandable ? 1 : 0)} 
-                className={styles.emptyCell}
+                className={`${styles.emptyCell} table-empty-cell`}
               >
                 {locale.emptyText}
               </td>
@@ -277,14 +267,15 @@ const CustomTable = <T extends Record<string, any>>({
                 <React.Fragment key={key}>
                   <tr className={styles.tableRow} {...rowProps}>
                     {expandable && (
-                      <td className={styles.expandCell}>
+                      <td className={`${styles.expandCell} table-expand-cell`}>
                         {expandable.rowExpandable?.(record) !== false && (
                           <button
-                            className={styles.expandBtn}
+                            className={`${styles.expandBtn} table-expand-btn`}
                             onClick={() => handleExpand(record, index)}
                           >
                             <Iconify
                               icon={isExpanded ? "ph:caret-down" : "ph:caret-right"}
+                              className="table-expand-icon"
                             />
                           </button>
                         )}
@@ -293,7 +284,7 @@ const CustomTable = <T extends Record<string, any>>({
                     {columns.map(column => (
                       <td
                         key={column.key}
-                        className={styles.tableCell}
+                        className={`${styles.tableCell} table-cell`}
                         style={{ textAlign: column.align || 'left' }}
                       >
                         {renderCellContent(column, record, index)}
@@ -303,7 +294,7 @@ const CustomTable = <T extends Record<string, any>>({
                   
                   {expandable && isExpanded && expandable.expandedRowRender && (
                     <tr>
-                      <td colSpan={columns.length + 1} className={styles.expandedRow}>
+                      <td colSpan={columns.length + 1} className={`${styles.expandedRow} table-expanded-row`}>
                         {expandable.expandedRowRender(record, index)}
                       </td>
                     </tr>
@@ -321,11 +312,11 @@ const CustomTable = <T extends Record<string, any>>({
 
   // 行模式渲染（卡片式）
   const renderRowMode = () => (
-    <div className={`${styles.cardWrapper} ${className} ${bodyClassName}`}>
+    <div className={`${styles.cardWrapper} ${className} ${bodyClassName} table-body`}>
       {loading && <div className={styles.loading}>加载中...</div>}
       
       {sortedData.length === 0 ? (
-        <div className={styles.emptyCard}>
+        <div className={`${styles.emptyCard} table-empty-card`}>
           {locale.emptyText}
         </div>
       ) : (
@@ -335,40 +326,41 @@ const CustomTable = <T extends Record<string, any>>({
           const rowProps = onRow ? onRow(record, index) : {};
           
           return (
-            <div key={key} className={styles.card} {...rowProps}>
+            <div key={key} className={`${styles.card} table-card`} {...rowProps}>
               {columns.map(column => (
-                <div key={column.key} className={styles.cardRow}>
-                  <div className={`${styles.cardLabel} ${headerClassName}`}>
-                    {column.title}
+                <div key={column.key} className={`${styles.cardRow} ${headerClassName} flex-x align-center justify-between table-card-row`}>
+                  <div className={`${styles.cardLabel}  table-card-label`}>
+                    {column.title} 
                     {column.sorter && (
                       <span
-                        className={styles.sortTrigger}
+                        className={`${styles.sortTrigger} table-sort-trigger`}
                         onClick={() => handleSort(column.key)}
                       >
-                        {renderSortIcon(column.key)}
+                        {renderSortIcon(column.key)} 
                       </span>
                     )}
                   </div>
-                  <div className={styles.cardValue}>
-                    {renderCellContent(column, record, index)}
+                  <div className={`${styles.cardValue} flex-1 text-right table-card-value`}>
+                    {renderCellContent(column, record, index)} 
                   </div>
                 </div>
               ))}
               
               {expandable && expandable.rowExpandable?.(record) !== false && (
-                <div className={styles.cardExpand}>
+                <div className={`${styles.cardExpand} table-card-expand`}>
                   <button
-                    className={styles.expandBtn}
+                    className={`${styles.expandBtn} table-expand-btn`}
                     onClick={() => handleExpand(record, index)}
                   >
                     <Iconify
                       icon={isExpanded ? "ph:caret-up" : "ph:caret-down"}
+                      className="table-expand-icon"
                     />
                     {isExpanded ? '收起' : '展开'}
                   </button>
                   
                   {isExpanded && expandable.expandedRowRender && (
-                    <div className={styles.expandedContent}>
+                    <div className={`${styles.expandedContent} table-expanded-content`}>
                       {expandable.expandedRowRender(record, index)}
                     </div>
                   )}

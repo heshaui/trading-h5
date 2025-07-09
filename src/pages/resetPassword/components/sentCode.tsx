@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// import { Button, Form, Input,Tabs } from "antd";
-import { Input, Form ,Toast} from 'antd-mobile';
+import { Form, Input,ConfigProvider} from "antd";
+import {Toast} from 'antd-mobile';
 // import type { AutoCompleteProps } from 'antd';
 import { useState, useEffect, useRef } from "react";
 import { useResetStateContext, ResetStateEnum } from "@/context/reset-providers/ResetStateProvider";
@@ -15,7 +15,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { getCheckRule } from "@/services/resetPassword"
 import { encryptData } from "@/utils/encrypt";
 import { Iconify } from "@/components/icon";
-import QuestionModal from "@/components/PopUp/questionModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
 function ResetPassword() {
     const [form] = Form.useForm();
     const { resetState, setResetState, acount } = useResetStateContext();
@@ -283,8 +283,8 @@ function ResetPassword() {
     //     }
     // }, [resetState])
     // 过滤输入，只允许数字和字母
-    const handleInputChange = (value: string, type: string) => {
-        // const { value } = e.target;
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
+        const { value } = e.target;
         // 只保留数字和字母
         const filteredValue = value.replace(/[^0-9]/g, '');
         // setEmailCodeInputValue(filteredValue);
@@ -314,29 +314,28 @@ function ResetPassword() {
         <div className="flex-col" style={{ height: "70vh", width: "100%" }}>
 
             <div className='mt-1'>
-                <div
-                    // theme={{
-                    //     components: {
-                    //         Form: {
-                    //             itemMarginBottom: 20, // 去除表单项之间的间距
-                    //         },
-                    //         Input: {
-                    //             controlHeightLG: 50,
-                    //             activeBorderColor: 'var(--theme-color)',
-                    //             hoverBorderColor: 'var(--theme-color)',
-                    //             activeBg: 'var(--background11)',
-                    //             hoverBg: 'var(--background11)',
-                    //         },
-                    //     },
-                    //     token: {
-                    //         // colorBgContainerDisabled: '#fff',
-                    //     }
-                    // }}
+            <ConfigProvider
+                    theme={{
+                        components: {
+                            Form: {
+                                itemMarginBottom: 20, // 去除表单项之间的间距
+                            },
+                            Input: {
+                                controlHeightLG: 50,
+                                activeBorderColor: 'var(--theme-color)',
+                                hoverBorderColor: 'var(--theme-color)',
+                                activeBg: 'var(--background11)',
+                                hoverBg: 'var(--background11)',
+                            },
+                        },
+                        token: {
+                            // colorBgContainerDisabled: '#fff',
+                        }
+                    }}
                 >
                     <Form
                         name="aount"
                         form={form}
-                        className={`${styles.login_form}`}
                     >
                         {/* <div className="mb-2 font-w-500 flex-col" style={{ width: "300px" }}>
                             {t('sent')}
@@ -367,38 +366,25 @@ function ResetPassword() {
                             <Form.Item
                                 name="emailCode"
                                 rules={[{ required: true, message: t('codeNull') }]}
-                                className={`${styles.login_form_item}`}
-                                extra={
+                                className="position-relative"
+                            >
+                                <Input
+                                    className={`${styles.mail_input} modal-input`}
+                                    style={{ width: "100%", height: "50px" }}
+                                    placeholder={t('inputCode2')}
+                                    allowClear
+                                    suffix={
                                         <button
                                             type="button"
                                             onClick={() => getResetCode('email')}
-                                            className={`${isCounting ? styles.tip_color : styles.text_color} ${styles.code_btn} pr-2`}
+                                            className={isCounting ? `${styles.tip_color}` : `${styles.text_color}`}
                                         >
                                             {isCounting
                                                 ? `${countdown} ${t('resendCountdown')}`
                                                 : t('resend')
                                             }
                                         </button>
-                                }
-                            >
-                                <Input
-                                    className={`${styles.mail_input2} modal-input`}
-                                    style={{ width: "100%", height: "50px" }}
-                                    placeholder={t('inputCode2')}
-                                    clearable={true}
-                                    type='number'
-                                    // suffix={
-                                    //     <button
-                                    //         type="button"
-                                    //         onClick={() => getResetCode('email')}
-                                    //         className={isCounting ? `${styles.tip_color}` : `${styles.text_color}`}
-                                    //     >
-                                    //         {isCounting
-                                    //             ? `${countdown} ${t('resendCountdown')}`
-                                    //             : t('resend')
-                                    //         }
-                                    //     </button>
-                                    // }
+                                    }
                                     value={emailCodeInputValue}
                                     onChange={(e) => handleInputChange(e, 'emailCode')}
                                     maxLength={6}
@@ -413,9 +399,17 @@ function ResetPassword() {
                                 <Form.Item
                                     name="phoneCode"
                                     rules={[{ required: true, message: t('codeNull') }]}
-                                    className={`${styles.login_form_item}`}
-                                    extra={
-                                        <button
+                                    className="position-relative"
+                                >
+                                    <Input
+                                        className={`${styles.mail_input} modal-input`}
+                                        style={{ width: "100%", height: "50px" }}
+                                        placeholder={t('inputCode2')}
+                                        allowClear
+                                        value={phoneCodeInputValue}
+                                        onChange={(e) => handleInputChange(e, 'phoneCode')}
+                                        suffix={
+                                            <button
                                                 type="button"
                                                 onClick={() => getResetCode('phone')}
                                                 className={isCounting2 ? `${styles.tip_color}` : `${styles.text_color}`}
@@ -425,29 +419,20 @@ function ResetPassword() {
                                                     : t('resend')
                                                 }
                                             </button>
-                                    }
-                                >
-                                    <Input
-                                    
-                                        className={`${styles.mail_input2} modal-input`}
-                                        placeholder={t('inputCode2')}
-                                        clearable={true}
-                                        type='number'
-                                        value={phoneCodeInputValue}
-                                        onChange={(e) => handleInputChange(e, 'phoneCode')}
-                                        
+                                        }
                                         maxLength={6}
                                     />
                                 </Form.Item></>}
                         {(acount.isGoogleAuth == 1) && <>
                             <div className={`${styles.title_color} mb-3`}>{t('googleCodeTitle')}</div>
-                            <Form.Item noStyle name="googleCode"  className={`${styles.login_form_item}`} rules={[{ required: true, message: t('codeNull') }]}>
+                            <Form.Item noStyle name="googleCode" rules={[{ required: true, message: t('codeNull') }]}>
                                 <Input
                                     placeholder={t('inputCode')}
+                                    style={{ borderRadius: "8px", height: "50px" }}
                                     // value={authCode}
-                                    clearable={true}
-                                    type='number'
-                                    className={`${styles.mail_input2} modal-input`}
+                                    allowClear
+                                    size='large'
+                                    className={`${styles.mail_input} modal-input`}
                                     // className='custom-input'
                                     maxLength={6}
                                     onChange={(e) => handleInputChange(e, 'google')}
@@ -456,7 +441,7 @@ function ResetPassword() {
                             </Form.Item></>}
 
                     </Form>
-                </div>
+                </ConfigProvider>
                 <div className='flex mt-10'>
                     <button
                         className={`${styles.goBack_btn} mr-4 flex-x-cc`}

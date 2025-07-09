@@ -172,7 +172,7 @@
 
 .card {
   background-color: transparent;
-  // border: 1px solid var(--border-color4);
+  border: 1px solid var(--border-color4);
   border-radius: 8px;
   padding: 16px;
   transition: all 0.2s ease;
@@ -186,9 +186,9 @@
 .cardRow {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid var(--border-color4);
+ 
   
   &:last-child {
     border-bottom: none;
@@ -201,17 +201,18 @@
 }
 
 .cardLabel {
-  font-weight: 500;
-  color: var(--text-color5);
+  font-weight: 400;
+  color: var(--text-color6);
   min-width: 80px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  // gap: 8px;
   font-size: 14px;
 }
 
 .cardValue {
-  color: var(--text-color6);
+  font-weight: 500;
+  color: var(--text-color5);
   text-align: right;
   flex: 1;
   word-break: break-all;
@@ -250,7 +251,7 @@
   gap: 16px;
   padding: 16px;
   background-color: transparent;
-  border-top: 1px solid var(--border-color4);
+  // border-top: 1px solid var(--border-color4);
 }
 
 .pageBtn {
@@ -305,11 +306,12 @@
     padding: 12px;
   }
   
-  .cardRow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
+  // .cardRow {
+  //   flex-direction: row;
+  //   align-items: flex-start;
+  //   justify-content: space-between;
+  //   gap: 4px;
+  // }
   
   .cardLabel {
     min-width: auto;

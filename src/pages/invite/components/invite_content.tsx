@@ -14,7 +14,7 @@ import { getKvObject } from '@/services/kv'
 import { Toast } from 'antd-mobile';
 import { getRate, getCoinRate } from '@/utils/getUseRate';
 import appStore from '@/store';
-import CustomTab from '@/components/CustomTab';
+import CustomTab from '@/components/CustomCom/CustomTab';
 
 type InviteContentProps = {
     onReturn: () => void;
@@ -195,7 +195,7 @@ const InviteContent = ({ onReturn }: InviteContentProps) => {
                                 <Skeleton animated />
                             </div>
                         ) : (
-                            <ul className={`${styles.content_list}  font-14 font-w-400  flex-y `}>
+                            <ul className={`${styles.content_list2}  font-14 font-w-400  flex-y `}>
                                 <li className={`${styles.tip_color} ${styles.auto_item} flex-1 flex-x align-center justify-between  mb-4`}>
                                     <p className={`font-w-400`}>{t('invite.myInvite2.tip1')}</p>
                                     <p className={`font-24 font-w-700 ${styles.title_color}`}>{inviteCount?.userInviteCount || 0}</p>
@@ -204,21 +204,25 @@ const InviteContent = ({ onReturn }: InviteContentProps) => {
                                     <p className={`font-w-400`}>{t('invite.myInvite2.tip2')}</p>
                                     <p className={`font-24 font-w-700 ${styles.title_color}`}>{inviteCount?.userInviteSuccessCount || 0}</p>
                                 </li>
-                                {inviteCount?.coinName === 'USDT' ? (
-                                    <li className={`${styles.tip_color} ${styles.auto_item} flex-1 flex-x align-center justify-between  mb-4`}>
-                                        <p className={`font-w-400`}>{t('invite.myInvite2.tip3')}</p>
-                                        <p className={`font-24 font-w-700 ${styles.title_color}`}>
-                                            {inviteCount?.accumulateMoney || 0} {rateKey}
-                                        </p>
-                                    </li>
-                                ) : (
-                                    <li className={`${styles.tip_color} ${styles.auto_item} flex-1 flex-x align-center justify-between `}>
-                                        <p className={`font-w-400`}>{t('invite.myInvite2.tip3')}</p>
-                                        <p className={`font-24 font-w-700 ${styles.title_color}`}>
-                                            {inviteCount?.accumulateMoney || 0} {inviteCount?.coinName || '--'}
-                                        </p>
-                                    </li>
-                                )}
+                                {inviteCount?.coinName==='USDT'? <li className={`${styles.tip_color} ${styles.auto_item} flex-1`}>
+                                <p className={`font-14 font-w-400`}>{t('invite.myInvite2.tip3')}</p>
+                                <p className={`font-24 font-w-700 ${styles.title_color}`}>{inviteCount?.accumulateMoney || 0}</p>
+                            </li>
+                                :
+                            <li className={`${styles.tip_color} ${styles.auto_item} flex-1 flex-x align-center`}>
+                                <p className={`font-14 font-w-400`}>{t('invite.myInvite2.tip4', { coinName: inviteCount?.coinName || '--' })}</p>
+                                <p className={`font-24 font-w-700 ${styles.title_color} flex-1 flex-y align-end  text-right`}>
+                                    {/* {'暂无'} */}
+                                    <span> {inviteCount?.accumulateMoney || 0}</span>
+                                    <span className={`font-14 font-w-500  ${styles.tip_color}`}>
+                                        ≈&nbsp;
+                                        {inviteCount?.accumulateMoney ? getCoinRate(inviteCount?.coinName, inviteCount?.accumulateMoney).coinRate : '0'}
+                                        &nbsp;USDT
+                                    </span>
+
+                                    {/* <span className={`font-14 font-w-500 ml-1 ${styles.tip_color}`}>≈  100.02 USDT</span> */}
+                                </p>
+                            </li>}
                             </ul>
                         )}
                     </div>

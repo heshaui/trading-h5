@@ -18,7 +18,7 @@ import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import EmailAuto from "@/components/EmailAuto";
-import SafeModal from "@/components/PopUp/loginModal";
+import SafeModal from "@/components/LoginAboutPop/loginModal";
 
 
 interface useInfoType {

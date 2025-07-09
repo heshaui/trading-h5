@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { DownOutline } from 'antd-mobile-icons';
 import { Image } from 'antd-mobile';
-import styles from './ExpandableMenu.module.scss';
+import styles from '../styles/ExpandableMenu.module.scss';
 import ThemeToggle from '@/components/ThemeToggle';
 
 // 定义菜单项的类型

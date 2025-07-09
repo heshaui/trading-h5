@@ -92,6 +92,7 @@ const UserIcon: React.FC = observer(() => {
                         onClick={()=>{
                             item?.onClick&&item?.onClick?.()
                             navigate(item.value)
+                            setVisible(false)
                         }} >
 
                         {item.title}

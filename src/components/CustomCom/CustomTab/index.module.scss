@@ -23,6 +23,11 @@
     color: var(--text-color5);
   }
   :global{
+    .adm-tabs-header{
+      border-bottom:1px solid var(--border-color4);
+    }
+  }
+  :global{
     .adm-tabs-tab-line{
       background-color: var(--theme-color);
     }

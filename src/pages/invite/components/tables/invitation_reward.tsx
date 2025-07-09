@@ -12,7 +12,8 @@ import { getRecordList } from "@/services/invite";
 import { useLanguage } from '@/hooks/useLanguage';
 import { getRate, getCoinRate } from '@/utils/getUseRate';
 import appStore from '@/store';
-import CustomTable, { ColumnType } from '@/components/CustomTable';
+import { CustomTable } from '@/components/CustomCom';
+import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import { NoData } from "@/components/noData";
 
 interface DataType {
@@ -52,7 +53,6 @@ function InvitationReward({ onReturn }: InviteProps) {
             key: "createTime",
             align: "left",
             width: 160,
-            sorter: true,
             render: (_text: any) => {
                 return <span>{_text ? dayjs(_text).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>;
             },
@@ -135,6 +135,7 @@ function InvitationReward({ onReturn }: InviteProps) {
                     pageSize: pageParam.current.pageSize,
                     total: pageParam.current.total,
                     onChange: pageChange,
+                    hideOnSinglePage: true,
                 }}
                 locale={{
                     emptyText: (

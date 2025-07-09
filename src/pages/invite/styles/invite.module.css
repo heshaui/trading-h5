@@ -59,7 +59,8 @@
     padding: 14px;
     height: 50px;
     box-sizing: border-box;
-    width: 200px;
+    width: 100%;
+    min-width: 200px;
 }
 
 .content_box{
@@ -70,11 +71,16 @@
 }
 .content_list{
     width: 100%;
-    padding: 20px 24px;
+    padding: 16px 12px;
     background-color: var(--background10);
     border-radius: 10px;
 }
-
+.content_list2{
+    width: 100%;
+    padding: 16px 10px;
+    background-color: var(--background10);
+    border-radius: 10px;
+}
 /* 移动端表格样式 */
 .mobile_table {
     width: 100%;

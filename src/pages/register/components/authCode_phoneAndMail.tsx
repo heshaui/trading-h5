@@ -20,8 +20,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/authCode.module.scss";
 import { useLanguage } from '@/hooks/useLanguage';
 import { Toast, Form, Input } from 'antd-mobile';
-import QuestionModal from "@/components/PopUp/questionModal";
-import RepeatModal from "@/components/PopUp/register_repeatModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
+import RepeatModal from "@/components/LoginAboutPop/register_repeatModal";
 
 function AuthCode() {
   const { t } = useLanguage("login");

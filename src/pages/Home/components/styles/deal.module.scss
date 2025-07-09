@@ -1,51 +1,40 @@
 .deal_page {
     background-color: var(--homeground2);
     color: var(--hometext);
-    height: 100vh;
+    // min-height: calc(100vh - 48px);
 }
 
-.deal_main,
 .deal_main_box {
     width: 100%;
     height: 100%;
 }
 
 .deal_main {
-    padding-top: 8vh;
-    /* background-color: pink; */
+    min-height: calc(100vh - 48px);
+    padding: 0 2.5%;
+    // padding-top: 10vh;
+    // background-color: pink;
 }
 
 .deal_main_title1 {
-    font-size: 40px;
     font-weight: 500;
     color: var(--hometext3);
 }
 
 .deal_main_title2 {
-    font-size: 18px;
     color: var(--hometext2);
     margin-top: 1.6vh;
 }
 
 .deal_main_pic {
     margin-top: 5vh;
-    width: 100%;
-    height: 610px;
+}
+.deal_main_title_box{
+    width: 80%;
+    text-align: center;
+}
+.deal_main_pic_img{
+    width: 320px;
+    height: 191px;
 }
 
-.deal_main_pic>img {
-    width: 100%;
-    height: 100%;
-}
-
-@media (min-width:2560px) {
-    .deal_page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .deal_main {
-        width: 60%;
-    }
-}

@@ -1,3 +1,4 @@
+/* input */
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
 .ant-input-outlined:hover {
     background: transparent !important;
@@ -9,6 +10,7 @@
     font-size: 16px;
 }
 
+/*步骤条*/
 .custom-steps {
     &.ant-steps .ant-steps-item-process .ant-steps-item-icon {
         background-color: var(--theme-color);
@@ -29,4 +31,16 @@
             color: var(--theme-color) !important;
         }
     }
+}
+
+/* Toast */
+.adm-toast-mask .adm-toast-main-icon .adm-toast-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ant-modal */
+.adm-modal-title {
+  padding: 0 !important;
 }

@@ -28,6 +28,7 @@ const normalizePath = (filePath: string): string => {
 // 2. 生成路由配置
 const routes = pageModules.keys().map((key: string) => {
   const mod = pageModules(key);
+  console.log(mod)
   const Component = React.lazy(() => Promise.resolve({ default: mod.default }));
   const layout = mod.layout || mod.meta?.layout || 'main';
   // 登录后才能访问

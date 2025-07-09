@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon'
-import { Skeleton, Empty } from 'antd-mobile'
+import { Skeleton } from 'antd-mobile'
+import { NoData } from "@/components/noData";
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Toast } from 'antd-mobile';
 import { getUserDeviceNoList, delectUserDeviceNo } from "@/services/safeCenter";
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
+import DeleteModal from '../components/security/Modal/DelEquipmentModal';
 
 interface DataLogsType {
     id: number,
@@ -40,7 +42,7 @@ interface DataType {
     isCurrent: boolean,
     userLoginLogs: DataLogsType[]
 }
-
+export const layout = 'header-only';
 const SafeEquipment: React.FC = () => {
 	const { t } = useLanguage('userCenter');
 	const navigate = useNavigate();
@@ -111,7 +113,7 @@ const SafeEquipment: React.FC = () => {
 
 	// 初始加载数据
     useEffect(() => {
-        getDeviceNoData();
+        // getDeviceNoData();
 		setDeviceNoData([
 			{
 				id: 0,
@@ -414,12 +416,13 @@ const SafeEquipment: React.FC = () => {
 					}
 				</ul>
 				:
-				<Empty
-					style={{ padding: '64px 0' }}
-					imageStyle={{ width: 128 }}
-					description='暂无数据'
-				/>
+				<NoData />
 			}
+			<DeleteModal 
+				open={open}
+				onOk={handleOk}
+				onCancel={() => setOpen(false)}
+			/>
 		</div>
 	)
 };

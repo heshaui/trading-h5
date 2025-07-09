@@ -1,43 +1,46 @@
 .assistant_page {
     background-color: var(--homeground2);
     color: var(--hometext2);
-    height: 100vh;
+    min-height: calc(100vh - 48px);
 }
 .comup_page {
-    background-color: var(--homeground);
+    background-color: var(--homeground2);
     color: var(--hometext);
-    height: 100vh;
+    min-height: calc(100vh - 48px);
+    padding-bottom: 50px;
 }
 .comup_title{
     width: 100%;
+    margin-top: 50px;
 }
 
 .assistant_main,
 .assistant_main_box {
-    width: 80%;
+    width: 100%;
     height: 100%;
     margin: auto;
+    padding: 0 5%;
     /* background-color: pink; */
 }
-
+.assistant_main_title_box{
+    margin-top: 50px;
+    width: 100%;
+}
 .assistant_main_title1 {
-    font-size: 40px;
+    width: 80%;
     font-weight: 500;
     color: var(--hometext3);
 }
 
 .assistant_main_title2 {
-    font-size: 18px;
     color: var(--hometext2);
     margin-top: 1.6vh;
 }
 .comup_main_title1 {
-    font-size: 40px;
     font-weight: 500;
-    color: var(--hometext);
+    color: var(--hometext3);
 }
 .comup_main_title2 {
-    font-size: 18px;
     color: var(--hometext2);
     margin-top: 1.6vh;
 }
@@ -52,14 +55,15 @@
 }
 
 .assistant_pic {
-    width: 25%;
-    max-width: 261px;
-    /* height: 386px; */
+    width: 280px;
+    height: 246px;
+    margin-bottom: 80px;
 }
 
 .pic_box {
-    width: 32%;
-    height: 386px;
+    // width: 32%;
+    height: 343px;
+    margin-bottom: 30px;
 }
 .logo_pic{
     width: 300px;

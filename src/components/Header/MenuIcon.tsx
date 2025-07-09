@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import styles from './styles/Popup.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
@@ -14,7 +14,7 @@ import LanguageToggle from '@/components/LanguageToggle';
 
 const MenuIcon: React.FC = observer(() => {
 	// const { t } = useTranslation("common");
-    const { t } = useLanguage();
+    const { t ,currentLanguage} = useLanguage();
 
     const { isDayMode } = useThemeMode();
     const [visible, setVisible] = useState(false);
@@ -84,10 +84,13 @@ const MenuIcon: React.FC = observer(() => {
             }
         }
     ];
+    const filterMenuItems =useMemo(()=>{
+            return menuItems;
+    },[menuItems,currentLanguage]);
 
     // 处理菜单项点击
     const handleMenuItemClick = (item: MenuItemType) => {
-        console.log('菜单项点击:', item.title);
+        console.log('菜单项点击:', item);
         // 这里可以添加路由跳转或其他逻辑
     };
     return (<>
@@ -124,7 +127,7 @@ const MenuIcon: React.FC = observer(() => {
                 </div>
                 <div className='pt-4'>
                     <ExpandableMenu 
-                        menuItems={menuItems}
+                        menuItems={filterMenuItems}
                         onItemClick={handleMenuItemClick}
                     />
                 </div>

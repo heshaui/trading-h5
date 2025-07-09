@@ -1,4 +1,70 @@
 {
+  "common": {
+    "router": {
+      "market": "Market",
+      "transaction": "Transaction",
+      "spot": "Spot",
+      "flash": "Flash",
+      "futures": "Futures",
+      "finance": "Finance",
+      "language": "Language",
+      "theme": "Theme Mode",
+      "zh": "Simplified Chinese",
+      "en": "English",
+      "download": "Download IMSaas App",
+      "overview": "Overview",
+      "security": "Security Authentication",
+      "identity": "Identity Verification",
+      "setting": "Settings",
+      "inviteFriend": "Invite Friends"
+    },
+    "langAndRate": {
+      "lang": "Language",
+      "rate": "Exchange Rate",
+      "search": "Search"
+    }
+  },
+  "btnText": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "reset": "Reset",
+    "search": "Search",
+    "back": "Back",
+    "more": "More",
+    "refresh": "Refresh",
+    "filter": "Filter",
+    "ok": "Confirm",
+    "beSure": "I understand",
+    "close": "Close",
+    "closeAll": "Close All",
+    "clear": "Clear",
+    "clearAll": "Clear All",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "undo": "Undo",
+    "redo": "Redo",
+    "note": "Important Note",
+    "err": "Operation Failed",
+    "success": "Operation Successful",
+    "inputCode": "Please enter",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "titleText": {
+    "historyInput": "History Input",
+    "history": "History",
+    "selectCountry": "Select Country/Region"
+  },
+ 
+  
+  
   "title": "Welcome",
   "description": "This is the homepage",
   "home1": "IMBIT Digital Currency Exchange: Faster, Better, Stronger",
@@ -56,7 +122,7 @@
     "nicknameRequired": "Please enter a nickname",
     "modifyNicknameOnce": "Nickname can be modified",
     "modifyNicknameOnceTip": "Can only be modified once within 24 hours.",
-   "modifyNicknameOnceTip1": "You can only modify it once every {{time}} days.",
+    "modifyNicknameOnceTip1": "You can only modify it once every {{time}} days.",
     "modifyNicknameOnceTip2": "Nickname can only contain numbers and letters, and must not exceed 25 characters.",
     "modifyNicknameOnceTip3": "Do not use your real name or contact information to protect your privacy.",
     "modifyNicknameOnceTip4": "Nickname must comply with local laws and regulations. IMBIT reserves the right to modify or impose penalties such as account suspension for violations.",
@@ -140,5 +206,81 @@
   },
   "scrollableTabs": {
     "all": "All"
+  },
+  "imageSelect": {
+    "search": "Search",
+    "noData": "No data",
+    "noSearchData": "No search results",
+    "loading": "Loading...",
+    "selectCoin": "Select Coin",
+    "searchHistory": "Search History",
+    "balance": "Balance"
+  },
+  "flash":{
+    "order":{
+      "title": "Flash Swap Order"
+    }
+  },
+
+  "nav": {
+    "home": "Home",
+    "market": "Market",
+    "trade": "Trade",
+    "assets": "Assets",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password",
+    "loginSuccess": "Login successful",
+    "registerSuccess": "Registration successful",
+    "loginFailed": "Login failed",
+    "registerFailed": "Registration failed"
+  },
+  "trade": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "price": "Price",
+    "amount": "Amount",
+    "total": "Total",
+    "balance": "Balance",
+    "available": "Available",
+    "orders": "Orders",
+    "history": "History",
+    "openOrders": "Open Orders",
+    "orderHistory": "Order History"
+  },
+  "market": {
+    "price": "Price",
+    "change": "Change",
+    "volume": "Volume",
+    "high": "High",
+    "low": "Low",
+    "marketCap": "Market Cap"
+  },
+  "assets": {
+    "totalAssets": "Total Assets",
+    "availableBalance": "Available Balance",
+    "frozenBalance": "Frozen Balance",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "transfer": "Transfer",
+    "records": "Records"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode",
+    "auto": "Follow System"
+  },
+  "language": {
+    "zh": "中文",
+    "en": "English"
   }
+
 }

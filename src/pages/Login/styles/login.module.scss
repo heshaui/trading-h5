@@ -1,0 +1,247 @@
+.login_button {
+    border: none;
+    height: 38px;
+    background-color: var(--theme-color);
+    border-radius: 36px;
+    color: #ffffff;
+}
+
+
+/* AutoComplete 组件样式 */
+.auto_complete_input .ant-select-selection-search-input {
+    height: 100% !important;
+}
+
+.auto_complete_input .ant-select-selector:hover
+
+/* .auto_complete_input:focus:not(:hover) */
+    {
+    border-color: var(--text-color3) !important;
+}
+
+/* 聚焦时鼠标移出的样式 */
+/* .auto_complete_input.ant-select-focused:not(:hover) */
+.auto_complete_input .ant-select-selector:focus:not(:hover),
+.ant-select-focused.ant-select-outlined:not(.ant-select-disaabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer) .ant-select-selector {
+    border-color: var(--text-color3) !important;
+    box-shadow: none !important;
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+
+.login_loading {
+    border: none;
+    height: 38px;
+    border-radius: 36px;
+    background: var(--btncolor3);
+    color: var(--tip-color2);
+}
+
+.google_btn {
+    border-radius: 36px;
+    height: 38px;
+    color: var(--btncolor2);
+}
+
+.custom_segmented,
+.page_box {
+    background-color: var(--background11) !important;
+}
+
+.custom_segmented {
+    color: var(--textcolor) !important;
+}
+
+/* .login_button:hover ,.ant-btn:hover,.ant-btn-color-primary:hover{
+    background: linear-gradient(90deg, #00EEFF 0%, #1F40FF 100%);
+} */
+
+.forget_password_button {
+    border: none;
+    color: var(--text-color3);
+    background-color: transparent;
+}
+
+.title_box {
+    /* width: 89px; */
+    height: 36px;
+    font-size: 32px;
+    font-weight: 500;
+
+}
+
+.tabs_label {
+    width: 89px;
+    height: 36px;
+    padding: 4px;
+    border-radius: 36px;
+    /* color: var(--textcolor); */
+    font-size: 16px;
+    font-weight: 500;
+    // background-color: var(--theme-color);
+}
+
+.custom_segmented {
+    :global {
+        .adm-segmented-item-selected {
+            background-color: var(--theme-color);
+            border-radius: 36px;
+            color: #ffffff;
+        }
+
+        .adm-segmented-thumb-motion-appear-active {
+            background-color: var(--theme-color);
+            border-radius: 36px;
+            color: #ffffff;
+        }
+    }
+}
+
+
+/* Checkbox 选中样式 */
+.custom_checkbox:hover {
+    border-color: var(--text-color3)
+}
+
+.custom_checkbox .ant-checkbox-checked .ant-checkbox-inner {
+    border: none;
+    border-radius: 3px;
+    /* background: linear-gradient(90deg, #00EEFF 0%, #1F40FF 100%); */
+    background: var(--btncolor5);
+}
+
+.custom_checkbox .ant-checkbox-checked .ant-checkbox-inner:hover {
+    border-color: var(--text-color3);
+    background: var(--btncolor5);
+}
+
+/* .ant-segmented-item-label */
+/* .custom_checkbox .ant-segmented-item:hover{
+    border-radius: 36px !important;
+    background-color: pink !important;
+} */
+
+
+.icon_color {
+    color: rgba(0, 0, 0, .25)
+}
+
+.tip_color1 {
+    color: var(--tip-color1)
+}
+
+.tip_color2 {
+    color: var(--tip-color2);
+
+}
+
+.text_color {
+    color: var(--text-color3);
+}
+
+/* 自定义表单错误提示样式 */
+.ant-form-item-explain {
+    width: 100%;
+    white-space: nowrap;
+    text-align: right;
+    font-size: 12px;
+}
+
+/* 调整输入框父元素的位置，确保有足够空间显示错误提示 */
+/* .ant-form-item {
+    position: relative;
+} */
+.authcode_header {
+    font-size: 36px;
+}
+
+.authcode_input {
+    width: 400px;
+    height: 50px;
+    border-radius: 8px;
+}
+
+.submit_btn {
+    width: 275px;
+    height: 50px;
+    border-radius: 36px;
+    margin-left: 10px;
+}
+
+.goback_btn {
+    border-radius: 36px;
+    width: 115px;
+    height: 50px;
+    border: 1px solid var(--text-color4);
+    color: var(--btncolor2);
+}
+
+.icon_rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.mail_input {
+    color: var(--text-color5) ;
+    background-color: var(--background11) ;
+}
+
+/* 输入框组件覆盖 */
+.mail_input:focus,
+.mail_input:focus-within {
+    border-color: var(--text-color3) !important;
+    box-shadow: none;
+    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+
+/* 鼠标聚焦且移出样式 */
+.mail_input:focus:not(:hover) {
+    background-color: var(--homeground);
+    color: #fff;
+    box-shadow: none;
+}
+
+/* 鼠标滑过 */
+.mail_input:hover {
+    border-color: var(--text-color3);
+}
+
+.login_form {
+    border-radius: 5px;
+    width: 100%;
+    :global {
+
+        .adm-list-body,
+        .adm-list-item {
+            background-color: transparent;
+        }
+
+        .adm-list-item-content {
+            border: none;
+            padding: 0;
+        }
+
+        .adm-list-default .adm-list-body {
+            border: none;
+        }
+    }
+}
+
+.login_form_item {
+    padding: 0;
+    // margin-bottom: 20px;
+    :global {
+        .adm-input-element{
+            color: var(--text-color5) !important;
+        }
+    }
+}
+.mail_input{
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    text-indent: 1em;
+    padding-left: 0.5em;
+}

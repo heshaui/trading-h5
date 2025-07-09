@@ -43,6 +43,19 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  babel: {
+    plugins: [
+      [
+        'import',
+        {
+          libraryName: 'antd',
+          libraryDirectory: 'es',
+          style: true
+        },
+        'antd',
+      ],
+    ],
+  },
   // 添加开发服务器代理配置
   devServer: {
     proxy: {

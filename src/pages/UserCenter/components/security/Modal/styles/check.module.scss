@@ -1,0 +1,32 @@
+.modal_box{
+    background-color: var(--background5);
+}
+.errModal_btn {
+    font-weight: 500;
+    font-size: 14px;
+    width: 170px;
+    height: 36px;
+}
+
+.title {
+    color: var(--text-color5);
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.msg_color {
+    color: #A4A5AC;
+}
+.icon_box{
+    height: 160px;
+    width: 160px;
+}
+.modal_footerBtn{
+    min-width: 120px;
+    padding: 8px 28px;
+    border-radius: 53px;
+    box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+    /* width: 100%; */
+}

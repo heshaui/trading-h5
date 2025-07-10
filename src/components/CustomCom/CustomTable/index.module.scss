@@ -1,0 +1,323 @@
+.title_color{
+  color: var(--text-color5);
+}
+.tip_color{
+  color: var(--text-color6);
+}
+
+// 表格容器
+.tableWrapper {
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color:transparent;
+  box-shadow: var(--card-shadow);
+}
+
+// 加载状态
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  font-size: 14px;
+  color: var(--text-color6);
+}
+
+// 表格样式
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.tableHead {
+  background-color: transparent;
+  border-bottom: 1px solid var(--border-color4);
+}
+
+.tableHeader {
+  padding: 12px 16px;
+  font-weight: 500;
+  color: var(--text-color5);
+  // border-right: 1px solid var(--border-color4);
+  position: relative;
+  
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sortTrigger {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.sortIcons {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sortIcon {
+  font-size: 10px;
+  color: var(--text-color6);
+  transition: color 0.2s ease;
+  
+  &.active {
+    color: var(--theme-color);
+  }
+}
+
+.tableBody {
+  background-color:transparent;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border-color4);
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--background);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.tableCell {
+  padding: 12px 16px;
+  color: var(--text-color6);
+  border-right: 1px solid var(--border-color4);
+  word-break: break-all;
+  
+  &:last-child {
+    border-right: none;
+  }
+}
+
+// 展开相关样式
+.expandColumn {
+  width: 40px;
+  padding: 12px 8px;
+}
+
+.expandCell {
+  width: 40px;
+  padding: 12px 8px;
+  text-align: center;
+  border-right: 1px solid var(--border-color4);
+}
+
+.expandBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--text-color6);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: var(--background);
+    color: var(--theme-color);
+  }
+}
+
+.expandedRow {
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border-color4);
+}
+
+// 空数据样式
+.emptyCell {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--text-color6);
+  font-size: 14px;
+}
+
+// 卡片模式样式
+.cardWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.card {
+  background-color: transparent;
+  border: 1px solid var(--border-color4);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    box-shadow: var(--card-shadow);
+    border-color: var(--theme-color);
+  }
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+ 
+  
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.cardLabel {
+  font-weight: 400;
+  color: var(--text-color6);
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  // gap: 8px;
+  font-size: 14px;
+}
+
+.cardValue {
+  font-weight: 500;
+  color: var(--text-color5);
+  text-align: right;
+  flex: 1;
+  word-break: break-all;
+  font-size: 14px;
+}
+
+.cardExpand {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color4);
+}
+
+.expandedContent {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: var(--background);
+  border-radius: 6px;
+  border: 1px solid var(--border-color4);
+}
+
+.emptyCard {
+  padding: 40px 16px;
+  text-align: center;
+  color: var(--text-color6);
+  font-size: 14px;
+  background-color: transparent;
+  // border: 1px solid var(--border-color4);
+  border-radius: 8px;
+}
+
+// 分页样式
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: transparent;
+  // border-top: 1px solid var(--border-color4);
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color4);
+  background-color: var(--background5);
+  color: var(--text-color6);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover:not(:disabled) {
+    background-color: var(--background10);
+    border-color: var(--theme-color);
+    color: var(--theme-color);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: var(--text-color6);
+  min-width: 60px;
+  text-align: center;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .tableWrapper {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 600px;
+  }
+  
+  .tableHeader,
+  .tableCell {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .card {
+    padding: 12px;
+  }
+  
+  // .cardRow {
+  //   flex-direction: row;
+  //   align-items: flex-start;
+  //   justify-content: space-between;
+  //   gap: 4px;
+  // }
+  
+  .cardLabel {
+    min-width: auto;
+  }
+  
+  .cardValue {
+    text-align: left;
+  }
+}

@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Popover, Popup, Image, Tabs } from 'antd-mobile';
-import { useLanguage } from '../../hooks/useLanguage';
-import { supportedLanguages, languageNames } from '../../utils/languageLoader';
-import iconDown from '../../assets/icons/public/icon_earth_line.png';
-import iconDownDark from '../../assets/icons/public/icon_earth_dark.png';
+import {  Tabs } from 'antd-mobile';
 import styles from './index.module.scss';
-import { Action } from 'antd-mobile/es/components/popover'
-import { DownOutline } from 'antd-mobile-icons';
-import appStore from '@/store';
-import { useThemeMode } from '@/hooks/useThemeMode';
-import { CloseOutline } from 'antd-mobile-icons';
 interface Item {
-  title: string;
+  title?: string;
+  label?: string;
   key: string;
   children: React.ReactNode;
   disabled?:boolean;
@@ -51,7 +43,7 @@ const CustomTab: React.FC<Props> = ({ tabsItems,
         style={style}
       >
         {tabsItems.map((item) => (
-          <Tabs.Tab title={item.title} key={item.key}
+          <Tabs.Tab title={item.title||item.label} key={item.key}
             destroyOnClose={item.destroyOnClose||false}
             disabled={item.disabled||false}
           >

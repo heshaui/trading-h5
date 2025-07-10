@@ -9,7 +9,7 @@ import { useResetStateContext, ResetStateEnum } from "@/context/reset-providers/
 import styles from "../style/reset.module.scss"
 import { emailSuffixes } from "@/utils/enum";                      
 import { useNavigate, useParams } from 'react-router-dom';
-import PhoneCodeSelector from "@/components/PhoneCodeSelector"
+import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop"
 import { useLanguage } from '@/hooks/useLanguage';
 import { getCheckRule } from "@/services/resetPassword"
 import { encryptData } from "@/utils/encrypt";

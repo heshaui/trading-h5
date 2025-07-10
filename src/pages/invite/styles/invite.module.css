@@ -1,0 +1,291 @@
+.invite_page{
+    width: 100%;
+}
+.invite_page {
+    width: 100%;
+    /* max-width: 1200px; */
+    background-color: var(--background9);
+    min-height: calc(100vh - 80px);
+}
+
+.main_page_box {
+    width: 100%;
+    /* padding: 0 8%; */
+    /* background-color: pink; */
+}
+
+.main_page {
+    height: 100%;
+    width: 100%;
+    /* padding: 0 9%; */
+    max-width: 1200px;
+    /* background-color: pink; */
+}
+
+.card_bgc {
+    width: 40%;
+    max-width: 440px;
+    min-width: 320px;
+    background-color: var(--background12);
+    /* background-color: #232328; */
+    border-radius: 8px;
+    padding: 20px;
+    padding-bottom: 0;
+    box-shadow: var(--card-shadow);
+}
+
+.tip_color {
+    color: var(--text-color6);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+.title_color2 {
+    color: #FFFFFF;
+}
+
+.strong_color {
+    color: var(--btncolor5)
+}
+
+.input_box {
+    background: var(--background5) !important;
+    color: var(--text-color6) !important;
+}
+
+.invite_btn {
+    border-radius: 53px;
+    padding: 14px;
+    height: 50px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 200px;
+}
+
+.content_box{
+    width: 100%;
+    padding-bottom: 8vh;
+    box-sizing: border-box; 
+    min-height: 30vh;
+}
+.content_list{
+    width: 100%;
+    padding: 16px 12px;
+    background-color: var(--background10);
+    border-radius: 10px;
+}
+.content_list2{
+    width: 100%;
+    padding: 16px 10px;
+    background-color: var(--background10);
+    border-radius: 10px;
+}
+/* 移动端表格样式 */
+.mobile_table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--background10);
+}
+
+.table_header {
+    background-color: var(--background);
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-color4);
+}
+
+.table_row {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border-color4);
+}
+
+.table_row:last-child {
+    border-bottom: none;
+}
+
+.table_cell {
+    font-size: 14px;
+    color: var(--text-color6);
+    word-break: break-all;
+    padding: 0 4px;
+}
+
+.table_header .table_cell {
+    color: var(--text-color5);
+    font-weight: 500;
+}
+
+.pagination {
+    padding: 16px 0;
+}
+
+.page_btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color4);
+    background-color: var(--background5);
+    color: var(--text-color6);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page_btn:hover {
+    background-color: var(--background10);
+}
+
+.page_btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page_btn:disabled:hover {
+    background-color: var(--background5);
+}
+
+/* 表单样式 */
+.invite_form {
+    width: 100%;
+}
+
+.form_item {
+    margin-bottom: 16px;
+}
+
+.custom_tabs {
+    background-color: transparent;
+}
+
+.mt8{
+    margin-top: 8vh;
+}
+.auto_item{
+   width: 100%;
+   min-width: 160px;
+}
+.header_banner{
+    width: 100%;
+    min-height: 595px;
+}
+@media (max-width:680px) {
+
+   /* .header_banner {
+        padding: 0 5%;
+    } */
+    .main_page{
+        padding: 24px 2.5%;
+    }
+    .main_title{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 20px;
+    }
+    .auto_box{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    /* .auto_item{
+        width: 50%;
+    } */
+}
+@media (max-width:1080px) {
+    .main_page{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 5%;
+    }
+    .card_bgc{
+        margin-top: 20px;
+    }
+}
+@media (min-width:2560px) {
+
+    .main_page {
+        width: 60%;
+    }
+}
+
+/* 自定义表格样式 */
+.custom_table {
+  margin-top: 20px;
+}
+
+.custom_table .tableWrapper {
+  border: 1px solid var(--border-color4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom_table .tableHeader {
+  background-color: var(--background);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.custom_table .tableRow:hover {
+  background-color: var(--background);
+}
+
+.custom_table .tableCell {
+  font-size: 14px;
+  padding: 16px 12px;
+}
+
+.custom_table .pagination {
+  background-color: var(--background10);
+  border-top: 1px solid var(--border-color4);
+  padding: 16px;
+}
+
+.custom_table .pageBtn {
+  background-color: var(--background);
+  border: 1px solid var(--border-color4);
+  color: var(--text-color6);
+}
+
+.custom_table .pageBtn:hover:not(:disabled) {
+  background-color: var(--theme-color);
+  color: #fff;
+  border-color: var(--theme-color);
+}
+
+.custom_table .pageInfo {
+  color: var(--text-color6);
+  font-size: 14px;
+}
+
+.custom_table .sortIcon {
+  color: var(--text-color6);
+}
+
+.custom_table .sortIcon.active {
+  color: var(--theme-color);
+}
+
+/* 卡片模式样式 */
+.custom_table .cardWrapper {
+  gap: 16px;
+}
+
+.custom_table .card {
+  background-color: var(--background10);
+  border: 1px solid var(--border-color4);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.custom_table .card:hover {
+  border-color: var(--theme-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom_table .cardLabel {
+  font-weight: 500;
+  color: var(--text-color5);
+}
+
+.custom_table .cardValue {
+  color: var(--text-color6);
+}

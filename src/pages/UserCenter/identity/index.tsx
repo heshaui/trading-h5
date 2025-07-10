@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Toast } from 'antd-mobile';
-import UserHeader from '../components/UserHeader';
+import { UserCenterLayout } from '@/components/MenuItems/'
 import Auth from '../components/identiry/Auth';
 import NoAuth from '../components/identiry/NoAuth';
 import Faq from '../components/identiry/faq';
@@ -97,7 +97,6 @@ const Identity: React.FC = () => {
 	}, []);
     return (
 		<div>
-			<UserHeader title={t('safeCenter.security')} />
 			{/* 0驳回 1已认证 2未认证 3审核中 */}
 			{/* 未认证 - 驳回 - 审核中*/}
 			{/* {(userIdentityInfo?.authStatus === 2||userIdentityInfo?.authStatus === 0||userIdentityInfo?.authStatus === 3) && <NoAuthentication identityInfo={userIdentityInfo}/>} */}
@@ -112,4 +111,4 @@ const Identity: React.FC = () => {
 	);
 };
 
-export default Identity;
+export default UserCenterLayout(Identity);

@@ -38,7 +38,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ title, menuList,path }) => {
         ) : (
           iconMap[title]
         )}
-        <span>{title}</span>
+        <span className="ml-[18px]">{title}</span>
       </div>
       <Iconify icon="icon-park-outline:down" className="right-icon"/>
       <MenuPopup 

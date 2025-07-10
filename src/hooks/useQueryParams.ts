@@ -7,7 +7,7 @@ const useQueryParams = (): Record<string, string> => {
   return useMemo(() => {
     const params = new URLSearchParams(search);
     const result: Record<string, string> = {};
-
+    
     for (const [key, value] of params.entries()) {
       result[key] = value;
     }

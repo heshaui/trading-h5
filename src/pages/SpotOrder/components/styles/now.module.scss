@@ -1,0 +1,23 @@
+.table_header {
+    border-bottom: 0.5px solid var(--border-color11);
+}
+
+// .tableBox_content{
+//     padding: 0 5%;
+// }
+.tables_content {
+    border: none;
+
+    :global {
+        .table-card {
+            border: none;
+            border-radius: 0;
+            border-bottom: 0.5px solid var(--border-color11);
+            padding: 16px;
+        }
+    }
+}
+.cancel_btn{
+    border-radius: 36px;
+    padding: 4px 10px;
+}

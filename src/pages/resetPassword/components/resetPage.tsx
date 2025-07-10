@@ -7,7 +7,7 @@ import { useResetStateContext, ResetStateEnum } from "@/context/reset-providers/
 // import store from "@/store";
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from "../style/reset.module.scss"
-import ResetSuccessModal from "@/components/PopUp/reset_successModal"
+import ResetSuccessModal from "@/components/LoginAboutPop/reset_successModal"
 import { encryptData } from "@/utils/encrypt";
 import { getResetPassword } from "@/services/resetPassword"
 import { Iconify } from "@/components/icon/index";

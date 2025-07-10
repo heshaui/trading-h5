@@ -2,7 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import styles from './styles/Popup.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
-import { Input, Popup, Toast, Form } from 'antd-mobile';
+import { Popup, Toast } from 'antd-mobile';
+import { Input, Form, ConfigProvider } from 'antd';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useMemo } from "react"; //type CSSProperties,
@@ -100,10 +101,10 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
     };
     // 过滤输入，只允许数字和字母
     const handleInputChange = (
-        value: string,
+        e: React.ChangeEvent<HTMLInputElement>,
         type: string
     ) => {
-        //   const { value } = e.target;
+        const { value } = e.target;
         // 只保留数字和字母
         const filteredValue = value.replace(/[^0-9]/g, "");
         // setEmailCodeInputValue(filteredValue);
@@ -282,7 +283,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                 const dataInfo = {
                     number: acountInfo.email || "",
                     // code: "",
-                    deviceType: "web",
+                    deviceType: "H5",
                 };
 
                 const dataEncrypt = await encryptData(dataInfo);
@@ -309,7 +310,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                 const dataInfo = {
                     number: acountInfo.phone || "",
                     code: acountInfo.countryCode?.replace("+", ""),
-                    deviceType: "web",
+                    deviceType: "H5",
                 };
                 const dataEncrypt = await encryptData(dataInfo);
                 const res = await getLoginSmsCode(dataEncrypt);
@@ -476,113 +477,137 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
             className={`${styles.login_form}`}
         >
             <div >
-                <Form form={form}
-                    className={`${styles.login_form_item} mt-2_5 mb-2_5`}>
-                    {/* {((acountInfo.openAll === 1 && acountInfo.isEmailAuth === 1) ||
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Form: {
+                                // itemMarginBottom: 0, // 去除表单项之间的间距
+                            },
+                            Input: {
+                                activeBorderColor: "var(--theme-color)",
+                                hoverBorderColor: "var(--theme-color)",
+                                controlHeightLG: 50,
+                                activeBg: "var(--background5)",
+                                hoverBg: "var(--background5)",
+                            },
+                        }
+                    }}
+                >
+                    <Form form={form} style={{ margin: "10px 0" }} colon={false}>
+                        {/* {((acountInfo.openAll === 1 && acountInfo.isEmailAuth === 1) ||
                         (acountInfo.openAll === 0 && acountInfo.isGoogleAuth === 0 && acountInfo.isEmailAuth === 1)) */}
-                    {isShowList()?.includes("email") && (
-                        <>
-                            <div className={`${styles.title_color} mb-3`}>
-                                {t("safeModal.emailCodeTitle")}
-                            </div>
+                        {isShowList()?.includes("email") && (
+                            <>
+                                <div className={`${styles.title_color} mb-3`}>
+                                    {t("safeModal.emailCodeTitle")}
+                                </div>
                                 <Form.Item
                                     name="code"
                                     rules={[{ required: true, message: t("safeModal.codeNull") }]}
-                                    className={`${styles.login_form_item} position-relative`}
-                                    extra={
-                                        <button
-                                            type="button"
-                                            onClick={getLoginCode2}
-                                            className={`${styles.code_btn} ${isCounting ? styles.tip_color : styles.text_color} mr-3`}
-                                        >
-                                            {/* 重新发送/60s 重发 */}
-                                            {isCounting
-                                                ? `${countdown} ${t("safeModal.resendCountdown")}`
-                                                : t("safeModal.resend")}
-                                        </button>
-                                    }
+                                    className="position-relative"
                                 >
                                     <Input
                                         type='number'
                                         autoComplete="off"
-                                        className={`${styles.mail_input} modal-input`}
-                                        style={{ color: "var(--text-color5)" }}
+                                        styles={{ input: { color: "var(--text-color5)" } }}
+                                        className={`${styles.input_box} modal-input`}
+                                        style={{ width: "100%", height: "40px" }}
                                         placeholder={t("safeModal.inputPlaceholder")}
                                         value={codeInputValue}
                                         onChange={(e) => handleInputChange(e, "code")}
-                                        clearable={true}
+                                        allowClear
+                                        suffix={
+                                            <button
+                                                type="button"
+                                                onClick={getLoginCode2}
+                                                className={
+                                                    isCounting
+                                                        ? `${styles.tip_color}`
+                                                        : `${styles.text_color}`
+                                                }
+                                            >
+                                                {/* 重新发送/60s 重发 */}
+                                                {isCounting
+                                                    ? `${countdown} ${t("safeModal.resendCountdown")}`
+                                                    : t("safeModal.resend")}
+                                            </button>
+                                        }
                                         maxLength={6}
                                     />
-
                                 </Form.Item>
-                        </>
-                    )}
-                    {/* {((acountInfo.openAll === 1 && acountInfo.isPhoneAuth === 1) ||
+                            </>
+                        )}
+                        {/* {((acountInfo.openAll === 1 && acountInfo.isPhoneAuth === 1) ||
                         (acountInfo.openAll === 0 && acountInfo.isGoogleAuth === 0 && acountInfo.isEmailAuth === 0 && acountInfo.isPhoneAuth === 1)) */}
-                    {isShowList()?.includes("phone") && (
-                        <>
-                            <div className={`${styles.title_color} mb-3`}>
-                                {t("safeModal.phoneCodeTitle")}
-                            </div>
-                            <Form.Item
-                                name="phoneCode"
-                                rules={[{ required: true, message: t("safeModal.codeNull") }]}
-                                className={`${styles.login_form_item} position-relative`}
-                                extra={
-                                    <button
-                                        type="button"
-                                        onClick={getLoginCode2}
-                                        className={`${styles.code_btn} ${isCounting ? styles.tip_color  : styles.text_color}  mr-3 `}
-                                    >
-                                        {/* 重新发送/60s 重发 */}
-                                        {isCounting2
-                                            ? `${countdown2} ${t("safeModal.resendCountdown")}`
-                                            : t("safeModal.resend")}
-                                    </button>
-                                }
-                            >
-                                <Input
-                                    autoComplete="off"
-                                    className={`${styles.mail_input} `}
-                                    style={{ width: "100%", height: "40px", color: "var(--text-color5)" }}
-                                    placeholder={t("safeModal.inputPlaceholder")}
-                                    clearable={true}
-                                    type='number'
-                                    value={phoneCodeInputValue}
-                                    onChange={(e) => handleInputChange(e, "phoneCode")}
+                        {isShowList()?.includes("phone") && (
+                            <>
+                                <div className={`${styles.title_color} mb-3`}>
+                                    {t("safeModal.phoneCodeTitle")}
+                                </div>
+                                <Form.Item
+                                    name="phoneCode"
+                                    rules={[{ required: true, message: t("safeModal.codeNull") }]}
+                                    className="position-relative"
+                                >
+                                    <Input
+                                        type='number'
+                                        autoComplete="off"
+                                        styles={{ input: { color: "var(--text-color5)" } }}
+                                        className={`${styles.input_box} modal-input`}
+                                        style={{ width: "100%", height: "40px" }}
+                                        placeholder={t("safeModal.inputPlaceholder")}
+                                        allowClear
+                                        value={phoneCodeInputValue}
+                                        onChange={(e) => handleInputChange(e, "phoneCode")}
+                                        suffix={
+                                            <button
+                                                type="button"
+                                                onClick={getLoginCode2}
+                                                className={
+                                                    isCounting2
+                                                        ? `${styles.tip_color}`
+                                                        : `${styles.text_color}`
+                                                }
+                                            >
+                                                {/* 重新发送/60s 重发 */}
+                                                {isCounting2
+                                                    ? `${countdown2} ${t("safeModal.resendCountdown")}`
+                                                    : t("safeModal.resend")}
+                                            </button>
+                                        }
+                                        maxLength={6}
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
 
-                                    maxLength={6}
-                                />
-                            </Form.Item>
-                        </>
-                    )}
-
-                    {/* {((acountInfo.openAll === 1 && acountInfo.isGoogleAuth === 1) || (acountInfo.openAll === 0 && acountInfo.isGoogleAuth === 1)) */}
-                    {isShowList()?.includes("google") && (
-                        <>
-                            <div className={`${styles.title_color} mb-3`}>
-                                {t("safeModal.googleCodeTitle")}
-                            </div>
-                            <Form.Item
-                                name="googleCode"
-                                rules={[{ required: true, message: t("safeModal.codeNull") }]}
-                                className={`${styles.login_form_item} position-relative`}
-                            >
-                                <Input
-                                    autoComplete="off"
-                                    className={`${styles.mail_input} `}
-                                    style={{ width: "100%", height: "40px", color: "var(--text-color5)" }}
-                                    placeholder={t("safeModal.inputPlaceholder")}
-                                    clearable={true}
-                                    type='number'
-                                    maxLength={6}
-                                    value={googleCodeInputValue}
-                                    onChange={(e) => handleInputChange(e, "google")}
-                                />
-                            </Form.Item>
-                        </>
-                    )}
-                    {/* {(acountInfo.type === 'p' &&acountInfo.openAll === 1 && acountInfo.isEmailAuth === 1) 
+                        {/* {((acountInfo.openAll === 1 && acountInfo.isGoogleAuth === 1) || (acountInfo.openAll === 0 && acountInfo.isGoogleAuth === 1)) */}
+                        {isShowList()?.includes("google") && (
+                            <>
+                                <div className={`${styles.title_color} mb-3`}>
+                                    {t("safeModal.googleCodeTitle")}
+                                </div>
+                                <Form.Item
+                                    name="googleCode"
+                                    rules={[{ required: true, message: t("safeModal.codeNull") }]}
+                                    className="position-relative"
+                                >
+                                    <Input
+                                        type='number'
+                                        autoComplete="off"
+                                        styles={{ input: { color: "var(--text-color5)" } }}
+                                        className={`${styles.input_box} modal-input`}
+                                        style={{ width: "100%", height: "40px" }}
+                                        placeholder={t("safeModal.inputPlaceholder")}
+                                        allowClear
+                                        maxLength={6}
+                                        value={googleCodeInputValue}
+                                        onChange={(e) => handleInputChange(e, "google")}
+                                    />
+                                </Form.Item>
+                            </>
+                        )}
+                        {/* {(acountInfo.type === 'p' &&acountInfo.openAll === 1 && acountInfo.isEmailAuth === 1) 
                     && <>
                         <div className={`${styles.title_color} mb-3`}>{t('safeModal.emailCodeTitle')}</div>
                         <Form.Item
@@ -594,7 +619,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                                 className={`${styles.input_box} modal-input`}
                                 style={{ width: "100%", height: "40px" }}
                                 placeholder={t('safeModal.inputPlaceholder')}
-                                clearable={true}
+                                allowClear
                                 suffix={
                                     <button
                                         type="button"
@@ -613,7 +638,8 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             />
                         </Form.Item>
                     </>} */}
-                </Form>
+                    </Form>
+                </ConfigProvider>
                 <div className="flex-col flex-ai-start mt-10 mb-3">
                     {!loading ? (
                         <button

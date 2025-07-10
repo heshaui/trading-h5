@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Iconify } from "@/components/icon/index";
 import { getSmsCode, getEmailCode, unbindGoogle } from "@/services/safeCenter";
 import { encryptData, encryptEmail, encryptPhoneNumber } from "@/utils/encrypt";
-import QuestionModal from "@/components/PopUp/questionModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
 import appStore from "@/store";
 import { useLanguage } from '@/hooks/useLanguage';
 

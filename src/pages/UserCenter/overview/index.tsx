@@ -1,27 +1,22 @@
 import React from 'react';
-import UserHeader from '../components/UserHeader';
 import UserInfo from '../components/overview/UserInfo';
 import Assets from '../components/overview/Assets'
 import SafeLogPage from '../components/overview/SafeLogin';
 import EquipmentPage from '../components/overview/Equipment';
 import InvitePage from '../components/overview/Invite';
 import styles from './index.module.scss'
-import { useLanguage } from '@/hooks/useLanguage';
+import { UserCenterLayout } from '@/components/MenuItems/'
 
 const Overview: React.FC = () => {
-	const { t } = useLanguage('userCenter');
 	return (
-		<div>
-			<UserHeader title={t("safeCenter.overView")} />
-			<div className={styles.container}>
-				<UserInfo />
-				<Assets />
-				<SafeLogPage />
-				<EquipmentPage />
-				<InvitePage />
-			</div>
+		<div className={styles.container}>
+			<UserInfo />
+			<Assets />
+			<SafeLogPage />
+			<EquipmentPage />
+			<InvitePage />
 		</div>
 	);
 };
 
-export default Overview;
+export default UserCenterLayout(Overview);

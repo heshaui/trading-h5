@@ -39,25 +39,29 @@
   text-indent: 1em;
   padding-left: 0.5em;
 }
+.input_box{
+  height: 50px;
+  border-radius: 8px
+}
 /* 输入框组件覆盖 */
-// .mail_input:focus,
-// .mail_input:focus-within {
-//     border-color: var(--text-color3) !important;
-//     box-shadow: none;
-//     /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
-// }
+.input_box:focus,
+.input_box:focus-within {
+    border-color: var(--text-color3) !important;
+    box-shadow: none;
+    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
 
-// /* 鼠标聚焦且移出样式 */
-// .mail_input:focus:not(:hover) {
-//     background-color: var(--homeground);
-//     color: #fff;
-//     box-shadow: none;
-// }
+/* 鼠标聚焦且移出样式 */
+.input_box:focus:not(:hover) {
+    background-color: var(--homeground);
+    color: #fff;
+    box-shadow: none;
+}
 
-// /* 鼠标滑过 */
-// .mail_input:hover {
-//     border-color: var(--text-color3);
-// }
+/* 鼠标滑过 */
+.input_box:hover {
+    border-color: var(--text-color3);
+}
 .code_btn{
   height: 48px;
   border-left: none;

@@ -36,6 +36,9 @@
     background-color: transparent;
     color: var(--text-color5);
 }
+.customSelect:hover{
+    border-color: var(--theme-color);
+}
 .valueSelect{
     display: inline-block;
     width: 60px;

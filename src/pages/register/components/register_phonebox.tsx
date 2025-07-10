@@ -1,7 +1,7 @@
 import { type CSSProperties, useState, useEffect } from "react";
 import { LoginStateEnum, useLoginStateContext, RegisterTypeEnum, useRegisterTypeContext } from "@/context/register-providers/LoginStateProvider";
 import store from "@/store";
-import PhoneCodeSelector from "@/components/PhoneCodeSelector"
+import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop"
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/login.module.scss'
 import { useLanguage } from '@/hooks/useLanguage';

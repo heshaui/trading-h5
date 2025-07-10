@@ -18,7 +18,7 @@ import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import EmailAuto from "@/components/EmailAuto";
-import SafeModal from "@/components/PopUp/loginModal";
+import SafeModal from "@/components/LoginAboutPop/loginModal";
 
 
 interface useInfoType {
@@ -99,7 +99,7 @@ function Mailbox() {
                 // const data = {
                 //     type: "m",
                 //     email: values.email,
-                //     deviceType: "web",
+                //     deviceType: "H5",
                 //     password: values.password,
                 //     authCodeMail: "",
                 // }
@@ -119,7 +119,7 @@ function Mailbox() {
                         const data = {
                             type: "m",
                             email: values.email,
-                            deviceType: "Web",
+                            deviceType: "H5",
                             password: values.password,
                             authCodeMail: "",
                             ...res.data
@@ -140,7 +140,7 @@ function Mailbox() {
                         //     ...res.data,
                         //     type: "m",
                         //     email: values.email,
-                        //     deviceType: "web",
+                        //     deviceType: "H5",
                         //     password: values.password,
                         //     authCodeMail: "",
 
@@ -279,22 +279,22 @@ function Mailbox() {
                     />
                 </Form.Item>
                 <div className="w-full flex-x align-center justify-end">
-                    <button type="button" className={`${styles.forget_password_button} font-16`} onClick={() => goResetPassword()} >
+                    <button type="button" className={`${styles.forget_password_button} font-14`} onClick={() => goResetPassword()} >
                         {/* 忘记密码 */}
                         {t('forgetPassword')}
                     </button>
                 </div>
             </Form>
-            {!loading ? <button type="submit" className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
+            {!loading ? <button type="submit" className={`${styles.login_button} font-16 flex-x-cc w-full button-color mt-5`}
                 onClick={handleFinish}>
                 {/* 登录 */}
                 {t('loginButton')}
             </button> :
-                <button type="button" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
+                <button type="button" className={`${styles.login_loading} font-16 flex-x-cc w-full button-color mt-5`}>
                     {/* 登录 */}
                     {t('loginButton')}
                 </button>}
-            <div className="flex-cc mt-4">
+            <div className="flex-cc mt-4 font-14">
                 <p>
                     {/* 没有账号？ */}
                     {t('noAcount')}

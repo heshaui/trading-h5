@@ -37,7 +37,7 @@
             "quantity": "数量",
             "completion": "完成度",
             "amount": "成交额",
-            "cancel": "全撤",
+            "cancel": "撤销全部",
             "averagePrice": "成交均价",
             "price2": "成交价",
             "count": "成交数量",

@@ -20,8 +20,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/authCode.module.scss";
 import { useLanguage } from '@/hooks/useLanguage';
 import { Toast, Form, Input } from 'antd-mobile';
-import QuestionModal from "@/components/PopUp/questionModal";
-import RepeatModal from "@/components/PopUp/register_repeatModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
+import RepeatModal from "@/components/LoginAboutPop/register_repeatModal";
 
 function AuthCode() {
   const { t } = useLanguage("login");
@@ -129,7 +129,7 @@ function AuthCode() {
       if (registerInfo.type === "m") {
         const dataInfo = {
           number: registerInfo.email || "",
-          deviceType: "web",
+          deviceType: "H5",
         };
         const dataEncrypt = await encryptData(dataInfo);
         const res = await getRegisterMailCode(dataEncrypt);
@@ -150,7 +150,7 @@ function AuthCode() {
         const dataInfo = {
           number: registerInfo.phone || "",
           code: registerInfo.countryCode?.replace("+", ""),
-          deviceType: "web",
+          deviceType: "H5",
         };
         const dataEncrypt = await encryptData(dataInfo);
         const res = await getRegisterSmsCode(dataEncrypt);

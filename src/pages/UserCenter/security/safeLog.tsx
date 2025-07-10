@@ -2,7 +2,7 @@ import React from 'react';
 import { Iconify } from '@/components/icon'
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
-import CustomTab from '@/components/CustomTab';
+import CustomTab from '@/components/CustomCom/CustomTab';
 import LoginRecord from "../components/security/SafeLog/LoginRecord";
 import SafeSet from "../components/security/SafeLog/SafeSet";
 import './index.scss'

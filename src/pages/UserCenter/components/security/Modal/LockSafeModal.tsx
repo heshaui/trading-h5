@@ -14,7 +14,7 @@ import {
   getPasswordEmailCode,
 } from "@/services/safeCenter";
 import { encryptData, encryptEmail, encryptPhoneNumber } from "@/utils/encrypt";
-import QuestionModal from "@/components/PopUp/questionModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
 
 interface acountType {
   countryCode?: string;

@@ -56,7 +56,11 @@
       "inputCode": "请输入",
        "logout": "退出",
        "login": "登录",
-       "register": "注册"
+       "register": "注册",
+       "to": "到",
+       "startDate": "开始时间",
+       "endDate": "结束时间",
+       "dateRangeExceeded": "日期范围超出限制"
     },
     "titleText":{
       "historyInput": "历史输入",

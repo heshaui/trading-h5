@@ -91,7 +91,8 @@
             "canceled": "用户撤销",
             "created": "创建订单",
             "partial": "部分成交",
-            "canceled2": "订单已撤销，戳和未撤销"
+            "canceled2": "订单已撤销，戳和未撤销",
+            "filter": "筛选"
         },
         "trade": {
             "buy": "买入",

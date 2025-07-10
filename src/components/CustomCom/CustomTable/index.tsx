@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { Iconify } from '@/components/icon';
 
 export interface ColumnType<T = any> {
-  title: string|React.ReactNode;
+  title: string | React.ReactNode | ((value: any, record: T, index: number) => React.ReactNode);
   dataIndex?: string;
   key: string;
   width?: number | string;
@@ -172,6 +172,14 @@ const CustomTable = <T extends Record<string, any>>({
     return value;
   };
 
+  // 渲染标题内容
+  const renderTitle = (column: ColumnType<T>, index: number, value?: any, record?: T) => {
+    if (typeof column.title === 'function') {
+      return column.title(value, record as T, index);
+    }
+    return column.title;
+  };
+
   // 渲染分页
   const renderPagination = () => {
     if (!pagination || typeof pagination === 'boolean') return null;
@@ -216,13 +224,16 @@ const CustomTable = <T extends Record<string, any>>({
   // 列模式渲染（传统表格）
   const renderColumnMode = () => (
     <div className={`${styles.tableWrapper} ${className}`}>
-      {loading && <div className={`${styles.loading} table-loading`}>加载中...</div>}
+      {loading && <div className={`${styles.loading} table-loading`}>
+        {/* 加载中... */}
+        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color"/>
+        </div>}
       
       <table className={styles.table}>
         <thead className={`${styles.tableHead} ${headerClassName} table-header`}>
           <tr>
             {expandable && <th className={`${styles.expandColumn} table-expand-column`}></th>}
-            {columns.map(column => (
+            {columns.map((column, index) => (
               <th
                 key={column.key}
                 className={`${styles.tableHeader} table-header-item`}
@@ -232,7 +243,7 @@ const CustomTable = <T extends Record<string, any>>({
                 }}
               >
                 <div className={`${styles.headerContent} table-header-content`}>
-                  <span className="table-header-title">{column.title}</span>
+                  <span className="table-header-title">{renderTitle(column, index, null, undefined)}</span>
                   {column.sorter && (
                     <span
                       className={`${styles.sortTrigger} table-sort-trigger`}
@@ -313,7 +324,10 @@ const CustomTable = <T extends Record<string, any>>({
   // 行模式渲染（卡片式）
   const renderRowMode = () => (
     <div className={`${styles.cardWrapper} ${className} ${bodyClassName} table-body`}>
-      {loading && <div className={styles.loading}>加载中...</div>}
+      {loading && <div className={styles.loading}>
+        {/* 加载中... */}
+        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color"/>
+        </div>}
       
       {sortedData.length === 0 ? (
         <div className={`${styles.emptyCard} table-empty-card`}>
@@ -327,10 +341,10 @@ const CustomTable = <T extends Record<string, any>>({
           
           return (
             <div key={key} className={`${styles.card} table-card`} {...rowProps}>
-              {columns.map(column => (
+              {columns.map((column, columnIndex) => (
                 <div key={column.key} className={`${styles.cardRow} ${headerClassName} flex-x align-center justify-between table-card-row`}>
                   <div className={`${styles.cardLabel}  table-card-label`}>
-                    {column.title} 
+                    {renderTitle(column, columnIndex, record[column.key], record)} 
                     {column.sorter && (
                       <span
                         className={`${styles.sortTrigger} table-sort-trigger`}
@@ -340,7 +354,8 @@ const CustomTable = <T extends Record<string, any>>({
                       </span>
                     )}
                   </div>
-                  <div className={`${styles.cardValue} flex-1 text-right table-card-value`}>
+                  <div className={`${styles.cardValue} flex-1
+                   text-right flex-x align-center justify-end table-card-value`}>
                     {renderCellContent(column, record, index)} 
                   </div>
                 </div>

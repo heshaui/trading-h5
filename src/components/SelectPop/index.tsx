@@ -14,6 +14,7 @@ interface OptionItem {
 interface SelectPopProps {
   className?: string;
   value?: string | number;
+  defaultValue?: string | number; // 新增：默认值
   showValue?: boolean;
   onChange?: (value: string | number, option: OptionItem) => void;
   options: OptionItem[]; // 传入的选项列表
@@ -23,6 +24,7 @@ interface SelectPopProps {
   searchPlaceholder?: string; // 搜索框占位符
   searchKeys?: string[]; // 搜索的字段名，默认为 ['label', 'value']
   disabled?: boolean; // 是否禁用
+  showAll?: boolean; // 是否回显全部
   renderOption?: (option: OptionItem) => React.ReactNode; // 自定义选项渲染
   renderValue?: (option: OptionItem | null) => React.ReactNode; // 自定义值显示
 }
@@ -39,6 +41,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   searchPlaceholder = "Search",
   searchKeys = ['label', 'value'],
   disabled = false,
+  showAll = false,
   renderOption,
   renderValue
 }, ref) => {
@@ -104,6 +107,15 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     
     if (renderValue) {
       return renderValue(selectedOption);
+    }
+    
+    // 处理空值或'all'值的情况（注意：0是有效值，不应该被当作空值）
+    if (selectedValue === null || selectedValue === undefined || selectedValue === '' || selectedValue === 'all') {
+      if (showAll) {
+        return t('common.all') || placeholder; // 显示"全部"标签
+      } else {
+        return placeholder; // 显示placeholder
+      }
     }
     
     if (!selectedOption) return placeholder;
@@ -213,3 +225,58 @@ SelectPopWrapper.displayName = 'SelectPopWrapper';
 export default SelectPop;
 export { SelectPopWrapper };
 export type { OptionItem, SelectPopProps };
+
+/**
+ * 使用示例：
+ * 
+ * // 1. 基本用法
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: '选项1', value: 'option1' },
+ *     { label: '选项2', value: 'option2' },
+ *   ]}
+ *   placeholder="请选择"
+ * />
+ * 
+ * // 2. 显示"全部"标签（当value为null/undefined/''/'all'时）
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: '全部', value: 'all' },
+ *     { label: '选项1', value: 'option1' },
+ *     { label: '选项2', value: 'option2' },
+ *   ]}
+ *   placeholder="请选择"
+ *   showAll={true} // 当value为空或'all'时显示"全部"
+ * />
+ * 
+ * // 3. 数字类型的value（包括0）
+ * <SelectPop
+ *   value={0} // 数字0是有效值，不会被当作空值处理
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: '全部', value: 'all' },
+ *     { label: '第一项', value: 0 }, // 数字0
+ *     { label: '第二项', value: 1 },
+ *   ]}
+ *   placeholder="请选择"
+ *   showAll={false}
+ * />
+ * // 当value=0时，会正确显示"第一项"而不是placeholder
+ * 
+ * // 4. 不显示"全部"标签（当value为null/undefined/''/'all'时显示placeholder）
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: '全部', value: 'all' },
+ *     { label: '选项1', value: 'option1' },
+ *     { label: '选项2', value: 'option2' },
+ *   ]}
+ *   placeholder="请选择"
+ *   showAll={false} // 当value为空或'all'时显示placeholder
+ * />
+ */

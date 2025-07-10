@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
 import styles from '../styles/layout.module.scss'
 
-import RouterMenu from "../RouterMenu/Menu"
+import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 
 // 定义图标类型

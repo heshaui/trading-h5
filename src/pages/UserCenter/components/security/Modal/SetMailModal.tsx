@@ -3,7 +3,7 @@ import { Toast, Popup } from 'antd-mobile';
 import 'antd/es/select/style'
 import styles from "./styles/setPhone.module.scss";
 import { Iconify } from "@/components/icon/index";
-import PhoneCodeSelector from "@/components/PhoneCodeSelector";
+import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop";
 import { useState } from "react";
 import { bindEmail, getEmailCode, getSmsCode } from "@/services/safeCenter";
 import type { AutoCompleteProps } from "antd";

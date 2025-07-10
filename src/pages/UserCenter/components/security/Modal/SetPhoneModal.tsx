@@ -2,7 +2,7 @@ import { Form, Input } from "antd";
 import { Toast, Popup } from 'antd-mobile';
 import styles from "./styles/setPhone.module.scss";
 import { Iconify } from "@/components/icon/";
-import PhoneCodeSelector from "@/components/PhoneCodeSelector";
+import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop";
 import { useState } from "react";
 import { bindPhone, getSmsCode, getEmailCode } from "@/services/safeCenter";
 import { encryptData, encryptEmail, encryptPhoneNumber } from "@/utils/encrypt";

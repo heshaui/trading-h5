@@ -32,7 +32,7 @@ const routes = pageModules.keys().map((key: string) => {
   const Component = React.lazy(() => Promise.resolve({ default: mod.default }));
   const layout = mod.layout || mod.meta?.layout || 'main';
   // 登录后才能访问
-  const requireAuth = mod.meta?.requireAuth ?? true;
+  const requireAuth = mod.meta?.requireAuth ?? false;
   let path = normalizePath(key);
 
   return {

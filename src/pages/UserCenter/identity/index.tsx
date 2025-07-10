@@ -1,20 +1,113 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Toast } from 'antd-mobile';
 import UserHeader from '../components/UserHeader';
 import Auth from '../components/identiry/Auth';
 import NoAuth from '../components/identiry/NoAuth';
+import Faq from '../components/identiry/faq';
 import './index.scss'
 import { useLanguage } from '@/hooks/useLanguage';
 import IdentifyStatus from '../components/overview/UserInfo/IdentifyStatus';
+import { getUserIdentityInfo, getLevelBenefitDetail } from '@/services/identity';
+import { LOCAL_STORAGE_KEY } from "@/config/apiConfig"
 
 const Identity: React.FC = () => {
 	const { t } = useLanguage('userCenter');
-   const isAuth = false;
-	return (
+	const [userIdentityInfo, setUserIdentityInfo] = useState<any>({
+		authStatus: 2,
+	});
+	const [levelBenefitData, setLevelBenefitData] = useState([]);
+	const getUserIdentityInfoData = async () => {
+		const userInfo = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || '{}');
+		try {
+			const res = await getUserIdentityInfo({
+				userId: userInfo.userId || ''
+			});
+			if (res.code === '0') {
+				setUserIdentityInfo(res.data);
+				localStorage.setItem(LOCAL_STORAGE_KEY.USER_INFO, JSON.stringify(Object.assign({}, userInfo, res.data)))
+
+				if (res.data.authStatus === 1) {
+					getLevelBenefitData(userInfo.userId);
+
+				} else {
+					getLevelBenefitData(null);
+				}
+			}
+		} catch (error) {
+			Toast.show({
+				icon: 'fail',
+				content: String(error),
+			})
+		}
+	}
+	const getLevelBenefitData = async (userId: string | number | null) => {
+		try {
+			const res = await getLevelBenefitDetail({
+				userId: userId || ''
+			});
+			if (res.code === '0') {
+				const benefitData = transformData(res.data)
+				setLevelBenefitData(benefitData);
+			}
+		} catch (error) {
+			Toast.show({
+				icon: 'fail',
+				content: String(error),
+			})
+		}
+	}
+
+	const transformData = (data: any) => {
+		return data.map((item: any) => {
+		// 创建基础对象，包含 benefitId 和 benefitName
+		const result = {
+			benefitId: item.benefitId,
+			benefitName: item.benefitName,
+			benefitValue: item.benefitValue,
+			// 初始化默认值
+			status0: null,
+			value0: null,
+			params0: null,
+			status1: null,
+			value1: null,
+			params1: null
+		};
+
+		// 遍历 levelBenefits 数组，根据 levelId 设置对应的属性
+		item.levelBenefits.forEach((benefit: any) => {
+			if (benefit.levelValue === "L0") {
+			// 未认证
+			result.status0 = benefit.status;
+			result.value0 = benefit.value;
+			result.params0 = benefit.params;
+			} else if (benefit.levelValue ==="L1") {
+			// 已认证
+			result.status1 = benefit.status;
+			result.value1 = benefit.value;
+			result.params1 = benefit.params;
+			}
+		});
+
+		return result;
+		});
+	}
+
+	useEffect(() => {
+		getUserIdentityInfoData();
+	}, []);
+    return (
 		<div>
 			<UserHeader title={t('safeCenter.security')} />
+			{/* 0驳回 1已认证 2未认证 3审核中 */}
+			{/* 未认证 - 驳回 - 审核中*/}
+			{/* {(userIdentityInfo?.authStatus === 2||userIdentityInfo?.authStatus === 0||userIdentityInfo?.authStatus === 3) && <NoAuthentication identityInfo={userIdentityInfo}/>} */}
+			{/* 已认证 */}
 			{
-            isAuth ? <Auth /> : <NoAuth />
-         }
+				userIdentityInfo?.authStatus === 1 ? 
+				<Auth identityInfo={userIdentityInfo} levelBenefit={levelBenefitData} /> : 
+				<NoAuth identityInfo={userIdentityInfo} levelBenefit={levelBenefitData}/>
+			}
+			<Faq />
 		</div>
 	);
 };

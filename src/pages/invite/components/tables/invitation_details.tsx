@@ -124,7 +124,7 @@ function InvitationDetails({ onReturn }: InviteProps) {
     }, [])
     
     return (
-        <div className={`${styles.table_box}`}>
+        <div className={`${styles.table_box} px-3`}>
             <CustomTable<DataType>
                 columns={columns}
                 dataSource={inviteData}
@@ -144,7 +144,7 @@ function InvitationDetails({ onReturn }: InviteProps) {
                             <NoData />
                             <button 
                                 type='submit' 
-                                className={`default_btn flex-x-cc  mt-10 ${styles.invite_btn}`}
+                                className={`default_btn flex-x-cc  mt-10 ${styles.invite_btn2}`}
                                 onClick={onReturn}
                             >
                                 {/* 立即邀请 */}

@@ -21,8 +21,8 @@
   margin: 0 auto;
   padding: 8px 0; // 内容区域内边距
   border-bottom: 0.5px solid var(--border-color11);
-  padding-left: max(env(safe-area-inset-left), 5%);
-  padding-right: max(env(safe-area-inset-right), 5%);
+  padding-left: max(env(safe-area-inset-left), 20px);
+  padding-right: max(env(safe-area-inset-right), 20px);
 }
 .logo{
     width: 140px;
@@ -97,8 +97,8 @@
   .headerContent {
     // 确保在支持env()的设备上正确应用安全距离
     padding-top: max(env(safe-area-inset-top), 0px);
-    padding-left: max(env(safe-area-inset-left), 5%);
-    padding-right: max(env(safe-area-inset-right), 5%);
+    padding-left: max(env(safe-area-inset-left), 20px);
+    padding-right: max(env(safe-area-inset-right), 20px);
   }
 }
 

@@ -19,6 +19,8 @@ type Props = {
   activeLineMode?:'auto' | 'full' | 'fixed';
   className?: string| string[];
   style?: React.CSSProperties;
+  destroyOnClose?:boolean;
+  forceRender?:boolean;
 }
 const CustomTab: React.FC<Props> = ({ tabsItems,
   defaultActiveKey,
@@ -27,6 +29,8 @@ const CustomTab: React.FC<Props> = ({ tabsItems,
   stretch=true,
   direction ,
   activeLineMode='auto',
+  destroyOnClose=true,
+  forceRender=false,
   className,
   style
 }) => {
@@ -44,7 +48,7 @@ const CustomTab: React.FC<Props> = ({ tabsItems,
       >
         {tabsItems.map((item) => (
           <Tabs.Tab title={item.title||item.label} key={item.key}
-            destroyOnClose={item.destroyOnClose||false}
+            destroyOnClose={item.destroyOnClose||destroyOnClose}
             disabled={item.disabled||false}
           >
             {item.children}

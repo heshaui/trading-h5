@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Toast, Popup, Image } from 'antd-mobile';
+import { Toast, Popup, Image, Segmented } from 'antd-mobile';
 
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from "@/components/icon/index";
@@ -116,11 +116,30 @@ const initAvatarList: AvatarItem[] = [
 ]
 
 const AvartarList = () => {
+    const { t } = useLanguage('common');
+    const imageTypes: Record<'label' | 'value', string>[] = [
+        {
+            label: t('usersetting.avatarFilter.all'),
+            value: 'all'
+        },
+        {
+            label: t('usersetting.avatarFilter.male'),
+            value: 'male'
+        },
+        {
+            label: t('usersetting.avatarFilter.female'),
+            value: 'female'
+        }
+    ]
+
     return (
         <div>
-            <ul>
-                <li></li>
-            </ul>
+             <Segmented
+                options={imageTypes}
+                defaultValue="all"
+                onChange={avatarTypeChange}
+                className={`${styles.avatar_icon_box}`}
+            />
         </div>
     )
 }

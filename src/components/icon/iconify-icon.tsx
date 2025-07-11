@@ -6,6 +6,7 @@ import type { IconProps } from "@iconify/react";
 interface Props extends IconProps {
 	size?: IconProps["width"];
 }
+// https://icon-sets.iconify.design
 export default function Iconify({ icon, size = "1em", className = "", ...other }: Props) {
 	return (
 		<StyledIconify className="action">

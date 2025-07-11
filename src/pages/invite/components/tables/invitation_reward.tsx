@@ -143,10 +143,12 @@ function InvitationReward({ onReturn }: InviteProps) {
                             <NoData />
                             <button 
                                 type='submit' 
-                                className={`default_btn flex-x-cc  mt-10 ${styles.invite_btn}`} 
+                                className={`default_btn flex-x-cc  mt-10 ${styles.invite_btn2}`} 
                                 onClick={onReturn}
                             >
-                                {t('invite.inviteRewards.inviteBtn')}
+                                {/* {t('invite.inviteRewards.inviteBtn')} */}
+                                {/* 立即邀请 */}
+                                {t('invite.inviteBtn')}
                             </button>
                         </div>
                     )

@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from '@/hooks/useLanguage';
 import { NoData } from '@/components/noData'
-import { Toast } from 'antd-mobile'
+import { Toast, ProgressBar } from 'antd-mobile'
 import { getOrderList, getExchangeCoinList, revocationOrder, updateOrder } from '@/services/spot'
 import { add, cut, division, lastD, nul, roundDown, roundUp } from '@/utils'
 // import ToastModal from '@/components/spotModal/Toast_modal';
@@ -20,7 +20,7 @@ import { getRound } from '@/utils/getUseRate'
 import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import SelectPop from '@/components/SelectPop'
-
+import DelectModal from '../TipPop/Delect_modal'
 interface DataType {
   id: number,
   orderId: string,
@@ -76,11 +76,11 @@ const SpotMainPage = observer(() => {
   const [loading, setLoading] = useState(false);
   const [symbolSelect, setSymbolSelect] = useState<symbolSelectType[]>([]);
   const [toastModal, setToastModal] = useState<boolean>(false);
-  const [delectId, setDelectId] = useState<string[]>([]);
   const [delectIdAll, setDelectIdAll] = useState<string[]>([]);
   const [delectModal, setDelectModal] = useState<boolean>(false);
   const [toastData, setToastData] = useState<any>({})
   const toastDataRef = useRef<any>({})
+  const [delectType, setDelectType] = useState<number>(0);
 
   const columns: ColumnType<DataType>[] = [
     // {
@@ -92,20 +92,79 @@ const SpotMainPage = observer(() => {
     //   render: (text, record) => <div>{`${text ? dayjs(text).format('YYYY-MM-DD HH:mm:ss') : dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss')}`} </div>,
     // },
     {
-      title: t('spot.columns.symbol'), //"交易对",
+      title: (_value, record) => {
+        let directionText
+        if (record.direction === 0) {
+          directionText = t('spot.trade.buy')
+          //  <span className={`${styles.success_icon}`} >{directionText || '--'}</span>;
+        } else if (record.direction === 1) {
+          directionText = t('spot.trade.sell')
+          //  <span className={`${styles.error_icon}`} >{directionText || '--'}</span>;
+        } else {
+          directionText = '--'
+        }
+        let typeText
+        if (record.type === 0) {
+          typeText = t('spot.columns.market')
+        } else if (record.type === 1) {
+          typeText = t('spot.columns.limit')
+        } else {
+          typeText = '--'
+        }
+        return <div className='font-12'>
+          <div>
+            <span className={`mr-2_5 font-16 ${styles.title_color}`}>{_value}</span>
+            <span className={`${styles.typeText}`}>{typeText}</span>
+          </div>
+          <div>
+            <span className={`mr-2_5 ${record.direction === 0 ? styles.success_icon :
+              record.direction === 1 ? styles.error_icon : styles.title_color}`}>
+              {directionText}
+            </span>
+            <span>{record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') :
+              record.updateTime ? dayjs(record.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>
+          </div>
+        </div>
+      },// t('spot.columns.symbol'), //"交易对",
       dataIndex: "symbol",
       key: "symbol",
       align: "center",
       width: 148,
-      render: (_text, record) => <button type='button'
-        className={`${record.direction === 1 ? styles.error_hover : record.direction?.toString() === '0' ? styles.success_hover : ''}`}
-        onClick={() => {
-          navigate(`/spotOrder?symbol=${record.symbol}`)
-        }}
-      >
-        {_text || '--'}
-        <Iconify icon="mingcute:right-line" className={`${record.direction === 1 ? styles.success_hover : record.direction?.toString() === '0' ? styles.error_hover : ''} mx-1`} size={20} />
-      </button >,
+      render: (_text, record) => {
+        const amount = nul(division(record.tradedAmount, record.amount), 100)
+        const { baseScaleResult } = getRound(record.symbol, amount)
+
+        return <div
+          // className={`${record.direction === 1 ? styles.error_hover : record.direction?.toString() === '0' ? styles.success_hover : ''}`}
+          // onClick={() => {
+          //   navigate(`/spotOrder?symbol=${record.symbol}`)
+          // }}
+          className='flex-x-cc'
+        >
+          <div className='mr-1 flex-y-cc'>
+            <span>  {record.tradedAmount && record.tradedAmount.toString() !== '0' ? `${roundDown(baseScaleResult, 2)}%` : '0%'}</span>
+            <div className={`${styles.progress_bar} mt-1`}>
+              <ProgressBar percent={amount}
+                style={{
+                  '--fill-color': 'var(--theme-color)',
+                  '--track-width': '5px',
+                }} />
+            </div>
+
+          </div>
+
+          <button type='button'
+            className={`${styles.cancel_btn} cancel_btn2 font-12 `}
+            onClick={() => {
+              setDelectIdAll([record.orderId])
+              setDelectType(1)
+              setDelectModal(true)
+            }}
+          >
+            {t('spot.select.cancelOrder')}
+          </button>
+        </div >
+      },
     },
     // {
     //   title: t('spot.columns.type'), //"类型",
@@ -230,7 +289,7 @@ const SpotMainPage = observer(() => {
     // {
     //   title: <button className={`error_icon`}
     //     onClick={() => {
-    //       setDelectIdAll(tableData.map((item) => item.orderId))
+    //       setDelectIdAllAll(tableData.map((item) => item.orderId))
     //       setDelectModal(true)
     //     }}
     //   >{t('spot.columns.cancel')}</button>, //"全撤",
@@ -242,7 +301,7 @@ const SpotMainPage = observer(() => {
     //       <button
     //         onClick={() => {
 
-    //           // setDelectId([record.orderId])
+    //           // setDelectIdAll([record.orderId])
     //           // setDelectOneSuccess(true)
     //           setToastData({
     //             coinSymbol: record.coinSymbol,
@@ -270,7 +329,10 @@ const SpotMainPage = observer(() => {
 
 
   ];
-  const delectOne = async (orderId: string[]) => {
+  const handleDelectOk = (orderId: string[]) => {
+    delectOrder(orderId)
+  }
+  const delectOrder = async (orderId: string[]) => {
     try {
       const paeam = {
         orderId: orderId,
@@ -278,31 +340,22 @@ const SpotMainPage = observer(() => {
       const encrypt = await encryptData(paeam)
       const res = await revocationOrder(encrypt)
       if (res.code === '0') {
-        // toast.success(res.message)
-        // setToastModal(true)
-        notification.success({
-          message: t('spot.toastModal.canceled'), //'已撤单',
-          description: (
-            <ul className={`flex-col flex-ai-start flex-1 ${styles.title_color} ml-2`}>
-              <li className={` mt-5 font-14 font-w-400 `}>
-                {t('spot.toastModal.pair')}: {toastDataRef.current?.symbol}
-              </li>
-              <li className={` mt-3 font-14 font-w-400 `}>
-                {t('spot.toastModal.price')}: {toastDataRef.current?.price}&nbsp;{toastDataRef.current?.symbol?.split('/')?.[1] || '--'}
-              </li>
-              <li className={` mt-3 font-14 font-w-400 `}>
-                {t('spot.toastModal.cancelAmount')}: {toastDataRef.current?.amount}&nbsp;{toastDataRef.current?.symbol?.split('/')?.[0] || '--'}
-              </li>
-            </ul>
-          ),
-          duration: 3
+        Toast.show({
+          content: t('spot.toastModal.canceled'),
+          icon: 'success',
         })
         getOrderListData()
       } else {
-        Toast.show(res.message)
+        Toast.show({
+          content: res.message,
+          icon: 'fail',
+        })
       }
     } catch (error) {
-      Toast.show(String(error))
+      Toast.show({
+        content: String(error),
+        icon: 'fail',
+      })
     }
 
   };
@@ -321,12 +374,7 @@ const SpotMainPage = observer(() => {
       value: 1
     }
   ]
-  //   const symbolSelect: { label: string, value: string }[] = [
-  //     {
-  //       label: t('spot.select.all'),
-  //       value: ''
-  //     }
-  // ]
+
   const pageChange = async (page: number, pageSize: number) => {
     const pageData = {
       page: page,
@@ -352,9 +400,7 @@ const SpotMainPage = observer(() => {
     }
     await getOrderListData()
   }
-  const handleDelectOk = () => {
-    getOrderListData()
-  }
+ 
   const getOrderListData = async () => {
     const params = {
       pageNo: paramdataRef.current.page,
@@ -443,30 +489,30 @@ const SpotMainPage = observer(() => {
         },
       }}
     >
-      {/* 充值 */}
       <div className={`${styles.table_box} w-full `}>
         <div className={`${styles.table_header} w-full flex align-center pl-1 pr-4`}>
           <div className='flex-x-cc'>
             <SelectPop
-            options={directionSelect}
-            placeholder={t('spot.columns.direction')}
-            title={t('spot.columns.direction')}
-            onChange={directionChange}
-          // showSearch={false}
-          />
-          <SelectPop
-            options={symbolSelect}
-            placeholder={t('spot.columns.symbol')}
-            title={t('spot.columns.symbol')}
-            onChange={symbolChange}
-          // showSearch={false}
-          />
+              options={directionSelect}
+              placeholder={t('spot.columns.direction')}
+              title={t('spot.columns.direction')}
+              onChange={directionChange}
+            // showSearch={false}
+            />
+            <SelectPop
+              options={symbolSelect}
+              placeholder={t('spot.columns.symbol')}
+              title={t('spot.columns.symbol')}
+              onChange={symbolChange}
+            // showSearch={false}
+            />
           </div>
-          
+
           <div className='flex-1 flex-x align-center justify-end'>
             <button
               onClick={() => {
                 setDelectIdAll(tableData.map((item) => item.orderId))
+                setDelectType(0)
                 setDelectModal(true)
               }}
               className={`${styles.cancel_btn} cancel_btn2 font-12 `}
@@ -522,11 +568,12 @@ const SpotMainPage = observer(() => {
           />
 
         </div>
-        {/* <DelectModal open={delectModal}
+        <DelectModal open={delectModal}
           orderId={delectIdAll}
+          type={delectType}
           onCancel={() => setDelectModal(false)}
           onOk={handleDelectOk} />
-        <ToastModal
+        {/* <ToastModal
           type='0'
           open={toastModal}
           toastData={toastData}

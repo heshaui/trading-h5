@@ -1,6 +1,6 @@
 import React from 'react';
 import { SpotLayout } from '@/components/MenuItems';
-import styles from './styles/billDetails.module.css'
+import styles from './styles/spotOrder.module.scss'
 // import { Input, Radio, ConfigProvider, Table, Select, Form, Tabs } from 'antd';
 import { CustomTab } from '@/components/CustomCom';
 import { Iconify } from "@/components/icon"
@@ -10,8 +10,8 @@ import { useState, useEffect, useRef } from "react";
 import { useLanguage } from '@/hooks/useLanguage';
 import type { TabsProps } from 'antd';
 import SpotOrderNow from './components/SpotOrderTable/NowOrder'
-// import SpotOrderHistory from '../compontents/SpotOrderTable/HistoryOrder'
-// import SpotOrderDeal from '../compontents/SpotOrderTable/HistoryDeal'
+import SpotOrderHistory from './components/SpotOrderTable/HistoryOrder'
+import SpotOrderDeal from './components/SpotOrderTable/HistoryDeal'
 import appStore from '@/store';
 interface DataType {
 	id: number,
@@ -45,12 +45,12 @@ const SpotOrderPage = () => {
 		{
 			key: '2',
 			label: t('spot.tabs.history'), //'历史委托',
-			children: 2222,//<SpotOrderHistory />,
+			children: <SpotOrderHistory />,
 		},
 		{
 			key: '3',
 			label: t('spot.tabs.historyDeal'), //'历史成交',
-			children: 333,//<SpotOrderDeal />,
+			children: <SpotOrderDeal />,
 		},
 	];
 	useEffect(() => {

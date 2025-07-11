@@ -7,6 +7,7 @@ import { Iconify } from "@/components/icon/index";
 import { fileImg } from "@/services/open";
 import { updateUserCenter } from '@/services/userCenter';
 import {encryptData} from '@/utils/encrypt';
+import CustomTab from '@/components/CustomCom/CustomTab';   
 
 type Props = {
     open: boolean;
@@ -114,8 +115,36 @@ const initAvatarList: AvatarItem[] = [
     }
 ]
 
+const AvartarList = () => {
+    return (
+        <div>
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+    )
+}
+
+const UploadAvatar = () => {
+    return (
+        <></>
+    )
+}
+
 const AvatarUrlPopup: React.FC<Props> = ({ open, onCancel, userId, onOk }) => {
     const { t } = useLanguage('common');
+    const tabsItems = [
+		{
+			key: '1',
+			title: t('security.safeSet.loginRecord'),//'语言',
+			children: <AvartarList />
+		},
+		{
+			key: '2',
+			title: t('security.safeSet.safeSetRecord'),//'语言',
+			children: <UploadAvatar />
+		},
+	]
     return (
         <Popup
             visible={open}
@@ -133,6 +162,16 @@ const AvatarUrlPopup: React.FC<Props> = ({ open, onCancel, userId, onOk }) => {
                 <span>{ t('usersetting.modifyAvatar') }</span>
                 <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={onCancel} />
             </p>
+            <CustomTab
+				tabsItems={ tabsItems }
+				stretch={false}
+				activeLineMode='fixed'
+				className="safeTabs"
+            />
+            <div>
+                <button></button>
+                <button></button>
+            </div>
         </Popup>
     )
 }

@@ -60,8 +60,10 @@
        "to": "到",
        "startDate": "开始时间",
        "endDate": "结束时间",
-       "dateRangeExceeded": "日期范围超出限制"
-    },
+       "dateRangeExceeded": "日期范围超出限制",
+       "collapse": "收起",
+       "expand": "展开"
+      },
     "titleText":{
       "historyInput": "历史输入",
       "history": "历史",

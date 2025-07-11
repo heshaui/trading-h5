@@ -7,7 +7,8 @@ interface Item {
   key: string;
   children: React.ReactNode;
   disabled?:boolean;
-  destroyOnClose?:boolean
+  destroyOnClose?:boolean;
+  forceRender?:boolean;
 }
 type Props = {
   tabsItems: Item[];
@@ -48,7 +49,8 @@ const CustomTab: React.FC<Props> = ({ tabsItems,
       >
         {tabsItems.map((item) => (
           <Tabs.Tab title={item.title||item.label} key={item.key}
-            destroyOnClose={item.destroyOnClose||destroyOnClose}
+          destroyOnClose={item.destroyOnClose ?? destroyOnClose}
+          forceRender={item.forceRender ?? forceRender}
             disabled={item.disabled||false}
           >
             {item.children}

@@ -1,0 +1,88 @@
+
+.errModal_btn {
+    font-weight: 500;
+    font-size: 14px;
+    width: 170;
+    height: 36;
+}
+
+.title {
+    color: var(--text-color5);
+    font-weight: 500;
+    font-size: 16px;
+    background: var(--background5);
+    border-bottom: 1px solid var(--border-color6);
+    padding: 0 20px 20px 20px;
+}
+
+.msg_color {
+    color: #676867;
+    font-size: 14px;
+}
+.icon_box{
+    height: 160px;
+    width: 160px;
+}
+.icon_box2{
+    height: 38px;
+    width: 38px;
+}
+
+
+.success_icon {
+    color: #00C788;
+}
+.tip_color {
+    color: var(--text-color6);
+}
+
+.theme_color {
+    color: var(--theme-color);
+}
+
+.tip_color1 {
+    color: var(--text-color4);
+}
+
+.tip_color2 {
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+.warning_box {
+    color: var(--waring-color);
+    background-color: var(--waring-bg);
+    padding: 12px 10px;
+    border-radius: 8px;
+}
+.msg_card_box,.msg_btn_item{
+    padding: 20px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color4);
+}
+.msg_btn_item:hover{
+    background-color: var(--background5);
+    border-color: var(--theme-color);
+}
+.icon_box{
+    height: 160px;
+    width: 160px;
+    display: inline-block;
+}
+
+.btn_style {
+    min-width: 100px;
+    min-height: 36px;
+    border-radius: 23px;
+    padding: 8px 12px;
+    font-weight: 500;
+    font-size: 16px;
+
+}
+.popContainer{
+    background-color: var(--background12);
+    padding: 20px;
+    padding-bottom: 30px;
+  }

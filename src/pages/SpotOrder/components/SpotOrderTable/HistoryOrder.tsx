@@ -105,20 +105,30 @@ const SpotMainPage = observer(() => {
         // const amount = nul(division(record.tradedAmount, record.amount), 100)
         // const { baseScaleResult } = getRound(record.symbol, amount)
 
-        return <div
+        return <button
+          type='button'
+          onClick={() => {
+            router(`/spotOrder/detail`, {
+              state: {
+                recordData: record,
+                orderId: record.orderId,
+                symbol: record.symbol
+              }
+            });
+          }}
           className={`flex-x-cc font-14 ${styles.tip_color}`}
         >
           <span>{record.createTime ? dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') :
             record.updateTime ? dayjs(record.updateTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>
-          <button type='button'
+          <div 
           // onClick={() => {
           //   handleExpand(true, record)
           // }}
           >
             <Iconify icon="mingcute:right-line" className={`${styles.tip_color} ml-1`} size={16} />
-          </button>
+          </div>
 
-        </div >
+        </button >
       },
     },
 
@@ -254,36 +264,8 @@ const SpotMainPage = observer(() => {
 
   ];
 
-  const orderDirection = (takerSide: number, buyerUserId: number, sellerUserId: number) => {
-    const userId = userInfo.userId
-    if (sellerUserId === userId && buyerUserId === userId) {
-      return takerSide
-    } else if (sellerUserId === userId) {
-      return 1
-    } else if (buyerUserId === userId) {
-      return 0
-    } else {
-      return '--'
-    }
-  }
-  const maskName = (takerSide: number, buyerUserId: number, sellerUserId: number) => {
-    const userId = userInfo.userId
-    if (takerSide === 0) {
-      if (userId === buyerUserId) {
-        return 'Taker'
-      } else {
-        return 'Maker'
-      }
-    } else if (takerSide === 1) {
-      if (userId === sellerUserId) {
-        return 'Taker'
-      } else {
-        return 'Maker'
-      }
-    } else {
-      return '--'
-    }
-  }
+
+
   const directionSelect: { label: string, value: string | number }[] = [
     {
       label: t('spot.select.all'),
@@ -650,7 +632,7 @@ const SpotMainPage = observer(() => {
               onChange: (page, pageSize) => pageChange(page, pageSize),
             }}
             // pagination={false}
-            locale={{ emptyText: <NoData textColor='#A4A5AC' /> }}
+            locale={{ emptyText: <NoData textColor='#A4A5AC' height='45vh' position='top'/> }}
             // expandable={{
             //   expandedRowRender: (record) => {
             //     const isCurrentExpanded = expandedRowKeys.includes(record.orderId);

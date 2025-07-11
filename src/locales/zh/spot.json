@@ -39,13 +39,15 @@
             "amount": "成交额",
             "cancel": "撤销全部",
             "averagePrice": "成交均价",
-            "price2": "成交价",
+            "averagePrice2": "均价",
             "count": "成交数量",
             "amount2": "成交金额",
             "status": "状态",
             "fee": "手续费",
             "role": "角色",
             "date": "日期",
+            "createTime": "下单时间",
+            "updateTime": "更新时间",
             "coin": "币种",
             "balance": "持仓",
             "available": "可用",
@@ -66,7 +68,8 @@
             "tradeCount": "成交数量",
             "tradeAmount": "成交金额",
             "tradeFee": "手续费",
-            "tradeRole": "角色"
+            "tradeRole": "角色",
+            "tradeDetail": "成交详情"
         },
         "select": {
             "all": "全部",
@@ -82,7 +85,9 @@
             "hideCancel": "隐藏已撤销",
             "search": "搜索",
             "limit": "限价",
+            "limit1": "限价单",
             "market": "市价",
+            "market1": "市价单",
             "stopLoss": "止盈止损",
             "placeholder": "请选择",
             "trading": "交易中",
@@ -92,7 +97,8 @@
             "created": "创建订单",
             "partial": "部分成交",
             "canceled2": "订单已撤销，戳和未撤销",
-            "filter": "筛选"
+            "filter": "筛选",
+            "cancelOrder": "撤单"
         },
         "trade": {
             "buy": "买入",
@@ -204,6 +210,7 @@
         "cancelOrderModal": {
             "title": "撤单确认",
             "title2": "确定取消全部订单？",
+            "title3": "确定取消当前订单？",
             "cancel": "取消",
             "confirm": "确认"
         },

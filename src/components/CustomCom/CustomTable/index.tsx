@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import styles from './index.module.scss';
 import { Iconify } from '@/components/icon';
+import { useLanguage } from '@/hooks/useLanguage';
+import { Pagination } from 'antd';
+import {NoData} from '@/components/noData';
 
 export interface ColumnType<T = any> {
   title: string | React.ReactNode | ((value: any, record: T, index: number) => React.ReactNode);
@@ -8,6 +11,7 @@ export interface ColumnType<T = any> {
   key: string;
   width?: number | string;
   align?: 'left' | 'center' | 'right';
+  border?: 'border' | 'buttom' | 'none';
   sorter?: boolean | ((a: T, b: T) => number);
   render?: (value: any, record: T, index: number) => React.ReactNode;
   children?: ColumnType<T>[];
@@ -31,6 +35,7 @@ export interface CustomTableProps<T = any> {
   pagination?: PaginationConfig | false;
   type?: 'p1' | 'p2'; // p1: 列模式, p2: 行模式
   rowKey?: string | ((record: T) => string);
+  p1cardBorder?: 'border'|'buttom'|'none';
   expandable?: {
     expandedRowRender?: (record: T, index: number) => React.ReactNode;
     rowExpandable?: (record: T) => boolean;
@@ -59,14 +64,16 @@ const CustomTable = <T extends Record<string, any>>({
   pagination = false,
   type = 'p1',
   rowKey = 'id',
+  p1cardBorder = 'border',
   expandable,
-  locale = { emptyText: '暂无数据' },
+  locale = { emptyText: <NoData textColor='#A4A5AC' position='top'/> },
   className = '',
   headerClassName = '',
   bodyClassName = '',
   pageClassName = '',
   onRow,
 }: CustomTableProps<T>) => {
+  const { t } = useLanguage();
   const [sortState, setSortState] = useState<SortState>({
     columnKey: null,
     order: null,
@@ -93,14 +100,14 @@ const CustomTable = <T extends Record<string, any>>({
     }
 
     const sortedArray = [...dataSource];
-    
+
     if (typeof column.sorter === 'function') {
       sortedArray.sort(column.sorter);
     } else {
       sortedArray.sort((a, b) => {
         const aValue = a[column.key];
         const bValue = b[column.key];
-        
+
         if (aValue < bValue) return -1;
         if (aValue > bValue) return 1;
         return 0;
@@ -132,13 +139,13 @@ const CustomTable = <T extends Record<string, any>>({
   const handleExpand = (record: T, index: number) => {
     const key = getRowKey(record, index);
     const newExpandedRows = new Set(expandedRows);
-    
+
     if (expandedRows.has(key)) {
       newExpandedRows.delete(key);
     } else {
       newExpandedRows.add(key);
     }
-    
+
     setExpandedRows(newExpandedRows);
   };
 
@@ -164,11 +171,11 @@ const CustomTable = <T extends Record<string, any>>({
   // 渲染单元格内容
   const renderCellContent = (column: ColumnType<T>, record: T, index: number) => {
     const value = record[column.key];
-    
+
     if (column.render) {
       return column.render(value, record, index);
     }
-    
+
     return value;
   };
 
@@ -184,11 +191,11 @@ const CustomTable = <T extends Record<string, any>>({
   const renderPagination = () => {
     if (!pagination || typeof pagination === 'boolean') return null;
 
-    const { current, pageSize, total, onChange } = pagination;
+    const { current, pageSize, total, onChange ,hideOnSinglePage} = pagination;
     const totalPages = Math.ceil(total / pageSize);
 
     // 当无数据或总页数小于等于1时不显示分页
-    if (pagination.hideOnSinglePage && (total === 0 || totalPages <= 1)) return null;
+    if (hideOnSinglePage && (total === 0 || totalPages <= 1)) return null;
 
     const handlePageChange = (page: number) => {
       if (onChange && page !== current && page >= 1 && page <= totalPages) {
@@ -197,26 +204,39 @@ const CustomTable = <T extends Record<string, any>>({
     };
 
     return (
+      // <div className={`${styles.pagination} ${pageClassName} table-pagination`}>
+      //   <button
+      //     className={`${styles.pageBtn} table-pagination-btn-left`}
+      //     disabled={current <= 1}
+      //     onClick={() => handlePageChange(current - 1)}
+      //   >
+      //     <Iconify icon="ph:caret-left" className="table-pagination-icon-left" />
+      //   </button>
+
+      //   <span className={styles.pageInfo}>
+      //     {current} / {totalPages}
+      //   </span>
+
+      //   <button
+      //     className={`${styles.pageBtn} table-pagination-btn-right`}
+      //     disabled={current >= totalPages}
+      //     onClick={() => handlePageChange(current + 1)}
+      //   >
+      //     <Iconify icon="ph:caret-right" className="table-pagination-icon-right" />
+      //   </button>
+      // </div>
       <div className={`${styles.pagination} ${pageClassName} table-pagination`}>
-        <button
-          className={`${styles.pageBtn} table-pagination-btn-left`}
-          disabled={current <= 1}
-          onClick={() => handlePageChange(current - 1)}
-        >
-          <Iconify icon="ph:caret-left" className="table-pagination-icon-left" />
-        </button>
-        
-        <span className={styles.pageInfo}>
-          {current} / {totalPages}
-        </span>
-        
-        <button
-          className={`${styles.pageBtn} table-pagination-btn-right`}
-          disabled={current >= totalPages}
-          onClick={() => handlePageChange(current + 1)}
-        >
-          <Iconify icon="ph:caret-right" className="table-pagination-icon-right" />
-        </button>
+        <Pagination
+          simple
+          // position={['bottomRight']}
+          className='spot-table-box'
+          showSizeChanger
+          defaultCurrent={current}
+          pageSize={pageSize}
+          size='default'
+          total={total}
+          hideOnSinglePage={hideOnSinglePage}
+          onChange={(page, pageSize) => onChange?.(page, pageSize)} />
       </div>
     );
   };
@@ -226,9 +246,9 @@ const CustomTable = <T extends Record<string, any>>({
     <div className={`${styles.tableWrapper} ${className}`}>
       {loading && <div className={`${styles.loading} table-loading`}>
         {/* 加载中... */}
-        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color"/>
-        </div>}
-      
+        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color" />
+      </div>}
+
       <table className={styles.table}>
         <thead className={`${styles.tableHead} ${headerClassName} table-header`}>
           <tr>
@@ -237,7 +257,7 @@ const CustomTable = <T extends Record<string, any>>({
               <th
                 key={column.key}
                 className={`${styles.tableHeader} table-header-item`}
-                style={{ 
+                style={{
                   width: column.width,
                   textAlign: column.align || 'left'
                 }}
@@ -257,12 +277,12 @@ const CustomTable = <T extends Record<string, any>>({
             ))}
           </tr>
         </thead>
-        
+
         <tbody className={`${styles.tableBody} ${bodyClassName} table-body`}>
           {sortedData.length === 0 ? (
             <tr>
-              <td 
-                colSpan={columns.length + (expandable ? 1 : 0)} 
+              <td
+                colSpan={columns.length + (expandable ? 1 : 0)}
                 className={`${styles.emptyCell} table-empty-cell`}
               >
                 {locale.emptyText}
@@ -273,7 +293,7 @@ const CustomTable = <T extends Record<string, any>>({
               const key = getRowKey(record, index);
               const isExpanded = expandedRows.has(key);
               const rowProps = onRow ? onRow(record, index) : {};
-              
+
               return (
                 <React.Fragment key={key}>
                   <tr className={styles.tableRow} {...rowProps}>
@@ -302,7 +322,7 @@ const CustomTable = <T extends Record<string, any>>({
                       </td>
                     ))}
                   </tr>
-                  
+
                   {expandable && isExpanded && expandable.expandedRowRender && (
                     <tr>
                       <td colSpan={columns.length + 1} className={`${styles.expandedRow} table-expanded-row`}>
@@ -316,7 +336,7 @@ const CustomTable = <T extends Record<string, any>>({
           )}
         </tbody>
       </table>
-      
+
       {renderPagination()}
     </div>
   );
@@ -326,9 +346,9 @@ const CustomTable = <T extends Record<string, any>>({
     <div className={`${styles.cardWrapper} ${className} ${bodyClassName} table-body`}>
       {loading && <div className={styles.loading}>
         {/* 加载中... */}
-        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color"/>
-        </div>}
-      
+        <Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color" />
+      </div>}
+
       {sortedData.length === 0 ? (
         <div className={`${styles.emptyCard} table-empty-card`}>
           {locale.emptyText}
@@ -338,29 +358,35 @@ const CustomTable = <T extends Record<string, any>>({
           const key = getRowKey(record, index);
           const isExpanded = expandedRows.has(key);
           const rowProps = onRow ? onRow(record, index) : {};
-          
+
           return (
-            <div key={key} className={`${styles.card} table-card`} {...rowProps}>
+            <div key={key} className={`${styles.card} 
+            ${p1cardBorder==='buttom' ? styles.card_bottom_border : 
+              p1cardBorder==='none' ? styles.card_bottom_none : ''} 
+            table-card`} 
+            {...rowProps}>
               {columns.map((column, columnIndex) => (
-                <div key={column.key} className={`${styles.cardRow} ${headerClassName} flex-x align-center justify-between table-card-row`}>
+                <div key={column.key} className={`${styles.cardRow} ${headerClassName}
+                 flex-x align-center justify-between table-card-row
+                 `}>
                   <div className={`${styles.cardLabel}  table-card-label`}>
-                    {renderTitle(column, columnIndex, record[column.key], record)} 
+                    {renderTitle(column, columnIndex, record[column.key], record)}
                     {column.sorter && (
                       <span
                         className={`${styles.sortTrigger} table-sort-trigger`}
                         onClick={() => handleSort(column.key)}
                       >
-                        {renderSortIcon(column.key)} 
+                        {renderSortIcon(column.key)}
                       </span>
                     )}
                   </div>
                   <div className={`${styles.cardValue} flex-1
                    text-right flex-x align-center justify-end table-card-value`}>
-                    {renderCellContent(column, record, index)} 
+                    {renderCellContent(column, record, index)}
                   </div>
                 </div>
               ))}
-              
+
               {expandable && expandable.rowExpandable?.(record) !== false && (
                 <div className={`${styles.cardExpand} table-card-expand`}>
                   <button
@@ -371,9 +397,9 @@ const CustomTable = <T extends Record<string, any>>({
                       icon={isExpanded ? "ph:caret-up" : "ph:caret-down"}
                       className="table-expand-icon"
                     />
-                    {isExpanded ? '收起' : '展开'}
+                    {isExpanded ? t('titleText.collapse') : t('titleText.expand')}
                   </button>
-                  
+
                   {isExpanded && expandable.expandedRowRender && (
                     <div className={`${styles.expandedContent} table-expanded-content`}>
                       {expandable.expandedRowRender(record, index)}
@@ -385,12 +411,12 @@ const CustomTable = <T extends Record<string, any>>({
           );
         })
       )}
-      
+
       {renderPagination()}
     </div>
   );
 
-  return type === 'p1' ?   renderRowMode():renderColumnMode()
+  return type === 'p1' ? renderRowMode() : renderColumnMode()
 };
 
 export default CustomTable; 

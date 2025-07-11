@@ -164,42 +164,42 @@ const SpotMainPage = observer(() => {
         </div >
       },
     },
-    {
-      title: t('spot.columns.type'), //"类型",
-      key: "type",
-      dataIndex: "type",
-      width: 108,
-      align: "center",
-      render: (_text) => {
-        if (_text === 0) {
-          return <span >{t('spot.columns.market')}</span>;
-        } else if (_text === 1) {
-          return <span  >{t('spot.columns.limit')}</span>;
-        } else {
-          return <span >--</span>;
-        }
-      },
-    },
-    {
-      title: t('spot.columns.direction'), //"方向",
-      dataIndex: "takerSide",
-      key: "takerSide",
-      align: "center",
-      width: 108,
-      render: (_status, record) => {
-        const flag = orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
-        let text
-        if (flag === 0) {
-          text = t('spot.trade.buy')
-          return <span className={`${styles.success_icon}`} >{text || '--'}</span>;
-        } else if (flag === 1) {
-          text = t('spot.trade.sell')
-          return <span className={`${styles.error_icon}`} >{text || '--'}</span>;
-        } else {
-          return '--'
-        }
-      },
-    },
+    // {
+    //   title: t('spot.columns.type'), //"类型",
+    //   key: "type",
+    //   dataIndex: "type",
+    //   width: 108,
+    //   align: "center",
+    //   render: (_text) => {
+    //     if (_text === 0) {
+    //       return <span >{t('spot.columns.market')}</span>;
+    //     } else if (_text === 1) {
+    //       return <span  >{t('spot.columns.limit')}</span>;
+    //     } else {
+    //       return <span >--</span>;
+    //     }
+    //   },
+    // },
+    // {
+    //   title: t('spot.columns.direction'), //"方向",
+    //   dataIndex: "takerSide",
+    //   key: "takerSide",
+    //   align: "center",
+    //   width: 108,
+    //   render: (_status, record) => {
+    //     const flag = orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
+    //     let text
+    //     if (flag === 0) {
+    //       text = t('spot.trade.buy')
+    //       return <span className={`${styles.success_icon}`} >{text || '--'}</span>;
+    //     } else if (flag === 1) {
+    //       text = t('spot.trade.sell')
+    //       return <span className={`${styles.error_icon}`} >{text || '--'}</span>;
+    //     } else {
+    //       return '--'
+    //     }
+    //   },
+    // },
     {
       title: t('spot.columns.price2'), //"成交价",
       dataIndex: "tradePrice",
@@ -226,20 +226,18 @@ const SpotMainPage = observer(() => {
         return <span >{_status ? scaleResult : '0'}</span>;
       },
     },
+
     {
-      title: t('spot.columns.amount2'), //"成交金额",
-      key: "tradePrice",
-      dataIndex: "tradePrice",
+      title: t('spot.columns.role'), //"角色",
+      key: "takerSide",
+      dataIndex: "takerSide",
       width: 128,
       align: "center",
       render: (_status, record) => {
-        // const coin = coinList.find((item: any) => item.coinName === record.symbol.split('/')[1]);
-        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-        const amount = nul(_status, record.quantity)
-        const { baseScaleResult } = getRound(record.symbol, amount)
-        return <span >{_status ? baseScaleResult : '0'}</span>;
+        return maskName(_status, record.buyerUserId, record.sellerUserId)
       },
     },
+
     {
       title: t('spot.columns.fee'), //"手续费",
       key: "buyFee",
@@ -261,13 +259,17 @@ const SpotMainPage = observer(() => {
       },
     },
     {
-      title: t('spot.columns.role'), //"角色",
-      key: "takerSide",
-      dataIndex: "takerSide",
+      title: t('spot.columns.amount2'), //"成交金额",
+      key: "tradePrice",
+      dataIndex: "tradePrice",
       width: 128,
       align: "center",
       render: (_status, record) => {
-        return maskName(_status, record.buyerUserId, record.sellerUserId)
+        // const coin = coinList.find((item: any) => item.coinName === record.symbol.split('/')[1]);
+        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+        const amount = nul(_status, record.quantity)
+        const { baseScaleResult } = getRound(record.symbol, amount)
+        return <span >{_status ? baseScaleResult : '0'}</span>;
       },
     },
 
@@ -479,6 +481,7 @@ const SpotMainPage = observer(() => {
             selectParam.current.symbol = value as string
             getOrderListData();
           }}
+          value={selectParam.current.symbol}
           // defaultValue={symbolSelect[0]?.value}
         />
         <div className='flex-1 flex-x align-center justify-end'>

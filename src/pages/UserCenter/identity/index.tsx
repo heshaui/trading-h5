@@ -4,7 +4,6 @@ import { UserCenterLayout } from '@/components/MenuItems/'
 import Auth from '../components/identiry/Auth';
 import NoAuth from '../components/identiry/NoAuth';
 import Faq from '../components/identiry/faq';
-import './index.scss'
 import { useLanguage } from '@/hooks/useLanguage';
 import IdentifyStatus from '../components/overview/UserInfo/IdentifyStatus';
 import { getUserIdentityInfo, getLevelBenefitDetail } from '@/services/identity';

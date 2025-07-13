@@ -80,10 +80,11 @@ const UserInfo: React.FC = () => {
             {loginInfo?.avatarUrl ? 
             <Image src={loginInfo?.avatarUrl}
               alt="avatarUrl"
+              fit="cover"
               className={styles.userInfo_pic} />
             :
             <Image 
-              src={isDark ? iconAvatarDark: iconAvatarLight}
+              src={isDark ? iconAvatarDark : iconAvatarLight}
               alt="avatarUrl"
               className={styles.userInfo_pic} 
             />}
@@ -100,7 +101,7 @@ const UserInfo: React.FC = () => {
           </div>
         </div>
         <div>
-            <button type='button' className={`${styles.userInfo_btn}`} onClick={() => navigate('/userCenter/userSettings')}>
+            <button type='button' className={`${styles.userInfo_btn}`} onClick={() => navigate('/userCenter/setting')}>
                 {/* 个人资料 */}
                 {t('overview.personalInfo')}
             </button>

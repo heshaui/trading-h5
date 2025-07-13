@@ -144,12 +144,12 @@ const UserCenter: React.FC = () => {
 									<p className="leading-[17px] text-[12px] font-normal text-[var(--text-color6)]">{item.desc}</p>
 								</div>
 							</div>
-							<div className="flex shrink-0 items-center" onClick={item.onok}>
+							<div className="flex shrink-0 items-center" onClick={item.type === 'birthday' && item.bindValue ? ()=> '' : item.onok}>
 								{item.type === "avatarUrl" ?
 									<div className="ml-[55px]">
 										{
 											item.isBind ?
-											<Image src={item.bindValue} className="w-[20px] h-[20px]" alt="avatar" />
+											<Image src={item.bindValue} fit="cover" className="!w-[20px] !h-[20px] rounded-full" alt="avatar" />
 											:
 											<Iconify icon="teenyicons:user-circle-outline" className="text-[20px]" />
 										}
@@ -157,7 +157,9 @@ const UserCenter: React.FC = () => {
 									:
 									<p className="text-[14px] flex-1 min-w-0 truncate ml-[36px]">{item.bindValue || '-'}</p>
 								}
-								<Iconify icon="mingcute:right-line" className="text-[16px] font-medium ml-1 text-[#9e9e9e]" />
+								{ 
+									item.type === 'birthday' && item.bindValue ? '' : <Iconify icon="mingcute:right-line" className="text-[16px] font-medium ml-1 text-[#9e9e9e]" />
+								}
 							</div>
 						</li>
 					)
@@ -176,6 +178,7 @@ const UserCenter: React.FC = () => {
 				open={avatarUrlOpen}
 				onCancel={() => setAvatarUrlOpen(false)}
 				userId={userInfo.userId}
+				currentAvatar={ userInfo.avatarUrl }
 				onOk={handOk} 
 			/>
 

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import CustomTab from '@/components/CustomCom/CustomTab';
 import LoginRecord from "../components/security/SafeLog/LoginRecord";
 import SafeSet from "../components/security/SafeLog/SafeSet";
-import './index.scss'
 
 export const layout = 'header-only';
 const Security: React.FC = () => {

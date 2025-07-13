@@ -358,7 +358,7 @@ const SafeCenter: React.FC = observer(() => {
 		const dataInfo = {
 			isPhoneAuth: 0,
 			type: 3,
-			platformType: "Web",
+			platformType: "H5",
 		};
 		const dataEncrypt = await encryptData(dataInfo);
 		const res = await getPhoneClose(dataEncrypt);
@@ -513,13 +513,13 @@ const SafeCenter: React.FC = observer(() => {
 					baseSafeList.map((item: SafeListItem) => {
 						return loading ?
 						(
-							<li className="px-5">
+							<li className="px-5" key={item.type}>
 								<Skeleton.Title />
         						<Skeleton.Paragraph animated />
 							</li>
 						) :
 						(
-							<li className="p-5 flex">
+							<li className="p-5 flex" key={item.type}>
 								<div className="shrink-0 mr-[14px]">
 									<img
 										src={item.icon}
@@ -595,13 +595,13 @@ const SafeCenter: React.FC = observer(() => {
 					securityLogList.map((item: SecurityLogItem) => {
 						return loading ?
 						(
-							<li className="px-5">
+							<li className="px-5" key={item.type}>
 								<Skeleton.Title />
         						<Skeleton.Paragraph animated />
 							</li>
 						) : 
 						(
-							<li className="p-5 flex">
+							<li className="p-5 flex" key={item.type}>
 								<div className="shrink-0 mr-[14px]">
 									<img
 										src={item.icon}

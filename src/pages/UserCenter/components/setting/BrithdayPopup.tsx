@@ -3,9 +3,11 @@ import { Toast, Popup } from 'antd-mobile';
 import styles from "./styles/nickname.module.scss";
 import { Iconify } from "@/components/icon/index";
 import { updateUserCenter } from '@/services/userCenter';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { encryptData } from '@/utils/encrypt'
 import { useLanguage } from '@/hooks/useLanguage';
+import DateTimePop from '@/components/DateTimePop';
+import { useState } from 'react'
 
 type Props = {
     open: boolean;
@@ -19,62 +21,60 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
     // const router = useRouter();
     const [form] = Form.useForm();
     const { t } = useLanguage(['common']);
+    const [visible, setVisible] = useState(false);
+    const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
     const handCancel = () => {
         onCancel()
     };
 
     const handOk = async () => {
         // 这里可以添加点击验证码弹窗确认按钮后的处理逻辑
-        form.validateFields()
-            .then(async (values) => {
-                console.log(values,dayjs(values.birthday).valueOf(),111);
-                const params = {
-                    userId: userId,
-                    birthday: dayjs(values.birthday).valueOf() + '' 
-                }
-                try {
-                    const encrypt = await encryptData(params)
-                    const res = await updateUserCenter(encrypt);
-                    if(res.code === '0'){
-                        Toast.show({
-                          icon: 'success',
-                          content: t('usersetting.birthday.modifySuccess'),
-                        });
-                        onOk(true)
-                        onCancel()
-                    }else{
-                        Toast.show({
-                          icon: 'fail',
-                          content: res.message,
-                        });
-                    }
+        // form.validateFields()
+        //     .then(async (values) => {
+                
 
-                } catch (error) {
-                    Toast.show({
-                      icon: 'fail',
-                      content: String(error),
-                    });
-                }
+        //     });
+        if (!dateRange[0]) return Toast.show({
+            icon: 'fail',
+            content: t('usersetting.birthday.required'),
+        });
+        const params = {
+            userId: userId,
+            birthday: dayjs(dateRange[0]).valueOf() + '' 
+        }
+        try {
+            const encrypt = await encryptData(params)
+            const res = await updateUserCenter(encrypt);
+            if(res.code === '0'){
+                Toast.show({
+                    icon: 'success',
+                    content: t('usersetting.birthday.modifySuccess'),
+                });
+                onOk(true)
+                onCancel()
+            }else{
+                Toast.show({
+                    icon: 'fail',
+                    content: res.message,
+                });
+            }
 
+        } catch (error) {
+            Toast.show({
+                icon: 'fail',
+                content: String(error),
             });
+        }
     };
     const ModalFooter = () => {
 
         return (
-            <div className="flex-x align-center justify-center mt-5" >
-                <button
-                    type="button"
-                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5 font-14 font-w-500`}
-                    onClick={handCancel}
-                >
-                    {t('cancel')}
+            <div className="flex justify-between gap-x-[10px] mt-5">
+                <button className="w-[50%] rounded-[22px] h-[44px] cancel_btn2 flex justify-center items-center" onClick={handCancel}>
+                {t('cancel')}
                 </button>
-                <button
-                    type="submit"
-                    className={`${styles.modal_footerBtn} default_btn`}
-                    onClick={handOk}
-                >
-                    {t('save')}
+                <button className="w-[50%] rounded-[22px] h-[44px] default_btn flex justify-center items-center" onClick={handOk}>
+                {t('save')}
                 </button>
             </div>
         );
@@ -117,48 +117,31 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
                 <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
             </p>
             <div className="p-4">
-                    {/* t() */}
-                    <Form
-                        name="nickname"
-                        form={form}
-                        size="large"
-                        style={{ width: "100%" }}
-                    // initialValues={{ nickname: nickname||'' }}
-                    >
-                        <Form.Item name="birthday" rules={[
-                            { validator: validatePassword }
-                        ]}>
-                            {/* <Input placeholder="年/月/日"
-                                className={`${styles.input_box} modal-input`}
-                                maxLength={13}
-                                suffix={
-                                    <Iconify icon="cuida:calendar-outline" className={`${styles.suffix_icon} mr-1`} />
-                                }
-                            /> */}
-                            <DatePicker
-                                className={`custom-input ${styles.input_box} modal-input2`}
-                                style={{ width: '100%', height: '50px' }}
-                                placeholder={t('usersetting.birthday.placeholder')}
-                                allowClear
-                                disabledDate={(current) => {
-                                    // 使用dayjs禁用当前日期以后的日期
-                                    return  current > dayjs().endOf('day');
-                                }}
-                                suffixIcon={
-                                    <Iconify icon="cuida:calendar-outline"
-                                        className={`${styles.suffix_icon} mr-1`}
-                                        size={20} />
-                                }
-                            />
-                        </Form.Item>
-                        <ul className={`${styles.msg_color} mt-2_5 font-12 font-w-400`}>
-                            <li className="flex align-base ">
-                                {t('usersetting.birthday.tip')}
-                            </li>
-                        </ul>
-                    </Form>
-                    <ModalFooter />
-                </div>
+                <button 
+                    className="border border-solid border-color rounded-lg w-full h-[50px] flex justify-between items-center px-[11px] text-[16px] tip-color"
+                    onClick={() => setVisible(true)}
+                >
+                    {
+                        dateRange[0] ?
+                        <span>{ dateRange[0].format('YYYY-MM-DD') }</span>
+                        :
+                        <span className="text-[14px]"> {t('usersetting.birthday.placeholder')} </span>
+                    }
+                    <Iconify icon="cuida:calendar-outline" className="text-[20px]" />
+                </button>
+                <p className="text-[12px] tip_color mt-2">{t('usersetting.birthday.tip')}</p>
+                <ModalFooter />
+                <DateTimePop
+                    popupVisible={visible}
+                    handlePopupClose={() => setVisible(false)}
+                    title={ t('usersetting.birthday.selectDate') }
+                    value={dateRange}
+                    onChange={setDateRange}
+                    minDate={dayjs(1900)}
+                    maxDate={dayjs()}
+                    type="date"
+                />
+            </div>
         </Popup>
     );
 }

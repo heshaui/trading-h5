@@ -83,21 +83,11 @@ const kvConfig=appStore.getKvConfigAll()
     const ModalFooter = () => {
 
         return (
-            <div className="flex-x align-center justify-center mt-5" >
-                <button
-                    type="button"
-                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5 font-14 font-w-500`}
-                    onClick={handCancel}
-                >
-                    {/* 取消 */}
+            <div className="flex justify-between gap-x-[10px] mt-5">
+                <button type="button" className="w-[50%] rounded-[22px] h-[44px] cancel_btn2 flex justify-center items-center" onClick={handCancel}>
                     {t('cancel')}
                 </button>
-                <button
-                    type="submit"
-                    className={`${styles.modal_footerBtn} default_btn`}
-                    onClick={handOk}
-                >
-                    {/* 保存 */}
+                <button type="submit" className="w-[50%] rounded-[22px] h-[44px] default_btn flex justify-center items-center" onClick={handOk}>
                     {t('save')}
                 </button>
             </div>

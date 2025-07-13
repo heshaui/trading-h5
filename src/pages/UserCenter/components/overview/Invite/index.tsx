@@ -1,4 +1,5 @@
 import React from 'react';
+import { QRCode } from "antd";
 import styles from '@/pages/UserCenter/overview/index.module.scss';
 import { Iconify } from "@/components/icon"
 import {  useState, useEffect } from "react";
@@ -43,12 +44,11 @@ const InvitePage: React.FC = () => {
                 {t('overview.recommend.inviteFriend')}
             </div>
             <div className="px-[20px] py-[28px] flex justify-between items-center">
-                <div className="border border-[var(--border-color4)] bg-[#fff] rounded w-[68px] h-[68px] flex justify-center items-center shrink-0">
-                    <Image 
-                        src={inviteInfo.inviteLink ?? '/404'} 
-                        className="!w-[60px] !h-[60px]"
-                    />
-                </div>
+                <QRCode
+                    className="min-w-[68px] min-h-[68px] bg-[#fff] p-[6px] shrink-0"
+                    value={`${inviteInfo.inviteLink || ""}`}
+                    size={68}
+                />
                 <div className="flex-1 ml-5 min-w-0">
                     <p className="text-sm font-normal mb-[6px]">{t('overview.recommend.inviteCode')}</p>
                     <div className="border border-[var(--border-color4)] rounded flex items-center px-[10px] h-[37px]">

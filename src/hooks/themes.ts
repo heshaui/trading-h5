@@ -239,6 +239,11 @@ export const getThemeVariables = () => {
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.1)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.15)',
 
+            '--adm-color-fill-content': '#f6f7fb',
+            '--adm-color-text-secondary': '#676867',
+            '--adm-color-background': '#fff',
+            '--adm-color-text': '#0c0d0c',
+
         },
         dark: {
             '--background': '#0a0a0a',
@@ -349,7 +354,10 @@ export const getThemeVariables = () => {
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.2)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.3)',
         
-
+            '--adm-color-fill-content': '#141414',
+            '--adm-color-text-secondary': '#a4a5ac',
+            '--adm-color-background': '#272727',
+            '--adm-color-text': '#fff',
         }
     };
 }

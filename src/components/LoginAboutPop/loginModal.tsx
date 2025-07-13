@@ -138,7 +138,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             type: acountInfo.type,
                             email: acountInfo.email,
                             deviceType: fingerprint,
-                            platformType: "Web",
+                            platformType: "",
                             password: acountInfo.password,
 
                             authCodeMail: values.code || "",

@@ -93,16 +93,16 @@ const SafeEquipment: React.FC = () => {
         const isuserId = userId ? userId?.toString() : ''
         setLoading(true)
         try {
-        const res = await getUserDeviceNoList({
-            userId: userInfo?.userId || isuserId || ''
-        });
-        if (res.code === '0') {
-			let data = res.data.list
-			console.log(deviceId)
-			if (deviceId) data = res.data.list.find((item: DataType) => item.id == Number(deviceId));
-            setDeviceNoData(data)
-			data[0].userLoginLogs?.length && setActiveId(data[0].id)
-        }
+			const res = await getUserDeviceNoList({
+				userId: userInfo?.userId || isuserId || ''
+			});
+			if (res.code === '0') {
+				let data = res.data.list
+				console.log(deviceId)
+				if (deviceId) data = res.data.list.filter((item: DataType) => item.id == Number(deviceId));
+				setDeviceNoData(data)
+				data[0].userLoginLogs?.length && setActiveId(data[0].id)
+			}
         } catch (error) {
             Toast.show({
 				icon: 'fail',
@@ -143,7 +143,7 @@ const SafeEquipment: React.FC = () => {
 							const childData = item.userLoginLogs;
 							const showToggleIcon = !!(childData && childData.length);
 							return (
-								<li className="mt-5">
+								<li className="mt-5" key={item.id}>
 									<div className="h-[24px] flex justify-between items-center font-medium text-[14px] mb-[16px]">
 										<div className="flex-1 min-w-0 truncate mr-[10px]">{ item.deviceNo || '--' }</div>
 										<div className="shrink-0 flex">

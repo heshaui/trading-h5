@@ -48,3 +48,66 @@
 .adm-modal-title {
   padding: 0 !important;
 }
+
+/* 安全日志tabs */
+.safeTabs {
+	.adm-tabs-tab {
+		font-size: 16px;
+		line-height: 22px;
+		padding: 20px 0 29px;
+	}
+	.adm-tabs-tab-line {
+		height: 3px;
+		border-radius: 3px;
+		width: 26px;
+		background: var(--text-color5) !important;
+	}
+	.adm-tabs-header {
+		border-bottom: 1px solid var(--border-color4);
+		padding-left: 8px;
+	}
+	.adm-tabs-content {
+		padding: 20px 16px;
+	}
+}
+
+/* 头像tabs */
+.avatarTabs {
+	.adm-tabs-tab {
+		font-size: 14px;
+		line-height: 20px;
+		padding: 16px 0 13px;
+	}
+	.adm-tabs-tab-line {
+		height: 2px;
+		border-radius: 2px;
+		width: 16px !important;
+		background: var(--text-color5) !important;
+	}
+    .adm-tabs-tab-wrapper {
+        padding: 0 10px;
+    }
+	.adm-tabs-header {
+		border-bottom: none !important;
+        padding-left: 6px;
+	}
+	.adm-tabs-content {
+		padding: 16px 16px 20px;
+        height: 270px;
+	}
+}
+
+/* 头像分段控制器 */
+.avatarSegmented {
+    padding: 3px !important;
+    width: auto;
+    margin-bottom: 12px;
+    .adm-segmented-item {
+        font-size: 12px;
+        min-width: 55px;
+    }
+    .adm-segmented-item-label {
+        font-size: 12px;
+        line-height: 26px;
+    }
+}

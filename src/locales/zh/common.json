@@ -140,6 +140,7 @@
     "modifyAvatar": "修改头像",
     "modifyAvatarSuccess": "头像修改成功",
     "uploadAvatar": "上传",
+    "defaultAvatar": "默认",
     "avatarFormatTip": "图片头像仅支持jpg/jpeg、png、gif格式",
     "avatarFilter": {
       "all": "全部",
@@ -152,6 +153,7 @@
     "avatarSuccess": "头像修改成功",
     "birthday": {
       "title": "添加生日",
+      "selectDate": "选择日期",
       "placeholder": "年/月/日",
       "required": "请输入生日!",
       "invalidFormat": "请输入有效的日期格式（年/月/日）！",

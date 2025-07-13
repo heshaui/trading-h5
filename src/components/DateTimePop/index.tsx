@@ -31,6 +31,7 @@ interface DateTimePopProps {
   disabled?: boolean;
   className?: string;
   disabledDate?: (currentDate: Dayjs, info?: { from?: Dayjs; type?: string }) => boolean; // 新增：禁用日期函数
+  type?: 'range' | 'date'
 }
 
 const DateTimePop = forwardRef<any, DateTimePopProps>(({
@@ -49,6 +50,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
   disabled = false,
   className = '',
   disabledDate,
+  type = 'range',
 }, ref) => {
   const { t } = useLanguage(['common']);
   
@@ -106,6 +108,9 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
 
   // 格式化显示的日期范围
   const formatDisplayValue = () => {
+    if (type === 'date') {
+      return startDate ? dayjs(startDate).format('YYYY-MM-DD') : placeholder[0];
+    }
     if (startDate && endDate) {
       return `${dayjs(startDate).format('YYYY-MM-DD')} ${t('btnText.to')} ${dayjs(endDate).format('YYYY-MM-DD')}`;
     } else if (startDate) {
@@ -131,6 +136,10 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
         Toast.show(t('btnText.dateRangeExceeded') || 'error');
         return;
       }
+    }
+    if (type === 'date') {
+      setStartDate(date);
+      return;
     }
     
     if (selectingType === 'start') {
@@ -264,9 +273,9 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
           overflow: 'hidden'
         }}
       >
-        <div className="py-4">
+        <div className="pb-4">
           {/* 头部 */}
-          <div className={`${styles.popHeader} flex-x justify-between align-center mb-4 px-4 pb-2`}>
+          <div className={`${styles.popHeader} h-[50px] flex-x justify-between align-center mb-4 pl-4`}>
             <h3 style={{ margin: 0 }} className={styles.title_color}>{title}</h3>
             <Button 
               size="small" 
@@ -315,6 +324,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
           {/* 日期选择区域 */}
           <div className="px-4 mb-4">
             {/* 显示当前选择的日期范围 - 可点击切换选择模式 */}
+            {type === 'range' && 
             <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--background5)' }}>
               <div className="flex justify-between items-center">
                 <button
@@ -352,6 +362,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 </button>
               </div>
             </div>
+            }
 
             {/* 日期选择器 */}
             <div  className={`${styles.datePickerViewBox}`}>
@@ -361,6 +372,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 min={minDateValue}
                 max={maxDateValue}
                 precision="day"
+                className={type === 'range' ? '!h-[200px]' : '!h-[250px]'}
                 style={{
                   '--height': '200px',
                   '--item-height': '40px',

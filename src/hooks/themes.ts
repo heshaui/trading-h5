@@ -175,6 +175,7 @@ export const getThemeVariables = () => {
             '--btncolor9': '#E1E1E4',
             '--tip-color1': '#6D6F7A',
             '--tip-color2': '#A4A5AC',
+            '--tip-color3': '#A4A5AC',
             '--text-color': '#1F40FF',
             '--text-color2': '#373949',
             '--text-color3': themeColor,
@@ -238,6 +239,7 @@ export const getThemeVariables = () => {
             '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.03)',
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.1)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.15)',
+            '--mark-color': 'rgba(255, 255, 255, 0.8)',
 
         },
         dark: {
@@ -285,6 +287,7 @@ export const getThemeVariables = () => {
             '--btncolor9': '#1E1E20',
             '--tip-color1': '#FFFFFFB2',
             '--tip-color2': '#979897',
+            '--tip-color3': '#FFFFFF',
             '--text-color': '#1F40FF',
             '--text-color2': '#ededed',
             '--text-color3': themeColor,
@@ -348,6 +351,7 @@ export const getThemeVariables = () => {
             '--shadow-light': '0 1px 2px rgba(0, 0, 0, 0.1)',
             '--shadow-medium': '0 1px 6px rgba(0, 0, 0, 0.2)',
             '--shadow-heavy': '0 4px 12px rgba(0, 0, 0, 0.3)',
+            '--mark-color': 'rgba(0, 0, 0, 0.8)',
         
 
         }

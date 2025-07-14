@@ -37,9 +37,15 @@
         }
     }
 }
+ 
 .progress_bar{
     width: 30px;
-}
+
+    :global(.adm-progress-bar-trail){
+        background: var(--cancel-btn2);
+      
+    }
+  }
 .cancel_btn {
     border-radius: 26px;
     padding: 4px 12px;

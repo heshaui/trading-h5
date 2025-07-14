@@ -1,11 +1,11 @@
-.user-header {
+.user_header {
   height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   border-bottom: 1px solid var(--border-color4);
-  .user-header-left {
+  .user_header_left {
     height: 24px;
     display: flex;
     align-items: center;
@@ -13,23 +13,23 @@
       font-size: 14px;
       font-weight: 500;
     }
-    .left-icon {
+    .left_icon {
       font-size: 24px;
       margin-right: 18px;
     }
   }
-  .right-icon {
+  .right_icon {
     font-size: 24px;
   }
 } 
-.user-menu-item {
+.user_menu_item {
   display: flex;
   align-items: center;
   height: 50px;
   border-radius: 0 50px 50px 0;
   font-size: 14px;
   font-weight: 500;
-  .left-border {
+  .left_border {
     width: 6px;
     height: 100%;
     border-radius: 0 3px 3px 0;
@@ -38,11 +38,34 @@
   &.active {
     background: linear-gradient(90deg, transparent 0%, var(--theme-05) 100%);
     color: var(--theme-color);
-    .left-border {
+    .left_border {
       background: var(--theme-color);
     }
   }
   &:hover {
     color: var(--theme-color);
+  }
+}
+.activ_icon{
+  transform: rotate(180deg);
+  transition: transform 1s ease-in-out;
+}
+
+// 为非激活状态的图标也添加过渡效果
+.icon {
+  transition: transform 1s ease-in-out;
+  transform: rotate(0deg);
+}
+
+// 或者如果你想要一个通用的图标动画类
+.icon_transition {
+  transition: transform 1s ease-in-out;
+  
+  &.active {
+    transform: rotate(180deg);
+  }
+  
+  &:not(.active) {
+    transform: rotate(0deg);
   }
 }

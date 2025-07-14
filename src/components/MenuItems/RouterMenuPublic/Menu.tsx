@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/index.scss';
+import styles from '../styles/index.module.scss';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon'
 import MenuPopup from './MenuPopup';
@@ -31,16 +31,16 @@ const UserHeader: React.FC<UserHeaderProps> = ({ title, menuList,path }) => {
   });
 
   return (
-    <div className="user-header" onClick={() => setMenuVisible(true)}>
-      <div className="user-header-left">
+    <div className={`${styles.user_header}`} onClick={() => setMenuVisible(true)}>
+      <div className={`${styles.user_header_left}`}>
         {typeof iconMap[title] === 'string' && iconMap[title] ? (
-          <Iconify icon={iconMap[title] as string} className="left-icon" />
+          <Iconify icon={iconMap[title] as string} className={`${styles.left_icon}`} />
         ) : (
           iconMap[title]
         )}
         <span className='ml-4'>{title}</span>
       </div>
-      <Iconify icon="icon-park-outline:down" className="right-icon"/>
+      <Iconify icon="icon-park-outline:down" className={`${styles.right_icon} ${menuVisible ? styles.activ_icon : ''}`}/>
       <MenuPopup 
         visible={menuVisible} 
         onClose={() => setMenuVisible(false)}

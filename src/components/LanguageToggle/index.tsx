@@ -21,8 +21,9 @@ type Props = {
   isMenu?: boolean;
   open?: boolean;
   onClose?: () => void;
+  onLanguageChange?: (language: string, rateKey: string) => void;
 }
-const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose }) => {
+const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose, onLanguageChange }) => {
   const { currentLanguage, changeLanguage, t } = useLanguage();
   const [visible, setVisible] = useState(false);
   const { isDayMode } = useThemeMode();
@@ -35,12 +36,20 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
     if (lang !== currentLanguage) {
       changeLanguage(lang);
       setVisible(false);
+      // 当isMenu为true时，调用回调函数返回当前语言和汇率信息
+      if (isMenu && onLanguageChange) {
+        onLanguageChange(lang, appStore.getRateKey());
+      }
       onClose?.();
     }
   };
 
   const handleRateSelect = (rateKey: string) => {
     appStore.setRateKey(rateKey);
+    // 当isMenu为true时，调用回调函数返回当前语言和汇率信息
+    if (isMenu && onLanguageChange) {
+      onLanguageChange(currentLanguage, rateKey);
+    }
     onClose?.();
   };
   const popupContent = (lang: string) => {
@@ -89,6 +98,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
   const filteredRate = useMemo(() => {
     return rateList.map((item) => {
       return {
+        sort: item.sort || 0,
         key: item.key || item.id,
         id: item.id,
         status: item.status,
@@ -106,6 +116,8 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
       // 否则进行模糊搜索（不区分大小写）
       return item.title.toLowerCase().includes(rateFilterValue.toLowerCase()) ||
         item.value.toLowerCase().includes(rateFilterValue.toLowerCase());
+    }).sort((a, b) => {
+      return a.sort - b.sort
     })
   }, [rateList, rateFilterValue])
 

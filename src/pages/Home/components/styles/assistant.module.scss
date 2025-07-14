@@ -1,12 +1,12 @@
 .assistant_page {
     background-color: var(--homeground2);
     color: var(--hometext2);
-    min-height: calc(100vh - 48px);
+    min-height: calc(100vh - var(--header-height,48px));
 }
 .comup_page {
     background-color: var(--homeground2);
     color: var(--hometext);
-    min-height: calc(100vh - 48px);
+    min-height: calc(100vh - var(--header-height,48px));
     padding-bottom: 50px;
 }
 .comup_title{

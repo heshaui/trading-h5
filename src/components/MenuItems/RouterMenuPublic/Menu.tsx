@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/index.module.scss';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon'
 import MenuPopup from './MenuPopup';
+import { MenuType, IconType } from '@/type/public/menu';
 
-// 定义图标类型
-type IconType = string | React.ReactNode;
-
-// 定义菜单项类型
-interface MenuType {
-  title: string;
-  icon: IconType;
-  path: string;
-}
 
 interface UserHeaderProps {
-  title: string;
-  menuList: MenuType[];
-  path: string;
+  theme?: string;
+  defaultMenuList: MenuType[];
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({ title, menuList,path }) => {
-  const { t } = useLanguage(['userCenter', 'common']);
+const UserHeader: React.FC<UserHeaderProps> = ({ theme,defaultMenuList }) => {
+  const { t } = useLanguage(['userCenter', 'common','assets']);
   const [menuVisible, setMenuVisible] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  // 根据当前路径获取当前页面标题
+  const getCurrentTitle = () => {
+    const currentMenu = defaultMenuList.find(menu => menu.path === currentPath);
+    return currentMenu?.title || t('common.router.overview');
+  };
+
+  const title = getCurrentTitle();
 
   // 创建图标映射，基于传入的菜单列表
   const iconMap: Record<string, IconType> = {};
-  menuList.forEach(menu => {
+  defaultMenuList.forEach(menu => {
     iconMap[menu.title] = menu.icon;
   });
 
@@ -43,8 +46,9 @@ const UserHeader: React.FC<UserHeaderProps> = ({ title, menuList,path }) => {
       <Iconify icon="icon-park-outline:down" className={`${styles.right_icon} ${menuVisible ? styles.activ_icon : ''}`}/>
       <MenuPopup 
         visible={menuVisible} 
+        theme={theme}
         onClose={() => setMenuVisible(false)}
-        menuList={menuList}
+        menuList={defaultMenuList}
       />
     </div>
   );

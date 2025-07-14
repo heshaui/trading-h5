@@ -41,10 +41,29 @@
       background: var(--theme-color);
     }
   }
+ 
   &:hover {
     color: var(--theme-color);
   }
 }
+.user_menu_item3{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  border-radius:10px;
+  font-size: 14px;
+  font-weight: 500;
+  .left_border {
+    width: 6px;
+    height: 100%;
+    border-radius: 0 3px 3px 0;
+    margin-right: 9px;
+  }
+  &.active3{
+  background-color: var(--background6);
+}
+}
+
 .activ_icon{
   transform: rotate(180deg);
   transition: transform 1s ease-in-out;
@@ -67,4 +86,14 @@
   &:not(.active) {
     transform: rotate(0deg);
   }
+}
+.icon_transition{
+  border: 1px solid var(--border-color4);
+  padding: 10px;
+  border-radius: 50%;
+  // box-shadow: 0px 0px 10px 0px var(--card-shadow);
+}
+.active_show{
+  // box-shadow: 0px 0px 10px 0px var(--theme-05);
+  border: 1px solid var(--theme-color);
 }

@@ -5,7 +5,7 @@ import SafeLogPage from '../components/overview/SafeLogin';
 import EquipmentPage from '../components/overview/Equipment';
 import InvitePage from '../components/overview/Invite';
 import styles from './index.module.scss'
-import { UserCenterLayout } from '@/components/MenuItems/'
+import { UserCenterLayout } from '@/components/MenuItems'
 
 const Overview: React.FC = () => {
 	return (

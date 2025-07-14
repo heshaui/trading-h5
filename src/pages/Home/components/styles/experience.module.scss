@@ -1,7 +1,7 @@
 .experience_page {
     background-color: var(--homeground2);
     color: var(--text-color5);
-    min-height: calc(100vh - 48px);
+    min-height: calc(100vh - var(--header-height,48px));
 }
 
 .experience_main {

@@ -1,0 +1,261 @@
+.header_tip {
+    margin-top: 6px;
+}
+
+
+.card_bgc {
+    background-color: var(--background7);
+    border-radius: 8px;
+    /* padding: 24px; */
+}
+.card_bgc2{
+    background-color: var(--background14);
+    border-radius: 8px;
+    padding: 30px;
+}
+.card_bgc3{
+    border-radius: 8px;
+    padding: 15px 10px;
+    border: 1px solid var(--border-color4);
+    width: 38vw ;
+    min-width: 250px;
+}
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #F73710;
+}
+
+.warning_color {
+    color:var(--waring-color);
+}
+
+.default_icon {
+    color: #A4A5AC;
+}
+.theme_color{
+    color: var(--theme-color);
+}
+.warning_box {
+    color: var(--waring-color);
+    background-color: var(--waring-bg);
+    /* width: 400px; */
+    /* height: 41px; */
+    padding: 12px 10px;
+    border-radius: 8px;
+}
+.btn_style {
+    min-width: 56px;
+    min-height: 32px;
+    border-radius: 23px;
+    padding: 5px 16px;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.btn_style2{
+    width: 100%;
+    height: 50px;
+    border-radius: 53px;
+}
+.tip_color {
+    color: var(--text-color6);
+}
+.tip_color2{
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+
+.strong_color {
+    color: var(--btncolor5)
+}
+.coninIcon{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.input_box {
+    width: 188px !important;
+    height: 40px;
+    background: transparent !important;
+    color: var(--text-color5) !important;
+    border: 1px solid var(--border-color8);
+}
+
+/* 输入框组件覆盖 */
+.input_box:focus,
+.input_box:focus-within,
+.input_box3:focus,
+.input_box3:focus-within {
+   border-color: var(--theme-color) !important;
+   box-shadow: none !important;
+   color: var(--text-color5) ;
+   /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+
+/* 鼠标聚焦且移出样式 */
+.input_box:focus:not(:hover),
+.input_box3:focus-within:not(:hover){
+    background-color: var(--homeground5);
+    color: #fff;
+    box-shadow: none !important;
+}
+/* 鼠标滑过 */
+.input_box:hover,
+.input_box3:hover{
+    border-color: var(--border-color8);
+}
+
+.input_box2,.select_box {
+    height: 50px !important;
+    min-width: 250px;
+    color: var(--text-color6) !important;
+}
+.input_box3{
+    /* width: 38vw ; */
+    min-width: 250px;
+    height: 50px !important;
+    /* background: var(--background7) !important; */
+    background:transparent !important;
+    color: var(--text-color6) !important;
+}
+
+
+.input_box4 {
+    width: 188px !important;
+    height: 40px;
+    background: var(--background11) !important;
+    color: var(--text-color6) !important;
+}
+/* 输入框组件覆盖 */
+.input_box4:focus,
+.input_box4:focus-within {
+   border-color: var(--text-color3) !important;
+   box-shadow: none;
+   /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+/* 鼠标聚焦且移出样式 */
+.input_box4:focus:not(:hover){
+    background-color: var(--homeground5);
+    color: #fff;
+    box-shadow: none;
+    color: var(--text-color6) !important;
+}
+/* 鼠标滑过 */
+.input_box4:hover{
+    border-color: var(--text-color3);
+}
+.select_box,.steps_item_content3 {
+    width: 38vw;
+}
+.mt_20{
+    margin-top: 20px !important;
+}
+
+.header_content_item{
+   width: 100%;
+}
+
+.spot_auth_box{
+    width: 85%;
+    padding: 24px 0;
+ }
+ .steps_item_content2{
+    /* min-height: 90px; */
+    margin-bottom: 9vh;
+ }
+ .steps_item_content{
+    /* min-height: 169px; */
+    margin-bottom: 9vh;
+ }
+ .selsect_btn{
+    padding: 8px;
+    border-radius: 23px;
+    min-width: 65px;
+ }
+ .notice_box{
+    width: 30%;
+ }
+ .icon_sm{
+    width: 80px;
+    height: 74px;
+ }
+ .icon_btn_bottom{
+    border-bottom: 1px solid var(--border-color4);
+ }
+ .withdraw_btn{
+    width: 110px;
+    height: 40px;
+    border-radius: 53px;
+ }
+
+
+.table_content{
+    :global{
+        .table-card{
+            padding: 10px 0;
+        }
+    }
+}
+/* Checkbox 选中样式 */
+.custom_checkbox{
+    &:hover {
+        border-color: var(--text-color3)
+    }
+    :global{
+        .adm-checkbox-custom-icon{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+.custom_checkbox .ant-checkbox-checked .ant-checkbox-inner {
+    border: none;
+    border-radius: 3px;
+    /* background: linear-gradient(90deg, #00EEFF 0%, #1F40FF 100%); */
+    background: var(--btncolor5);
+}
+
+.custom_checkbox .ant-checkbox-checked .ant-checkbox-inner:hover {
+    border-color: var(--text-color3);
+    background: var(--btncolor5);
+}
+@media (max-width: 680px) {
+    .card_mt {
+        margin-top: 24px;
+    }
+    .card_bgc2{
+        align-items: flex-end;
+    }
+    .card_content{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card_content2{
+        display: flex;
+        flex-direction: column;
+    }
+    .step_box,.notice_box{
+        flex:1;
+        width: 100%;
+    }
+    .steps_item_content, .steps_item_content2, .steps_item_content3,
+    .card_bgc3,.select_box,.input_box3,.steps_item_content3{
+        width: 100% ;
+    }
+
+}
+

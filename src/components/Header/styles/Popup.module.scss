@@ -8,13 +8,13 @@
   border-radius: 50%;
   transition: background-color 0.3s ease;
   
-  &:hover {
-    background-color: var(--theme-color);
-  }
+  // &:hover {
+  //   background-color: var(--theme-color);
+  // }
   
-  &:active {
-    background-color:  var(--theme-05);;
-  }
+  // &:active {
+  //   background-color:  var(--theme-05);;
+  // }
 } 
 
 .title_color{
@@ -41,6 +41,7 @@
   border-radius: 10px;
   font-weight: 500;
 }
+
 // 列表按钮
 .listButton {
   width: 100%;

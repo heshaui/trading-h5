@@ -71,6 +71,7 @@
         },
         "title2": "账单明细",
         "assets": "现货资产",
+        "assets2": "总资产估值",
         "todayProfit": "今日盈亏",
         "search": "搜索",
         "hideZero": "隐藏0资产",

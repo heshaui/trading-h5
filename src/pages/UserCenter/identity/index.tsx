@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Toast } from 'antd-mobile';
 import { UserCenterLayout } from '@/components/MenuItems/'
-import Auth from '../components/identiry/Auth';
-import NoAuth from '../components/identiry/NoAuth';
+import Certified from '../components/identiry/Certified';
+import NoCertified from '../components/identiry/NoCertified';
 import Faq from '../components/identiry/faq';
 import { useLanguage } from '@/hooks/useLanguage';
-import IdentifyStatus from '../components/overview/UserInfo/IdentifyStatus';
 import { getUserIdentityInfo, getLevelBenefitDetail } from '@/services/identity';
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig"
 
@@ -95,15 +94,16 @@ const Identity: React.FC = () => {
 		getUserIdentityInfoData();
 	}, []);
     return (
-		<div>
+		<div className="pb-[30px] pt-[10px] px-4">
+			<h3 className="leading-7 text-[20px] font-medium mb-4">{ t('safeCenter.identity') }</h3>
 			{/* 0驳回 1已认证 2未认证 3审核中 */}
 			{/* 未认证 - 驳回 - 审核中*/}
 			{/* {(userIdentityInfo?.authStatus === 2||userIdentityInfo?.authStatus === 0||userIdentityInfo?.authStatus === 3) && <NoAuthentication identityInfo={userIdentityInfo}/>} */}
 			{/* 已认证 */}
 			{
 				userIdentityInfo?.authStatus === 1 ? 
-				<Auth identityInfo={userIdentityInfo} levelBenefit={levelBenefitData} /> : 
-				<NoAuth identityInfo={userIdentityInfo} levelBenefit={levelBenefitData}/>
+				<Certified identityInfo={userIdentityInfo} levelBenefit={levelBenefitData} /> : 
+				<NoCertified identityInfo={userIdentityInfo} levelBenefit={levelBenefitData}/>
 			}
 			<Faq />
 		</div>

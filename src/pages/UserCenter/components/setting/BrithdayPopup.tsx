@@ -118,7 +118,7 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
             </p>
             <div className="p-4">
                 <button 
-                    className="border border-solid border-color rounded-lg w-full h-[50px] flex justify-between items-center px-[11px] text-[16px] tip-color"
+                    className="border border-solid input-border rounded-lg w-full h-[50px] flex justify-between items-center px-[11px] text-[16px] tip-color"
                     onClick={() => setVisible(true)}
                 >
                     {

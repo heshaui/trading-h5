@@ -37,21 +37,20 @@ const statusMap = (t: (key: string) => string): Record<RealnessStatus, StatusInf
 
 interface Props {
   realnessStatus?: number;
-  show?: boolean;
+  textClassName?: string;
+  iconClassName?: string;
 }
 
-const IdentifyStatus: FC<Props> = ({ realnessStatus = 2, show = true }) => {
+const IdentifyStatus: FC<Props> = ({ realnessStatus = 2, textClassName, iconClassName }) => {
   const { t } = useTranslation('userCenter');
   const map = statusMap(t);
-
-  if (!show || realnessStatus === undefined || !(realnessStatus in map)) return null;
 
   const { icon, className, text } = map[realnessStatus as RealnessStatus];
 
   return (
-    <div className={styles.otherRight}>
-      <Iconify icon={icon} className={`${className} mr-1`} size={20} />
-      <span>{text}</span>
+    <div className={`${styles.otherRight} ml-[10px] flex items-center`}>
+      <Iconify icon={icon} className={`${className} mr-1 text-[20px] ${iconClassName}`} />
+      <span className={`${textClassName} text-[14px]`}>{text}</span>
     </div>
   );
 };

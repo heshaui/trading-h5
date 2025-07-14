@@ -5,8 +5,8 @@ import { getBenefitValue } from "@/utils/encrypt";
 import { useNavigate } from 'react-router-dom';
 import IdentifyStatus from '../overview/UserInfo/IdentifyStatus';
 
-import IdentifyIcon from '@/assets/images/userCenter/identity/icon_Identity.svg';
-import RightsIcon from '@/assets/images/userCenter/identity/icon_rights.svg';
+import { ReactComponent as IdentifyIcon } from '@/assets/images/userCenter/identity/icon_Identity.svg';
+import { ReactComponent as RightsIcon } from '@/assets/images/userCenter/identity/icon_rights.svg';
 
 interface ButtonConfig {
   title: string;
@@ -72,7 +72,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
 
    const goReAuth = (authStatus: number) => {
       localStorage.setItem("identity_authStatus", authStatus.toString());
-      navigate(`/userCenter/identity/?userId=${identityInfo.userId}&authStatus=${authStatus}`)
+      navigate(`/userCenter/identity/info?userId=${identityInfo.userId}&authStatus=${authStatus}`)
    };
 
    const btnText = () => {
@@ -95,7 +95,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
 
    return (
       <div>
-         <div className="border-color border-[1px] p-4 mb-4 rounded-[8px]">
+         <div className="border-color border-[1px] p-4 mb-4 rounded-[8px] relative">
             {/* 认证标题 */}
             <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex t">
                {/* 标准身份认证 */}
@@ -122,14 +122,14 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
                   </div>
                   <div className="flex">
                      <div className="flex items-center text-[var(--text-color6)]">
-                        <Iconify icon="icon-park-outline:id-cardIcon" className="tip-color text-4" />
+                        <Iconify icon="icon-park-outline:id-card" className="tip-color text-4" />
                         <span className="ml-1 text-[14px]">
                            {/* 基本信息 */}
                            {t("identity.standardAuth.basicInfo")}
                         </span>
                      </div>
                      <div className="flex items-center text-[var(--text-color6)] ml-5">
-                        <Iconify icon="lucide:id-card" className="tip-color text-4" />
+                        <Iconify icon="lucide:id-card" className="tip-color text-5" />
                         <span className="ml-1 text-[14px]">
                            {/* 身份认证 */}
                            {t("identity.standardAuth.idVerification")}
@@ -181,7 +181,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
                   {t("identity.standardAuth.unverifiedTip")}
                </div>
             )}
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-end mt-[30px]">
                <button 
                   type="button" 
                   className="min-w-[78px] h-[28px] justify-center items-center rounded-[53px] default_btn"
@@ -189,12 +189,12 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
                >
                   {btnText()}
                </button>
-               <img className="w-[60px] h-[54px] mr-1" src={IdentifyIcon} />
             </div>
+            <IdentifyIcon className="absolute bottom-[-20px] right-[-14px] w-[120px] h-[114px]" />
          </div>
 
          <div className="flex pt-1 pb-3 leading-[25px] font-medium text-[18px]" >
-            <img className="w-[24px] h-[24px] mr-1" src={RightsIcon} />
+            <RightsIcon className="w-[24px] h-[24px] mr-1"  />
             {/* 认证权益 */}
             {t("identity.benefits.title")}
          </div>

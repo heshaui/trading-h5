@@ -4,6 +4,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/pop.module.scss";
 import { NoData } from "../noData";
 import { Form, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
+import { render } from "@testing-library/react";
 
 interface OptionItem {
   label: React.ReactNode;
@@ -27,6 +28,7 @@ interface SelectPopProps {
   showAll?: boolean; // 是否回显全部
   renderOption?: (option: OptionItem) => React.ReactNode; // 自定义选项渲染
   renderValue?: (option: OptionItem | null) => React.ReactNode; // 自定义值显示
+  renderBtn?: (open: () => void) => React.ReactNode; // 自定义触发按钮
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -43,7 +45,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   disabled = false,
   showAll = false,
   renderOption,
-  renderValue
+  renderValue,
+  renderBtn,
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -132,6 +135,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
 
   return (
     <div style={{ position: 'relative' }}>
+      {
+      renderBtn ? renderBtn(handlePopupOpen) : 
       <Button
         className={`${styles.customSelect} ${disabled ? styles.disabled : ''}`}
         onClick={handlePopupOpen}
@@ -145,6 +150,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
           <Iconify icon="eva:arrow-down-fill" size={14} />
         </div>
       </Button>
+      }
       
       <Popup
         visible={popupVisible}

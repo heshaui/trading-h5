@@ -118,14 +118,14 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
             </p>
             <div className="p-4">
                 <button 
-                    className="border border-solid input-border rounded-lg w-full h-[50px] flex justify-between items-center px-[11px] text-[16px] tip-color"
+                    className="border border-solid input-border rounded-lg w-full h-[50px] flex justify-between items-center px-[11px] text-[14px]"
                     onClick={() => setVisible(true)}
                 >
                     {
                         dateRange[0] ?
                         <span>{ dateRange[0].format('YYYY-MM-DD') }</span>
                         :
-                        <span className="text-[14px]"> {t('usersetting.birthday.placeholder')} </span>
+                        <span className="placeholder-color"> {t('usersetting.birthday.placeholder')} </span>
                     }
                     <Iconify icon="cuida:calendar-outline" className="text-[20px]" />
                 </button>

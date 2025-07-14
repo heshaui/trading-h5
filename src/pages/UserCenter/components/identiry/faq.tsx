@@ -11,7 +11,11 @@ interface ItemType {
 
 const Faq: React.FC = () => {
     const { t } = useLanguage('userCenter');
-    const [activeMap, setActiveMap] = useState<Record<string, boolean>>({})
+    const [activeMap, setActiveMap] = useState<Record<string, boolean>>({
+        '1': true,
+        '2': true,
+        '3': true
+    })
 
     // 隐藏/显示
     const toggleItem = (key: string) => {
@@ -44,7 +48,7 @@ const Faq: React.FC = () => {
             <p className="font-medium text-[18px] pb-4">常见问题</p>
             <ul>
                 {itemList.map((item: ItemType) => (
-                    <li className="pb-[20px]">
+                    <li className="pb-[20px]" key={item.key}>
                         <div className="flex justify-between mb-2">
                             <h4 className="font-medium text-[14px]">{ item.label }</h4>
                             <div>
@@ -54,19 +58,23 @@ const Faq: React.FC = () => {
                                     onClick={() => toggleItem(item.key)}
                                 />
                             </div>
-                            <AnimatePresence initial={false}>
-                                <motion.div
-                                    key="content"
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.1 }}
-                                    className="text-[12px] font-normal text-[var(--text-color6)]"
-                                >
-                                    {item.content}
-                                </motion.div>
-                            </AnimatePresence>
                         </div>
+                        <AnimatePresence initial={false}>
+                            {
+                                activeMap[item.key] && (
+                                    <motion.div
+                                        key="content"
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.1 }}
+                                        className="text-[12px] font-normal text-[var(--text-color6)]"
+                                    >
+                                        {item.content}
+                                    </motion.div>
+                                )
+                            }
+                        </AnimatePresence>
                     </li>
                 ))}
             </ul>              

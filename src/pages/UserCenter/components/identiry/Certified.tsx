@@ -3,9 +3,9 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { encryptIdCard, getBenefitValue } from '@/utils/encrypt';
 
-import IdentifyIcon from '@/assets/images/userCenter/identity/icon_Identity.svg';
-import AccountIcon from '@/assets/images/userCenter/identity/icon_account.svg';
-import IDCardIcon from '@/assets/images/userCenter/identity/icon_IDcard.svg'
+import { ReactComponent as IdentifyIcon } from '@/assets/images/userCenter/identity/icon_Identity.svg';
+import { ReactComponent as AccountIcon } from '@/assets/images/userCenter/identity/icon_account.svg';
+import { ReactComponent as IDCardIcon } from '@/assets/images/userCenter/identity/icon_IDcard.svg'
 
 
 interface ButtonConfig {
@@ -92,7 +92,7 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
 
     return (
         <div>
-            <div className="border-color border-[1px] p-4 mb-4 rounded-[8px]">
+            <div className="border-color border-[1px] p-4 mb-4 rounded-[8px] relative">
                 <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex t">
                     {/* 标准身份认证 */}
                     {t('identity.standardAuth.title')}    
@@ -108,11 +108,11 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
                         {/* 已完成身份认证，开始您的货币之旅吧！ */}
                         {t('overview.identityAuth.verified')}
                     </div>
-                    <img className="w-[60px] h-[54px] mr-1" src={IdentifyIcon} />
                 </div>
+                <IdentifyIcon className="absolute bottom-[-20px] right-[-14px] w-[120px] h-[114px]" />
             </div>
             <div className="flex pt-1 pb-3 leading-[25px] font-medium text-[18px]" >
-                <img className="w-[24px] h-[24px] mr-1" src={AccountIcon} />
+                <AccountIcon className="w-[24px] h-[24px] mr-1" />
                 {/* 账户权益 */}
                 {t('identity.certified.accountBenefits')}
             </div>
@@ -131,7 +131,7 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
                 ))}
             </ul>
             <div className="flex pt-1 pb-3 leading-[25px] font-medium text-[18px]" >
-                <img className="w-[24px] h-[24px] mr-1" src={IDCardIcon} />
+                <IDCardIcon className="w-[24px] h-[24px] mr-1" />
                 {/* 个人信息 */}
                 {t('identity.certified.personalInfo')}
             </div>

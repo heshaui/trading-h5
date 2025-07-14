@@ -24,9 +24,9 @@ const Header = () => {
 
 	return (
 		<div className={styles.headerContainer}>
-			<div className={styles.headerContent}>
+			<div className={`${styles.headerContent} flex-x algin-center justify-between`}>
 				{/* 左侧Logo */}
-				<div className={styles.logo}>
+				<div className={`${styles.logo} flex-x-cc`}>
 					<Image
 						src={logoUrl || ""}
 						alt="home logo"

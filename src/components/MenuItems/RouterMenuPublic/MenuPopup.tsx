@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { Popup } from 'antd-mobile';
-import '../styles/index.scss';
+import styles from '../styles/index.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // 定义图标类型
@@ -69,10 +69,10 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => 
           return (
             <li
               key={menu.path}
-              className={active ? 'user-menu-item active' : 'user-menu-item'}
+              className={active ? `${styles.user_menu_item} ${styles.active}` : styles.user_menu_item}
               onClick={() => handleMenuClick(menu.path)}
             >
-              <div className="left-border"></div>
+              <div className={`${styles.left_border}`}></div>
               {typeof menu.icon === 'string' ? (
                 <Iconify icon={menu.icon} className="text-[24px]" />
               ) : (

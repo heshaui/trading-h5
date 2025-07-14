@@ -1,4 +1,4 @@
-import React, { useState,useMemo } from 'react';
+import React, { useState,useMemo, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import styles from './styles/Popup.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
@@ -11,6 +11,7 @@ import { ExpandableMenu, MenuItemType } from '@/components/MenuItems';
 import { useTranslation } from "react-i18next";
 import { useLanguage } from '@/hooks/useLanguage';
 import LanguageToggle from '@/components/LanguageToggle';
+import appStore from '@/store';
 
 const MenuIcon: React.FC = observer(() => {
 	// const { t } = useTranslation("common");
@@ -19,11 +20,33 @@ const MenuIcon: React.FC = observer(() => {
     const { isDayMode } = useThemeMode();
     const [visible, setVisible] = useState(false);
     const [languageVisible, setLanguageVisible] = useState(false);
+    const [languageTitle, setLanguageTitle] = useState<string>('');
     
     const handleMenuClick = () => {
         // 处理菜单图标点击事件
         setVisible(true);
     };
+
+    // 处理语言变化的回调函数
+    const handleLanguageChange = (language: string, rateKey: string) => {
+        // 这里可以根据需要格式化显示的标题
+        // 例如：显示语言名称和汇率信息
+        const langList = appStore.getLangList() || appStore.languageList;
+        const rateList = appStore.getRateData() || appStore.rateData;
+        
+        const langInfo = langList.find(item => item.shortKey === language || item.langEncode === language);
+        const rateInfo = rateList.find(item => item.key === rateKey);
+        
+        const langName = langInfo?.span || language;
+        const rateName = rateInfo?.name || rateKey;
+        
+        setLanguageTitle(`${langName} / ${rateName}`);
+    };
+
+    // 初始化语言标题
+    useEffect(() => {
+        handleLanguageChange(currentLanguage, appStore.getRateKey());
+    }, [currentLanguage]);
 
     // 菜单数据
     const menuItems: MenuItemType[] = [
@@ -76,7 +99,7 @@ const MenuIcon: React.FC = observer(() => {
         },
         {
             key: 'language',
-            title:t('common.router.language'),// '语言',
+            title: languageTitle || t('common.router.language'),// '语言',
             type: 'lang',
             // icon: userDay,
             onClick: () => {
@@ -134,7 +157,8 @@ const MenuIcon: React.FC = observer(() => {
                 <LanguageToggle 
                 isMenu={true}
                 open={languageVisible} 
-                onClose={() => setLanguageVisible(false)} />
+                onClose={() => setLanguageVisible(false)}
+                onLanguageChange={handleLanguageChange} />
             </div>
         </Popup>
     </>

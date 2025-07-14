@@ -1,0 +1,104 @@
+.theme_toggle {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.theme_toggle_button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.theme_icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px;
+  border-radius: 4px;
+  background: var(--background6);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 64px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.icon_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-sizing: border-box;
+  
+  &.active {
+    // background: var(--theme-color, #FF5F1F);
+    background: var(--background3);
+    // box-shadow: 0 2px 8px rgba(22, 119, 255, 0.3);
+    transform: scale(1.05);
+  }
+  
+  &:not(.active) {
+    &:hover {
+      background: var(--background3);
+    }
+  }
+}
+
+.sun_icon {
+  color: var(--text-color6);
+  transition: all 0.3s ease;
+  
+  &.active_icon {
+    color: var(--text-color5);
+  }
+}
+
+.moon_icon {
+  color: var(--text-color6);
+  transition: all 0.3s ease;
+  
+  &.active_icon {
+    color: var(--tip-color3);
+  }
+}
+
+// 暗色主题下的样式调整
+// [data-theme="dark"] .theme_icons {
+//   background: var(--bg-color2, #1f1f1f);
+//   border-color: var(--border-color, #333);
+//   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+// }
+
+// [data-theme="dark"] .sun_icon {
+//   color: var(--text-color3, #666);
+// }
+
+// [data-theme="dark"] .moon_icon {
+//   color: var(--text-color3, #666);
+// }
+
+// [data-theme="dark"] .icon_wrapper.active {
+//   box-shadow: 0 2px 8px rgba(22, 119, 255, 0.4);
+// }
+
+// [data-theme="dark"] .icon_wrapper:not(.active):hover {
+//   background: var(--bg-color3, rgba(255, 255, 255, 0.08));
+// } 

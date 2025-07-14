@@ -53,21 +53,21 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = observer(({ menuItems, onI
         const isExpanded = expandedItems[item.key];
 
         return (<div key={item.key} className={`${styles.menuItem} ${level > 0 ? styles.childItem : ''}`}>
-            {item.type === 'theme' ? <div className={`flex-x algin-center justify-between px-4 py-2 `}>
-                <span className={`${styles.menuTitle} ${styles.title_color} flex-x algin-center`}>
+            {item.type === 'theme' ? <button className={`flex-x algin-center justify-between px-4 py-2 w-full`} >
+                <span className={`${styles.menuTitle} ${styles.title_color} flex-x algin-center justify-between`}>
                     {item.title}
                 </span>
                 <ThemeToggle />
-            </div> :
-                item.type === 'lang' ? <button className={`flex-x algin-center justify-between px-4 py-2 `}
+            </button> :
+                item.type === 'lang' ? <button className={`flex-x algin-center justify-between px-4 py-2 w-full`}
                 onClick={() => handleItemClick(item)}>
-                    <span className={`${styles.menuTitle} ${styles.title_color} flex-x algin-center`}>
+                    <span className={`${styles.menuTitle} ${styles.title_color} flex-x algin-center flex-1`}>
                         {item.title}
                     </span>
                     {/* <LanguageToggle /> */}
                 </button> : <>
                     <button
-                        className={`${styles.menuButton} ${level > 0 ? styles.childButton : ''}`}
+                        className={`${styles.menuButton} flex-x algin-center justify-between ${level > 0 ? styles.childButton : ''}`}
                         onClick={() => handleItemClick(item)}
                     >
                         <div className={`${styles.menuContent} ${level > 0 ? styles.childContent : ''}`}>

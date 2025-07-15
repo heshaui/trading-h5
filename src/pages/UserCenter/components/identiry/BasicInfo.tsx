@@ -38,7 +38,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 	const [countryData, setCountryData] = useState<ICountryData[]>([]);
     const [isNext, setIsNext] = useState(false);
 	const [visible, setVisible] = useState(false);
-	const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
+	const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs(), null]);
     const [form, setForm] = useState<EventType>({
 		surname: '',
 		firstName: '',
@@ -103,6 +103,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 
 	// 保存表单数据到localStorage
     const saveFormData = () => {
+		console.log(form)
         sessionStorage.setItem('idvFormData', JSON.stringify(form));
     };
 
@@ -217,14 +218,12 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 				<Input 
 					value={form.cardCode}
 					placeholder={t('identity.idv.idNumber.placeholder')}
-					className="w-full h-[50px]"
+					className="w-full h-[50px] border-input"
 					maxLength={50}
 					onChange={(value) => {
-						const filteredValue = value.replace(/[\u4e00-\u9fa5]/g, '');
-						if (value !== filteredValue) {
-							// 如果有中文字符被过滤掉，则更新输入框的值
-							updateField('cardCode', filteredValue);
-						}
+						// 移除所有中文字符（包括中文标点）
+  						const cleanedValue = value.replace(/[\u4e00-\u9fa5]/g, '');
+						updateField('cardCode', cleanedValue);
 					}}
 				/>
 			</div>
@@ -237,7 +236,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 					<Input 
 						value={form.surname}
 						placeholder={t('identity.idv.name.placeholder')}
-						className="w-full h-[50px]"
+						className="w-full h-[50px] border-input"
 						onChange={(value) => updateField('surname', value)}
 					/>
 				</div>
@@ -249,12 +248,12 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 					<Input 
 						value={form.firstName}
 						placeholder={t('identity.idv.idNumber.placeholder')}
-						className="w-full h-[50px]"
-						onChange={(value) => updateField('cardCode', value)}
+						className="w-full h-[50px] border-input"
+						onChange={(value) => updateField('firstName', value)}
 					/>
 				</div>
 			</div>
-			<div>
+			<div className="mb-10">
 				<div className="text-[16px] leading-[22px] mb-[10px]">
 					{/* 出生日期 */}
                     {t('identity.idv.birthday.title')}
@@ -292,7 +291,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 			<DateTimePop
 				popupVisible={visible}
 				handlePopupClose={() => setVisible(false)}
-				title={ t('usersetting.birthday.selectDate') }
+				title={ t('identity.idv.birthday.title') }
 				value={dateRange}
 				onChange={(result) => {
 					setDateRange(result)

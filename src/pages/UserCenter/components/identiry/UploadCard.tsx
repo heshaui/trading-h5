@@ -36,14 +36,6 @@ interface UploadCardProps {
     onPrev: () => void;
     userInfo: EventType;
 }
-const uploadBgcStyle: CSSProperties = {
-    backgroundColor: "var(--background)",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: 'center',
-    height: "235px",
-    width: "360px"
-};
 
 const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => {
     const { t } = useLanguage(['userCenter']);
@@ -214,99 +206,116 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
 				{/* 上传文件 */}
 				{ t('identity.upload.title') }
 			</h3>
-			<div className="flex justify-center relative mb-[40px]">
-				<Image 
-					src={frontFileUrl ? frontFileUrl : isLight ? frontageLightImg : frontageDarkImg}
-					className="w-[324px] h-[211px] rounded-[10px]"
-				/>
-				<Upload
-					name="frontImage"
-					showUploadList={false}
-					beforeUpload={beforeUpload}
-					{...propsFront}
-					maxCount={1}
-					className="w-full h-full absolute top-0 flex justify-center items-center"
-					openFileDialogOnClick={!frontFileLoading}
-				>
-					{/* {!frontFileUrl && ( */}
-					<div className="w-[160px] flex flex-col">
-						<div className="w-full h-[48px] border border-[var(--border-color4)] flex justify-center items-center tip-color">
-							<Iconify icon={frontFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-							<span className={`font-14 font-w-400 ml-[6px]`}>
-								{/* 上传文件 */}
-								{t('identity.upload.uploadFile')}
-							</span>
-						</div>
-						<div className={`font-16 font-w-500 mt-[6px] leading-[22px]`}>
-							{/* 证件正面 */}
-							{t('identity.upload.frontFile')}
-						</div>
-					</div>
-				</Upload>
-			</div>
-			<div className="flex justify-center relative mb-[40px]">
-				<Image 
-					src={backFileUrl ? backFileUrl : isLight ? backLightImg : backDarkImg}
-					className="w-[324px] h-[211px] rounded-[10px]"
-				/>
-				<Upload
-					showUploadList={false}
-					beforeUpload={beforeUpload}
-					maxCount={1}
-					{...propsBack}
-					className="w-full h-full absolute top-0 flex justify-center items-center"
-					openFileDialogOnClick={!backFileLoading}
-				>
-					{/* {!backFileUrl && ( */}
-					<div className="w-[160px] flex flex-col">
-						<div className="w-full h-[48px] border border-[var(--border-color4)] flex justify-center items-center tip-color">
-							<Iconify icon={backFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-							<p className={`font-14 font-w-400 ml-[6px]`}>
-								{/* 上传文件 */}
-								{t('identity.upload.uploadFile')}
-							</p>
+            <div className="flex flex-col items-center">
+                <div 
+                    className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
+                    style={{ backgroundImage: `url(${isLight ? frontageLightImg : frontageDarkImg})` }}
+                >
+                    {frontFileUrl && <div className="w-full h-full flex justify-center items-center">
+                        <Image 
+                            src={frontFileUrl}
+                            className="!w-[280px] !h-[166px] rounded-[10px]"
+                        />
+                    </div>}
+                    <Upload
+                        name="frontImage"
+                        showUploadList={false}
+                        beforeUpload={beforeUpload}
+                        {...propsFront}
+                        maxCount={1}
+                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        openFileDialogOnClick={!frontFileLoading}
+                    >
+                        {/* {!frontFileUrl && ( */}
+                        <div className="w-[160px] flex flex-col">
+                            <div className="w-full h-[48px] border rounded-lg  border-[var(--border-color4)] bg-[var(--background15)] ounded-lg flex justify-center items-center tip-color">
+                                <Iconify icon={frontFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                <span className={`font-14 font-w-400 ml-[6px]`}>
+                                    {/* 上传文件 */}
+                                    {t('identity.upload.uploadFile')}
+                                </span>
+                            </div>
+                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                {/* 证件正面 */}
+                                {t('identity.upload.frontFile')}
+                            </div>
+                        </div>
+                    </Upload>
+                </div>
+                <div 
+                    className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
+                    style={{ backgroundImage: `url(${isLight ? backLightImg : backDarkImg})` }}
+                >
+                    {backFileUrl && <div className="w-full h-full flex justify-center items-center">
+                        <Image 
+                            src={backFileUrl}
+                            className="!w-[280px] !h-[166px] rounded-[10px]"
+                        />
+                    </div>}
+                    <Upload
+                        showUploadList={false}
+                        beforeUpload={beforeUpload}
+                        maxCount={1}
+                        {...propsBack}
+                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        openFileDialogOnClick={!backFileLoading}
+                    >
+                        {/* {!backFileUrl && ( */}
+                        <div className="w-[160px] flex flex-col">
+                            <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
+                                <Iconify icon={backFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                <p className={`font-14 font-w-400 ml-[6px]`}>
+                                    {/* 上传文件 */}
+                                    {t('identity.upload.uploadFile')}
+                                </p>
 
-						</div>
-						<div className={`font-16 font-w-500 mt-[6px] leading-[22px]`}>
-							{/* 证件反面 */}
-							{t('identity.upload.backFile')}
-						</div>
-					</div>
-					{/* )} */}
-				</Upload>
-			</div>
-			<div className="flex justify-center relative mb-[30px]">
-				<Image 
-					src={selfieFileUrl ? selfieFileUrl : isLight ? handcardLightImg : handcardDarkImg}
-					className="w-[324px] h-[211px] rounded-[10px]"
-				/>
-				<Upload
-					name="selfieImage"
-					showUploadList={false}
-					beforeUpload={beforeUpload}
-					maxCount={1}
-					{...propsSelfie}
-					className="w-full h-full absolute top-0 flex justify-center items-center"
-					openFileDialogOnClick={!selfieFileLoading}
-				>
-					{/* {!selfieFileUrl && ( */}
-					<div className="w-[160px] flex flex-col">
-						<div className="w-full h-[48px] border border-[var(--border-color4)] flex justify-center items-center">
-							<Iconify icon={selfieFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-							<p className={`font-14 font-w-400 ml-[6px]`}>
-								{/* 上传文件 */}
-								{t('identity.upload.uploadFile')}
-							</p>
+                            </div>
+                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                {/* 证件反面 */}
+                                {t('identity.upload.backFile')}
+                            </div>
+                        </div>
+                        {/* )} */}
+                    </Upload>
+                </div>
+                <div 
+                    className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
+                    style={{ backgroundImage: `url(${isLight ? handcardLightImg : handcardDarkImg})` }}
+                >
+                    {selfieFileUrl && <div className="w-full h-full flex justify-center items-center">
+                        <Image 
+                            src={selfieFileUrl}
+                            className="!w-[280px] !h-[166px] rounded-[10px]"
+                        />
+                    </div>}
+                    <Upload
+                        name="selfieImage"
+                        showUploadList={false}
+                        beforeUpload={beforeUpload}
+                        maxCount={1}
+                        {...propsSelfie}
+                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        openFileDialogOnClick={!selfieFileLoading}
+                    >
+                        {/* {!selfieFileUrl && ( */}
+                        <div className="w-[160px] flex flex-col">
+                            <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
+                                <Iconify icon={selfieFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                <p className={`font-14 font-w-400 ml-[6px]`}>
+                                    {/* 上传文件 */}
+                                    {t('identity.upload.uploadFile')}
+                                </p>
 
-						</div>
-						<div className={`font-16 font-w-500 mt-[6px] leading-[22px]`}>
-							{/* 手持证件照 */}
-							{t('identity.upload.selfieFile')}
-						</div>
-					</div>
-					{/* )} */}
-				</Upload>
-			</div>
+                            </div>
+                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                {/* 手持证件照 */}
+                                {t('identity.upload.selfieFile')}
+                            </div>
+                        </div>
+                        {/* )} */}
+                    </Upload>
+                </div>
+            </div>
 			<ul className={`font-12 font-w-400 tip-color`}>
                 <li className="flex items-center mb-[7px]">
                     <Iconify icon="emojione-monotone:small-blue-diamond" className={`error_icon mr-2 text-[15px]`} />
@@ -324,7 +333,7 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                     {t('identity.upload.tip3')}
                 </li>
             </ul>
-			<div className="flex justify-between mt-10 gap-x-[10px]">
+			<div className="flex justify-between mt-10 pb-[4px] gap-x-[10px]">
                 <button
                     className="shrink-0 w-[115px] h-[50px] rounded-[25px] border border-solid border-[var(--border-color4)] flex justify-center items-center text-[16px] font-medium"
                     onClick={onPrev}
@@ -344,7 +353,7 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                 ) : (
                     <button
                         type='submit'
-                        className="flex-1 h-[50px] flex justify-center items-center bg-[var(--theme-color)] text-[#fff] text-[16px] font-medium"
+                        className="flex-1 h-[50px] flex justify-center rounded-[25px] items-center bg-[var(--theme-color)] text-[#fff] text-[16px] font-medium"
                         onClick={onSubmit}
                     >
                         {isLoading && <Iconify icon="eos-icons:bubble-loading" className="text-[20px] mr-4" />}

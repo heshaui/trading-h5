@@ -137,7 +137,7 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
                     title={ t('usersetting.birthday.selectDate') }
                     value={dateRange}
                     onChange={setDateRange}
-                    minDate={dayjs(1900)}
+                    minDate={dayjs('1900-01-01')}
                     maxDate={dayjs()}
                     type="date"
                 />

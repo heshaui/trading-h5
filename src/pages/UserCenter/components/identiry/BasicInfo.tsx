@@ -33,7 +33,7 @@ interface OptionsType {
 	value: string;
 }
 
-const BasicInfo: React.FC = () => {
+const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
     const { t } = useLanguage(['userCenter', 'common']);
 	const [countryData, setCountryData] = useState<ICountryData[]>([]);
     const [isNext, setIsNext] = useState(false);
@@ -70,6 +70,7 @@ const BasicInfo: React.FC = () => {
         }
     ]
 
+	// 获取国家数据
 	const getCountryCodeData = async () => {
         try {
 
@@ -93,22 +94,64 @@ const BasicInfo: React.FC = () => {
         }
     }
 
+	// 获取id对应的label
 	const getLabel = (value: string, type: string = 'area') => {
 		const data = type === 'area' ? countryData : cardTypeSeelect;
 		const currentData = data.find((item: ICountryData | OptionsType) => item.value === value)
 		return currentData?.label
 	}
 
-	const onSubmit = () => {
+	// 保存表单数据到localStorage
+    const saveFormData = () => {
+        sessionStorage.setItem('idvFormData', JSON.stringify(form));
+    };
 
+	const checkFormComplete = () => {
+        const requiredFields: (keyof EventType)[] = ['areaCode', 'cardType', 'cardCode', 'surname', 'firstName', 'birthday'];
+        return requiredFields.every(field => {
+            const value = form[field];
+            return value !== undefined && value !== null && value !== '';
+        });
+    }
+
+	// 👇 监听 form 对象变化，自动更新 isNext 状态
+	useEffect(() => {
+		const isComplete = checkFormComplete();
+		setIsNext(isComplete);
+	}, [form]);
+
+	const onSubmit = () => {
+		saveFormData();
+		onNext(form);
 	}
+
+	// 从localStorage加载表单数据
+    const loadFormData = () => {
+        const savedData = sessionStorage.getItem('idvFormData');
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            // 如果有生日字段，需要转换为dayjs对象
+            if (parsedData.birthday) {
+                setDateRange([dayjs(parsedData.birthday), null]);
+            }
+            setForm((prev) => ({
+				...prev,
+				...parsedData
+			}))
+        }
+    };
 
 	useEffect(() => {
 		getCountryCodeData();
+		loadFormData();
 	}, [])
 
     return (
 		<div>
+			<h3 className="text-[24px] leading-[34px] font-medium mb-3">
+				{/* 基本信息 */}
+				{ t('identity.realName.setUPTitle1') }
+			</h3>
 			<h4 className="text-[18px] leading-[25px] font-medium">
 				{/* 证件验证 */}
 				{t('identity.idv.title')}
@@ -221,9 +264,8 @@ const BasicInfo: React.FC = () => {
                     onClick={() => setVisible(true)}
                 >
                     {
-                        dateRange[0] ?
-                        <span>{ dateRange[0].format('YYYY-MM-DD') }</span>
-                        :
+                        form.birthday ?
+                        <span>{ form.birthday }</span> :
                         <span className="placeholder-color"> {t('identity.idv.birthday.placeholder')} </span>
                     }
                     <Iconify icon="cuida:calendar-outline" className="text-[20px]" />
@@ -231,7 +273,7 @@ const BasicInfo: React.FC = () => {
 			</div>
 			{!isNext ? (
 				<button
-					className={`${styles.btn_style} disabled_btn2 cursor-not-allowed`}
+					className="bg-[var(--background17)] rounded-[25px] w-full h-[50px] flex justify-center items-center tip-color text-[16px] font-medium"
 					disabled
 				>
 					{/* 下一步 */}
@@ -240,7 +282,7 @@ const BasicInfo: React.FC = () => {
 			) : (
 				<button
 					type='submit'
-					className={`default_btn ${styles.btn_style} flex-1`}
+					className="bg-[var(--theme-color)] rounded-[25px] w-full h-[50px] flex justify-center items-center text-[16px] text-[#fff] font-medium"
 					onClick={ onSubmit }
 				>
 					{/* 下一步 */}
@@ -252,8 +294,11 @@ const BasicInfo: React.FC = () => {
 				handlePopupClose={() => setVisible(false)}
 				title={ t('usersetting.birthday.selectDate') }
 				value={dateRange}
-				onChange={setDateRange}
-				minDate={dayjs(1800)}
+				onChange={(result) => {
+					setDateRange(result)
+					updateField('birthday', result[0] ? result[0].format('YYYY-MM-DD') : '')
+				}}
+				minDate={dayjs('1900-01-01')}
 				maxDate={dayjs()}
 				type="date"
 			/>
@@ -262,3 +307,5 @@ const BasicInfo: React.FC = () => {
 };
 
 export default BasicInfo;
+
+export type { EventType };

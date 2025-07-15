@@ -561,6 +561,7 @@ const SpotMainPage = observer(() => {
               current: paramdataRef.current.page,
               pageSize: paramdataRef.current.pageSize,
               total: total,
+              hideOnSinglePage: true,
               onChange: (page, pageSize) => pageChange(page, pageSize),
             }}
             // loading={loading}

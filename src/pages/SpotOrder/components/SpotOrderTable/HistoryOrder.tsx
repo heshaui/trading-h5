@@ -491,7 +491,7 @@ const SpotMainPage = observer(() => {
               placeholder={t('spot.columns.type')}
               title={t('spot.columns.type')}
               onChange={(value) => {
-                selectParam.current.type = value
+                selectParam.current.type = value as string || ''
                 getOrderListData()
               }}
             />
@@ -628,8 +628,7 @@ const SpotMainPage = observer(() => {
               total: total,
               current: paramdataRef.current.page,
               pageSize: paramdataRef.current.pageSize,
-              // size: "default",
-              // simple: true,
+              hideOnSinglePage: true,
               onChange: (page, pageSize) => pageChange(page, pageSize),
             }}
             // pagination={false}

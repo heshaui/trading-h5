@@ -22,7 +22,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ theme,defaultMenuList }) => {
   // 根据当前路径获取当前页面标题
   const getCurrentTitle = () => {
     const currentMenu = defaultMenuList.find(menu => menu.path === currentPath);
-    return currentMenu?.title || t('common.router.overview');
+    return currentMenu?.title || currentPath
   };
 
   const title = getCurrentTitle();

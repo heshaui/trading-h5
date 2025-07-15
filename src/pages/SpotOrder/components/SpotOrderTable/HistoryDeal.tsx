@@ -558,13 +558,10 @@ const SpotMainPage = observer(() => {
           bodyClassName={`${styles.tables_content} ${styles.history_content}`}
           headerClassName={styles.tables_header}
           pagination={{
-            // position: ["bottomRight"],
-            // showSizeChanger: true,
             current: paramdataRef.current.page,
             pageSize: paramdataRef.current.pageSize,
             total: total,
-            // size: "default",
-            // simple: true,
+            hideOnSinglePage: true,
             onChange: (page, pageSize) => pageChange(page, pageSize),
           }}
           loading={loading}

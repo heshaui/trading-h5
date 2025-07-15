@@ -14,9 +14,9 @@
   min-height: calc(80vh - 20px);
 }
 .pop_header {
-  height: 50px;
+  min-height: 50px;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-color8);
 }
 .pop_main{

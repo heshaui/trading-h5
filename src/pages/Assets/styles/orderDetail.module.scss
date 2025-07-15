@@ -1,0 +1,72 @@
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #FF4D4F;
+}
+.tip_color {
+    color: var(--text-color6);
+}
+.tip_color2{
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+
+.card_bgc {
+    background-color: var(--background9);
+    // background-color: var( --homeground2); 
+    // background-color: var( --background7);
+    padding-bottom: 50px;
+}
+
+
+
+
+.border_bottom{
+    border-bottom: 0.5px solid var(--border-color11);
+}
+
+.left-icon {
+    font-size: 24px;
+}
+.user_header {
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    // border-bottom: 1px solid var(--border-color4);
+}
+.content_img{
+    width: 160px;
+    height: 100%;
+    object-fit: cover;
+}
+.tables_content {
+    border: none;
+
+    :global {
+        // .table-card {
+        //     border: none;
+        //     border-radius: 0;
+        //     border-bottom: 0.5px solid var(--border-color11);
+        //     padding: 16px;
+        // }
+
+        .table-card-label {
+            font-weight: 400;
+            color: var(--text-color4);
+            font-size: 14px;
+        }
+
+        .table-card-value {
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
+}

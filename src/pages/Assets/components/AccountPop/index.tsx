@@ -1,12 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Button, Popover, Popup, Image, Tabs, SearchBar } from 'antd-mobile';
+import { Popup, Toast } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
-import { supportedLanguages, languageNames } from '@/utils/languageLoader';
-import iconDown from '@/assets/icons/public/icon_earth_line.png';
-import iconDownDark from '@/assets/icons/public/icon_earth_dark.png';
 import styles from '../styles/accountPop.module.scss';
-import { Action } from 'antd-mobile/es/components/popover'
-import { DownOutline, CloseOutline } from 'antd-mobile-icons';
+import { CloseOutline } from 'antd-mobile-icons';
 import appStore from '@/store';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { CustomTab } from '@/components/CustomCom';
@@ -17,19 +13,48 @@ import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import { DataType } from "@/type/assets/assetsAccount/assets";
 import { add, roundDown, cut, nul } from "@/utils";
 import { getRate, getCoinRate, getCoinRound } from "@/utils/getUseRate";
-
+import {
+  getCoinById,
+} from "@/services/assets";
 type Props = {
   open?: boolean;
-  title?: string;
   onClose?: () => void;
-  dataList?: DataType;
+  recordData: DataType;
 }
-const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataList }) => {
+// 操作类型枚举
+enum ActionType {
+  WITHDRAW = '1',
+  DEPOSIT = '2',
+  TRADE = '3'
+}
+
+// 操作配置类型
+type ActionConfig = {
+  permission: 'canWithdraw' | 'canRecharge';
+  errorKey: string;
+  route?: string;
+};
+
+// 操作类型配置
+const actionConfig: Record<ActionType.WITHDRAW | ActionType.DEPOSIT, ActionConfig> = {
+  [ActionType.WITHDRAW]: {
+    permission: 'canWithdraw',
+    errorKey: 'assetsAccount.button.withdrawError2',
+    route: '/assets/withdraw'
+  },
+  [ActionType.DEPOSIT]: {
+    permission: 'canRecharge',
+    errorKey: 'assetsAccount.button.depositError2',
+    route: '/assets/deposit'
+  }
+};
+const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) => {
   const { t } = useLanguage('assets');
   const { isDayMode } = useThemeMode();
   const navigate = useNavigate();
   const rateKey = appStore.getRateKey()?.replace(/\s+/g, ""); // 汇率key
   const coinList = appStore.getCoinList(); // 获取币种信息
+  const coinPair = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
 
 
   const columns: ColumnType<DataType>[] = [
@@ -59,17 +84,6 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
           </p>
         );
       },
-      sorter: (a, b) => {
-        const totalA = add(
-          add(a.balance || 0, a.releaseBalance || 0),
-          a.frozenBalance || 0
-        );
-        const totalB = add(
-          add(b.balance || 0, b.releaseBalance || 0),
-          b.frozenBalance || 0
-        );
-        return totalA - totalB;
-      },
     },
     {
       title: t("assetsAccount.available"), //"可用",
@@ -83,7 +97,6 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
         );
         return <span>{_text ? roundDown(_text, coin?.unitScale) : "0"}</span>;
       },
-      sorter: (a, b) => a.balance - b.balance,
     },
     {
       title: t("assetsAccount.frozen"), //"冻结",
@@ -97,7 +110,6 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
         );
         return <span>{_text ? roundDown(_text, coin?.unitScale) : "0"}</span>;
       },
-      sorter: (a, b) => a.releaseBalance - b.releaseBalance,
     },
     {
       title: t("assetsAccount.order"), //"下单锁定",
@@ -111,10 +123,74 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
         );
         return <span>{_text ? roundDown(_text, coin?.unitScale) : "0"}</span>;
       },
-      sorter: (a, b) => a.frozenBalance - b.frozenBalance,
     },
 
   ];
+
+
+  const getCoinAuth = async (type: string, coinId: string | number) => {
+    try {
+      // 处理交易类型
+      if (type === ActionType.TRADE) {
+        const coinPairData = coinPair.find(
+          (item: any) =>
+            item.baseSymbol === recordData.coinName ||
+            item.coinSymbol === recordData.coinName ||
+            recordData.coinId === item.baseSymbol ||
+            recordData.coinId === item.coinSymbol
+        );
+
+        if (coinPairData) {
+          navigate('/exchange');
+          // console.log('交易');
+        } else {
+          Toast.show({
+            content: t("assetsAccount.button.tradeError2"),
+            icon: 'fail'
+          });
+        }
+        return;
+      }
+
+      // 处理充值和提现类型
+      const config = actionConfig[type as ActionType.WITHDRAW | ActionType.DEPOSIT];
+      if (!config) return;
+
+      const res = await getCoinById(coinId);
+      const { data, code } = res;
+
+      if (code?.toString() !== "0") {
+        Toast.show({
+          content: res.message,
+          icon: 'fail'
+        });
+        return;
+      }
+
+      // 检查权限并执行相应操作
+      if (data?.[config.permission] === 1) {
+        // 权限通过，执行跳转
+        navigate(config.route || '/');
+        // console.log('提现充值执行跳转');
+      } else {
+        // 权限不足，显示错误信息
+        Toast.show({
+          content: t(config.errorKey),
+          icon: 'fail'
+        });
+      }
+
+    } catch (error) {
+      Toast.show({
+        content: String(error),
+        icon: 'fail'
+      });
+    }
+  };
+
+
+
+
   return (
     <Popup
       visible={open}
@@ -127,8 +203,8 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
       bodyClassName={styles.popContainer}
     >
       <div className={`${styles.title_color} flex-y justify-between h-full ${styles.pop_box}`}>
-        <div className={`${styles.pop_header} flex-x algin-center justify-end`}>
-          <span className={`${styles.title_color} flex-1`}>{title || '--'}</span>
+        <div className={`${styles.pop_header} flex-x algin-center justify-between`}>
+          <span className={`${styles.title_color} flex-1`}>{recordData.coinName || '--'}</span>
           <button onClick={() => {
             onClose?.();
           }}
@@ -137,34 +213,43 @@ const LanguageToggle: React.FC<Props> = ({ open = false, title, onClose, dataLis
             <CloseOutline fontSize={20} />
           </button>
         </div>
-        <div className={`${styles.pop_main} flex-1 px-4`}>
+        <div className={`${styles.pop_main} flex-1 px-2`}>
           <CustomTable
             columns={columns}
-            dataSource={dataList ? [dataList] : []}
+            dataSource={recordData ? [recordData] : []}
             className={`table-box`}
             pagination={false}
             locale={{ emptyText: <NoData /> }}
-            p1cardBorder={'none'}
+            p1cardBorder='none'
           />
         </div>
         <div className={`${styles.pop_footer} flex-row w-full px-4 `}>
           <button
             className={`default_btn ${styles.btn_style} mr-4 flex-1`}
-            onClick={() => navigate('/assets/deposit')}
+            onClick={() => {
+              // navigate('/assets/deposit')
+              getCoinAuth("1", recordData.coinId)
+            }}
           >
             {/* 充值 */}
             {t("assetsAccount.button.deposit")}
           </button>
           <button
             className={`cancel_btn6 ${styles.btn_style} mr-4 flex-1`}
-            onClick={() => navigate('/assets/withdraw')}
+            onClick={() => {
+              // navigate('/assets/withdraw')
+              getCoinAuth("2", recordData.coinId)
+            }}
           >
             {/* 提现 */}
             {t("assetsAccount.button.withdraw")}
           </button>
           <button
             className={`cancel_btn6 ${styles.btn_style} flex-1`}
-            onClick={() => navigate('/assets/bill')}
+            onClick={() => {
+              // navigate('/assets/bill')
+              getCoinAuth("3", recordData.coinId)
+            }}
           >
             {/* 交易 */}
             {t("assetsAccount.button.trade")}

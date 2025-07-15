@@ -16,7 +16,7 @@ interface SelectPopProps {
   value?: string | number;
   defaultValue?: string | number; // 新增：默认值
   showValue?: boolean;
-  onChange?: (value: string | number, option: OptionItem) => void;
+  onChange?: (value: string | number | undefined, option: OptionItem) => void; // 支持 undefined
   options: OptionItem[]; // 传入的选项列表
   placeholder?: string; // 占位符文字
   title?: string; // 弹窗标题
@@ -91,8 +91,16 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
 
   const handleOptionSelect = (option: OptionItem) => {
     const newValue = option.value;
-    setSelectedValue(newValue);
-    onChange?.(newValue, option);
+    
+    // 如果点击的是已选中的选项，则取消选择
+    if (selectedValue === newValue) {
+      setSelectedValue(undefined);
+      onChange?.(undefined as any, option);
+    } else {
+      setSelectedValue(newValue);
+      onChange?.(newValue, option);
+    }
+    
     handlePopupClose();
   };
 
@@ -110,11 +118,12 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     }
     
     // 处理空值或'all'值的情况（注意：0是有效值，不应该被当作空值）
+    // 当取消选择时 selectedValue 为 undefined，显示 placeholder
     if (selectedValue === null || selectedValue === undefined || selectedValue === '' || selectedValue === 'all') {
-      if (showAll) {
+      if (showAll && (selectedValue === 'all' || selectedValue === '')) {
         return t('common.all') || placeholder; // 显示"全部"标签
       } else {
-        return placeholder; // 显示placeholder
+        return placeholder; // 显示placeholder，包括取消选择的情况
       }
     }
     
@@ -229,10 +238,13 @@ export type { OptionItem, SelectPopProps };
 /**
  * 使用示例：
  * 
- * // 1. 基本用法
+ * // 1. 基本用法（支持点击已选中选项取消选择）
  * <SelectPop
  *   value={selectedValue}
- *   onChange={(value, option) => setSelectedValue(value)}
+ *   onChange={(value, option) => {
+ *     // value 可能为 undefined（当用户取消选择时）
+ *     setSelectedValue(value);
+ *   }}
  *   options={[
  *     { label: '选项1', value: 'option1' },
  *     { label: '选项2', value: 'option2' },
@@ -279,4 +291,9 @@ export type { OptionItem, SelectPopProps };
  *   placeholder="请选择"
  *   showAll={false} // 当value为空或'all'时显示placeholder
  * />
+ * 
+ * // 5. 取消选择功能
+ * // 用户点击已选中的选项时，会触发取消选择
+ * // onChange 会被调用，value 参数为 undefined
+ * // 此时组件会显示 placeholder 内容
  */

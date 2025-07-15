@@ -5,7 +5,9 @@
         "billDetails": "账单明细",
         "withdraw": "提现",
         "deposit": "充值",
-        "address": "地址管理"
+        "address": "地址管理",
+        "rechargeDetail": "充值详情",
+        "withdrawDetail": "提现详情"
     },
     "assetsAccount": {
         "title": "现货账户",

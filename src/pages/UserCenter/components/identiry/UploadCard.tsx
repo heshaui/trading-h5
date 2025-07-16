@@ -343,7 +343,7 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                 </button>
                 {!checkFilesComplete() ? (
                     <button
-                        className="flex-1 bg-[var(--background17)] rounded-[25px] w-full h-[50px] flex justify-center items-center tip-color text-[16px] font-medium"
+                        className="flex-1 bg-[var(--background18)] rounded-[25px] w-full h-[50px] flex justify-center items-center tip-color text-[16px] font-medium"
                         disabled
 
                     >

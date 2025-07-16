@@ -48,7 +48,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 		birthday: '',
 	})
 
-	const updateField = (key: string, value: string|number) => {
+	const updateField = (key: string, value: string|number|undefined) => {
 		setForm((prev) => ({
 			...prev,
 			[key]: value,
@@ -272,7 +272,7 @@ const BasicInfo: React.FC<InfoProps> = ({ onNext }) => {
 			</div>
 			{!isNext ? (
 				<button
-					className="bg-[var(--background17)] rounded-[25px] w-full h-[50px] flex justify-center items-center tip-color text-[16px] font-medium"
+					className="bg-[var(--background18)] rounded-[25px] w-full h-[50px] flex justify-center items-center tip-color text-[16px] font-medium"
 					disabled
 				>
 					{/* 下一步 */}

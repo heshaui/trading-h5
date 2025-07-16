@@ -1,7 +1,7 @@
 .try_page {
     background-color: var(--homeground2);
     color: var(--hometext3);
-    min-height: calc(100vh - 48px);
+    min-height: calc(100vh - var(--header-height,48px));
    padding-bottom: 50px;
 }
 

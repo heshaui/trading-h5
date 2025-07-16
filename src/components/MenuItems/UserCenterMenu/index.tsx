@@ -7,16 +7,7 @@ import { ReactComponent as OrderSvg } from '@/assets/icons/userCenter/order.svg'
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from '../styles/layout.module.scss'
-
-// 定义图标类型
-type IconType = string | React.ReactNode;
-
-// 定义菜单项类型
-interface MenuType {
-    title: string;
-    icon: IconType;
-    path: string;
-}
+import { MenuType, IconType } from '@/type/public/menu';
 
 // 定义高阶组件的配置选项
 interface WithUserCenterLayoutOptions {
@@ -50,7 +41,7 @@ const withUserCenterLayout = <P extends object>(
             {
                 title: t('trade.orders'),
                 icon: <OrderSvg className="w-[24px] h-[24px]" />,
-                path: '/orders'
+                path: '/spotOrder'
             },
             {
                 title: t('router.safetyCenter'),
@@ -74,24 +65,25 @@ const withUserCenterLayout = <P extends object>(
             }
         ];
 
-        // 使用传入的菜单列表或默认菜单列表
-        const menuList = options.menuList || defaultMenuList;
+        // // 使用传入的菜单列表或默认菜单列表
+        // const menuList = options.menuList || defaultMenuList;
 
-        // 根据当前路径获取当前页面标题
-        const getCurrentTitle = () => {
-            if (options.currentTitle) return options.currentTitle;
+        // // 根据当前路径获取当前页面标题
+        // const getCurrentTitle = () => {
+        //     if (options.currentTitle) return options.currentTitle;
             
-            const currentMenu = menuList.find(menu => menu.path === currentPath);
-            return currentMenu?.title || '--';
-        };
+        //     const currentMenu = menuList.find(menu => menu.path === currentPath);
+        //     return currentMenu?.title || '--';
+        // };
 
         return (
             <div className={`user-center-page flex flex-col`}>
                 {/* 路由菜单头部 */}
                 <RouterMenu 
-                    title={getCurrentTitle()}
-                    menuList={menuList}
-                    path={currentPath}
+                    // title={getCurrentTitle()}
+                    // menuList={menuList}
+                    // path={currentPath}
+                    defaultMenuList={defaultMenuList}
                 />
                 
                 {/* 页面内容 */}

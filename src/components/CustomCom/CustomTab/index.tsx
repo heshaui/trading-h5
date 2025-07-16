@@ -5,7 +5,7 @@ interface Item {
   title?: string;
   label?: string;
   key: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   disabled?:boolean;
   destroyOnClose?:boolean;
   forceRender?:boolean;
@@ -19,7 +19,7 @@ type Props = {
   direction?:'ltr' | 'rtl';
   activeLineMode?:'auto' | 'full' | 'fixed';
   className?: string| string[];
-  style?: React.CSSProperties;
+  style?: React.CSSProperties|any;
   destroyOnClose?:boolean;
   forceRender?:boolean;
 }

@@ -63,7 +63,9 @@ export  interface DataType {
     fee: number,
     baseSymbolCount: number,
     groupStatus: string,
-    userLoginLogs: DataLogsType[]
+    makerFee:number,
+    takerFee:number,
+    userLoginLogs?: DataLogsType[]
   }
   export interface symbolSelectType {
     label: string,

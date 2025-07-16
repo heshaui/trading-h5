@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import styles from './index.module.scss';
 import { Iconify } from '@/components/icon';
 import { useLanguage } from '@/hooks/useLanguage';
-import { Pagination } from 'antd';
-import {NoData} from '@/components/noData';
+import { Pagination, ConfigProvider } from 'antd';
+import { NoData } from '@/components/noData';
 
 export interface ColumnType<T = any> {
   title: string | React.ReactNode | ((value: any, record: T, index: number) => React.ReactNode);
@@ -35,7 +35,7 @@ export interface CustomTableProps<T = any> {
   pagination?: PaginationConfig | false;
   type?: 'p1' | 'p2'; // p1: 列模式, p2: 行模式
   rowKey?: string | ((record: T) => string);
-  p1cardBorder?: 'border'|'buttom'|'none';
+  p1cardBorder?: 'border' | 'buttom' | 'none';
   expandable?: {
     expandedRowRender?: (record: T, index: number) => React.ReactNode;
     rowExpandable?: (record: T) => boolean;
@@ -66,7 +66,7 @@ const CustomTable = <T extends Record<string, any>>({
   rowKey = 'id',
   p1cardBorder = 'border',
   expandable,
-  locale = { emptyText: <NoData textColor='#A4A5AC' position='top'/> },
+  locale = { emptyText: <NoData textColor='#A4A5AC' position='top' /> },
   className = '',
   headerClassName = '',
   bodyClassName = '',
@@ -191,7 +191,7 @@ const CustomTable = <T extends Record<string, any>>({
   const renderPagination = () => {
     if (!pagination || typeof pagination === 'boolean') return null;
 
-    const { current, pageSize, total, onChange ,hideOnSinglePage} = pagination;
+    const { current, pageSize, total, onChange, hideOnSinglePage } = pagination;
     const totalPages = Math.ceil(total / pageSize);
 
     // 当无数据或总页数小于等于1时不显示分页
@@ -225,19 +225,29 @@ const CustomTable = <T extends Record<string, any>>({
       //     <Iconify icon="ph:caret-right" className="table-pagination-icon-right" />
       //   </button>
       // </div>
-      <div className={`${styles.pagination} ${pageClassName} table-pagination`}>
-        <Pagination
-          simple
-          // position={['bottomRight']}
-          className='spot-table-box'
-          showSizeChanger
-          defaultCurrent={current}
-          pageSize={pageSize}
-          size='default'
-          total={total}
-          hideOnSinglePage={hideOnSinglePage}
-          onChange={(page, pageSize) => onChange?.(page, pageSize)} />
-      </div>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary:'var(--theme-color)',
+            colorPrimaryBorder:'var(--theme-color)',
+            colorPrimaryHover:'var(--theme-color)',
+          },
+        }}
+      >
+        <div className={`${styles.pagination} ${pageClassName} table-pagination`}>
+          <Pagination
+            simple
+            // position={['bottomRight']}
+            className='spot-table-box'
+            showSizeChanger
+            defaultCurrent={current}
+            pageSize={pageSize}
+            size='default'
+            total={total}
+            hideOnSinglePage={hideOnSinglePage}
+            onChange={(page, pageSize) => onChange?.(page, pageSize)} />
+        </div>
+      </ConfigProvider>
     );
   };
 
@@ -361,10 +371,10 @@ const CustomTable = <T extends Record<string, any>>({
 
           return (
             <div key={key} className={`${styles.card} 
-            ${p1cardBorder==='buttom' ? styles.card_bottom_border : 
-              p1cardBorder==='none' ? styles.card_bottom_none : ''} 
-            table-card`} 
-            {...rowProps}>
+            ${p1cardBorder === 'buttom' ? styles.card_bottom_border :
+                p1cardBorder === 'none' ? styles.card_bottom_none : ''} 
+            table-card`}
+              {...rowProps}>
               {columns.map((column, columnIndex) => (
                 <div key={column.key} className={`${styles.cardRow} ${headerClassName}
                  flex-x align-center justify-between table-card-row

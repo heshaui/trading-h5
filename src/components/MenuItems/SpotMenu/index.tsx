@@ -5,16 +5,7 @@ import styles from '../styles/layout.module.scss'
 
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
-
-// 定义图标类型
-type IconType = string | React.ReactNode;
-
-// 定义菜单项类型
-interface MenuType {
-    title: string;
-    icon: IconType;
-    path: string;
-}
+import { MenuType, IconType } from '@/type/public/menu';
 
 // 定义高阶组件的配置选项
 interface WithSpotLayoutOptions {
@@ -57,9 +48,10 @@ const withSpotLayout = <P extends object>(
             <div className={`user-center-page flex flex-col`}>
                 {/* 路由菜单头部 */}
                 <RouterMenu
-                    title={getCurrentTitle()}
-                    menuList={menuList}
-                    path={currentPath}
+                    // title={getCurrentTitle()}
+                    // menuList={menuList}
+                    // path={currentPath}
+                    defaultMenuList={defaultMenuList}
                 />
 
                 {/* 页面内容 */}

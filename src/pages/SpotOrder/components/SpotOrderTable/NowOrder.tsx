@@ -141,7 +141,7 @@ const SpotMainPage = observer(() => {
           // }}
           className='flex-x-cc'
         >
-          <div className='mr-1 flex-y-cc'>
+          <div className={`mr-1 flex-y-cc ${styles.tip_color}`}>
             <span>  {record.tradedAmount && record.tradedAmount.toString() !== '0' ? `${roundDown(baseScaleResult, 2)}%` : '0%'}</span>
             <div className={`${styles.progress_bar} mt-1`}>
               <ProgressBar percent={amount}
@@ -561,6 +561,7 @@ const SpotMainPage = observer(() => {
               current: paramdataRef.current.page,
               pageSize: paramdataRef.current.pageSize,
               total: total,
+              hideOnSinglePage: true,
               onChange: (page, pageSize) => pageChange(page, pageSize),
             }}
             // loading={loading}

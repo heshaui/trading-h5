@@ -12,10 +12,7 @@
 }
 
 .headerContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 48px; // 固定内容区域高度
+  height: var(--header-height,48px); // 固定内容区域高度
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -26,7 +23,8 @@
 }
 .logo{
     width: 140px;
-    height: 28px;
+    // height: 28px;
+    min-height: var(--header-height,48px);
     color: #fff;
 }
 .logo img{
@@ -78,7 +76,7 @@
   }
   
   .headerContent {
-    height: 48px; // 移动端稍微降低高度
+    height: var(--header-height,48px); // 移动端稍微降低高度
     padding: 6px 0;
   }
   

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { Popup } from 'antd-mobile';
-import '../styles/index.scss';
+import styles from '../styles/index.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // 定义图标类型
@@ -13,15 +13,17 @@ interface MenuType {
   title: string;
   icon: IconType;
   path: string;
+  type?: 'p1' | 'p2'|'p3';
 }
 
 interface MenuPopupProps {
   visible: boolean;
+  theme?: string;
   onClose: () => void;
   menuList: MenuType[];
 }
 
-const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => {
+const MenuPopup: React.FC<MenuPopupProps> = ({ visible, theme, onClose, menuList }) => {
   const { t } = useLanguage('common');
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,6 +49,11 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => 
     }
   }
 
+  // 分离不同类型的菜单项
+  const p1MenuList = menuList.filter(menu => !menu.type || menu.type === 'p1');
+  const p2MenuList = menuList.filter(menu => menu.type === 'p2');
+  const p3MenuList = menuList.filter(menu => menu.type === 'p3');
+
   return (
     <Popup
       visible={visible}
@@ -54,7 +61,7 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => 
       closeOnMaskClick
       position="left"
       bodyStyle={{ width: '100vw' }}
-      bodyClassName="!bg-[var(--background9)] !text-[var(--text-color5)]"
+      bodyClassName={`!text-[var(--text-color5)] ${theme?`!bg-[${theme}]` : '!bg-[var(--background9)]'}`}
     >
       <div
         className="leading-6 flex justify-end pt-[16px] pr-[16px] mb-[6.97px]"
@@ -62,17 +69,52 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => 
       >
         <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" />
       </div>
-
-      <ul className="pr-[20px]">
-        {menuList.map((menu: MenuType) => {
+    {/* p2 类型菜单 - 横向排列 */}
+    {p2MenuList.length > 0 && (
+        <div className="px-[20px] mt-[20px]">
+          <div className="flex flex-wrap gap-[12px]">
+            {p2MenuList.map((menu: MenuType) => {
+              const active = currentPath === menu.path;
+              return (
+                <div
+                  key={menu.path}
+                  className={`flex flex-col items-center justify-center p-[16px] rounded-[8px] cursor-pointer transition-all duration-200 
+                    
+                  `}
+                  // ${ active 
+                  //   ? 'bg-[var(--theme-color)] text-white' 
+                  //   : 'bg-[var(--background6)] hover:bg-[var(--background3)]' }
+                  onClick={() => handleMenuClick(menu.path)}
+                  style={{ minWidth: '80px', flex: '1' }}
+                >
+                  <div className={`mb-[8px] ${active ? `${styles.active_show} text-[var(--theme-color)]` : 'text-[var(--text-color5)]'} 
+                  ${styles.icon_transition}`}>
+                    {typeof menu.icon === 'string' ? (
+                      <Iconify icon={menu.icon} className="text-[24px]" />
+                    ) : (
+                      menu.icon
+                    )}
+                  </div>
+                  <span 
+                  className={`text-[12px] text-center `}>
+                    {menu.title}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      {/* p1 类型菜单 - 纵向排列 */}
+      {p1MenuList.length > 0 && <ul className="pr-[20px]  mt-[20px]">
+        {p1MenuList.map((menu: MenuType) => {
           const active = currentPath === menu.path;
           return (
             <li
               key={menu.path}
-              className={active ? 'user-menu-item active' : 'user-menu-item'}
+              className={active ? `${styles.user_menu_item} ${styles.active}` : styles.user_menu_item}
               onClick={() => handleMenuClick(menu.path)}
             >
-              <div className="left-border"></div>
+              <div className={`${styles.left_border}`}></div>
               {typeof menu.icon === 'string' ? (
                 <Iconify icon={menu.icon} className="text-[24px]" />
               ) : (
@@ -82,7 +124,28 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, onClose, menuList }) => 
             </li>
           );
         })}
-      </ul>
+      </ul>}
+
+      {p3MenuList.length > 0 &&<ul className="px-[16px] w-full">
+        {p3MenuList.map((menu: MenuType) => {
+          const active = currentPath === menu.path;
+          return (
+            <li
+              key={menu.path}
+              className={`${styles.user_menu_item3} ${active ? `${styles.active3}` : ''}`}
+              onClick={() => handleMenuClick(menu.path)}
+            >
+              {/* <div className={`${styles.left_border}`}></div>
+              {typeof menu.icon === 'string' ? (
+                <Iconify icon={menu.icon} className="text-[24px]" />
+              ) : (
+                menu.icon
+              )} */}
+              <span className="ml-[18px]">{menu.title}</span>
+            </li>
+          );
+        })}
+      </ul>}
     </Popup>
   );
 };

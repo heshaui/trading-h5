@@ -81,7 +81,10 @@ const SpotOrderPage = () => {
 
 
 	const handleGoBack = () => {
-		navigate(-1); // 返回上一页
+		navigate('/spotOrder', { 
+			state: { fromDetail: true },
+			replace: true 
+		});
 	};
 	// 判断状态
 	const getStatus = (_status: number) => {
@@ -247,26 +250,26 @@ const SpotOrderPage = () => {
 		},
 	];
 	const mainColumns2: ColumnType<DataType>[] = [
-		// {
-		// 	title: t('spot.columns.fee'), //"手续费",
-		// 	key: "buyFee",
-		// 	dataIndex: "buyFee",
-		// 	// width: 158,
-		// 	align: "center",
-		// 	render: (_status, record) => {
-		// 	  // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-		// 	  const buyRes = getRound(record.symbol, record.buyFee || 0)
-		// 	  const sellRes = getRound(record.symbol, record.sellFee || 0)
-		// 	  const flag =orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
-		// 	  if (flag === 0) {
-		// 		return <span >{`${buyRes.baseScaleResult} ${buyRes.coinSymbol || '--'}`}</span>;
-		// 	  } else if (flag === 1) {
-		// 		return <span >{`${sellRes.baseScaleResult} ${sellRes.baseSymbol || '--'}`}</span>;
-		// 	  } else {
-		// 		return <span >{'--'}</span>;
-		// 	  }
-		// 	},
-		// },
+		{
+			title: t('spot.columns.fee'), //"手续费",
+			key: "buyFee",
+			dataIndex: "buyFee",
+			// width: 158,
+			align: "center",
+			render: (_status, record) => {
+				let fee
+				if (record.direction === 0) {
+					// directionText = t('spot.trade.buy')
+					fee=nul(record.takerFee,record.turnover)
+				} else if (record.direction === 1) {
+					fee=nul(record.makerFee,record.turnover)
+				} else {
+					fee = '--'
+				}
+
+				return <span>{fee}</span>;
+			},
+		},
 		{
 			title: t('spot.columns.amount2'), //"成交金额",
 			key: "turnover",

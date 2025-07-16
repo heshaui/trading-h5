@@ -1,5 +1,5 @@
 .container {
 	padding: 10px 16px;
-	height: 48px;
+	height: var(--header-height,48px);
 	border-bottom: 1px solid #ccc;
 }

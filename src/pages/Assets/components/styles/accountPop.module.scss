@@ -1,0 +1,36 @@
+.popContainer {
+  // padding: 20px;
+  background-color: var(--background5);
+}
+
+.title_color {
+  color: var(--text-color5);
+}
+
+.tip_color {
+  color: var(--text-color6);
+}
+.pop_box{
+  min-height: calc(80vh - 20px);
+}
+.pop_header {
+  min-height: 50px;
+  box-sizing: border-box;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color8);
+}
+.pop_main{
+  flex: 1;
+}
+.btn_style {
+  min-width: 100px;
+  min-height: 32px;
+  border-radius: 23px;
+  padding: 5px 16px;
+  font-weight: 500;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}

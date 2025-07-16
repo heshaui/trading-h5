@@ -40,7 +40,8 @@ export interface coinExtSelectType {
     protocolName: string,
     browser: string,
     symbol: string,
-    chainId: number
+    chainId: number,
+    memoTag:number
 }
 export interface addressSelectType {
     id: number,

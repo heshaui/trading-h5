@@ -138,11 +138,33 @@ export default function RechargeTable({coinSelect}: PropsType) {
           placeholder={t('assetsAccount.currency')}
           title={t("billDetails.selectCoin")}
           onChange={(value) => {
-            pageParam.current.page=1
+            // value 可能为 undefined（取消选择时）
             pageParam.current.symbol = value as string || ''
             getRecordData();
           }}
           value={pageParam.current.symbol}
+          displayMode="value"
+          optionRender={(option) => (
+            <div className="flex-x align-center justify-between">
+              <div className="flex items-center py-1">
+                <img
+                  src={option.iconUrl}
+                  alt={option.label as string}
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                  style={{
+                    borderRadius: "50%",
+                    height: "20px",
+                    width: "20px",
+                  }}
+                />
+                <span className="text-text-color7">
+                  {`${option.coinName}(${option.nameDefault})`}
+                </span>
+              </div>
+            </div>
+          )}
           // defaultValue={symbolSelect[0]?.value}
         />
         <div className='flex-1 flex-x align-center justify-end'>

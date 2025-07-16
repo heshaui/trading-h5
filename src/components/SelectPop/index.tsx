@@ -3,7 +3,7 @@ import { Iconify } from "@/components/icon/index";
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/pop.module.scss";
 import { NoData } from "../noData";
-import { Form, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
+import { Form, Input, Picker, Button, Popup, SearchBar, Image } from 'antd-mobile'
 
 interface OptionItem {
   label: React.ReactNode;
@@ -27,6 +27,10 @@ interface SelectPopProps {
   showAll?: boolean; // 是否回显全部
   renderOption?: (option: OptionItem) => React.ReactNode; // 自定义选项渲染
   renderValue?: (option: OptionItem | null) => React.ReactNode; // 自定义值显示
+  optionRender?: (option: OptionItem) => React.ReactNode; // 新增：自定义选项渲染（与antd保持一致的命名）
+  displayMode?: 'label' | 'value'; // 新增：选择显示回填内容是label还是value，默认label
+  bodyClassName?: string; // 新增：弹窗body的className
+  
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -43,7 +47,10 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   disabled = false,
   showAll = false,
   renderOption,
-  renderValue
+  renderValue,
+  optionRender, // 新增参数
+  displayMode = 'label', // 新增参数，默认显示label
+  bodyClassName,
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -128,7 +135,9 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     }
     
     if (!selectedOption) return placeholder;
-    return selectedOption.label;
+    
+    // 根据displayMode选择显示内容
+    return displayMode === 'value' ? selectedOption.value : selectedOption.label;
   };
 
   // 默认选项渲染
@@ -138,6 +147,13 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
       {showValue && <span className="font-14 text-color6">{option.value}</span>}
     </div>
   );
+
+  // 选择渲染函数，优先级：optionRender > renderOption > defaultRenderOption
+  const getOptionRenderer = () => {
+    if (optionRender) return optionRender;
+    if (renderOption) return renderOption;
+    return defaultRenderOption;
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -200,7 +216,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                   ${selectedValue === option.value ? styles.active_select : ''}`}
                   onClick={() => handleOptionSelect(option)}
                 >
-                  {renderOption ? renderOption(option) : defaultRenderOption(option)}
+                  {getOptionRenderer()(option)}
                 </div>
               ))
             ) : (
@@ -296,4 +312,61 @@ export type { OptionItem, SelectPopProps };
  * // 用户点击已选中的选项时，会触发取消选择
  * // onChange 会被调用，value 参数为 undefined
  * // 此时组件会显示 placeholder 内容
+ * 
+ * // 6. 自定义选项渲染（新增功能）
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { 
+ *       label: 'BTC(Bitcoin)', 
+ *       value: 'BTC',
+ *       coinName: 'BTC',
+ *       nameDefault: 'Bitcoin',
+ *       iconUrl: '/images/btc.png'
+ *     },
+ *     { 
+ *       label: 'ETH(Ethereum)', 
+ *       value: 'ETH',
+ *       coinName: 'ETH',
+ *       nameDefault: 'Ethereum',
+ *       iconUrl: '/images/eth.png'
+ *     },
+ *   ]}
+ *   placeholder="请选择币种"
+ *   optionRender={(option) => (
+ *     <div className="flex-x align-center justify-between">
+ *       <div className="flex items-center py-1">
+ *         <Image
+ *           src={option.iconUrl}
+ *           alt={option.label}
+ *           width={20}
+ *           height={20}
+ *           className="mr-2"
+ *           style={{
+ *             borderRadius: "50%",
+ *             height: "20px",
+ *             width: "20px",
+ *           }}
+ *         />
+ *         <span className="text-text-color7">
+ *           {`${option.coinName}(${option.nameDefault})`}
+ *         </span>
+ *       </div>
+ *     </div>
+ *   )}
+ * />
+ * 
+ * // 7. 显示回填内容选择（新增功能）
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: 'BTC(Bitcoin)', value: 'BTC' },
+ *     { label: 'ETH(Ethereum)', value: 'ETH' },
+ *   ]}
+ *   placeholder="请选择"
+ *   displayMode="value" // 显示value而不是label
+ * />
+ * // 当选择了BTC时，显示框会显示"BTC"而不是"BTC(Bitcoin)"
  */

@@ -8,8 +8,6 @@ import {
     Radio
 } from "antd";
 import { Iconify, SvgIcon } from "@/components/icon";
-import type { ColumnsType } from "antd/es/table";
-import dayjs from "dayjs";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,13 +16,12 @@ import {
     getTodayEarnings,
     getCoinById,
 } from "@/services/assets";
-import { Toast, Image,Checkbox } from "antd-mobile";
+import { Toast, Image, Checkbox,Modal } from "antd-mobile";
 import { add, roundDown, cut, nul } from "@/utils";
 import { useLanguage } from "@/hooks/useLanguage";
 import appStore from "@/store";
 import { observer } from "mobx-react-lite";
 import { getRate, getCoinRate, getCoinRound } from "@/utils/getUseRate";
-import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
 import { DataType } from "@/type/assets/assetsAccount/assets";
 import {
     BalanceAllType,
@@ -37,6 +34,8 @@ import { getToken } from "@/request";
 import { CustomTable } from "@/components/CustomCom";
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import AccountPop from "../components/AccountPop";
+import WithdrawStatusPop from "../components/withDrawStatusPop";
+import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png";   
 
 const AssetsMainPage = observer(() => {
     const { t } = useLanguage(['assets', 'flash']);
@@ -68,26 +67,27 @@ const AssetsMainPage = observer(() => {
     const [hideZero, setHideZero] = useState(false);
     const [accountPopVisible, setAccountPopVisible] = useState(false);
     const [accountPopData, setAccountPopData] = useState<DataType>({} as DataType);
+    const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
 
     const columns: ColumnType<DataType>[] = [
         {
-            title:(_value, record) => {
-                return  <div className="flex align-center">
-                <Image
-                    src={record?.iconUrl}
-                    alt={_value}
-                    width={28}
-                    height={28}
-                    style={{ borderRadius: "50%", height: "28px", width: "28px" }}
-                    className="mr-1"
-                />
-                <p className="font-w-500 font-14 flex-y">
-                    {`${_value}`}
-                    <span className={`font-w-400 font-12 ${styles.tip_color}`}>
-                        {record?.nameDefault}
-                    </span>
-                </p>
-            </div>
+            title: (_value, record) => {
+                return <div className="flex align-center">
+                    <Image
+                        src={record?.iconUrl}
+                        alt={_value}
+                        width={28}
+                        height={28}
+                        style={{ borderRadius: "50%", height: "28px", width: "28px" }}
+                        className="mr-1"
+                    />
+                    <p className="font-w-500 font-14 flex-y">
+                        {`${_value}`}
+                        <span className={`font-w-400 font-12 ${styles.tip_color}`}>
+                            {record?.nameDefault}
+                        </span>
+                    </p>
+                </div>
             }, //"币种",
             dataIndex: "coinName",
             key: "coinName",
@@ -116,7 +116,7 @@ const AssetsMainPage = observer(() => {
                     }}>
                         <Iconify icon="ri:more-2-line" size={24} />
                     </button>
-                    </>
+                </>
                 );
             },
         },
@@ -708,6 +708,37 @@ const AssetsMainPage = observer(() => {
         }
     }, [userInfo?.userId, banlanceLoading]); // 移除initTableData依赖，减少不必要的重连
 
+    const goWithdraw = () => {
+        if (userInfo?.withdrawalStatus !== 1) {
+            Modal.show({
+                content: <>
+                 <div className={`flex-y align-center justify-center ${styles.title_color} `}>
+                    <Image src={Icon_NoWithdraw}
+                        alt="logo"  className={`${styles.icon_sm} mr-6 mt-5`} />
+                    <p className='flex-y-cc mb-10'>
+                        <span className={` font-w-500 font-18`}>
+                            {/* 禁止提现 */}
+                            {t('assetsAccount.button.withdrawError')}
+                        </span>
+                        <span className={`font-w-500 font-12 mt-3`}>
+                            {/* 交易所禁止提现，如有问题请与客服联系！ */}
+                            {t('assetsAccount.button.tip3')}
+                        </span>
+                    </p>
+                </div>
+                </>,
+                closeOnMaskClick: true,
+                showCloseButton: true,
+              })
+        } else if ((userInfo?.merchantWithdrawalStatus === 1 && userInfo?.realnessStatus === 0) ||
+            !userInfo?.isGoogleAuth) {
+            setWithdrawStatusPopOpen(true);
+        } else {
+            navigate('/assets/withdraw')
+        }
+      
+    }
+
     useEffect(() => {
         getUserBalanceAllData();
         getUserBalanceDay();
@@ -868,7 +899,7 @@ const AssetsMainPage = observer(() => {
                             </button>
                             <button
                                 className={`cancel_btn6 ${styles.btn_style} mr-4 flex-1`}
-                                onClick={() => navigate('/assets/withdraw')}
+                                onClick={goWithdraw}
                             >
                                 {/* 提现 */}
                                 {t("assetsAccount.button.withdraw")}
@@ -909,11 +940,11 @@ const AssetsMainPage = observer(() => {
                                 className={`${styles.custom_checkbox} text-color-default`}
                                 icon={checked =>
                                     checked ? (
-                                        <Iconify icon='carbon:circle-filled' className="theme-color"/>
+                                        <Iconify icon='carbon:circle-filled' className="theme-color" />
                                     ) : (
-                                      <Iconify icon='carbon:circle-outline' className={styles.tip_color2} />
+                                        <Iconify icon='carbon:circle-outline' className={styles.tip_color2} />
                                     )
-                                  }
+                                }
                             >
                                 <span className={`${styles.title_color}`}>
                                     {t("assetsAccount.hideZero")}
@@ -939,6 +970,10 @@ const AssetsMainPage = observer(() => {
                     open={accountPopVisible}
                     onClose={() => setAccountPopVisible(false)}
                     recordData={accountPopData}
+                />
+                <WithdrawStatusPop
+                    open={withdrawStatusPopOpen}
+                    onClose={() => setWithdrawStatusPopOpen(false)}
                 />
             </ConfigProvider>
         </div>

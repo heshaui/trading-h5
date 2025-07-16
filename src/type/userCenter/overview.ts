@@ -90,7 +90,8 @@ export interface UserInfoType {
     famousAphorisms: string,
     securityIntensity: number,
     remark: string | null,
-    googleCode: boolean
+    googleCode: boolean,
+    merchantWithdrawalStatus: number
 }
 export interface inviteInfoType {
     inviteCode: string,

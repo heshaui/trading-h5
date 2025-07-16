@@ -65,8 +65,11 @@
             "topuptip1": "充值功能暂不可用",
             "tip1": "启用2FA以继续提现。为了您的资产安全起见，我们建议您尽快启用",
             "withdrawtip2": "未完成身份认证",
+            "withdrawtip3": "完成身份认证",
+            "withdrawtip4": "绑定2FA",
+            "withdrawtip5": "已绑定2FA",
             "tip2": "完成身份认证，解锁全部功能",
-            "tip3": "交易所禁止提现，如有问题请与客服联系！",
+            "tip3": "您被禁止提现，如有问题请与客服联系！",
             "tip4": "交易所充值功能暂不可用，如有问题请与客服联系！",
             "toAuthentication": "立即认证",
             "flash": "闪兑"
@@ -152,7 +155,9 @@
         "belowMin24h2": "低于24h限额",
         "belowMin24h3": "低于24h限额{{min}}",
         "withdrawAmountMin": "提现金额不小于{{min}}",
-        "tipText": "请确认收币地址是否要求填写MEMO/Tag，不填或填错将导致资产丢失。其他交易所或钱包也把Tag叫做Meno、数字ID、标签、备注等名称。"
+        "tipText": "请确认收币地址是否要求填写MEMO/Tag，不填或填错将导致资产丢失。其他交易所或钱包也把Tag叫做Meno、数字ID、标签、备注等名称。",
+        "tipText2": "温馨提示",
+        "tipText3": "您需要完成以下操作后才能解锁提现功能"
     },
     "withdrawTable": {
         "create": "创建",

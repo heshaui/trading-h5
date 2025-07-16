@@ -1,0 +1,52 @@
+.card_bgc {
+    background-color: var(--background7);
+    border-radius: 8px;
+    /* padding: 24px; */
+}
+
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #F73710;
+}
+.default_icon {
+    color: #A4A5AC;
+}
+.theme_color{
+    color: var(--theme-color);
+}
+
+.btn_style {
+    min-width: 56px;
+    min-height: 32px;
+    border-radius: 23px;
+    padding: 5px 16px;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.tip_color {
+    color: var(--text-color6);
+}
+.tip_color2{
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+
+
+
+
+.select_box {
+    height: 50px !important;
+    min-width: 250px;
+    color: var(--text-color6) !important;
+}

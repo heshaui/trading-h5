@@ -154,7 +154,7 @@ export const getThemeVariables = () => {
             '--background15': '#ffffff',
             '--background16': '#EBEBEC',
             '--background17': '#ffffff',
-
+            '--background18': '#E1E1E4',
             '--foreground': '#171717',
             '--homeground': '#000000',
             '--homeground2': '#FFFFFF',
@@ -274,6 +274,7 @@ export const getThemeVariables = () => {
             '--background15': '#37373A',
             '--background16': '#4F4F4F',
             '--background17': '#1C1E24',
+            '--background18': '#272727',
             '--foreground': '#ededed',
             '--homeground': '#000000',
             '--homeground2': '#000000',

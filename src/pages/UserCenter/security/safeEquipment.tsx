@@ -182,13 +182,13 @@ const SafeEquipment: React.FC = () => {
 												initial={{ height: 0, opacity: 0 }}
 												animate={{ height: "auto", opacity: 1 }}
 												exit={{ height: 0, opacity: 0 }}
-												transition={{ duration: 0.3 }}
+												transition={{ duration: 0.1 }}
 												className="overflow-hidden bg-[var(--background10)] rounded-lg px-[10px] py-[16px]"
 											>
 												{
 													childData.map((child: DataLogsType) => {
 														return (
-															<li className="mb-[30px] last:mb-0">
+															<li className="mb-[30px] last:mb-0" key={child.id}>
 																<p className="text-[14px] font-medium leading-5 mb-[13px] flex justify-between items-center">
 																	<span className="tip-color font-normal text-[12px]">{ t('security.safeSet.loginTime') }</span>
 																	<span>{child.createTime ? dayjs(child.createTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>

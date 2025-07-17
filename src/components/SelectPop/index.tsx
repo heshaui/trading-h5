@@ -3,12 +3,13 @@ import { Iconify } from "@/components/icon/index";
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/pop.module.scss";
 import { NoData } from "../noData";
-import { Form, Input, Picker, Button, Popup, SearchBar, Image } from 'antd-mobile'
+import { Form, Input, Picker, Button, Popup, SearchBar, Toast } from 'antd-mobile'
 import { render } from "@testing-library/react";
 
 interface OptionItem {
   label: React.ReactNode;
   value: string | number;
+  disabled?: boolean;
   [key: string]: any; // 允许其他自定义属性
 }
 
@@ -31,8 +32,10 @@ interface SelectPopProps {
   optionRender?: (option: OptionItem) => React.ReactNode; // 新增：自定义选项渲染（与antd保持一致的命名）
   displayMode?: 'label' | 'value'; // 新增：选择显示回填内容是label还是value，默认label
   bodyClassName?: string; // 新增：弹窗body的className
-  
-  renderBtn?: (open: () => void) => React.ReactNode; // 自定义触发按钮
+  renderBtn?: ((open: () => void) => React.ReactNode) | 'buttom' | 'selectInput' // 自定义触发按钮
+  bodyStyle?: React.CSSProperties; // 弹窗body的样式
+  activeType?: 'background' | 'icon' // 选中样式
+  emptyRender?:React.ReactNode; // 自定义空状态渲染
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -42,9 +45,9 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   onChange,
   options = [],
   placeholder = "Please select",
-  title = "Select Option",
+  title,
   showSearch = true,
-  searchPlaceholder = "Search",
+  searchPlaceholder,
   searchKeys = ['label', 'value'],
   disabled = false,
   showAll = false,
@@ -52,8 +55,15 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   renderValue,
   optionRender, // 新增参数
   displayMode = 'label', // 新增参数，默认显示label
-  bodyClassName,,
-  renderBtn,
+  bodyClassName,
+  renderBtn = 'buttom',
+  bodyStyle={
+    height: '60vh',
+    borderTopLeftRadius: '8px',
+    borderTopRightRadius: '8px',
+  },
+  activeType = 'background',
+  emptyRender
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -100,6 +110,16 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   };
 
   const handleOptionSelect = (option: OptionItem) => {
+    // 如果选项被禁用，显示提示并返回
+    if (option.disabled) {
+      // 可以显示 Toast 提示或其他提示方式
+      console.warn('This option is disabled');
+      Toast.show({
+        content: t('btnText.disabled'),
+      });
+      return;
+    }
+    
     const newValue = option.value;
     
     // 如果点击的是已选中的选项，则取消选择
@@ -122,30 +142,30 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   // 获取显示的标签
   const getDisplayLabel = () => {
     const selectedOption = getSelectedOption();
-    
+
     if (renderValue) {
       return renderValue(selectedOption);
     }
-    
+
     // 处理空值或'all'值的情况（注意：0是有效值，不应该被当作空值）
     // 当取消选择时 selectedValue 为 undefined，显示 placeholder
     if (selectedValue === null || selectedValue === undefined || selectedValue === '' || selectedValue === 'all') {
       if (showAll && (selectedValue === 'all' || selectedValue === '')) {
-        return t('common.all') || placeholder; // 显示"全部"标签
+        return t('common.all') || <span className={`${styles.placeholder} placeholder`}>{placeholder}</span>; // 显示"全部"标签
       } else {
-        return placeholder; // 显示placeholder，包括取消选择的情况
+        return <span className={`${styles.placeholder} placeholder`}>{placeholder}</span>; // 显示placeholder，包括取消选择的情况
       }
     }
-    
+
     if (!selectedOption) return placeholder;
-    
+
     // 根据displayMode选择显示内容
     return displayMode === 'value' ? selectedOption.value : selectedOption.label;
   };
 
   // 默认选项渲染
   const defaultRenderOption = (option: OptionItem) => (
-    <div className={showValue?"flex justify-between items-center":"flex-x-cc"}>
+    <div className={showValue ? "flex justify-between items-center" : "flex-x-cc"}>
       <span className="font-14">{option.label}</span>
       {showValue && <span className="font-14 text-color6">{option.value}</span>}
     </div>
@@ -159,51 +179,57 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }} className={`selectPopBox`}>
       {
-      renderBtn ? renderBtn(handlePopupOpen) : 
-      <Button
-        className={`${styles.customSelect} ${disabled ? styles.disabled : ''}`}
-        onClick={handlePopupOpen}
-        disabled={disabled}
-      >
-        <div className={`flex-x-cc ${styles.valueSelect}`}>
-          {/* placeholder */}
-          <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
-            {getDisplayLabel()}
-          </p>
-          <Iconify icon="eva:arrow-down-fill" size={14} />
-        </div>
-      </Button>
+        renderBtn === 'buttom' ?
+          <Button
+            className={`${styles.customSelect} selectButton-box ${disabled ? styles.disabled : ''}`}
+            onClick={handlePopupOpen}
+            disabled={disabled}
+          >
+            <div className={`flex-x-cc ${styles.valueSelect}`}>
+              {/* placeholder */}
+              <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
+                {getDisplayLabel()}
+              </p>
+              <Iconify icon="eva:arrow-down-fill" size={14} />
+            </div>
+          </Button> :
+          renderBtn === 'selectInput' ?
+            <div onClick={handlePopupOpen}
+              className={`${styles.selectInput_box} selectInput-box flex-x align-center justify-between`}
+            >
+              <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
+                {getDisplayLabel()}
+              </p>
+              <Iconify icon="icon-park:down" size={24} />
+            </div> :
+            typeof renderBtn === 'function' ? renderBtn(handlePopupOpen) : null
       }
-      
+
       <Popup
         visible={popupVisible}
         onMaskClick={handlePopupClose}
         position="bottom"
-        bodyClassName={styles.popContainer}
-        bodyStyle={{
-          height: '60vh',
-          borderTopLeftRadius: '8px',
-          borderTopRightRadius: '8px'
-        }}
+        bodyClassName={`${styles.popContainer} ${bodyClassName}`}
+        bodyStyle={{ ...bodyStyle}}
       >
-        <div  className="py-4">
+        <div className="py-4 h-full">
           <div className={`${styles.popHeader} flex-x justify-between align-center mb-4 px-4 pb-2`}>
-            <h3 style={{ margin: 0 }} className={styles.title_color}>{title}</h3>
-            <Button 
-              size="small" 
+            <h3 style={{ margin: 0 }} className={styles.title_color}>{title || placeholder || ''}</h3>
+            <Button
+              size="small"
               onClick={handlePopupClose}
               style={{ background: 'transparent', border: 'none' }}
             >
               <Iconify icon="eva:close-fill" size={20} className={styles.tip_color} />
             </Button>
           </div>
-          
+
           {showSearch && (
             <div style={{ marginBottom: '16px' }} className="px-4">
               <SearchBar
-                placeholder={searchPlaceholder}
+                placeholder={searchPlaceholder || t('btnText.search')}
                 value={searchValue}
                 onChange={handleSearch}
                 clearable
@@ -212,22 +238,46 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               />
             </div>
           )}
-          
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }} className="px-4">
+          <div style={{ maxHeight: `calc(${bodyStyle?.height} - 44px - ${!showSearch?'52px':'0px'})`, overflowY: 'auto' }} className="selectPop-options">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div
                   key={`${option.value}-${index}`}
-                  className={`${styles.selectItem} px-4 cursor-pointer ${styles.title_color} 
-                  ${selectedValue === option.value ? styles.active_select : ''}`}
+                  className={`${styles.selectItem} px-4 py-2 cursor-pointer  ${styles.title_color} 
+                  ${selectedValue === option.value && activeType === 'background' ? styles.active_select : ''} relative selectPop-options-item 
+                  ${option.disabled ? styles.disabled_option : ''}`}
                   onClick={() => handleOptionSelect(option)}
+                  style={{
+                    opacity: option.disabled ? 0.5 : 1,
+                    cursor: option.disabled ? 'not-allowed' : 'pointer',
+                    pointerEvents: option.disabled ? 'none' : 'auto'
+                  }}
                 >
-                  {getOptionRenderer()(option)}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ flex: 1 }}>
+                      {getOptionRenderer()(option)}
+                    </div>
+                    {option.disabled && (
+                      <span style={{ 
+                        fontSize: '12px', 
+                        color: '#999', 
+                        marginLeft: '8px',
+                        fontStyle: 'italic'
+                      }}>
+                        <Iconify icon="lsicon:disable-outline" size={24} />
+                      </span>
+                    )}
+                  </div>
+                  {selectedValue === option.value && activeType === 'icon' && !option.disabled && (
+                    <div className={`${styles.active_icon} selectPop-active-icon`}>
+                      <Iconify icon='ep:success-filled' size={20} className="theme-color" />
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
               <div style={{ padding: '20px 0', textAlign: 'center' }}>
-                <NoData />
+                {emptyRender ? emptyRender: <NoData />}
               </div>
             )}
           </div>
@@ -237,10 +287,10 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   );
 });
 
-// 包装组件以支持Form.Item
-const SelectPopWrapper: React.FC<SelectPopProps & { name?: string }> = ({ 
-  name = "selectValue", 
-  ...props 
+// 包装组件以支持Form.Item（antd-mobile）
+const SelectPopWrapper: React.FC<SelectPopProps & { name?: string }> = ({
+  name = "selectValue",
+  ...props
 }) => {
   return (
     <Form.Item name={name} noStyle>
@@ -249,12 +299,43 @@ const SelectPopWrapper: React.FC<SelectPopProps & { name?: string }> = ({
   );
 };
 
+// 新增：支持 Antd 表单的包装器
+const SelectPopAntdWrapper: React.FC<SelectPopProps & {
+  allowClear?: boolean;
+  loading?: boolean;
+  notFoundContent?: React.ReactNode;
+  onFocus?: () => void;
+}> = ({
+  allowClear,
+  loading,
+  notFoundContent,
+  onFocus,
+  onChange,
+  ...props
+}) => {
+    // 处理onChange类型转换
+    const handleChange = (value: string | number | undefined, option: OptionItem) => {
+      if (onChange && value !== undefined) {
+        onChange(value, option);
+      }
+    };
+
+    return (
+      <SelectPop
+        {...props}
+        onChange={handleChange}
+      // 这些属性暂时忽略，因为SelectPop内部处理
+      />
+    );
+  };
+
 // 设置显示名称
 SelectPop.displayName = 'SelectPop';
 SelectPopWrapper.displayName = 'SelectPopWrapper';
+SelectPopAntdWrapper.displayName = 'SelectPopAntdWrapper';
 
 export default SelectPop;
-export { SelectPopWrapper };
+export { SelectPopWrapper, SelectPopAntdWrapper };
 export type { OptionItem, SelectPopProps };
 
 /**
@@ -375,4 +456,49 @@ export type { OptionItem, SelectPopProps };
  *   displayMode="value" // 显示value而不是label
  * />
  * // 当选择了BTC时，显示框会显示"BTC"而不是"BTC(Bitcoin)"
+ *
+ * // 8. 选项禁用功能（新增功能）
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={[
+ *     { label: 'BTC', value: 'btc', disabled: false },
+ *     { label: 'ETH', value: 'eth', disabled: true }, // 禁用选项
+ *     { label: 'USDT', value: 'usdt', disabled: false },
+ *   ]}
+ *   placeholder="请选择"
+ * />
+ * // 禁用的选项会显示为灰色，不能点击，并显示"已禁用"提示
+ *
+ * // 9. Antd 表单集成（新增功能）
+ * // import { Form } from 'antd'; // 注意：这里是antd，不是antd-mobile
+ * // import { SelectPopAntdWrapper } from '@/components/SelectPop';
+ * // 
+ * // <Form>
+ * //   <Form.Item
+ * //     name="currency"
+ * //     label="选择币种"
+ * //     rules={[{ required: true, message: '请选择币种' }]}
+ * //   >
+ * //     <SelectPopAntdWrapper
+ * //       options={[
+ * //         { label: 'BTC', value: 'btc' },
+ * //         { label: 'ETH', value: 'eth' },
+ * //       ]}
+ * //       placeholder="请选择币种"
+ * //     />
+ * //   </Form.Item>
+ * // </Form>
+ * //
+ * // 10. antd-mobile 表单集成（现有功能）
+ * // import { Form } from 'antd-mobile';
+ * // import { SelectPopWrapper } from '@/components/SelectPop';
+ * //
+ * // <Form>
+ * //   <SelectPopWrapper
+ * //     name="currency"
+ * //     options={options}
+ * //     placeholder="请选择"
+ * //   />
+ * // </Form>
  */

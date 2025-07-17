@@ -62,7 +62,8 @@
        "endDate": "结束时间",
        "dateRangeExceeded": "日期范围超出限制",
        "collapse": "收起",
-       "expand": "展开"
+       "expand": "展开",
+       "disabled": "该项已禁用"
       },
     "titleText":{
       "historyInput": "历史输入",

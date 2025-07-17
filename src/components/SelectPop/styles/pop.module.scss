@@ -1,26 +1,26 @@
 .mail_input {
-    color: var(--text-color5) !important;
-    background-color: transparent !important;
+  color: var(--text-color5) !important;
+  background-color: transparent !important;
 }
 
 /* 输入框组件覆盖 */
 .mail_input:focus,
 .mail_input:focus-within {
-    /* border-color: var(--text-color3) !important; */
-    box-shadow: none;
-    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+  /* border-color: var(--text-color3) !important; */
+  box-shadow: none;
+  /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
 }
 
 /* 鼠标聚焦且移出样式 */
 .mail_input:focus:not(:hover) {
-    background-color: var(--homeground);
-    color: #fff;
-    box-shadow: none;
+  background-color: var(--homeground);
+  color: #fff;
+  box-shadow: none;
 }
 
 /* 鼠标滑过 */
 .mail_input:hover {
-    border-color: var(--text-color3);
+  border-color: var(--text-color3);
 }
 
 // SelectPop 组件样式
@@ -34,6 +34,7 @@
   text-align: left;
   transition: all 0.3s ease;
   --border-width: 0;
+
   &:hover:not(.disabled) {
     border-color: var(--theme-color);
   }
@@ -49,9 +50,11 @@
     background-color: var(--background5);
   }
 }
-.customSelect::before{
+
+.customSelect::before {
   border: none;
 }
+
 .valueSelect {
   width: 100%;
   min-height: 20px;
@@ -125,40 +128,73 @@
     color: var(--text-color4);
   }
 }
-.popContainer{
+
+.popContainer {
   background-color: var(--background12);
 }
-.popHeader{
+
+.popHeader {
   border-bottom: 0.5px solid var(--border-color11);
 }
-.selectItem{
-  padding: 12px 20px;
+
+.selectItem {
+  // padding: 12px 20px;
   // border-bottom: 0.5px solid var(--border-color11);
   background-color: transparent;
   border-radius: 4px;
   margin-bottom: 4px;
   transition: background-color 0.2s ease;
 }
-.search_bar{
+
+.search_bar {
   height: 40px;
+
   :global(.adm-input) {
     height: 40px !important;
   }
 }
+
 :global(.adm-search-bar-active .adm-search-bar-input-box) {
   border-color: var(--theme-color);
   height: 40px;
 }
-.active_select{
+
+.active_select {
   background-color: var(--bgc-color);
-  border-bottom:none
+  border-bottom: none
 }
-.title_color{
+
+.title_color {
   color: var(--text-color5);
 }
-.tip_color{
+
+.tip_color {
   color: var(--text-color6);
 }
+
+.selectInput_box {
+  width: 100%;
+  height: 44px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color4);
+  padding: 0 10px 0 12px;
+
+  &:hover {
+    border-color: var(--theme-color);
+  }
+}
+
+.placeholder {
+  color: var(--text-color6);
+}
+
+.active_icon{
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 // 响应式设计
 @media (max-width: 768px) {
   .customSelect {
@@ -177,5 +213,25 @@
     .optionsList {
       max-height: 350px;
     }
+  }
+}
+
+// 新增：禁用选项样式
+.disabled_option {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  
+  &:hover {
+    background-color: transparent !important;
+  }
+  
+  // 禁用选项的文字颜色
+  .title_color {
+    color: var(--text-color4) !important;
+  }
+  
+  .tip_color {
+    color: var(--text-color4) !important;
   }
 }

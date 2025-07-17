@@ -21,7 +21,7 @@ export const getCoinRate = (symbolName: string, priceNum: string | number, baseS
         if (symbolName.toUpperCase() === 'USDT') {
 
             return {
-                coinRate: Number(priceNum) * Number(usdtRate) || 0,
+                coinRate: Number(priceNum)  || 0,
                 price: Number(usdtRate),
             };
         }

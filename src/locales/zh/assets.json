@@ -184,6 +184,7 @@
         "amountAfter": "数量",
         "toAccount": "到账：",
         "withdrawFee": "手续费：",
+        "minWithdraw": "最小提现金额：",
         "withdrawAccount": "提现账户",
         "spotAccount": "现货账户",
         "warning": "请确保您输入了正确的提现地址并且您选择的转账网络与地址相匹配"

@@ -490,7 +490,16 @@ const WithdrawMoneyPage = observer(() => {
           <Form.Item
             label={<span className={styles.tip_title}>{t('withdrawMoney.withdrawCoin')}</span>}
             name='tenantId'
-            rules={[{ required: true, message: t('withdrawMoney.select') }]}
+            rules={[{ 
+              required: true, 
+              message: t('withdrawMoney.select'),
+              validator: (_, value) => {
+                if (!value || value === '' || value === null) {
+                  return Promise.reject(new Error(t('withdrawMoney.select')));
+                }
+                return Promise.resolve();
+              }
+            }]}
             required={false}
           >
             <SelectPopAntdWrapper
@@ -529,8 +538,11 @@ const WithdrawMoneyPage = observer(() => {
                 );
               }}
               notFoundContent={<NoData title={t('withdrawMoney.noRecord')} />}
-              // onFocus={getCoinAllList}
-              onChange={(value, option) => coinChange(value, option)}
+              onFocus={getCoinAllList}
+              onChange={(value, option) => {
+                coinChange(value, option);
+                // 不再需要手动触发验证，空字符串会自动触发
+              }}
               loading={coinLoading}
             />
           </Form.Item>
@@ -639,7 +651,14 @@ const WithdrawMoneyPage = observer(() => {
             <Form.Item
               label={<span className={styles.tip_title}>{t('withdrawMoney.selectNetwork')}</span>}
               name='protocolId'
-              rules={[{ validator: validateProtocol }]}
+              rules={[{ 
+                validator: (_, value) => {
+                  if (!value || value === '' || value === null) {
+                    return Promise.reject(new Error(t('withdrawMoney.selectNetwork2')));
+                  }
+                  return Promise.resolve();
+                }
+              }]}
               required={false}
             >
               <SelectPopAntdWrapper
@@ -648,7 +667,10 @@ const WithdrawMoneyPage = observer(() => {
                 options={coinExtSelect}
                 className={`${styles.select_box} custom-select`}
                 loading={coinExtLoading}
-                onChange={(value, option) => protocolChange(value, option)}
+                onChange={(value, option) => {
+                  protocolChange(value, option);
+                  // 不再需要手动触发验证，空字符串会自动触发
+                }}
                 renderBtn='selectInput'
                 showSearch={false}
                 bodyStyle={{

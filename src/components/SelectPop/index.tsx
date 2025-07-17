@@ -114,9 +114,6 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     if (option.disabled) {
       // 可以显示 Toast 提示或其他提示方式
       console.warn('This option is disabled');
-      Toast.show({
-        content: t('btnText.disabled'),
-      });
       return;
     }
     
@@ -124,8 +121,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     
     // 如果点击的是已选中的选项，则取消选择
     if (selectedValue === newValue) {
-      setSelectedValue(undefined);
-      onChange?.(undefined as any, option);
+      setSelectedValue(''); // 使用空字符串替代undefined
+      onChange?.('' as any, option); // 传递空字符串
     } else {
       setSelectedValue(newValue);
       onChange?.(newValue, option);
@@ -300,34 +297,60 @@ const SelectPopWrapper: React.FC<SelectPopProps & { name?: string }> = ({
 };
 
 // 新增：支持 Antd 表单的包装器
-const SelectPopAntdWrapper: React.FC<SelectPopProps & {
+const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
   allowClear?: boolean;
   loading?: boolean;
   notFoundContent?: React.ReactNode;
   onFocus?: () => void;
-}> = ({
-  allowClear,
-  loading,
-  notFoundContent,
-  onFocus,
-  onChange,
-  ...props
-}) => {
-    // 处理onChange类型转换
-    const handleChange = (value: string | number | undefined, option: OptionItem) => {
-      if (onChange && value !== undefined) {
-        onChange(value, option);
-      }
-    };
+}>((props, ref) => {
+  const { 
+    allowClear, 
+    loading, 
+    notFoundContent, 
+    onFocus, 
+    onChange,
+    value,
+    ...restProps 
+  } = props;
 
-    return (
-      <SelectPop
-        {...props}
-        onChange={handleChange}
-      // 这些属性暂时忽略，因为SelectPop内部处理
-      />
-    );
+  const selectRef = React.useRef<any>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    focus: () => selectRef.current?.focus(),
+    blur: () => selectRef.current?.blur(),
+  }));
+
+  // 处理onChange，确保包括undefined值也能触发表单验证
+  const handleChange = (newValue: string | number | undefined, option: OptionItem) => {
+    // 将undefined转换为空字符串，更好地与Antd表单集成
+    const formValue = newValue === undefined ? '' : newValue;
+    
+    // 调用原始onChange（如果存在），传递转换后的值
+    if (onChange) {
+      onChange(formValue, option);
+    }
+    
+    // 手动触发表单验证，特别是当值变为undefined时
+    setTimeout(() => {
+      // 触发自定义事件来通知表单值已变化
+      if (selectRef.current) {
+        const event = new CustomEvent('change', {
+          detail: { value: formValue }
+        });
+        selectRef.current.dispatchEvent?.(event);
+      }
+    }, 0);
   };
+
+  return (
+    <SelectPop 
+      ref={selectRef}
+      {...restProps}
+      value={value}
+      onChange={handleChange}
+    />
+  );
+});
 
 // 设置显示名称
 SelectPop.displayName = 'SelectPop';

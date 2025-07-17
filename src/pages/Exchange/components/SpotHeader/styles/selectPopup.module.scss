@@ -1,0 +1,24 @@
+.customTabs {
+  :global {
+    .adm-tabs {
+      --title-font-size: 14px;
+      --active-line-color: var(--primary-color);
+      --active-title-color: var(--text-color5);
+      --title-color: var(--text-color6);
+      --content-padding: 0;
+    }
+  }
+}
+
+.contentScroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; // 增加 iOS 滚动惯性
+  
+  // 隐藏滚动条但保持可滚动
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  // IE and Edge
+  scrollbar-width: none;  // Firefox
+} 

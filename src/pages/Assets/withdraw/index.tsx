@@ -3,7 +3,7 @@ import styles from '../styles/withdraw.module.scss'
 import { Input, ConfigProvider, Tooltip, Select, Form, Button } from 'antd';
 import { Iconify } from "@/components/icon"
 import dayjs from 'dayjs';
-import { useState, useEffect,useMemo,  useRef} from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { useNavigate } from 'react-router-dom';
 import { NoData, NoAddress } from '@/components/noData';
@@ -333,25 +333,27 @@ const WithdrawMoneyPage = observer(() => {
       setAddressLoading(false)
     }
   }
-const filteredAddressOptions=useMemo(()=>{
-  return addressSelect.map((item:any)=>{
-    const isProtocolSupported = coinExtSelect.some(
-      coinExt => coinExt.protocolName === item.protocolName ||
-        coinExt.protocol === item.protocolName ||
-        coinExt.protocolId === item.protocolId
-    );
-    return {
-      ...item,
-      disabled: !isProtocolSupported
-    }
-  })
-},[addressSelect,coinExtSelect,form])
+  const filteredAddressOptions = useMemo(() => {
+    return addressSelect.map((item: any) => {
+      const isProtocolSupported = coinExtSelect.some(
+        coinExt => coinExt.protocolName === item.protocolName ||
+          coinExt.protocol === item.protocolName ||
+          coinExt.protocolId === item.protocolId
+      );
+      return {
+        ...item,
+        disabled: !isProtocolSupported
+      }
+    })
+  }, [addressSelect, coinExtSelect, form])
   // 地址变化处理
   const addressChange = (value: any, option: any) => {
 
     console.log('Address changed:', value, option);
     // 处理地址选择逻辑
-    
+    const selectedAddress = filteredAddressOptions.find(item => item.protocolName === value || item.protocol === value);
+    form.setFieldValue('protocolId', selectedAddress?.protocolId)
+
   }
 
   // 网络变化处理
@@ -571,13 +573,13 @@ const filteredAddressOptions=useMemo(()=>{
                         <div
                           key={option.id}
                           className={`px-3 py-2 cursor-pointer hover:bg-gray-50 border-b border-gray-100 `}
-                          // onClick={() => {
-                          //   if (isProtocolSupported) {
-                          //     setAddressInput(option.addressName);
-                          //     setDropdownOpen(false);
-                          //     addressChange(option.addressName, option);
-                          //   }
-                          // }}
+                          onClick={() => {
+                            if (isProtocolSupported) {
+                              setAddressInput(option.addressName);
+                              // setDropdownOpen(false);
+                              addressChange(option.addressName, option);
+                            }
+                          }}
                         >
                           <div className="flex-y">
                             <p className={`${styles.title_color} font-14 font-w-400 mb-1`}>{option.addressTitle}</p>
@@ -596,7 +598,7 @@ const filteredAddressOptions=useMemo(()=>{
                         </div>
                       )
                     }}
-                  onChange={(value, option) => addressChange(value, option)}
+                  // onChange={(value, option) => addressChange(value, option)}
                   />
                 }
               />

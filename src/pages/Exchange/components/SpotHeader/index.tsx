@@ -7,7 +7,7 @@ import appStore from '@/store';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import { getPairsRate } from "@/utils/getUseRate";
 import WebSocketService from "@/utils/websocket";
-import SelectPopup from './SelectPopup';
+import SelectPopup from './SelectPopup/index';
 
 // 开发环境使用代理，生产环境使用完整URL
   const WS_URL = process.env.NODE_ENV === 'development'

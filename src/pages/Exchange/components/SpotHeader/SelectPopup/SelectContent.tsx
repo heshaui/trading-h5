@@ -5,7 +5,8 @@ import { Iconify } from "@/components/icon";
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import appStore from '@/store';
 import { Tabs, Rate } from 'antd-mobile';
-import styles from './styles/selectContent.module.scss';
+import CustomTab from '@/components/CustomCom/CustomTab';
+import styles from '../styles/selectContent.module.scss';
 
 interface SelectContentProps {
     currencyPairs: any[];
@@ -190,20 +191,17 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     return (
         <div className="flex-col">
             {/* 滚动标签页 */}
-            <div className="border-b border-[var(--border-color4)]">
-                <Tabs
-                    activeKey={activeTab}
-                    onChange={setActiveTab}
-                    className={`px-4 ${styles.customTabs}`}
-                >
-                    {tabItems.map(item => (
-                        <Tabs.Tab key={item.key} title={item.title} />
-                    ))}
-                </Tabs>
-            </div>
+            <CustomTab
+                tabsItems={ tabItems }
+                activeKey={activeTab}
+                onChange={setActiveTab}
+                stretch={false}
+                activeLineMode='auto'
+                className="avatarTabs coinTabs"
+            />
 
             {/* 列表头部 */}
-            <div className={`${styles.list_header} px-4 py-4 flex-x align-center`}>
+            <div className="flex justify-between gap-x-[10px] h-[17] items-center px-4">
                 <div
                     className={`${styles.tip_color} font-12 flex-1 flex-x align-center pointer`}
                     onClick={() => handleSort('name')}

@@ -3,9 +3,10 @@ import { Toast, Popup, SearchBar, Tabs } from 'antd-mobile';
 import { Iconify } from "@/components/icon/index";
 import { useLanguage } from '@/hooks/useLanguage';
 import SelectContent from './SelectContent';
+import CustomTab from '@/components/CustomCom/CustomTab';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
-import styles from './styles/selectPopup.module.scss';
+import styles from '../styles/selectPopup.module.scss';
 
 type Props = {
   open: boolean;
@@ -24,7 +25,18 @@ const SelectPopup: React.FC<Props> = observer(({
 }) => {
   const { t } = useLanguage(['spot']);
   const [searchValue, setSearchValue] = useState('');
-  const [activeTab, setActiveTab] = useState('favorites');
+  const [activeTab, setActiveTab] = useState('spot');
+
+  const tabsItems = [
+		{
+			key: 'favorites',
+			title: t('spot.header.favorites')
+		},
+		{
+			key: 'spot',
+			title: t('spot.header.spot')
+		},
+	]
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
@@ -41,31 +53,29 @@ const SelectPopup: React.FC<Props> = observer(({
       onClose={onCancel}
       closeOnMaskClick
       position='bottom'
-      bodyStyle={{ width: '100vw', height: '70vh' }}
+      bodyStyle={{ width: '100vw', height: '89.22vh' }}
       bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
     >
       <div className="flex-col h-full">
         {/* 头部搜索 */}
-        <div className="px-4 pt-4">
+        <div className="px-4 pt-4 mb-[10px]">
           <SearchBar 
             placeholder={t('spot.header.search')}
             value={searchValue}
             onChange={handleSearch}
+            className="searchBar"
           />
         </div>
 
         {/* 标签页 */}
-        <div className="mt-4">
-          <Tabs 
-            activeKey={activeTab}
-            onChange={setActiveTab}
-            className={`${styles.customTabs}`}
-          >
-            <Tabs.Tab key="favorites" title={t('spot.header.favorites')} />
-            <Tabs.Tab key="spot" title={t('spot.header.spot')} />
-          </Tabs>
-        </div>
-
+        <CustomTab
+          tabsItems={ tabsItems }
+          activeKey={activeTab}
+          onChange={setActiveTab}
+          stretch={false}
+          activeLineMode='auto'
+          className="spotTabs safeTabs"
+        />
         {/* 内容区域（可滚动） */}
         <div className={styles.contentScroll}>
           <SelectContent 

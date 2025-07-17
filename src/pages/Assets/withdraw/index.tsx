@@ -396,7 +396,7 @@ const WithdrawMoneyPage = observer(() => {
   }
 
 
- 
+
 
   // 获取提现手续费显示
   const getWithdrawFee = (number: number, baseCoinName?: string) => {
@@ -634,46 +634,48 @@ const WithdrawMoneyPage = observer(() => {
 
             </div>
           </Form.Item>
+          <Form.Item>
+            {/* 选择网络 */}
+            <Form.Item
+              label={<span className={styles.tip_title}>{t('withdrawMoney.selectNetwork')}</span>}
+              name='protocolId'
+              rules={[{ validator: validateProtocol }]}
+              required={false}
+            >
+              <SelectPopAntdWrapper
+                allowClear
+                placeholder={t('withdrawMoney.selectNetwork2')}
+                options={coinExtSelect}
+                className={`${styles.select_box} custom-select`}
+                loading={coinExtLoading}
+                onChange={(value, option) => protocolChange(value, option)}
+                renderBtn='selectInput'
+                showSearch={false}
+                bodyStyle={{
+                  minHeight: '45vh',
+                  maxHeight: '90vh',
+                }}
+                activeType='icon'
+                optionRender={(option) => {
+                  const { rate, symbol } = getRate(option.coinName, option.minWithdraw);
+                  return (<ul className={`${styles.select_option}  py-1 font-14 font-w-400`}>
+                    <li className={`${styles.title_color} font-w-500`}>{option?.label}</li>
+                    <li className={`${styles.tip_color} font-12 mt-1`}>
+                      {/* 最小提现金额： */}
+                      {t('withdrawMoneyCheck.minWithdraw')}
+                      {option.minWithdraw || 0} {option.coinName}
+                      {`(≈${symbol}${rate})`}
+                    </li>
+                    <li className={`${styles.tip_color} font-12 mt-1`}>
+                      {/* 手续费： */}
+                      {t('withdrawMoneyCheck.withdrawFee')} {option.withdrawFee || 0}%
+                    </li>
+                  </ul>);
+                }}
+              />
 
-          {/* 选择网络 */}
-          <Form.Item
-            label={<span className={styles.tip_title}>{t('withdrawMoney.selectNetwork')}</span>}
-            name='protocolId'
-            rules={[{ validator: validateProtocol }]}
-            required={false}
-          >
-            <SelectPopAntdWrapper
-              allowClear
-              placeholder={t('withdrawMoney.selectNetwork2')}
-              options={coinExtSelect}
-              className={`${styles.select_box} custom-select`}
-              loading={coinExtLoading}
-              onChange={(value, option) => protocolChange(value, option)}
-              renderBtn='selectInput'
-              showSearch={false}
-              bodyStyle={{
-                minHeight: '45vh',
-                maxHeight: '90vh',
-              }}
-              activeType='icon'
-              optionRender={(option) => {
-                const { rate, symbol } = getRate(option.coinName, option.minWithdraw);
-                return (<ul className={`${styles.select_option}  py-1 font-14 font-w-400`}>
-                  <li className={`${styles.title_color} font-w-500`}>{option?.label}</li>
-                  <li className={`${styles.tip_color} font-12 mt-1`}>
-                    {/* 最小提现金额： */}
-                    {t('withdrawMoneyCheck.minWithdraw')}
-                    {option.minWithdraw || 0} {option.coinName}
-                    {`(≈${symbol}${rate})`}
-                  </li>
-                  <li className={`${styles.tip_color} font-12 mt-1`}>
-                    {/* 手续费： */}
-                    {t('withdrawMoneyCheck.withdrawFee')} {option.withdrawFee || 0}%
-                  </li>
-                </ul>);
-              }}
-            />
 
+            </Form.Item>
             {/* MEMO标签 */}
             {showMemo ?
               <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb-1 mt-2_5`}>

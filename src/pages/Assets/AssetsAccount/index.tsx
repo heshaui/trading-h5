@@ -34,8 +34,9 @@ import { getToken } from "@/request";
 import { CustomTable } from "@/components/CustomCom";
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import AccountPop from "../components/AccountPop";
-import WithdrawStatusPop from "../components/withDrawStatusPop";
-import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png";   
+import WithdrawStatusPop from "@/components/withDrawStatusPop";
+import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png"; 
+import  {useWithdraw} from "@/hooks/useWithdraw";
 
 const AssetsMainPage = observer(() => {
     const { t } = useLanguage(['assets', 'flash']);
@@ -68,6 +69,7 @@ const AssetsMainPage = observer(() => {
     const [accountPopVisible, setAccountPopVisible] = useState(false);
     const [accountPopData, setAccountPopData] = useState<DataType>({} as DataType);
     const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
+    const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
 
     const columns: ColumnType<DataType>[] = [
         {
@@ -708,36 +710,36 @@ const AssetsMainPage = observer(() => {
         }
     }, [userInfo?.userId, banlanceLoading]); // 移除initTableData依赖，减少不必要的重连
 
-    const goWithdraw = () => {
-        if (userInfo?.withdrawalStatus !== 1) {
-            Modal.show({
-                content: <>
-                 <div className={`flex-y align-center justify-center ${styles.title_color} `}>
-                    <Image src={Icon_NoWithdraw}
-                        alt="logo"  className={`${styles.icon_sm} mr-6 mt-5`} />
-                    <p className='flex-y-cc mb-10'>
-                        <span className={` font-w-500 font-18`}>
-                            {/* 禁止提现 */}
-                            {t('assetsAccount.button.withdrawError')}
-                        </span>
-                        <span className={`font-w-500 font-12 mt-3`}>
-                            {/* 交易所禁止提现，如有问题请与客服联系！ */}
-                            {t('assetsAccount.button.tip3')}
-                        </span>
-                    </p>
-                </div>
-                </>,
-                closeOnMaskClick: true,
-                showCloseButton: true,
-              })
-        } else if ((userInfo?.merchantWithdrawalStatus === 1 && userInfo?.realnessStatus === 0) ||
-            !userInfo?.isGoogleAuth) {
-            setWithdrawStatusPopOpen(true);
-        } else {
-            navigate('/assets/withdraw')
-        }
+    // const goWithdraw = () => {
+    //     if (userInfo?.withdrawalStatus !== 1) {
+    //         Modal.show({
+    //             content: <>
+    //              <div className={`flex-y align-center justify-center ${styles.title_color} `}>
+    //                 <Image src={Icon_NoWithdraw}
+    //                     alt="logo"  className={`${styles.icon_sm} mr-6 mt-5`} />
+    //                 <p className='flex-y-cc mb-10'>
+    //                     <span className={` font-w-500 font-18`}>
+    //                         {/* 禁止提现 */}
+    //                         {t('assetsAccount.button.withdrawError')}
+    //                     </span>
+    //                     <span className={`font-w-500 font-12 mt-3`}>
+    //                         {/* 交易所禁止提现，如有问题请与客服联系！ */}
+    //                         {t('assetsAccount.button.tip3')}
+    //                     </span>
+    //                 </p>
+    //             </div>
+    //             </>,
+    //             closeOnMaskClick: true,
+    //             showCloseButton: true,
+    //           })
+    //     } else if ((userInfo?.merchantWithdrawalStatus === 1 && userInfo?.realnessStatus === 0) ||
+    //         !userInfo?.isGoogleAuth) {
+    //         setWithdrawStatusPopOpen(true);
+    //     } else {
+    //         navigate('/assets/withdraw')
+    //     }
       
-    }
+    // }
 
     useEffect(() => {
         getUserBalanceAllData();
@@ -899,7 +901,9 @@ const AssetsMainPage = observer(() => {
                             </button>
                             <button
                                 className={`cancel_btn6 ${styles.btn_style} mr-4 flex-1`}
-                                onClick={goWithdraw}
+                                onClick={() => {
+                                    goWithdraw();
+                                }}
                             >
                                 {/* 提现 */}
                                 {t("assetsAccount.button.withdraw")}
@@ -971,10 +975,11 @@ const AssetsMainPage = observer(() => {
                     onClose={() => setAccountPopVisible(false)}
                     recordData={accountPopData}
                 />
-                <WithdrawStatusPop
+                {/* <WithdrawStatusPop
                     open={withdrawStatusPopOpen}
                     onClose={() => setWithdrawStatusPopOpen(false)}
-                />
+                /> */}
+                <WithdrawStatusPopComponent />
             </ConfigProvider>
         </div>
     );

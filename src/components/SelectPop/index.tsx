@@ -36,6 +36,7 @@ interface SelectPopProps {
   bodyStyle?: React.CSSProperties; // 弹窗body的样式
   activeType?: 'background' | 'icon' // 选中样式
   emptyRender?:React.ReactNode; // 自定义空状态渲染
+  allowClear?: boolean; // 是否允许清空
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -63,7 +64,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     borderTopRightRadius: '8px',
   },
   activeType = 'background',
-  emptyRender
+  emptyRender,
+  allowClear = true,
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -75,6 +77,13 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     blur: () => handlePopupClose(),
     open: () => handlePopupOpen(),
     close: () => handlePopupClose(),
+    clearSelection: (change:boolean=false) => {
+      // 清空选中状态，但不触发onChange回调
+      setSelectedValue(undefined);
+      if (change) {
+        onChange?.('' as any, {label: '', value: ''}); // 传递空字符串
+      }
+    },
   }));
 
   // 当外部value变化时，更新内部状态
@@ -119,10 +128,16 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     
     const newValue = option.value;
     
-    // 如果点击的是已选中的选项，则取消选择
+    // 如果点击的是已选中的选项，根据allowClear决定是否取消选择
     if (selectedValue === newValue) {
-      setSelectedValue(''); // 使用空字符串替代undefined
-      onChange?.('' as any, option); // 传递空字符串
+      if (allowClear) {
+        setSelectedValue(''); // 使用空字符串替代undefined
+        onChange?.('' as any, option); // 传递空字符串
+      } else {
+        // allowClear为false时，不允许清空，直接关闭弹窗
+        handlePopupClose();
+        return;
+      }
     } else {
       setSelectedValue(newValue);
       onChange?.(newValue, option);
@@ -304,7 +319,7 @@ const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
   onFocus?: () => void;
 }>((props, ref) => {
   const { 
-    allowClear, 
+    allowClear = true, // 确保有默认值
     loading, 
     notFoundContent, 
     onFocus, 
@@ -348,6 +363,7 @@ const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
       {...restProps}
       value={value}
       onChange={handleChange}
+      allowClear={allowClear} // 确保传递 allowClear 属性
     />
   );
 });
@@ -422,6 +438,23 @@ export type { OptionItem, SelectPopProps };
  * // 用户点击已选中的选项时，会触发取消选择
  * // onChange 会被调用，value 参数为 undefined
  * // 此时组件会显示 placeholder 内容
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={options}
+ *   placeholder="请选择"
+ *   allowClear={true} // 默认为true，允许清空
+ * />
+ * 
+ * // 5.1 禁止取消选择功能
+ * // 当allowClear为false时，用户点击已选中的选项不会取消选择
+ * <SelectPop
+ *   value={selectedValue}
+ *   onChange={(value, option) => setSelectedValue(value)}
+ *   options={options}
+ *   placeholder="请选择"
+ *   allowClear={false} // 不允许清空，再次点击已选项不会取消选择
+ * />
  * 
  * // 6. 自定义选项渲染（新增功能）
  * <SelectPop

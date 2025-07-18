@@ -19,6 +19,7 @@ interface ContentLayoutProps {
   showBackButton?: boolean;
   className?: string;
   titleClassName?: string;
+  footerClassName?: string;
 }
 
 const ContentLayout: React.FC<ContentLayoutProps> = observer(({
@@ -29,7 +30,8 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
   footer,
   showBackButton = true,
   className = '',
-  titleClassName = ''
+  titleClassName = '',
+  footerClassName 
 }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -89,7 +91,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
 
       {/* Footer - 只有在有内容时才显示 */}
       {footer && (
-        <div className={styles.content_footer}>
+        <div className={`${styles.content_footer} ${footerClassName}`}>
           {footer}
         </div>
       )}

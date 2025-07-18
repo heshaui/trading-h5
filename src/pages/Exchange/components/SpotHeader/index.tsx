@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/hooks';
-import { useNavigate } from 'react-router-dom';
 import { Iconify } from '@/components/icon';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
@@ -8,6 +7,7 @@ import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/s
 import { getPairsRate } from "@/utils/getUseRate";
 import WebSocketService from "@/utils/websocket";
 import SelectPopup from './SelectPopup/index';
+import PrefrenceSettingPop from './PrefrenceSettingPop';
 
 // 开发环境使用代理，生产环境使用完整URL
   const WS_URL = process.env.NODE_ENV === 'development'
@@ -16,14 +16,10 @@ import SelectPopup from './SelectPopup/index';
 
 const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     const { t } = useLanguage('spot');
-    const navigate = useNavigate();
 
     const [selectPopupOpen, setSelectPopupOpen] = useState<boolean>(false);
-    const [activeTab, setActiveTab] = useState('spot'); // 当前选中的tab
-    const [searchValue, setSearchValue] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false); // 添加收藏状态
-    const [dawerPopOpen, setDawerPopOpen] = useState(false); // 侧边抽屉
+    const [settingPopOpen, setSettingPopOpen] = useState(false); // 侧边抽屉
     const [wsData, setWsData] = useState<Record<string, any>>({});
     const [wsConnected, setWsConnected] = useState(false); // WebSocket连接状态
     const websocketRef = useRef<WebSocketService | null>(null);
@@ -183,7 +179,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                                 color={currentPair?.isFavorite ? "#FFD700" : "var(--text-color6)"}
                             />
                         </button>
-                        <button type='button' className="ml-4" onClick={() => setDawerPopOpen(true)}>
+                        <button type='button' className="ml-4" onClick={() => setSettingPopOpen(true)}>
                             <Iconify icon="mingcute:settings-5-line" className="text-[24px] tip-color" />
                         </button>
                     </div>
@@ -209,7 +205,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                         </p>
                         <p className="flex justify-between items-center h-[17px]">
                             <span>{t('spot.header.volume24h')}({currentPair?.coinSymbol || '--'})</span>
-                            <span>{volume ? volume.toFixed(2) : '--'}</span>
+                            <span>{volume ? formatAmount(volume) : '--'}</span>
                         </p>
                     </div>
                 </div>
@@ -223,6 +219,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                 currencyPairs={currencyPairsArray}
                 wsData={wsData}
             />
+            <PrefrenceSettingPop open={settingPopOpen} onCancel={() => setSettingPopOpen(false)} />
         </>
     )
 });

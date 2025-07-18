@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Toast, Popup, SearchBar, Tabs } from 'antd-mobile';
-import { Iconify } from "@/components/icon/index";
+import { Popup, SearchBar } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
 import SelectContent from './SelectContent';
 import CustomTab from '@/components/CustomCom/CustomTab';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
-import styles from '../styles/selectPopup.module.scss';
 
 type Props = {
   open: boolean;
@@ -76,16 +74,14 @@ const SelectPopup: React.FC<Props> = observer(({
           activeLineMode='auto'
           className="spotTabs safeTabs"
         />
-        {/* 内容区域（可滚动） */}
-        <div className={styles.contentScroll}>
-          <SelectContent 
-            type={activeTab as 'favorites' | 'spot'}
-            currencyPairs={currencyPairs}
-            onPairSelect={handlePairSelect}
-            searchValue={searchValue}
-            wsData={wsData}
-          />
-        </div>
+        {/* 内容区域 */}
+        <SelectContent 
+          type={activeTab as 'favorites' | 'spot'}
+          currencyPairs={currencyPairs}
+          onPairSelect={handlePairSelect}
+          searchValue={searchValue}
+          wsData={wsData}
+        />
       </div>
     </Popup>
   );

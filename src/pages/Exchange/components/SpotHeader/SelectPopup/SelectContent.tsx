@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import appStore from '@/store';
-import { Tabs, Rate } from 'antd-mobile';
 import CustomTab from '@/components/CustomCom/CustomTab';
-import styles from '../styles/selectContent.module.scss';
+import { NoData } from '@/components/noData';
+import styles from '../index.module.scss'
 
 interface SelectContentProps {
     currencyPairs: any[];
@@ -189,7 +189,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     }
 
     return (
-        <div className="flex-col">
+        <div className="flex-col flex-1 h-full">
             {/* 滚动标签页 */}
             <CustomTab
                 tabsItems={ tabItems }
@@ -201,124 +201,111 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             />
 
             {/* 列表头部 */}
-            <div className="flex justify-between gap-x-[10px] h-[17] items-center px-4">
+            <div className="flex justify-between gap-x-[10px] h-[17] items-center px-4 tip-color text-[12px]">
                 <div
-                    className={`${styles.tip_color} font-12 flex-1 flex-x align-center pointer`}
+                    className="flex items-center flex-1"
                     onClick={() => handleSort('name')}
                 >
                     <span>{t('spot.header.name')}</span>
                     <div className='ml-1 flex-y-cc'>
                         <Iconify
                             icon="fluent-mdl2:flick-down"
-                            className={`pointer ${sortField === 'name' && sortDirection === 'asc' ? styles.active_sort : ''}`}
+                            className={`${sortField === 'name' && sortDirection === 'asc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                             style={{ marginBottom: 2 }}
                         />
                         <Iconify
                             icon="fluent-mdl2:flick-up"
-                            className={`pointer ${sortField === 'name' && sortDirection === 'desc' ? styles.active_sort : ''}`}
+                            className={`${sortField === 'name' && sortDirection === 'desc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                         />
                     </div>
                 </div>
                 <div
-                    className={`${styles.tip_color} font-12 flex-1 flex-x align-center pointer`}
+                    className="flex items-center justify-end flex-1"
                     onClick={() => handleSort('price')}
                 >
                     <span>{t('spot.header.lastPrice')}</span>
                     <div className='ml-1 flex-y-cc'>
                         <Iconify
                             icon="fluent-mdl2:flick-down"
-                            className={`pointer ${sortField === 'price' && sortDirection === 'asc' ? styles.active_sort : ''}`}
+                            className={`${sortField === 'price' && sortDirection === 'asc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                             style={{ marginBottom: 2 }}
                         />
                         <Iconify
                             icon="fluent-mdl2:flick-up"
-                            className={`pointer ${sortField === 'price' && sortDirection === 'desc' ? styles.active_sort : ''}`}
+                            className={`${sortField === 'price' && sortDirection === 'desc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                         />
                     </div>
                 </div>
                 <div
-                    className={`${styles.tip_color} font-12 flex-1 flex-x align-center pointer`}
+                    className="flex items-center justify-end flex-1"
                     onClick={() => handleSort('change')}
                 >
                     <span>{showVolume ? t('spot.header.volume24h') : t('spot.header.change24h')}</span>
                     <div className='ml-1 flex-y-cc'>
                         <Iconify
                             icon="fluent-mdl2:flick-down"
-                            className={`pointer ${sortField === 'change' && sortDirection === 'asc' ? styles.active_sort : ''}`}
+                            className={`pointer ${sortField === 'change' && sortDirection === 'asc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                             style={{ marginBottom: 2 }}
                         />
                         <Iconify
                             icon="fluent-mdl2:flick-up"
-                            className={`pointer ${sortField === 'change' && sortDirection === 'desc' ? styles.active_sort : ''}`}
+                            className={`pointer ${sortField === 'change' && sortDirection === 'desc' ? 'text-[var(--text-color5)]' : 'text-[#9e9e9e]'} text-[10px]`}
                             size={10}
                         />
                     </div>
                     <div className='ml-1 flex-y-cc' onClick={showChange}>
-                        <Iconify icon="mingcute:transfer-line" size={18} />
+                        <Iconify icon="mingcute:transfer-line" className="text-[18px] text-[#9e9e9e]" />
                     </div>
                 </div>
             </div>
 
             {/* 币对列表 */}
-            <div className={`${styles.pair_list}`}>
-                {enrichedPairs.map((pair: any) => {
-                    const symbol = `${pair.coinSymbol}_${pair.baseSymbol}_${pair.groupStatus}`;
-                    const wsKlineData = wsData?.[symbol];
-                    const isPriceUp = wsKlineData ? wsKlineData[6] >= 0 : parseFloat(pair.priceChangePercent) >= 0;
-
-                    return (
-                        <div 
+            <ul className={`px-4 py-[23px] ${styles.contentScroll}`}>
+                {enrichedPairs.length ? enrichedPairs.map((pair: any) => (
+                        <li 
                             key={pair.id} 
-                            className={`${styles.pair_item} px-4 py-2 cursor-pointer hover:bg-[var(--background2)]`}
+                            className="flex gap-x-[10px] justify-between h-[20px] items-center mb-5 text-[12px]"
                             onClick={() => handlePairClick(pair)}
                         >
                             {/* 币种名称 */}
-                            <div className={`${styles.pair_name} flex-1`}>
-                                <span 
-                                    className={styles.favorite}
-                                    onClick={(e) => e.stopPropagation()} // 添加额外的阻止冒泡保护
-                                >
-                                    <Rate
-                                        onChange={(value) => handleFavoriteChange(value, pair)}
-                                        value={pair.isFavorite ? 1 : 0}
-                                        count={1}
-                                        style={{ fontSize: 14 }}
+                            <div className="flex items-center flex-1">
+                                <button type='button' onClick={(e) => handleFavoriteClick(e, pair.isFavorite ? 0 : 1, pair)}>
+                                    <Iconify
+                                        icon="ic:round-star"
+                                        className="text-[20px]"
+                                        color={pair.isFavorite ? "#FFD700" : "var(--text-color6)"}
                                     />
-                                </span>
-                                {pair.icon && (
-                                    <span className={styles.coin_icon}>
-                                        <img src={pair.icon} alt={pair.coinSymbol} className="w-[20px] h-[20px] rounded-full" />
-                                    </span>
-                                )}
-                                <span className={`font-14 ${styles.title_color}`}>{pair.coinSymbol}/{pair.baseSymbol}</span>
+                                </button>
+                                <span className="text-[16px] ml-1">{pair.icon}</span>
+                                <span className="font-medium ml-1">{pair.coinSymbol}</span>
+                                <span className="tip-color">/{pair.baseSymbol}</span>
                             </div>
                             {/* 最新价 */}
-                            <div className={`font-14 ${styles.title_color} flex-1 text-center`}>
-                                <span className={isPriceUp ? 'text-[var(--up-color)]' : 'text-[var(--down-color)]'}>
-                                    {pair.realTimePrice ? pair.realTimePrice.toFixed(2) : (pair.yesterdayPrice || 0)}
-                                </span>
+                            <div className="text-right flex-1">
+                                {pair.realTimePrice ? pair.realTimePrice.toFixed(2) : (pair.yesterdayPrice || 0)}
                             </div>
                             {/* 24h涨跌/24h成交量 */}
-                            <div className={`flex-1 text-right`}>
-                                {showVolume ? (
-                                    <span className="font-14">
-                                        {formatAmount(pair.realTimeVolume || pair.volume)}
-                                    </span>
-                                ) : (
-                                    <span className={`font-14 ${isPriceUp ? 'text-[var(--up-color)]' : 'text-[var(--down-color)]'}`}>
-                                        {(pair.realTimeChange || pair.priceChangePercent)}%
-                                    </span>
-                                )}
+                            <div
+                                className={`${!showVolume && (pair.realTimeChange ? parseFloat(pair.realTimeChange) > 0 : pair.priceChangePercent > 0) ? 'success_icon' : !showVolume && (pair.realTimeChange ? parseFloat(pair.realTimeChange) < 0 : pair.priceChangePercent < 0) ? 'error_icon' : ''} text-right flex-1`}
+                            >
+                                {showVolume 
+                                    ? (pair.realTimeAmount ? formatAmount(pair.realTimeAmount) : (pair.realTimeVolume ? pair.realTimeVolume.toFixed(2) : Number(pair.quantity || 0).toFixed(2)))
+                                    : (pair.realTimeChange ? `${pair.realTimeChange}%` : `${(pair.priceChangePercent || 0).toFixed(2)}%`)
+                                }
                             </div>
-                        </div>
-                    );
-                })}
-            </div>
+                        </li>
+                ))
+                : (
+                    <li>
+                        <NoData />
+                    </li>
+                )}
+            </ul>
         </div>
     );
 });

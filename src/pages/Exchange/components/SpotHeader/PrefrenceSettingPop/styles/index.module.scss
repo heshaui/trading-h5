@@ -1,0 +1,16 @@
+.popupBody {
+  background-color: var(--background5);
+  color: var(--text-color5);
+}
+
+.header {
+  border-bottom: 1px solid var(--border-color4);
+  background-color: var(--background5);
+}
+
+.content {
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+} 

@@ -490,8 +490,8 @@ const WithdrawMoneyPage = observer(() => {
           <Form.Item
             label={<span className={styles.tip_title}>{t('withdrawMoney.withdrawCoin')}</span>}
             name='tenantId'
-            rules={[{ 
-              required: true, 
+            rules={[{
+              required: true,
               message: t('withdrawMoney.select'),
               validator: (_, value) => {
                 if (!value || value === '' || value === null) {
@@ -639,93 +639,115 @@ const WithdrawMoneyPage = observer(() => {
                         </div>
                       )
                     }}
+                //     reservedHeight={'60px'}
+                //     popupRender={(menu) => {
+                //     // // 检查是否有可用的地址
+                //     // const availableAddresses = filteredAddressOptions.filter(item => 
+                //     //     coinExtSelect.some(coinExt => coinExt.protocolName === item.protocolName)
+                //     // );
+                    
+                //     return (
+                //         <>
+                //             {menu}
+                //             <div  className='w-full flex-x-cc'>
+                //             <button
+                //                 type='button'
+                //                 className={`default_btn font-16 font-w-500 mt-6 mb-6 ${styles.btn_style}`}
+                //                 onClick={() => navigate('/assets/address')}
+                //             >
+                //                 {t('withdrawMoney.addAddress')}
+                //             </button>
+                //             </div>
+                //         </>
+                //     );
+                // }}
                   // onChange={(value, option) => addressChange(value, option)}
+
                   />
                 }
               />
 
             </div>
           </Form.Item>
-          <Form.Item>
-            {/* 选择网络 */}
-            <Form.Item
-              label={<span className={styles.tip_title}>{t('withdrawMoney.selectNetwork')}</span>}
-              name='protocolId'
-              rules={[{ 
-                validator: (_, value) => {
-                  if (!value || value === '' || value === null) {
-                    return Promise.reject(new Error(t('withdrawMoney.selectNetwork2')));
-                  }
-                  return Promise.resolve();
+
+          {/* 选择网络 */}
+          <Form.Item
+            label={<span className={styles.tip_title}>{t('withdrawMoney.selectNetwork')}</span>}
+            name='protocolId'
+            rules={[{
+              validator: (_, value) => {
+                if (!value || value === '' || value === null) {
+                  return Promise.reject(new Error(t('withdrawMoney.selectNetwork2')));
                 }
-              }]}
-              required={false}
-            >
-              <SelectPopAntdWrapper
-                allowClear
-                placeholder={t('withdrawMoney.selectNetwork2')}
-                options={coinExtSelect}
-                className={`${styles.select_box} custom-select`}
-                loading={coinExtLoading}
-                onChange={(value, option) => {
-                  protocolChange(value, option);
-                  // 不再需要手动触发验证，空字符串会自动触发
-                }}
-                renderBtn='selectInput'
-                showSearch={false}
-                bodyStyle={{
-                  minHeight: '45vh',
-                  maxHeight: '90vh',
-                }}
-                activeType='icon'
-                optionRender={(option) => {
-                  const { rate, symbol } = getRate(option.coinName, option.minWithdraw);
-                  return (<ul className={`${styles.select_option}  py-1 font-14 font-w-400`}>
-                    <li className={`${styles.title_color} font-w-500`}>{option?.label}</li>
-                    <li className={`${styles.tip_color} font-12 mt-1`}>
-                      {/* 最小提现金额： */}
-                      {t('withdrawMoneyCheck.minWithdraw')}
-                      {option.minWithdraw || 0} {option.coinName}
-                      {`(≈${symbol}${rate})`}
-                    </li>
-                    <li className={`${styles.tip_color} font-12 mt-1`}>
-                      {/* 手续费： */}
-                      {t('withdrawMoneyCheck.withdrawFee')} {option.withdrawFee || 0}%
-                    </li>
-                  </ul>);
-                }}
-              />
-
-
-            </Form.Item>
-            {/* MEMO标签 */}
-            {showMemo ?
-              <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb-1 mt-2_5`}>
-                <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
-                <span>
-                  {/* 提币至其他交易所时需要填写标签，否则提币将失败 */}
-                  {t('withdrawMoney.memoWarning')}
-                </span>
-              </p> : null}
+                return Promise.resolve();
+              }
+            }]}
+            required={false}
+          >
+            <SelectPopAntdWrapper
+              allowClear
+              placeholder={t('withdrawMoney.selectNetwork2')}
+              options={coinExtSelect}
+              className={`${styles.select_box} custom-select`}
+              loading={coinExtLoading}
+              onChange={(value, option) => {
+                protocolChange(value, option);
+                // 不再需要手动触发验证，空字符串会自动触发
+              }}
+              renderBtn='selectInput'
+              showSearch={false}
+              bodyStyle={{
+                minHeight: '45vh',
+                maxHeight: '90vh',
+              }}
+              activeType='icon'
+              optionRender={(option) => {
+                const { rate, symbol } = getRate(option.coinName, option.minWithdraw);
+                return (<ul className={`${styles.select_option}  py-1 font-14 font-w-400`}>
+                  <li className={`${styles.title_color} font-w-500`}>{option?.label}</li>
+                  <li className={`${styles.tip_color} font-12 mt-1`}>
+                    {/* 最小提现金额： */}
+                    {t('withdrawMoneyCheck.minWithdraw')}
+                    {option.minWithdraw || 0} {option.coinName}
+                    {`(≈${symbol}${rate})`}
+                  </li>
+                  <li className={`${styles.tip_color} font-12 mt-1`}>
+                    {/* 手续费： */}
+                    {t('withdrawMoneyCheck.withdrawFee')} {option.withdrawFee || 0}%
+                  </li>
+                </ul>);
+              }}
+            />
           </Form.Item>
-          {showMemo ? <Form.Item>
-            <Form.Item name='momo' noStyle>
+
+          {/* MEMO标签 - 移到Form.Item外面 */}
+          {showMemo && (
+            <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb-2 `}>
+              <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
+              <span>
+                {/* 提币至其他交易所时需要填写标签，否则提币将失败 */}
+                {t('withdrawMoney.memoWarning')}
+              </span>
+            </p>
+          )}
+
+          {showMemo && (
+            <Form.Item name='momo' >
               <Input className={`${styles.input_box} `}
                 placeholder={t('withdrawMoney.memoPlaceholder')}
                 allowClear
               />
-
+              <Tooltip title={<p className='font-12 mt-4'>{t('withdrawMoney.tipText')}</p>} placement="bottom">
+                <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb1 mt-2_5`}>
+                  <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
+                  <span>
+                    {/* 请确认收币地址是否要求填写MEMO */}
+                    {t('withdrawMoney.memoConfirm')}
+                  </span>
+                </p>
+              </Tooltip>
             </Form.Item>
-            <Tooltip title={<p className='font-12'>{t('withdrawMoney.tipText')}</p>} placement="bottom">
-              <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb1 mt-2_5`}>
-                <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
-                <span>
-                  {/* 请确认收币地址是否要求填写MEMO */}
-                  {t('withdrawMoney.memoConfirm')}
-                </span>
-              </p>
-            </Tooltip>
-          </Form.Item> : null}
+          )}
           {/* 提现数量 */}
           <Form.Item
             label={<span className={styles.tip_title}>{t('withdrawMoney.withdrawAmount')}</span>}

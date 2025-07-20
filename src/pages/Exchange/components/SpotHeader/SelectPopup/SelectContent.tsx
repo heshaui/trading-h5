@@ -201,7 +201,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     }
 
     return (
-        <div className="flex-col flex-1 h-full">
+        <div className="flex-col flex-1 h-[100vh] hideScrollBar">
             {/* 滚动标签页 */}
             <CustomTab
                 tabsItems={ tabItems }
@@ -277,11 +277,11 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             </div>
 
             {/* 币对列表 */}
-            <ul className={`px-4 pt-[23px] pb-[150px] hideScrollBar`}>
+            <ul className={`px-4 py-[23px] hideScrollBar`}>
                 {enrichedPairs.length ? enrichedPairs.map((pair: any) => (
                         <li 
                             key={pair.id} 
-                            className="flex gap-x-[10px] justify-between h-[20px] items-center mb-5 text-[12px]"
+                            className="flex gap-x-[10px] justify-between h-[20px] items-center mb-5 last:mb-0 text-[12px]"
                             onClick={() => handlePairClick(pair)}
                         >
                             {/* 币种名称 */}

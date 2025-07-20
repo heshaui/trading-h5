@@ -744,3 +744,17 @@ button {
 .placeholder-color {
   color: #9e9e9e;
 }
+
+.hideScrollBar {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; // 增加 iOS 滚动惯性
+  
+  // 隐藏滚动条但保持可滚动
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  // IE and Edge
+  scrollbar-width: none;  // Firefox
+} 

@@ -89,12 +89,17 @@ module.exports = {
         changeOrigin: true,
         secure: false,
       },
-      '/ws': {
+      '/ws-api-base': {
         target: 'wss://ws80.imsaas.work',
         changeOrigin: true,
         secure: false,
         ws: true, // 启用websocket代理
-      }
+      },
+      '/web-api-base': {
+        target: 'https://ws81.imsaas.work',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 };

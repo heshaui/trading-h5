@@ -28,6 +28,8 @@
     "bignumber.js": "^9.3.0",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.6",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.2",
     "framer-motion": "^12.23.0",
     "i18next": "^23.15.0",
     "i18next-browser-languagedetector": "^8.2.0",

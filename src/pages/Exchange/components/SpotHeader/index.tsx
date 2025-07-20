@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon';
 import { observer } from 'mobx-react-lite';
+import { Toast } from 'antd-mobile';
 import appStore from '@/store';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import { getPairsRate } from "@/utils/getUseRate";
@@ -10,9 +11,7 @@ import SelectPopup from './SelectPopup/index';
 import PrefrenceSettingPop from './PrefrenceSettingPop';
 
 // 开发环境使用代理，生产环境使用完整URL
-  const WS_URL = process.env.NODE_ENV === 'development'
-    ? `/ws/multi`
-    : `${process.env.REACT_APP_WS_API_BASE}/ws/multi`; 
+const WS_URL = `${process.env.REACT_APP_WS_API_BASE}/ws/multi`; 
 
 const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     const { t } = useLanguage('spot');
@@ -152,16 +151,24 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                 // 如果API失败，恢复UI状态
                 setIsFavorite(!newFavoriteState);
                 console.error('更新收藏状态失败:', res);
+                Toast.show({
+                    icon: 'fail',
+                    content: res.message
+                })
             }
         } catch (error) {
             // 发生错误时恢复UI状态
             setIsFavorite(!newFavoriteState);
             console.error('收藏操作发生错误:', error);
+            Toast.show({
+                icon: 'fail',
+                content: String(error)
+            })
         }
     };
 
     return (
-        <>
+        <div className="border-b-[4px] border-[var(--background14)]">
             <div className="px-4 py-3">
                 <div className="flex justify-between items-center">
                     <button 
@@ -220,7 +227,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                 wsData={wsData}
             />
             <PrefrenceSettingPop open={settingPopOpen} onCancel={() => setSettingPopOpen(false)} />
-        </>
+        </div>
     )
 });
 

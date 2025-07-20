@@ -1,54 +1,45 @@
 import React, { useState } from 'react';
-import { List, Radio } from 'antd-mobile';
+import { Radio } from "antd";
 import { useLanguage } from '@/hooks/useLanguage';
+import type { CheckboxGroupProps } from 'antd/es/checkbox';
 import { observer } from 'mobx-react-lite';
-import styles from './styles/fee_coin.module.scss';
+import { useFeeDirection } from '@/hooks/useKv';
 
 const FeeCoin = observer(() => {
     const { t } = useLanguage(['spot']);
-    const [selectedCoin, setSelectedCoin] = useState('BTC');
-
+    const [selectedCoin, setSelectedCoin] = useState('');
+    const { feeDirection } = useFeeDirection();
     const handleCoinChange = (value: string) => {
         setSelectedCoin(value);
     };
 
-    const coins = [
-        { value: 'BTC', label: 'BTC', discount: '20%' },
-        { value: 'ETH', label: 'ETH', discount: '15%' },
-        { value: 'BNB', label: 'BNB', discount: '25%' },
+    const options: CheckboxGroupProps<string>['options'] = [
+        {
+            label:
+                <div className={`font-[14px] ml-2`}>
+                    {t('spot.feeCoin.receivedCoin')}
+                </div>,
+            value: '1'
+        },
+        {
+            label:
+                <div className={`font-[14px] ml-2`}>
+                    {t('spot.feeCoin.quotedCoin')}
+                </div>,
+            value: '2'
+        },
     ];
 
     return (
-        <div className={`${styles.content} flex-1 overflow-y-auto`}>
-            <Radio.Group
-                value={selectedCoin}
-                onChange={val => handleCoinChange(val as string)}
-            >
-                <List className={styles.coinList}>
-                    {coins.map(coin => (
-                        <List.Item
-                            key={coin.value}
-                            prefix={
-                                <Radio
-                                    value={coin.value}
-                                    icon={checked => (
-                                        <div className={checked ? styles.radioChecked : styles.radioUnchecked} />
-                                    )}
-                                />
-                            }
-                            extra={
-                                <div className={styles.discount}>
-                                    {t('spot.header.discount')}: {coin.discount}
-                                </div>
-                            }
-                        >
-                            <div className={styles.coinInfo}>
-                                <span className={styles.coinName}>{coin.label}</span>
-                            </div>
-                        </List.Item>
-                    ))}
-                </List>
-            </Radio.Group>
+        <div className="px-4 py-5">
+            <Radio.Group block options={options} defaultValue={feeDirection.toString()} />
+            <ul className={`tip-color mt-5 font-14 leading-[20px] text-justify font-w-400`}>
+                <li>
+                    {t('spot.feeCoin.receivedDesc')}
+                </li>
+                <li className={`mt-5`}>
+                    {t('spot.feeCoin.quotedDesc')}</li>
+            </ul>
         </div>
     );
 });

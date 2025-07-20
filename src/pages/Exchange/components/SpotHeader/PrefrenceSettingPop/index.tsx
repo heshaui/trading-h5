@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
 import PopIndex from './pop_index';
 import { usePopTypeContext, PopTypeProvider, PopTypeEnum } from '@/hooks/usePopProvider';
-import styles from './styles/index.module.scss';
 
 interface Props {
     open: boolean;
@@ -25,7 +24,6 @@ const PrefrenceSettingContent: React.FC<Props> = observer(({ open, onCancel }) =
         setPopType(PopTypeEnum.INDEX)
     }
 
-
     return (
         <Popup
             visible={open}
@@ -37,40 +35,37 @@ const PrefrenceSettingContent: React.FC<Props> = observer(({ open, onCancel }) =
         >
             <div className="flex-col h-full">
                 {/* 头部 */}
-               <div className="flex h-[50px] justify-between items-center border-b border-color">
+               <div className="flex h-[60px] px-4 text-[16px] font-medium justify-between items-center border-b border-color">
                     {popType === PopTypeEnum.INDEX && t('spot.drawer.preferences')}
                     {popType === PopTypeEnum.TRADE_RULE && (
-                        <div className='flex-x align-center justify-between w-full'>
+                        <>
                             <div className='flex-x align-center'>
-                                <button onClick={goIndex}>
-                                    <Iconify icon="icon-park-outline:left" className={`${styles.tip_color}`} size={24} />
+                                <button className="mr-1" onClick={goIndex}>
+                                    <Iconify icon="icon-park-outline:left" className="text-[24px]" />
                                 </button>
                                 {t('spot.drawer.tradeRule')}
                             </div>
                             <button onClick={handClose}>
-                                <Iconify icon="eva:close-outline" className={`${styles.tip_color} ml-1`} size={24} />
+                                <Iconify icon="eva:close-outline" className="text-[24px] tip-color" />
                             </button>
-                        </div>
+                        </>
                     )}
                     {popType === PopTypeEnum.FEE_COIN && (
-                        <div className='flex-x align-center justify-between w-full'>
+                        <>
                             <div className='flex-x align-center'>
                                 <button onClick={goIndex}>
-                                    <Iconify icon="icon-park-outline:left" className={`${styles.tip_color}`} size={24} />
+                                    <Iconify icon="icon-park-outline:left" className="text-[24px]" />
                                 </button>
                                 {t('spot.drawer.feeCoin')}
                             </div>
                             <button onClick={handClose}>
-                                <Iconify icon="eva:close-outline" className={`${styles.tip_color} ml-1`} size={24} />
+                                <Iconify icon="eva:close-outline" className="text-[24px] tip-color" />
                             </button>
-                        </div>
+                        </>
                     )}  
                 </div>
-
                 {/* 内容区域 */}
-                <div className={`${styles.content} flex-1 overflow-y-auto`}>
-                    <PopIndex />
-                </div>
+                <PopIndex />
             </div>
         </Popup>
     );

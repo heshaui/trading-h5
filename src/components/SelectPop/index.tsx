@@ -172,16 +172,10 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
           borderTopRightRadius: '8px'
         }}
       >
-        <div  className="py-4">
-          <div className={`${styles.popHeader} flex-x justify-between align-center mb-4 px-4 pb-2`}>
+        <div className="pb-4 flex flex-col h-full">
+          <div className="flex justify-between items-center mb-4 h-[50px] text-[14px] font-medium px-4 border-b border-[var(--border-color6)]">
             <h3 style={{ margin: 0 }} className={styles.title_color}>{title}</h3>
-            <Button 
-              size="small" 
-              onClick={handlePopupClose}
-              style={{ background: 'transparent', border: 'none' }}
-            >
-              <Iconify icon="eva:close-fill" size={20} className={styles.tip_color} />
-            </Button>
+            <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={handlePopupClose} />
           </div>
           
           {showSearch && (
@@ -197,7 +191,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
             </div>
           )}
           
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }} className="px-4">
+          <div style={{ flex: 1, minHeight: '0', overflowY: 'auto' }} className="px-4">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div

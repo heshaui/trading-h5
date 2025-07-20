@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
+import { Toast } from 'antd-mobile';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import appStore from '@/store';
 import CustomTab from '@/components/CustomCom/CustomTab';
@@ -133,7 +134,6 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         
         if (wsKlineData && Array.isArray(wsKlineData) && wsKlineData.length >= 8) {
             const [timestamp, open_price, high_price, low_price, close_price, volume, changePercent, amount] = wsKlineData;
-            
             return {
                 ...pair,
                 realTimePrice: close_price,
@@ -163,23 +163,35 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             ? addUserExchangeCoinType({ exchangeCoinId: pair.id, type: 1 })
             : canalUserExchangeCoinType({ exchangeCoinId: pair.id, type: 1 });
 
-        const res = await apiCall;
-        if (res.code === '0') {
-            const updatedPairs = [...appStore.currencyPairs];
-            const pairIndex = updatedPairs.findIndex(item => item.id === pair.id);
-            if (pairIndex !== -1) {
-                updatedPairs[pairIndex] = {
-                    ...updatedPairs[pairIndex],
-                    isFavorite: isFavorite
-                };
-                appStore.setCurrencyPairs(updatedPairs);
-            }
+        try {
+            const res = await apiCall;
+            if (res.code === '0') {
+                const updatedPairs = [...appStore.currencyPairs];
+                const pairIndex = updatedPairs.findIndex(item => item.id === pair.id);
+                if (pairIndex !== -1) {
+                    updatedPairs[pairIndex] = {
+                        ...updatedPairs[pairIndex],
+                        isFavorite: isFavorite
+                    };
+                    appStore.setCurrencyPairs(updatedPairs);
+                }
 
-            if (appStore.currentPair && appStore.currentPair.id === pair.id) {
-                const updatedCurrentPair = { ...appStore.currentPair };
-                updatedCurrentPair.isFavorite = isFavorite;
-                appStore.setCurrentPair(updatedCurrentPair);
+                if (appStore.currentPair && appStore.currentPair.id === pair.id) {
+                    const updatedCurrentPair = { ...appStore.currentPair };
+                    updatedCurrentPair.isFavorite = isFavorite;
+                    appStore.setCurrentPair(updatedCurrentPair);
+                }
+            } else {
+                Toast.show({
+                    icon: 'fail',
+                    content: res.message
+                })
             }
+        } catch(error) {
+            Toast.show({
+                icon: 'fail',
+                content: String(error)
+            })
         }
     };
 
@@ -265,7 +277,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             </div>
 
             {/* 币对列表 */}
-            <ul className={`px-4 py-[23px] ${styles.contentScroll}`}>
+            <ul className={`px-4 pt-[23px] pb-[150px] hideScrollBar`}>
                 {enrichedPairs.length ? enrichedPairs.map((pair: any) => (
                         <li 
                             key={pair.id} 

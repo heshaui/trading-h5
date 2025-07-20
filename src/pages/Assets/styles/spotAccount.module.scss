@@ -231,6 +231,10 @@
     border-color: var(--text-color3);
     background: var(--btncolor5);
 }
+.icon_sm{
+    width: 80px;
+    height: 74px;
+}
 @media (max-width: 680px) {
     .card_mt {
         margin-top: 24px;
@@ -257,5 +261,39 @@
         width: 100% ;
     }
 
+}
+
+/* Dropdown styles for address selection */
+.dropdown_menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--background7);
+    border: 1px solid var(--border-color2);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    z-index: 1000;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+
+.dropdown_item {
+    border-bottom: 1px solid var(--border-color4);
+    transition: background-color 0.2s ease;
+}
+
+.dropdown_item:last-child {
+    border-bottom: none;
+}
+
+.dropdown_item:hover {
+    background-color: var(--background8);
+}
+
+.dropdown_icon {
+    border-radius: 50%;
+    margin-right: 8px;
 }
 

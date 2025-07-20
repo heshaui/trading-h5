@@ -4,7 +4,12 @@
     border-radius: 36px;
     color: #ffffff;
 }
-
+.title_color,.title-color{
+    color: var(--text-color5);
+}
+.tip_color,.tip-color{
+    color: var(--text-color6);
+}
 .button-color-disable,
 .btn-disable {
     background: var(--cancel-btn);
@@ -21,6 +26,10 @@
   color: #fff;
   border: 1px solid var(--theme-color);
   box-sizing: border-box;
+}
+.icon_sm{
+  width: 80px;
+  height: 74px;
 }
 .cancel_btn{
   background-color: #fff;

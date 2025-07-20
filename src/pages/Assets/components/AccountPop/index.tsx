@@ -16,6 +16,10 @@ import { getRate, getCoinRate, getCoinRound } from "@/utils/getUseRate";
 import {
   getCoinById,
 } from "@/services/assets";
+import  {useWithdraw} from "@/hooks/useWithdraw";
+
+
+
 type Props = {
   open?: boolean;
   onClose?: () => void;
@@ -55,6 +59,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
   const rateKey = appStore.getRateKey()?.replace(/\s+/g, ""); // 汇率key
   const coinList = appStore.getCoinList(); // 获取币种信息
   const coinPair = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
+  const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
 
 
   const columns: ColumnType<DataType>[] = [
@@ -170,7 +175,12 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
       // 检查权限并执行相应操作
       if (data?.[config.permission] === 1) {
         // 权限通过，执行跳转
-        navigate(config.route || '/');
+        if(type === ActionType.WITHDRAW){
+          goWithdraw();
+        }else{
+          navigate(config.route || '/');
+        }
+        // navigate(config.route || '/');
         // console.log('提现充值执行跳转');
       } else {
         // 权限不足，显示错误信息
@@ -228,7 +238,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
             className={`default_btn ${styles.btn_style} mr-4 flex-1`}
             onClick={() => {
               // navigate('/assets/deposit')
-              getCoinAuth("1", recordData.coinId)
+              getCoinAuth("2", recordData.coinId)
             }}
           >
             {/* 充值 */}
@@ -237,8 +247,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
           <button
             className={`cancel_btn6 ${styles.btn_style} mr-4 flex-1`}
             onClick={() => {
-              // navigate('/assets/withdraw')
-              getCoinAuth("2", recordData.coinId)
+              getCoinAuth("1", recordData.coinId)
             }}
           >
             {/* 提现 */}
@@ -255,6 +264,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
             {t("assetsAccount.button.trade")}
           </button>
         </div>
+        <WithdrawStatusPopComponent />
       </div>
     </Popup>
   );

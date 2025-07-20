@@ -1,0 +1,118 @@
+.card_bgc {
+    background-color: var(--background7);
+    border-radius: 8px;
+    /* padding: 24px; */
+}
+
+
+.success_icon {
+    color: #00C788;
+}
+
+.error_icon {
+    color: #F73710;
+}
+
+.default_icon {
+    color: #A4A5AC;
+}
+
+.theme_color {
+    color: var(--theme-color);
+}
+
+.btn_style {
+    min-width: 56px;
+    min-height: 32px;
+    border-radius: 23px;
+    padding: 5px 16px;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.tip_color {
+    color: var(--text-color6);
+}
+
+.tip_color2 {
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+
+
+.input_box {
+    /* width: 38vw ; */
+    min-width: 250px;
+    height: 44px !important;
+    border-color: var(--border-color11);
+    background: transparent !important;
+    color: var(--text-color6) !important;
+
+    input::placeholder {
+        color: var(--text-color6);
+        font-size: 14px;
+    }
+}
+
+.input_box:focus,
+.input_box:focus-within {
+    border-color: var(--theme-color) !important;
+    box-shadow: none !important;
+    color: var(--text-color5);
+    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+
+/* 鼠标聚焦且移出样式 */
+.input_box:focus:not(:hover),
+.input_box:focus-within:not(:hover) {
+    background-color: var(--homeground5);
+    color: #fff;
+    box-shadow: none !important;
+}
+
+/* 鼠标滑过 */
+.input_box:hover {
+    border-color: var(--border-color11);
+}
+
+
+.select_box {
+    height: 50px !important;
+    min-width: 250px;
+    color: var(--text-color6) !important;
+
+    :global {
+        .selectInput-box {
+            height: 50px !important;
+            border-radius: 8px !important;
+        }
+        .select-options-item {
+            padding-bottom: 0 !important;
+        }
+    }
+    :global(.select-options-item ){
+        padding-bottom: 0 !important;
+    }
+}
+.select_option{
+    border: 1px solid var(--border-color11);
+    border-radius: 8px;
+    padding: 10px;
+}
+.withdraw_btn{
+    height: 44px;
+    min-width: 166px;
+    border-radius: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+}

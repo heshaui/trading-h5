@@ -68,12 +68,12 @@ const Deposit:React.FC = observer(() => {
       if (res.code === "0") {
         const coinList = res.data
           .map((item: any) => ({
-            label: item.coinName,
+            label:`${item.coinName}`,
             value: item.coinName,
             coinId: item.coinId,
             coinName: item.coinName,
-            iconUrl: item.iconUrl,
             nameDefault: item.nameDefault,
+            iconUrl: item.iconUrl,
             sort: item.sort,
           }))
           .sort((a: any, b: any) => {

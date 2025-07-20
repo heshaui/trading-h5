@@ -29,7 +29,7 @@ import { division, nul, roundDown } from '@/utils';
 import appStore from '@/store';
 import { getOrderInfo } from '@/services/spot'
 
-
+export const layout = 'header-only';
 const SpotOrderPage = () => {
 	const { t } = useLanguage(['spot']);
 	const { isDayMode } = useThemeMode();

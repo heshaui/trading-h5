@@ -1,0 +1,165 @@
+.TVChartContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  transition: all 0.3s ease;
+}
+
+/* 移动端样式 */
+.mobile {
+  height: 300px;
+  font-size: 12px;
+}
+
+.mobile :global(.chart-page) {
+  background-color: var(--background5) !important;
+}
+
+.mobile :global(.chart-controls-bar) {
+  background-color: var(--background5) !important;
+}
+
+.mobile :global(.chart-controls-bar-buttons a) {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.mobile :global(.chart-controls-bar-buttons svg) {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.mobile :global(.pane-legend) {
+  font-size: 10px !important;
+}
+
+.mobile :global(.pane-legend-line > .main) {
+  font-size: 10px !important;
+}
+
+.mobile :global(.pane-legend-line > .sub) {
+  font-size: 9px !important;
+}
+
+/* 桌面端样式 */
+.desktop {
+  height: 100%;
+  font-size: 14px;
+}
+
+.desktop :global(.chart-page) {
+  background-color: var(--background5) !important;
+}
+
+.desktop :global(.chart-controls-bar) {
+  background-color: var(--background5) !important;
+}
+
+.desktop :global(.chart-controls-bar-buttons a) {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.desktop :global(.chart-controls-bar-buttons svg) {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.desktop :global(.pane-legend) {
+  font-size: 12px !important;
+}
+
+.desktop :global(.pane-legend-line > .main) {
+  font-size: 12px !important;
+}
+
+.desktop :global(.pane-legend-line > .sub) {
+  font-size: 11px !important;
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--background5);
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 200px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.interval-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.interval-dialog {
+  background: var(--background5);
+  border-radius: 8px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 8px;
+  min-width: 200px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.interval-option {
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  color: var(--text-color5);
+}
+
+.interval-option:hover {
+  background: var(--background6);
+}
+
+.interval-option.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* 全屏模式样式 */
+:global(.fullscreen) .TVChartContainer {
+  height: 100vh !important;
+}
+
+/* 适配深色模式 */
+:global([data-theme='dark']) .TVChartContainer {
+  --tv-color-platform-background: var(--background5);
+  --tv-color-pane-background: var(--background5);
+  --tv-color-toolbar-button-background-hover: var(--background6);
+  --tv-color-toolbar-button-background-expanded: var(--background6);
+  --tv-color-toolbar-button-background-active: var(--background6);
+  --tv-color-toolbar-button-text: var(--text-color5);
+  --tv-color-toolbar-button-text-hover: var(--text-color5);
+  --tv-color-toolbar-button-text-active: var(--text-color5);
+  --tv-color-toolbar-button-text-active-hover: var(--text-color5);
+}

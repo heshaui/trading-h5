@@ -1,0 +1,37 @@
+/* TradingView 自定义样式 */
+.chart-page .chart-container {
+  position: relative;
+}
+
+/* 标题样式 */
+.chart-page .symbol-title {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 16px !important;
+  font-weight: bold;
+  z-index: 100;
+  background: transparent !important;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+/* 移动端样式 */
+@media (max-width: 768px) {
+  .chart-page .symbol-title {
+    font-size: 14px !important;
+    top: 4px;
+    left: 4px;
+    padding: 2px 4px;
+  }
+}
+
+/* 暗色主题 */
+.theme-dark .chart-page .symbol-title {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* 亮色主题 */
+.theme-light .chart-page .symbol-title {
+  color: rgba(0, 0, 0, 0.85);
+} 

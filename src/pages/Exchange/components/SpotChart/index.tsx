@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon'
 import { Image } from 'antd-mobile';
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
+import appStore from "@/store";
 
 import SelectPop from '@/components/SelectPop';
 import DepthChart from '@/components/DepthChart';
+import Tradingview, { TradingviewRefHandle } from "@/components/Tradingview";
 
 import StockIcon from '@/assets/images/exchange/icon_stock.png';
+import ChartIcon from '@/assets/images/exchange/icon_chart.png';
+import DeleteIcon from '@/assets/images/exchange/icon_delete.png';
+import ValueIcon from '@/assets/images/exchange/icon_value.png';
 
 const SpotChart: React.FC = () => {
     const {t} = useLanguage('spot');
-    const { timeInterval, depthData, updateTimeInterval } = useExchange();
-
+    const { timeInterval, depthData, klineData, updateTimeInterval } = useExchange();
+    const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
+    // k线图ref
+    const tradingviewRef = useRef<TradingviewRefHandle>(null);
     // 时间默认展示
     const dayData = ["15m", "1h", "4h", "1D"];
     // 所有时间选项
@@ -25,7 +32,7 @@ const SpotChart: React.FC = () => {
     }
 
     // k线类型
-    const [chartDisplayType, setChartDisplayType] = useState<string | number | undefined>(1)
+    const [chartDisplayType, setChartDisplayType] = useState<number | undefined>(1)
     const chartDisplayTypeOptions = [
         {
             value: 1,
@@ -91,23 +98,52 @@ const SpotChart: React.FC = () => {
                         </li>
                     ))
                 }
-                {chartType === 'basic' && <li>
-                     <SelectPop 
-                        value={chartDisplayType}
-                        options={chartDisplayTypeOptions}
-                        title={t('spot.select.title')} 
-                        showSearch={false}
-                        onChange={(value) => setChartDisplayType(Number(value))}
-                        renderBtn={(open) => (
-                            <Image
-                                src={ StockIcon }
-                                alt="exchange"
-                                className="!w-[20px] !h-[20px] ml-1"
-                                onClick={open}
-                            />
-                        )}
-                    />
-                </li>}
+                {chartType === 'basic' && (<>
+                    <li>
+                        <SelectPop 
+                            value={chartDisplayType}
+                            options={chartDisplayTypeOptions}
+                            title={t('spot.select.title')} 
+                            showSearch={false}
+                            onChange={(value) => setChartDisplayType(Number(value))}
+                            renderBtn={(open) => (
+                                <Image
+                                    src={ StockIcon }
+                                    alt="exchange"
+                                    className="!w-[20px] !h-[20px] ml-1"
+                                    onClick={open}
+                                />
+                            )}
+                        />
+                    </li>
+                    <li>
+                        <Image
+                            src={ChartIcon}
+                            alt="exchange"
+                            className="!w-[20px] !h-[20px] ml-1"
+                            onClick={() =>
+                                tradingviewRef.current?.handleAddIndicator()
+                            }
+                        />
+                    </li>
+                    <li>
+                        <Image
+                            src={DeleteIcon}
+                            alt="exchange"
+                            className="!w-[20px] !h-[20px] ml-1"
+                            onClick={() => tradingviewRef.current?.resetChart()}
+                        />
+                    </li>
+                    <li>
+                        <Image
+                            src={ValueIcon}
+                            alt="exchange"
+                            className="!w-[20px] !h-[20px] ml-1"
+                            onClick={() => tradingviewRef.current?.addVolumeDistribution()}
+                        />
+                    </li>
+                </>)}
+                
                 <li>
                     <SelectPop 
                         value={chartType}
@@ -130,7 +166,26 @@ const SpotChart: React.FC = () => {
             </ul>
             {
                 chartType === 'depth' ? <DepthChart data={ depthData }/>
-                : <div className="h-[322px]"></div>
+                : <div className="h-[322px]">
+                    <Tradingview
+                        ref={tradingviewRef}
+                        key={`${currentPair?.coinSymbol || ""}_${
+                        currentPair?.baseSymbol || ""
+                        }_${currentPair?.groupStatus || ""}_${timeInterval}`}
+                        symbol={
+                        (currentPair?.coinSymbol || "") +
+                        "_" +
+                        (currentPair?.baseSymbol || "") +
+                        "_" +
+                        (currentPair?.groupStatus || "")
+                        }
+                        showLeftToolbar={chartType === "basic" ? false : true}
+                        chartType={chartDisplayType}
+                        klineData={klineData}
+                        timeInterval={timeInterval}
+                        isMobile={window.innerWidth <= 768}
+                    />
+                </div>
             }
         </>
     )

@@ -69,7 +69,7 @@ const ExchangeContent: React.FC = observer(() => {
         });
     }, [currentPair]);
 
-
+    // 获取深度图数据
     const getWsDepthData = useCallback(() => {
         // 如果已经有连接，不要重复创建
         if (depthWsRef.current) return;
@@ -126,6 +126,7 @@ const ExchangeContent: React.FC = observer(() => {
         });
     }, [currentPair]);
 
+    // 历史深度图数据
     const getHistoryDepthData = useCallback(async () => {
         try {
         const response = await fetch(
@@ -147,7 +148,7 @@ const ExchangeContent: React.FC = observer(() => {
         } catch (error) {}
     }, [currentPair, getWsDepthData]);
 
-    // 使用useCallback包装getKlineData函数，确保只有当依赖项变化时才会重新创建函数
+    // 获取k线数据
     const getKlineData = useCallback(() => {
         if (!currentPair || !currentPair.coinSymbol) return;
 

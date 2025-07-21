@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Upload } from 'antd';
 import dayjs from 'dayjs';
-import { Toast, Image } from 'antd-mobile'
-import type { UploadFile, UploadProps } from 'antd';
+import { Toast, Image, ImageUploader } from 'antd-mobile';
+import type { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
 import type { CSSProperties } from "react";
 
 import { Iconify } from "@/components/icon/index";
@@ -54,18 +53,88 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
     };
 
 
-    const beforeUpload = (file: File) => {
-        const allowedTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif']
-        const isPNG = allowedTypes.includes(file.type);
-        if (!isPNG) {
-            Toast.show({ icon: 'fail', content: `${file.name} ${t('identity.upload.error1')}` });
-        }
-        const isLt8M = file.size / 1024 / 1024 < 8;
-        if (!isLt8M) {
-            Toast.show({ icon: 'fail', content: t('identity.upload.error2') });
-            return false;
-        }
-        return isPNG && isLt8M;
+    const uploadConfig = {
+        accept: 'image/jpg,image/jpeg,image/png,image/gif',
+        beforeUpload: (file: File) => {
+            const allowedTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif']
+            const isPNG = allowedTypes.includes(file.type);
+            if (!isPNG) {
+                Toast.show({ icon: 'fail', content: `${file.name} ${t('identity.upload.error1')}` });
+                return null;
+            }
+            const isLt8M = file.size / 1024 / 1024 < 8;
+            if (!isLt8M) {
+                Toast.show({ icon: 'fail', content: t('identity.upload.error2') });
+                return null;
+            }
+            return file;
+        },
+    };
+
+    const frontUploadProps = {
+        ...uploadConfig,
+        upload: async (file: File) => {
+            setFrontFileLoading(true);
+            try {
+                const res = await fileImg(file);
+                if (res.code === '0') {
+                    setFrontFileUrl(res.data.data);
+                    return { url: res.data.data };
+                } else {
+                    Toast.show({ icon: 'fail', content: res.message });
+                    return { url: '' };
+                }
+            } catch (error) {
+                Toast.show({ icon: 'fail', content: String(error) });
+                return { url: '' };
+            } finally {
+                setFrontFileLoading(false);
+            }
+        },
+    };
+
+    const backUploadProps = {
+        ...uploadConfig,
+        upload: async (file: File) => {
+            setBackFileLoading(true);
+            try {
+                const res = await fileImg(file);
+                if (res.code === '0') {
+                    setBackFileUrl(res.data.data);
+                    return { url: res.data.data };
+                } else {
+                    Toast.show({ icon: 'fail', content: res.message });
+                    return { url: '' };
+                }
+            } catch (error) {
+                Toast.show({ icon: 'fail', content: String(error) });
+                return { url: '' };
+            } finally {
+                setBackFileLoading(false);
+            }
+        },
+    };
+
+    const selfieUploadProps = {
+        ...uploadConfig,
+        upload: async (file: File) => {
+            setSelfieFileLoading(true);
+            try {
+                const res = await fileImg(file);
+                if (res.code === '0') {
+                    setSelfieFileUrl(res.data.data);
+                    return { url: res.data.data };
+                } else {
+                    Toast.show({ icon: 'fail', content: res.message });
+                    return { url: '' };
+                }
+            } catch (error) {
+                Toast.show({ icon: 'fail', content: String(error) });
+                return { url: '' };
+            } finally {
+                setSelfieFileLoading(false);
+            }
+        },
     };
 
     const onSubmit = async () => {
@@ -108,98 +177,6 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
         }
     };
 
-    const propsFront: UploadProps = {
-        // 自定义上传
-        customRequest: async ({ file, onSuccess, onError }) => {
-            // const uploadResult = await fileImg(file as File);
-            // const uploadResult = await uploadHandler(file as File);
-            setFrontFileLoading(true);
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-                // 检查文件类型
-                if (!(file instanceof File)) {
-                    Toast.show({ icon: 'fail', content: t('identity.upload.error4') });
-                    return;
-                }
-                const res = await fileImg(file);
-                if (res.code === '0') {
-                    // onSuccess(res.data);
-                    console.log(res.data);
-                    setFrontFileUrl(res.data.data);
-                } else {
-                    Toast.show({ icon: 'fail', content: res.message });
-                }
-
-            } catch (error) {
-                Toast.show({ icon: 'fail', content: String(error) });
-            } finally {
-                setFrontFileLoading(false);
-            }
-        },
-    };
-    const propsBack: UploadProps = {
-        // 自定义上传
-        customRequest: async ({ file, onSuccess, onError }) => {
-            // const uploadResult = await fileImg(file as File);
-            // const uploadResult = await uploadHandler(file as File);
-            setBackFileLoading(true);
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-                // 检查文件类型
-                if (!(file instanceof File)) {
-                    Toast.show({ icon: 'fail', content: t('identity.upload.error4') });
-                    return;
-                }
-                const res = await fileImg(file);
-                if (res.code === '0') {
-                    // onSuccess(res.data);
-                    // console.log(res.data);
-                    setBackFileUrl(res.data.data);
-
-                } else {
-                    Toast.show({ icon: 'fail', content: res.message });
-                }
-
-            } catch (error) {
-                Toast.show({ icon: 'fail', content: String(error) });
-            } finally {
-                setBackFileLoading(false);
-            }
-        },
-    };
-    const propsSelfie: UploadProps = {
-        // 自定义上传
-        customRequest: async ({ file, onSuccess, onError }) => {
-            // const uploadResult = await fileImg(file as File);
-            // const uploadResult = await uploadHandler(file as File);
-            setSelfieFileLoading(true);
-            try {
-                const formData = new FormData();
-                formData.append('file', file);
-                // 检查文件类型
-                if (!(file instanceof File)) {
-                    Toast.show({ icon: 'fail', content: t('identity.upload.error4') });
-                    return;
-                }
-                const res = await fileImg(file);
-                if (res.code === '0') {
-                    // onSuccess(res.data);
-                    console.log(res.data);
-                    setSelfieFileUrl(res.data.data);
-
-                } else {
-                    Toast.show({ icon: 'fail', content: res.message });
-                }
-
-            } catch (error) {
-                Toast.show({ icon: 'fail', content: String(error) });
-            } finally {
-                setSelfieFileLoading(false);
-            }
-        },
-    };
     return (
 		<div>
 			<h3 className="text-[24px] leading-[34px] font-medium mb-[30px]">
@@ -217,30 +194,25 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
                     </div>}
-                    <Upload
-                        name="frontImage"
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
-                        {...propsFront}
+                    <ImageUploader
                         maxCount={1}
+                        {...frontUploadProps}
                         className="w-full h-full absolute top-0 flex justify-center items-center"
-                        openFileDialogOnClick={!frontFileLoading}
-                    >
-                        {/* {!frontFileUrl && ( */}
-                        <div className="w-[160px] flex flex-col">
-                            <div className="w-full h-[48px] border rounded-lg  border-[var(--border-color4)] bg-[var(--background15)] ounded-lg flex justify-center items-center tip-color">
-                                <Iconify icon={frontFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-                                <span className={`font-14 font-w-400 ml-[6px]`}>
-                                    {/* 上传文件 */}
-                                    {t('identity.upload.uploadFile')}
-                                </span>
+                        disableUpload={frontFileLoading}
+                        children={
+                            <div className="w-[160px] flex flex-col">
+                                <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background15)] flex justify-center items-center tip-color">
+                                    <Iconify icon={frontFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                    <span className={`font-14 font-w-400 ml-[6px]`}>
+                                        {t('identity.upload.uploadFile')}
+                                    </span>
+                                </div>
+                                <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                    {t('identity.upload.frontFile')}
+                                </div>
                             </div>
-                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
-                                {/* 证件正面 */}
-                                {t('identity.upload.frontFile')}
-                            </div>
-                        </div>
-                    </Upload>
+                        }
+                    />
                 </div>
                 <div 
                     className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
@@ -252,31 +224,25 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
                     </div>}
-                    <Upload
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
+                    <ImageUploader
                         maxCount={1}
-                        {...propsBack}
+                        {...backUploadProps}
                         className="w-full h-full absolute top-0 flex justify-center items-center"
-                        openFileDialogOnClick={!backFileLoading}
-                    >
-                        {/* {!backFileUrl && ( */}
-                        <div className="w-[160px] flex flex-col">
-                            <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
-                                <Iconify icon={backFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-                                <p className={`font-14 font-w-400 ml-[6px]`}>
-                                    {/* 上传文件 */}
-                                    {t('identity.upload.uploadFile')}
-                                </p>
-
+                        disableUpload={backFileLoading}
+                        children={
+                            <div className="w-[160px] flex flex-col">
+                                <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
+                                    <Iconify icon={backFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                    <p className={`font-14 font-w-400 ml-[6px]`}>
+                                        {t('identity.upload.uploadFile')}
+                                    </p>
+                                </div>
+                                <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                    {t('identity.upload.backFile')}
+                                </div>
                             </div>
-                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
-                                {/* 证件反面 */}
-                                {t('identity.upload.backFile')}
-                            </div>
-                        </div>
-                        {/* )} */}
-                    </Upload>
+                        }
+                    />
                 </div>
                 <div 
                     className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
@@ -288,32 +254,25 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
                     </div>}
-                    <Upload
-                        name="selfieImage"
-                        showUploadList={false}
-                        beforeUpload={beforeUpload}
+                    <ImageUploader
                         maxCount={1}
-                        {...propsSelfie}
+                        {...selfieUploadProps}
                         className="w-full h-full absolute top-0 flex justify-center items-center"
-                        openFileDialogOnClick={!selfieFileLoading}
-                    >
-                        {/* {!selfieFileUrl && ( */}
-                        <div className="w-[160px] flex flex-col">
-                            <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
-                                <Iconify icon={selfieFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-                                <p className={`font-14 font-w-400 ml-[6px]`}>
-                                    {/* 上传文件 */}
-                                    {t('identity.upload.uploadFile')}
-                                </p>
-
+                        disableUpload={selfieFileLoading}
+                        children={
+                            <div className="w-[160px] flex flex-col">
+                                <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
+                                    <Iconify icon={selfieFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                    <p className={`font-14 font-w-400 ml-[6px]`}>
+                                        {t('identity.upload.uploadFile')}
+                                    </p>
+                                </div>
+                                <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
+                                    {t('identity.upload.selfieFile')}
+                                </div>
                             </div>
-                            <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
-                                {/* 手持证件照 */}
-                                {t('identity.upload.selfieFile')}
-                            </div>
-                        </div>
-                        {/* )} */}
-                    </Upload>
+                        }
+                    />
                 </div>
             </div>
 			<ul className={`font-12 font-w-400 tip-color`}>

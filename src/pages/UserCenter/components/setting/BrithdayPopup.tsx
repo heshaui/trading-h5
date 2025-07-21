@@ -22,7 +22,7 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
     const [form] = Form.useForm();
     const { t } = useLanguage(['common']);
     const [visible, setVisible] = useState(false);
-    const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
+    const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([dayjs(), null]);
     const handCancel = () => {
         onCancel()
     };

@@ -27,7 +27,7 @@ const Security: React.FC = observer(() => {
 	}
 	useEffect(() => {
 		if (finalStatus.toString() === '1' || finalStatus.toString()  === '3') {
-			handleProgress('two');
+			handleProgress('three');
 		} else {
 			handleProgress('one');
 		}

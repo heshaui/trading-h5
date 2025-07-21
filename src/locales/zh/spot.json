@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "盘口",
             "latestTrades": "最新成交",
+            "market": "行情",
             "price": "价格",
             "amount": "数量",
             "total": "累计",
@@ -73,6 +74,7 @@
         },
         "select": {
             "all": "全部",
+            "title": "请选择",
             "direction": "请选择方向",
             "symbol": "请选择交易对",
             "type": "请选择类型",
@@ -261,7 +263,8 @@
             "fee": "手续费",
             "feeDetails": "挂单{{maker}}% / 吃单{{taker}}%",
             "kline": "K线",
-            "depth": "深度图"
+            "depth": "深度图",
+            "basic": "基本版"
         }
     }
 }

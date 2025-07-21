@@ -45,7 +45,7 @@ const InvitePage: React.FC = () => {
             </div>
             <div className="px-[20px] py-[28px] flex justify-between items-center">
                 <QRCode
-                    className="min-w-[68px] min-h-[68px] bg-[#fff] p-[6px] shrink-0"
+                    className="min-w-[68px] min-h-[68px] !bg-[#fff] p-[6px] shrink-0"
                     value={`${inviteInfo.inviteLink || ""}`}
                     size={68}
                 />

@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
-// import styles from './index.module.scss'
-import { useLanguage } from '@/hooks/useLanguage';
-import {AssetsLayout} from '@/components/MenuItems';
+import { ExchangeProvider } from '@/context/exchange-providers/ExchangeProvider';
+import ExchangeContent from './components/ExchangeContent';
 
+const Exchange: React.FC = observer(() => {
+    return (
+        <ExchangeProvider>
+            <ExchangeContent />
+        </ExchangeProvider>
+    );
+});
 
-const Deposit:React.FC = observer(() => {
-  const { t } = useLanguage();
+export default Exchange;
 
-  return (
-    <div className={``}>
-      deposit
-    </div>
-  )
-})
-
-export default AssetsLayout(Deposit);
+export const meta = {
+  requireAuth: false,
+  layout: 'header-only'
+}
 

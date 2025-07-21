@@ -10,12 +10,14 @@ import { CloseOutline } from 'antd-mobile-icons';
 import { ExpandableMenu, MenuItemType } from '@/components/MenuItems';
 import { useTranslation } from "react-i18next";
 import { useLanguage } from '@/hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
 import LanguageToggle from '@/components/LanguageToggle';
 import appStore from '@/store';
 
 const MenuIcon: React.FC = observer(() => {
 	// const { t } = useTranslation("common");
     const { t ,currentLanguage} = useLanguage();
+    const navigate = useNavigate();
 
     const { isDayMode } = useThemeMode();
     const [visible, setVisible] = useState(false);
@@ -64,7 +66,12 @@ const MenuIcon: React.FC = observer(() => {
                     title: t('common.router.spot'), //'现货',
                     onClick: () => {
                         console.log('现货交易点击');
-                        // setVisible(false);
+                        setVisible(false);
+                        // 手动延时跳转，优化体验
+                        setTimeout(() => {
+                            navigate('/exchange');
+                        }, 300)
+                        
                     }
                 },
                 {

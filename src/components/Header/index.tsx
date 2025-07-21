@@ -7,10 +7,12 @@ import { useThemeMode } from '@/hooks/useThemeMode';
 import MenuIcon from './MenuIcon';
 import UserIcon from './UserIcon';
 import appStore from '@/store';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
 	const { logoUrl } = useLogoImage("");
 	const { isDayMode } = useThemeMode();
+	const navigate = useNavigate();
 
 	const handleUserClick = () => {
 		// 处理用户图标点击事件
@@ -26,7 +28,7 @@ const Header = () => {
 		<div className={styles.headerContainer}>
 			<div className={`${styles.headerContent} flex-x algin-center justify-between`}>
 				{/* 左侧Logo */}
-				<div className={`${styles.logo} flex-x-cc`}>
+				<div className={`${styles.logo} flex-x-cc`} onClick={() => navigate('/')}>
 					<Image
 						src={logoUrl || ""}
 						alt="home logo"

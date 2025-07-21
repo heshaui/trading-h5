@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Upload } from 'antd';
-import type { UploadProps } from 'antd';
-import { Toast, Popup, Image, Segmented, ProgressCircle } from 'antd-mobile';
+import { Toast, Popup, Image, Segmented, ProgressCircle, ImageUploader } from 'antd-mobile';
+import type { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
 
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTheme } from '@/hooks/useTheme';
@@ -167,33 +166,36 @@ const AvatarUrlPopup: React.FC<Props> = ({ open, onCancel, userId, onOk, current
     }
   };
 
-  const uploadProps: UploadProps = {
-    showUploadList: false,
+  const uploadProps = {
     maxCount: 1,
-    beforeUpload: (file) => {
+    accept: 'image/jpg,image/jpeg,image/png,image/gif',
+    beforeUpload: (file: File) => {
       const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
       const isAllowed = allowedTypes.includes(file.type);
       if (!isAllowed) {
         Toast.show({ icon: 'fail', content: `${file.name} ${t('usersetting.invalidFileType')}` });
+        return null;
       }
-      return isAllowed || Upload.LIST_IGNORE;
+      return file;
     },
-    customRequest: async ({ file }) => {
+    upload: async (file: File) => {
       setUploadLoading(true);
-      startUpload()
+      startUpload();
       try {
-        const res = await fileImg(file as File);
+        const res = await fileImg(file);
         if (res.code === '0') {
           setFileUrl(res.data.data);
           setSelectedType('upload');
           setSelectedAvatar(null);
+          return { url: res.data.data };
         } else {
           Toast.show({ icon: 'fail', content: res.message });
+          return { url: '' };
         }
-        setUploadLoading(false);
-        finishUpload();
       } catch (error) {
         Toast.show({ icon: 'fail', content: String(error) });
+        return { url: '' };
+      } finally {
         setUploadLoading(false);
         finishUpload();
       }
@@ -254,12 +256,15 @@ const AvatarUrlPopup: React.FC<Props> = ({ open, onCancel, userId, onOk, current
         )}
       </div>
 
-      <Upload {...uploadProps}>
-        <button className="min-w-[120px] h-[32px] px-[38px] border border-solid border-[var(--theme-color)] rounded-[16px] flex items-center text-[12px] font-medium theme_color">
-          <Iconify icon="material-symbols:upload-sharp" className="text-[16px]" />
-          <span className="ml-1">{t('usersetting.uploadAvatar')}</span>
-        </button>
-      </Upload>
+      <ImageUploader
+        {...uploadProps}
+        children={
+          <button className="min-w-[120px] h-[32px] px-[38px] border border-solid border-[var(--theme-color)] rounded-[16px] flex items-center text-[12px] font-medium theme_color">
+            <Iconify icon="material-symbols:upload-sharp" className="text-[16px]" />
+            <span className="ml-1">{t('usersetting.uploadAvatar')}</span>
+          </button>
+        }
+      />
       <p className="leading-[17px] text-[12px] tip-color mt-[10px]">{t('usersetting.avatarFormatTip')}</p>
     </div>
   );

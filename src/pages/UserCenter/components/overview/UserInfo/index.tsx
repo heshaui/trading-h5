@@ -65,7 +65,7 @@ const UserInfo: React.FC = () => {
           navigate(`/userCenter/identity`)
       } else {
           localStorage.setItem('identity_authStatus', status.toString())
-          navigate(`/userCenter/identity/${loginInfo?.userId}?authStatus=${status}`)
+          navigate(`/userCenter/identity/info?userId=${loginInfo?.userId}&authStatus=${status}`)
       }
   }
   useEffect(() => {

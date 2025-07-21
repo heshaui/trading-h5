@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as AssetsSvg } from '@/assets/icons/userCenter/wallet.svg';
 import { ReactComponent as IdentitySvg } from '@/assets/icons/userCenter/idcard-line.svg';
@@ -8,7 +8,7 @@ import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from '../styles/layout.module.scss'
 import { MenuType, IconType } from '@/type/public/menu';
-
+import appStore from '@/store';
 // 定义高阶组件的配置选项
 interface WithUserCenterLayoutOptions {
     menuList?: MenuType[]; // 可选的菜单列表，如果不传则使用默认菜单
@@ -25,7 +25,7 @@ const withUserCenterLayout = <P extends object>(
         const navigate = useNavigate();
         const location = useLocation();
         const currentPath = location.pathname;
-
+        const kvConfig = appStore.getKvConfigAll();
         // 默认菜单列表
         const defaultMenuList: MenuType[] = [
             {
@@ -65,16 +65,14 @@ const withUserCenterLayout = <P extends object>(
             }
         ];
 
-        // // 使用传入的菜单列表或默认菜单列表
-        // const menuList = options.menuList || defaultMenuList;
-
-        // // 根据当前路径获取当前页面标题
-        // const getCurrentTitle = () => {
-        //     if (options.currentTitle) return options.currentTitle;
-            
-        //     const currentMenu = menuList.find(menu => menu.path === currentPath);
-        //     return currentMenu?.title || '--';
-        // };
+        const userCenterList = useMemo(() => {
+            return defaultMenuList.filter(item => {
+                if ((kvConfig?.account_configuration && kvConfig?.account_configuration === '0')) {
+                    return item.path !== '/invite'
+                }
+                return true
+            });
+        }, [kvConfig?.account_configuration, currentPath]);
 
         return (
             <div className={`user-center-page flex flex-col`}>
@@ -83,7 +81,7 @@ const withUserCenterLayout = <P extends object>(
                     // title={getCurrentTitle()}
                     // menuList={menuList}
                     // path={currentPath}
-                    defaultMenuList={defaultMenuList}
+                    defaultMenuList={userCenterList}
                 />
                 
                 {/* 页面内容 */}

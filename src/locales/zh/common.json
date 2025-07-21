@@ -63,7 +63,10 @@
        "dateRangeExceeded": "日期范围超出限制",
        "collapse": "收起",
        "expand": "展开",
-       "disabled": "该项已禁用"
+       "disabled": "该项已禁用",
+       "last7Days": "最近7天",
+       "last30Days": "最近30天",
+       "last90Days": "最近90天"
       },
     "titleText":{
       "historyInput": "历史输入",

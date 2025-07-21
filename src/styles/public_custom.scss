@@ -132,3 +132,14 @@
         font-size: 14px;
     }
 }
+
+
+// 在文件末尾添加 DateTimePop 快捷选择的 Checkbox 样式
+.quickSelect.adm-checkbox-checked .adm-checkbox-icon {
+    background-color: var(--theme-color) !important;
+    border-color: var(--theme-color) !important;
+  }
+  
+  .quickSelect.adm-checkbox-checked .adm-checkbox-icon::before {
+    border-color: white !important;
+  }

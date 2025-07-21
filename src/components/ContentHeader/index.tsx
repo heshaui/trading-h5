@@ -20,6 +20,7 @@ interface ContentLayoutProps {
   className?: string;
   titleClassName?: string;
   footerClassName?: string;
+  headerClassName?: string;
 }
 
 const ContentLayout: React.FC<ContentLayoutProps> = observer(({
@@ -31,7 +32,8 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
   showBackButton = true,
   className = '',
   titleClassName = '',
-  footerClassName 
+  footerClassName,
+  headerClassName = ''
 }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -47,17 +49,17 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
   return (
     <div className={`${styles.layout_wrapper} ${className}`}>
       {/* Header */}
-      <div className={styles.user_header}>
+      <div className={`${styles.user_header} ${headerClassName}`}>
         {/* 返回按钮 */}
         {showBackButton && (
-          <button onClick={handleGoBack} className={styles.back_button}>
+          <button onClick={handleGoBack} className={`${styles.back_button} back-button`}>
             <Iconify icon="teenyicons:left-outline" className={`${styles.left_icon} left-icon ${titleClassName}`} />
           </button>
         )}
         
         {/* 标题容器 */}
         <div className={`flex-1 flex-x-cc ${showBackButton ? 'pr-3' : ''}`}>
-          <span className={`${showBackButton ? 'ml-4' : ''} ${styles.header_title}`}>
+          <span className={`${showBackButton ? 'ml-4' : ''} ${styles.header_title} content-heaer-title`}>
             {title || t('assets.withdrawDetail')}
           </span>
         </div>

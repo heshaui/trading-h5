@@ -250,7 +250,10 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               />
             </div>
           )}
-          <div style={{ maxHeight: `calc(${bodyStyle?.height} - 44px - ${!showSearch?'52px':'0px'})`, overflowY: 'auto' }} className="selectPop-options">
+          <div 
+          style={{ maxHeight: `calc(${bodyStyle?.height} - 54px - ${showSearch?'60px':'0px'})`, overflowY: 'auto' }} 
+          // style={{ maxHeight: '480px', overflowY: 'auto' }} 
+          className="selectPop-options pb-5">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div

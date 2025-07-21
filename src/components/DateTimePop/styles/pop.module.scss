@@ -149,66 +149,77 @@
 .tip_color {
   color: var(--text-color6);
 }
-.customContent{
+
+.customContent {
   border-bottom: 0.5px solid var(--border-color11);
 }
+
 .datePickerViewBox {
   min-height: 200px;
-  :global(.adm-picker-view){
-    background-color: transparent ;
+  background-color: none !important;
+
+  :global(.adm-picker-view) {
+    background-color: none !important;
     color: var(--text-color5);
   }
-  :global(.adm-picker-view-column){
+
+  :global(.adm-picker-view-column) {
     background-color: var(--background12);
   }
 
-  :global(.adm-picker-view){
-    background-color: transparent ;
+  // * {
+  //   background-color: transparent !important;
+  // }
+  :global(.adm-picker-view) {
+    background-color: none;
     color: var(--text-color5);
-       // 强制覆盖所有可能的白色背景
-       * {
-        background-color: transparent !important;
-      }
+    // 强制覆盖所有可能的白色背景
+
 
   }
 }
-.radius_36{
+
+.radius_36 {
   border-radius: 36px;
 }
 
-:global(.adm-popup) {
-  .adm-picker-view {
-    background-color: var(--background12) !important;
-    
-    .adm-picker-view-column {
-      background-color: var(--background12) !important;
-    }
-    
-    .adm-picker-view-item {
-      color: var(--text-color6) !important;
-      background-color: var(--background12) !important;
-    }
-    
-    .adm-picker-view-item-selected {
-      color: var(--text-color5) !important;
-      background-color: var(--bgc-color) !important;
-    }
-    
-    // 遮罩层样式
-    .adm-picker-view-mask::before,
-    .adm-picker-view-mask::after {
-      background-color: var(--background12) !important;
-    }
-    
-    // 如果有内联样式，强制覆盖
-    [style*="background-color: rgb(255, 255, 255)"],
-    [style*="background-color: white"],
-    [style*="background-color: #fff"],
-    [style*="background-color: #ffffff"] {
-      background-color: var(--background12) !important;
-    }
-  }
+.border_bottom {
+  border-bottom: 0.5px solid var(--border-color11);
 }
+
+// :global(.adm-popup) {
+//   .adm-picker-view {
+//     background-color: var(--background12) !important;
+
+//     .adm-picker-view-column {
+//       background-color: var(--background12) !important;
+//     }
+
+//     .adm-picker-view-item {
+//       color: var(--text-color6) !important;
+//       background-color: var(--background12) !important;
+//     }
+
+//     .adm-picker-view-item-selected {
+//       color: var(--text-color5) !important;
+//       background-color: var(--bgc-color) !important;
+//     }
+
+//     // 遮罩层样式
+//     .adm-picker-view-mask::before,
+//     .adm-picker-view-mask::after {
+//       background-color: var(--background12) !important;
+//     }
+
+//     // 如果有内联样式，强制覆盖
+//     [style*="background-color: rgb(255, 255, 255)"],
+//     [style*="background-color: white"],
+//     [style*="background-color: #fff"],
+//     [style*="background-color: #ffffff"] {
+//       background-color: var(--background12) !important;
+//     }
+//   }
+// }
 // 响应式设计
 @media (max-width: 768px) {
   .customSelect {

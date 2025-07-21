@@ -121,10 +121,12 @@
         "dayLimit": "24H限额",
         "estimatedArrival": "预估到账",
         "fee": "手续费",
-        "withdraw": "提现",
+        "wthdraw": "提现",
         "faq": "常见问题",
         "address": "地址",
         "network": "网络",
+        "network2": "主网络",
+        "txHash": "交易哈希",
         "faqList": {
             "item1": "如何在IMBIT上充值和提现",
             "item2": "充值步骤指南",
@@ -171,7 +173,10 @@
         "title": "最近提现记录",
         "more": "更多",
         "onlyShow": "仅显示当前币种",
-        "onlyShowError": "暂未选择币种"
+        "onlyShowError": "暂未选择币种",
+        "userCancel": "用户已撤销，请重新提现",
+        "walletProcessing": "提币钱包处理中，请耐心等待",
+        "withdrawSuccess": "提现成功,请查看至币地址"
     },
     "withdrawMoneyCheck": {
         "cancel": "取消",

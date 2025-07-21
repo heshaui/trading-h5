@@ -69,7 +69,7 @@ export default function GiftTable({coinSelect}: PropsType) {
         const text = roundDown(record.amount, coin?.unitScale || 0)
       return <div className='flex-x-cc'>
         <div className='mr-1'>
-          <div className={`font-14 font-w-500 ${styles.title_color}`} >{text || '0'}</div>
+          <div className={`font-14 font-w-500 ${styles.success_icon}`} >{text || '0'}</div>
         <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
         </div>
       </div>},

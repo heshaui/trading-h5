@@ -12,19 +12,18 @@
 }
 
 .headerContent {
-  height: var(--header-height,48px); // 固定内容区域高度
+  height: 48px; // 固定内容区域高度
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 8px 0; // 内容区域内边距
   border-bottom: 0.5px solid var(--border-color11);
-  padding-left: max(env(safe-area-inset-left), 20px);
-  padding-right: max(env(safe-area-inset-right), 20px);
+  padding-left: max(env(safe-area-inset-left), 16px);
+  padding-right: max(env(safe-area-inset-right), 16px);
 }
 .logo{
     width: 140px;
     // height: 28px;
-    min-height: var(--header-height,48px);
+    min-height: 48px;
     color: #fff;
 }
 .logo img{
@@ -77,7 +76,7 @@
   
   .headerContent {
     height: var(--header-height,48px); // 移动端稍微降低高度
-    padding: 6px 0;
+    // padding: 6px 0;
   }
   
   .logo {
@@ -86,7 +85,7 @@
   }
   
   .iconGroup {
-    gap: 8px; // 移动端图标间距稍小
+    // gap: 8px; // 移动端图标间距稍小
   }
 }
 
@@ -95,8 +94,8 @@
   .headerContent {
     // 确保在支持env()的设备上正确应用安全距离
     padding-top: max(env(safe-area-inset-top), 0px);
-    padding-left: max(env(safe-area-inset-left), 20px);
-    padding-right: max(env(safe-area-inset-right), 20px);
+    padding-left: max(env(safe-area-inset-left), 16px);
+    padding-right: max(env(safe-area-inset-right), 16px);
   }
 }
 

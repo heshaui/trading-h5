@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Popup, SearchBar } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
+import { Iconify } from '@/components/icon';
 import SelectContent from './SelectContent';
 import CustomTab from '@/components/CustomCom/CustomTab';
 import { observer } from 'mobx-react-lite';
@@ -58,10 +59,11 @@ const SelectPopup: React.FC<Props> = observer(({
         {/* 头部搜索 */}
         <div className="px-4 pt-4 mb-[10px]">
           <SearchBar 
+            icon={<Iconify icon="garden:search-26" className="text-[20px]" />}
             placeholder={t('spot.header.search')}
             value={searchValue}
             onChange={handleSearch}
-            className="searchBar"
+            className="searchBar !h-[40px]"
           />
         </div>
 

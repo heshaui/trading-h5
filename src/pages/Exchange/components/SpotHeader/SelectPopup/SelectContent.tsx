@@ -131,7 +131,6 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     const enrichedPairs = filteredPairs.map(pair => {
         const symbol = `${pair.coinSymbol}_${pair.baseSymbol}_${pair.groupStatus}`;
         const wsKlineData = wsData?.[symbol];
-        
         if (wsKlineData && Array.isArray(wsKlineData) && wsKlineData.length >= 8) {
             const [timestamp, open_price, high_price, low_price, close_price, volume, changePercent, amount] = wsKlineData;
             return {

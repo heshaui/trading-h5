@@ -43,7 +43,7 @@ const SpotTabs: React.FC = () => {
     const NoLogin = () => {
         return (
             <div className="w-full flex-col justify-center items-center pt-[58px] pb-[76px]">
-                <Image src={isLight ? noLoginLightIcon : noLoginDarkIcon} className="!w-[160px] !h-[160px]" />
+                <img src={isLight ? noLoginLightIcon : noLoginDarkIcon} className="w-[160px] h-[160px]" />
                 <p className="h-[20px] flex justify-center items-center text-[14px] font-medium">
                     <button className="text-[#ff5f1f]" onClick={() => navigate('/login')}>登录</button>
                     <span className="mx-2">或</span>

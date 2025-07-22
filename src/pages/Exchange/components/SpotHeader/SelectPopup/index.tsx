@@ -52,8 +52,8 @@ const SelectPopup: React.FC<Props> = observer(({
       onClose={onCancel}
       closeOnMaskClick
       position='bottom'
-      bodyStyle={{ width: '100vw', height: '89.22vh' }}
-      bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+      bodyStyle={{ width: '100vw', height: '70vh' }}
+      bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
     >
       <div className="flex-col h-full">
         {/* 头部搜索 */}

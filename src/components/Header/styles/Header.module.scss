@@ -75,7 +75,7 @@
   }
   
   .headerContent {
-    height: var(--header-height,48px); // 移动端稍微降低高度
+    height: 48px; // var(--header-height,48px); // 移动端稍微降低高度
     // padding: 6px 0;
   }
   

@@ -30,7 +30,7 @@ const SpotTabs: React.FC = () => {
                 activeKey={activeTab}
                 onChange={setActiveTab}
                 stretch={false}
-                activeLineMode='auto'
+                activeLineMode='fixed'
                 className="spotTabs safeTabs"
             />
             {activeTab === '1' && <SpotChart />}

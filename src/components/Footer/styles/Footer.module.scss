@@ -111,3 +111,10 @@
     transform: translateY(0);
   }
 }
+
+@supports (padding: max(0px)) {
+  .footer_container_box {
+    // 确保在支持env()的设备上正确应用安全距离
+    padding-bottom: max(env(safe-area-inset-bottom), 16px);
+  }
+}

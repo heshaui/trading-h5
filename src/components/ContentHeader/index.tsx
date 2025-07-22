@@ -93,7 +93,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
 
       {/* Footer - 只有在有内容时才显示 */}
       {footer && (
-        <div className={`${styles.content_footer} ${footerClassName}`}>
+        <div className={`${styles.content_footer} ${footerClassName} safe-pb`}>
           {footer}
         </div>
       )}

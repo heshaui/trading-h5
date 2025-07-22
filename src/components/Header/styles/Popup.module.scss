@@ -62,3 +62,9 @@
   height: 50px;
   border-radius: 36px;
 }
+.copy_icon{
+  color: var(--text-color6);
+  &:hover{
+    color: var(--theme-color);
+  }
+}

@@ -189,6 +189,7 @@ export default function RechargeTable({coinSelect}: PropsType) {
               getRecordData()
             }}
             // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
+            // maxDate={dayjs().endOf('day')}
             quickSelect={true}
             placeholder={[t('btnText.startDate',{ns:'common'}), t('btnText.endDate',{ns:'common'})]}
             />

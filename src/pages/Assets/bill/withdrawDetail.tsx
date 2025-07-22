@@ -134,7 +134,7 @@ const SpotOrderPage = () => {
 			align: "center",
 			width: 158,
 			render: (_status) => {
-				return <span >{_status || '--'}</span>;
+				return <span className={`${styles.warning_box}`} >{_status || '--'}</span>;
 
 			},
 		},

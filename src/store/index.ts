@@ -56,7 +56,7 @@ class AppStore {
     languageList: any[] = [];
     kvConfig: Record<string, any> = {};
     inviteInfo: inviteInfoType = {} as inviteInfoType;
-    banlanceShow: boolean = true;
+    banlanceShow: boolean = false;
 
     // 添加 flash 配置状态
     flashConfig: any = { minTradeU: 0, maxTradeU: 0 };
@@ -737,14 +737,17 @@ class AppStore {
     setBanlanceShow(banlanceShow: boolean) {
         this.banlanceShow = banlanceShow;
         if (isBrowser()) {
-            sessionStorage.setItem('banlanceShow', JSON.stringify(banlanceShow));
+            localStorage.setItem('banlanceShow', JSON.stringify(banlanceShow));
         }
     }
     initBanlanceShow() {
         if (!isBrowser()) return;
-        const banlanceShow = sessionStorage.getItem('banlanceShow') || 'true';
-        if (banlanceShow) {
+        const banlanceShow = localStorage.getItem('banlanceShow');
+        if (banlanceShow !== null) {
             this.banlanceShow = JSON.parse(banlanceShow);
+        } else {
+            // 默认不展示
+            this.banlanceShow = false;
         }
     }
 

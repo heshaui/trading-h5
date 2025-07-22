@@ -6,7 +6,7 @@ import iconDown from '../../assets/icons/public/icon_earth_line.png';
 import iconDownDark from '../../assets/icons/public/icon_earth_dark.png';
 import styles from './index.module.scss';
 import { Action } from 'antd-mobile/es/components/popover'
-import { DownOutline ,CloseOutline} from 'antd-mobile-icons';
+import { DownOutline, CloseOutline } from 'antd-mobile-icons';
 import appStore from '@/store';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { CustomTab } from '@/components/CustomCom';
@@ -52,28 +52,28 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
     }
     onClose?.();
   };
-  const popupContent = (lang: string) => {
-    return <Button
-      onClick={() => handleLanguageSelect(lang)}
-      style={{
-        width: '100%',
-        backgroundColor: lang === currentLanguage ? '#e6f4ff' : 'transparent',
-        border: 'none'
-      }}
-    >
-      {languageNames[lang as keyof typeof languageNames]}
-    </Button>
-  };
+  // const popupContent = (lang: string) => {
+  //   return <Button
+  //     onClick={() => handleLanguageSelect(lang)}
+  //     style={{
+  //       width: '100%',
+  //       backgroundColor: lang === currentLanguage ? '#e6f4ff' : 'transparent',
+  //       border: 'none'
+  //     }}
+  //   >
+  //     {languageNames[lang as keyof typeof languageNames]}
+  //   </Button>
+  // };
 
-  const actions: Action[] = supportedLanguages.map(lang => ({
-    key: lang,
-    text: popupContent(lang),
-  }));
+  // const actions: Action[] = supportedLanguages.map(lang => ({
+  //   key: lang,
+  //   text: popupContent(lang),
+  // }));
   const filteredLang = useMemo(() => {
     return langList.map((item) => {
       // 确保使用正确的语言代码作为 value
       const languageCode = item.shortKey || item.langEncode;
-      
+
       return {
         key: item.shortKey || item.id,
         id: item.id,
@@ -143,64 +143,71 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
       )
     })
   }
+
+  const languageContent = () => {
+    return <div className={styles.tabContent}>
+      <div className={styles.searchContainer}>
+        <SearchBar
+          placeholder={t('common.langAndRate.search')}
+          value={langFilterValue}
+          onChange={setLangFilterValue}
+          className={styles.searchBar}
+        />
+      </div>
+      <div className={`${styles.listContainer} mt-4`}>
+        <ul className={styles.list}>
+          {ListComponent(filteredLang, currentLanguage)}
+        </ul>
+      </div>
+    </div>
+  }
+  const rateContent = () => {
+    return <div className={styles.tabContent}>
+      <div className={styles.searchContainer}>
+        <SearchBar
+          placeholder={t('common.langAndRate.search')}
+          value={rateFilterValue}
+          onChange={setRateFilterValue}
+          className={styles.searchBar}
+        />
+      </div>
+      <div className={`${styles.listContainer} mt-4`}>
+        <ul className={styles.list}>
+          {ListComponent(filteredRate, appStore.getRateKey())}
+        </ul>
+      </div>
+    </div>
+  }
   const tabsItems = [
     {
       title: t('common.langAndRate.lang'),//'语言',
       key: 'language',
-      children: (
-        <div className={styles.tabContent}>
-          <div className={styles.searchContainer}>
-            <SearchBar
-              placeholder={t('common.langAndRate.search')}
-              value={langFilterValue}
-              onChange={setLangFilterValue}
-              className={styles.searchBar}
-            />
-          </div>
-          <div className={`${styles.listContainer} mt-4`}>
-            <ul className={styles.list}>
-              {ListComponent(filteredLang, currentLanguage)}
-            </ul>
-          </div>
-        </div>
-      )
+      children: languageContent()
     },
     {
       title: t('common.langAndRate.rate'),//'汇率',
       key: 'rate',
-      children: (
-        <div className={styles.tabContent}>
-          <div className={styles.searchContainer}>
-            <SearchBar
-              placeholder={t('common.langAndRate.search')}
-              value={rateFilterValue}
-              onChange={setRateFilterValue}
-              className={styles.searchBar}
-            />
-          </div>
-          <div className={`${styles.listContainer} mt-4`}>
-            <ul className={styles.list}>
-              {ListComponent(filteredRate, appStore.getRateKey())}
-            </ul>
-          </div>
-        </div>
-      )
+      children: rateContent()
     }
   ]
 
 
   return (
     <div>
-      {!isMenu ? <Popover.Menu
-        actions={actions}
-        visible={visible}
-        onVisibleChange={setVisible}
-        trigger="click"
-        placement="bottom"
-        maxCount={6}
-      >
+      {!isMenu ? <>
+        {/* // <Popover.Menu
+      //   actions={actions}
+      //   visible={visible}
+      //   onVisibleChange={setVisible}
+      //   trigger="click"
+      //   placement="bottom"
+      //   maxCount={6}
+      // > */}
         <button
           className={`${styles.buttonLanguage} font-16`}
+          onClick={() => {
+            setVisible(true);
+          }}
         >
           <div className='flex-x align-center flex-1 font-w-500'>
             <Image
@@ -214,8 +221,39 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
           </div>
 
           <DownOutline fontSize={18} color="var(--text-color5)" />
+
+
         </button>
-      </Popover.Menu>
+        <Popup
+          visible={visible}
+          onClose={() => {
+            onClose?.();
+          }}
+          // destroyOnClose
+          closeOnMaskClick
+          bodyStyle={{ height: '70vh' }}
+          bodyClassName={styles.popContainer}
+        >
+          <div className={`${styles.title_color} `}>
+            <div className='relative'>
+              <div className={`py-4 px-4 flex-x algin-center justify-end`}>
+                <button onClick={() => {
+                  setVisible(false);
+                }}
+                  className={styles.tip_color}
+                >
+                  <CloseOutline fontSize={24} />
+                </button>
+              </div>
+              <div className={styles.tabContent}>
+                {/* 语言 */}
+                {languageContent()}
+              </div>
+            </div>
+          </div>
+        </Popup>
+      </>
+        // </Popover.Menu>
         : <>
           <Popup
             visible={open}

@@ -37,6 +37,8 @@ interface SelectPopProps {
   activeType?: 'background' | 'icon' // 选中样式
   emptyRender?:React.ReactNode; // 自定义空状态渲染
   allowClear?: boolean; // 是否允许清空
+  contentFooter?:React.ReactNode; // 自定义内容区域底部渲染
+  contentHeader?:React.ReactNode; // 自定义内容区域头部渲染
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -66,6 +68,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   activeType = 'background',
   emptyRender,
   allowClear = true,
+  contentFooter,
+  contentHeader
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -231,7 +235,6 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
             <h3 style={{ margin: 0 }} className={styles.title_color}>{title || placeholder || ''}</h3>
             <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={handlePopupClose} />
           </div>
-
           {showSearch && (
             <div style={{ marginBottom: '16px' }} className="px-4">
               <SearchBar
@@ -248,6 +251,9 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
           style={{ maxHeight: `calc(${bodyStyle?.height} - 54px - ${showSearch?'60px':'0px'})`, overflowY: 'auto' }} 
           // style={{ maxHeight: '480px', overflowY: 'auto' }} 
           className="selectPop-options pb-5">
+            <div className=" contentHeader w-full">
+            {contentHeader}
+            </div>
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div
@@ -289,6 +295,10 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                 {emptyRender ? emptyRender: <NoData />}
               </div>
             )}
+            <div className="px-4 mt-5 contentFooter w-full">
+               {contentFooter}
+            </div>
+           
           </div>
         </div>
       </Popup>

@@ -16,7 +16,7 @@ import {
     getTodayEarnings,
     getCoinById,
 } from "@/services/assets";
-import { Toast, Image, Checkbox,Modal } from "antd-mobile";
+import { Toast, Image, Checkbox, Modal } from "antd-mobile";
 import { add, roundDown, cut, nul } from "@/utils";
 import { useLanguage } from "@/hooks/useLanguage";
 import appStore from "@/store";
@@ -35,8 +35,8 @@ import { CustomTable } from "@/components/CustomCom";
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import AccountPop from "../components/AccountPop";
 import WithdrawStatusPop from "@/components/withDrawStatusPop";
-import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png"; 
-import  {useWithdraw} from "@/hooks/useWithdraw";
+import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png";
+import { useWithdraw } from "@/hooks/useWithdraw";
 
 const AssetsMainPage = observer(() => {
     const { t } = useLanguage(['assets', 'flash']);
@@ -64,12 +64,15 @@ const AssetsMainPage = observer(() => {
     const rateKey = appStore.getRateKey()?.replace(/\s+/g, ""); // 汇率key
     const userInfo = appStore.getUserInfo();
     const balanceDataRef = useRef<WebSocketService | null>(null);
-    const [banlanceShow, setBanlanceShow] = useState(false);
-    const [hideZero, setHideZero] = useState(false);
-    const [accountPopVisible, setAccountPopVisible] = useState(false);
     const [accountPopData, setAccountPopData] = useState<DataType>({} as DataType);
     const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
     const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
+    
+    // 使用 store 中的余额显示状态
+    const banlanceShow = appStore.getBanlanceShow();
+    const setBanlanceShow = (show: boolean) => appStore.setBanlanceShow(show);
+    const [hideZero, setHideZero] = useState(false);
+    const [accountPopVisible, setAccountPopVisible] = useState(false);
 
     const columns: ColumnType<DataType>[] = [
         {
@@ -738,7 +741,7 @@ const AssetsMainPage = observer(() => {
     //     } else {
     //         navigate('/assets/withdraw')
     //     }
-      
+
     // }
 
     useEffect(() => {
@@ -755,7 +758,7 @@ const AssetsMainPage = observer(() => {
         setIsClient(true);
         // 只在客户端执
         if (typeof window === "undefined") return;
-
+        if(coinPair&&coinPair.length>0&&coinList&&coinList.length>0) return 
         try {
             appStore.loadCurrencyPairs(); //加载币对数据
             appStore.loadCoinList(); //加载币种数据
@@ -836,12 +839,10 @@ const AssetsMainPage = observer(() => {
                                 {banlanceShow ? <div
                                     className={`${styles.tip_color}  flex-y`}
                                 >
-                                    {/* <p
-                      className={`${styles.title_color} font-w-700 font-24`}
-                    >
-                      {getCoinRound("USDT", balanceAll?.balance || 0)}&nbsp;
-                      <span className="font-w-500 font-12">USDT</span>
-                    </p> */}
+                                    {/* <p className={`${styles.title_color} font-w-700 font-24`}>
+                                        {getCoinRound("USDT", balanceAll?.balance || 0)}&nbsp;
+                                        <span className="font-w-500 font-12">USDT</span>
+                                    </p> */}
                                     <p className={`${styles.title_color} font-w-700 font-24`}>
                                         {balanceAll.usdBalance || 0}
                                         <span className="font-w-500 font-12 ml-1">{!rateKeyName ||
@@ -873,10 +874,10 @@ const AssetsMainPage = observer(() => {
                                             className={`${styles.title_color} font-w-700 font-32`}
                                         >{getCoinRound("USDT", todayProfitUSDT)}&nbsp; USDT
                                         </span> */}
-                                    <p>
+                                    <p className={`${Number(todayProfitFiat) > 0 ? styles.success_icon : Number(todayProfitFiat) < 0 ? styles.error_icon : styles.tip_color}`}>
                                         <span
-                                            className={`${Number(todayProfitFiat) > 0 ? styles.success_icon : Number(todayProfitFiat) < 0 ? styles.error_icon : styles.tip_color}`}>
-                                            &nbsp;{Number(todayProfitFiat) < 0 ? "-" : "+"}
+                                        >
+                                            &nbsp;{Number(todayProfitFiat) < 0 ? "" : "+"}
                                             {todayProfitFiat || "0"}
                                         </span>
                                         <span className="font-w-500 font-12 ml-1">
@@ -894,7 +895,7 @@ const AssetsMainPage = observer(() => {
                         <div className="flex-row mt-4 w-full">
                             <button
                                 className={`default_btn ${styles.btn_style} mr-4 flex-1`}
-                                onClick={() => navigate('/assets/deposit')}
+                                onClick={() => navigate('/assets/toUp')}
                             >
                                 {/* 充值 */}
                                 {t("assetsAccount.button.deposit")}

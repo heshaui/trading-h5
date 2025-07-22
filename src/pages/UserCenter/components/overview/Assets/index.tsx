@@ -22,7 +22,11 @@ interface chartDataType {
 const AssetsPage: React.FC = observer(() => {
     const { t } = useLanguage('userCenter');
     const navigate = useNavigate();
-    const [banlanceShow, setBanlanceShow] = useState(true)
+    
+    // 使用 store 中的余额显示状态
+    const banlanceShow = appStore.getBanlanceShow();
+    const setBanlanceShow = (show: boolean) => appStore.setBanlanceShow(show);
+    
     // 获取币种列表
     // const { coinList } = useCoinList();
     const rateKey = appStore.getRateKey()?.replace(/\s+/g, ''); // 汇率key

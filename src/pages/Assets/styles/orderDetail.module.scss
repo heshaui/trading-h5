@@ -110,3 +110,11 @@
     align-items: center;
     justify-content: center;
 }
+.warning_box {
+    color: var(--theme-color);
+    background-color: var(--theme-02);
+    /* width: 400px; */
+    /* height: 41px; */
+    padding: 2px 4px;
+    border-radius: 3px;
+}

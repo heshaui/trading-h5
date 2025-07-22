@@ -133,6 +133,7 @@ export const getThemeVariables = () => {
         light: {
             '--background': '#ffffff',
             '--theme-color': themeColor,
+            '--theme-02': getColorWithOpacity(themeColor, 0.2),
             '--theme-03': getColorWithOpacity(themeColor, 0.3),
             '--theme-05': getColorWithOpacity(themeColor, 0.5),
             '--theme-005': getColorWithOpacity(themeColor, 0.05),
@@ -254,6 +255,7 @@ export const getThemeVariables = () => {
         dark: {
             '--background': '#0a0a0a',
             '--theme-color': themeColor,
+            '--theme-02': getColorWithOpacity(themeColor, 0.2),
             '--theme-03': getColorWithOpacity(themeColor, 0.3),
             '--theme-05': getColorWithOpacity(themeColor, 0.5),
             '--theme-005': getColorWithOpacity(themeColor, 0.05),

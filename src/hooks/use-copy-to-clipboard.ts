@@ -5,7 +5,7 @@ import { Toast } from 'antd-mobile';
 
 type CopiedValue = string | null;
 
-type CopyFn = (text: string | null | undefined) => Promise<boolean>;
+type CopyFn = (text: string|number|null | undefined) => Promise<boolean>;
 
 type ReturnType = {
 	copyFn: CopyFn;
@@ -13,8 +13,8 @@ type ReturnType = {
 };
 
 // 检查文本是否为有效值的工具函数
-const isValidText = (text: string | null | undefined): text is string => {
-	return text !== null && text !== undefined && text !== '' && text.trim() !== '';
+const isValidText = (text: string|number | null | undefined): text is string => {
+	return text !== null && text !== undefined && text !== '' && String(text).trim() !== '';
 };
 
 export const useCopyToClipboard = (): ReturnType => {

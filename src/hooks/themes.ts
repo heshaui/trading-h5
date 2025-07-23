@@ -13,10 +13,8 @@ export const getThemeColorFromStorage = (): string => {
                 const parsedTheme = themeData
                 if (parsedTheme && parsedTheme.theme && parsedTheme.theme.color) {
                     const newThemeColor = parsedTheme.theme.color || '#FF5F1F';
-                    
                     // 检查主题色是否发生变化
                     if (cachedThemeColor && cachedThemeColor !== newThemeColor) {
-                        console.log(`🎨 主题色已更新: ${cachedThemeColor} → ${newThemeColor}`);
                         // 触发主题色更新事件
                         window.dispatchEvent(new CustomEvent('themeColorUpdate', { 
                             detail: { 

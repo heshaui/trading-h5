@@ -283,38 +283,3 @@ export const getCoinRound = (coinName: string, num: string | number) => {
         return 0;
     }
 }
-
-// 测试函数：验证两次换算功能
-export const testTwoStepConversion = () => {
-    console.log('=== Testing Two-Step Conversion ===');
-    
-    // 测试 getCoinRate 函数
-    console.log('--- Testing getCoinRate ---');
-    // 测试案例1: ADA -> USDT (coin rate)
-    const coinResult1 = getCoinRate('ADA', 100, 'USDT', 0);
-    console.log('ADA to USDT coin rate (type 0):', coinResult1);
-    
-    // 测试案例2: BTC -> USDT (coin rate, direct)
-    const coinResult2 = getCoinRate('BTC', 1, 'USDT', 0);
-    console.log('BTC to USDT coin rate (direct):', coinResult2);
-    
-    // 测试 getRate 函数（重构后调用 getCoinRate）
-    console.log('--- Testing getRate (using getCoinRate) ---');
-    // 测试案例3: ADA -> USDT -> USD (通过 getCoinRate)
-    const result1 = getRate('ADA', 100, 'USD', 'USDT');
-    console.log('ADA to USD (via getCoinRate):', result1);
-    
-    // 测试案例4: BTC -> USDT -> USD (直接币对)
-    const result2 = getRate('BTC', 1, 'USD', 'USDT');
-    console.log('BTC to USD (direct via getCoinRate):', result2);
-    
-    // 测试案例5: USDT -> USDT -> USD (特殊情况)
-    const result3 = getRate('USDT', 100, 'USD', 'USDT');
-    console.log('USDT to USD (special case):', result3);
-    
-    // 测试案例6: DOT -> BTC -> EUR (两次换算 + 欧元)
-    const result4 = getRate('DOT', 50, 'EUR', 'BTC');
-    console.log('DOT to EUR (via BTC):', result4);
-    
-    console.log('=== Test Complete ===');
-};

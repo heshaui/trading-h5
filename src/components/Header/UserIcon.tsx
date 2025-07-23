@@ -162,7 +162,7 @@ const UserIcon: React.FC = observer(() => {
                                 <button onClick={()=>{
                                     copyFn(userInfo?.userId)
                                 }}>
-                                    <Iconify icon="mingcute:copy-2-line" className={`ml-2 ${styles.copy_icon}`} size={14} /> 
+                                    <Iconify icon="icon-park-solid:copy" className={`ml-2 ${styles.copy_icon}`} size={14} /> 
                                 </button>
                                
                                 </div>

@@ -844,7 +844,7 @@ const AssetsMainPage = observer(() => {
                                         <span className="font-w-500 font-12">USDT</span>
                                     </p> */}
                                     <p className={`${styles.title_color} font-w-700 font-24`}>
-                                        {balanceAll.usdBalance || 0}
+                                        {roundDown(balanceAll.usdBalance || 0,2)}
                                         <span className="font-w-500 font-12 ml-1">{!rateKeyName ||
                                             rateKeyName === "" ||
                                             rateKeyName === "NaN"
@@ -878,7 +878,7 @@ const AssetsMainPage = observer(() => {
                                         <span
                                         >
                                             &nbsp;{Number(todayProfitFiat) < 0 ? "" : "+"}
-                                            {todayProfitFiat || "0"}
+                                            {roundDown(todayProfitFiat || "0",2)}
                                         </span>
                                         <span className="font-w-500 font-12 ml-1">
                                             {!rateKeyName ||
@@ -945,9 +945,9 @@ const AssetsMainPage = observer(() => {
                                 className={`${styles.custom_checkbox} text-color-default`}
                                 icon={checked =>
                                     checked ? (
-                                        <Iconify icon='carbon:circle-filled' className="theme-color" />
+                                        <Iconify icon='carbon:circle-filled' className="theme-color" size={18} />
                                     ) : (
-                                        <Iconify icon='carbon:circle-outline' className={styles.tip_color2} />
+                                        <Iconify icon='carbon:circle-outline' className={styles.tip_color2} size={18}/>
                                     )
                                 }
                             >

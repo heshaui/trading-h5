@@ -161,7 +161,7 @@ export default function GiftTable({ coinSelect }: PropsType) {
         />
         <div className='flex-1 flex-x align-center justify-end'>
           <button
-          // onClick={() => setDatePopVisible(true)}
+          onClick={() => setDatePopVisible(true)}
           >
             {/* {t('spot.columns.cancel')} */}
             <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />

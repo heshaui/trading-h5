@@ -231,7 +231,8 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
           }}
           // destroyOnClose
           closeOnMaskClick
-          bodyStyle={{ height: '70vh' }}
+          bodyStyle={{ height: '70vh' ,borderTopLeftRadius: '8px',
+            borderTopRightRadius: '8px',}}
           bodyClassName={styles.popContainer}
         >
           <div className={`${styles.title_color} `}>
@@ -242,7 +243,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
                 }}
                   className={styles.tip_color}
                 >
-                  <CloseOutline fontSize={24} />
+                  <CloseOutline fontSize={22} />
                 </button>
               </div>
               <div className={styles.tabContent}>
@@ -262,7 +263,8 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
             }}
             // destroyOnClose
             closeOnMaskClick
-            bodyStyle={{ height: '70vh' }}
+            bodyStyle={{ height: '70vh',borderTopLeftRadius: '8px',
+              borderTopRightRadius: '8px', }}
             bodyClassName={styles.popContainer}
           >
             <div className={`${styles.title_color} `}>
@@ -273,7 +275,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
                   }}
                     className={styles.tip_color}
                   >
-                    <CloseOutline fontSize={24} />
+                    <CloseOutline fontSize={22} />
                   </button>
                 </div>
                 <CustomTab
@@ -281,7 +283,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
                   direction='ltr'
                   stretch={false}
                   activeLineMode='fixed'
-                  className={`mt-4`}
+                  className={`mt-1`}
                 />
               </div>
 

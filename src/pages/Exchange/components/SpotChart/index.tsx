@@ -65,7 +65,7 @@ const SpotChart: React.FC = () => {
 
     return (
         <>
-            <ul className={`h-[34px] flex items-center pl-[10px] pr-4 border-b border-color ${chartType==='depth' ? 'justify-end' : ''}`}>
+            <ul className={`h-[34px] flex items-center pl-[10px] pr-4 border-b border-color ${chartType==='depth' ? 'justify-end' : 'hideScrollBar scrollX'}`}>
                 {
                     chartType === 'basic' && dayData.map((item, index) => (
                         <li key={index}>
@@ -113,6 +113,7 @@ const SpotChart: React.FC = () => {
                                     className="!w-[20px] !h-[20px] ml-1"
                                     onClick={open}
                                 />
+                                // <Iconify icon="bx:candles" className="text-[20px] text-[#a4a5ac] ml-1" />
                             )}
                         />
                     </li>
@@ -125,6 +126,11 @@ const SpotChart: React.FC = () => {
                                 tradingviewRef.current?.handleAddIndicator()
                             }
                         />
+                    </li>
+                    <li className="flex items-center ml-1">
+                        <button type="button" onClick={() => tradingviewRef.current?.handleOpenSettings()}>
+                            <Iconify icon="uil:setting" className="text-[20px] text-[#a4a5ac]" />
+                        </button>
                     </li>
                     <li>
                         <Image
@@ -142,6 +148,11 @@ const SpotChart: React.FC = () => {
                             onClick={() => tradingviewRef.current?.addVolumeDistribution()}
                         />
                     </li>
+                    {/* <li className="flex items-center ml-1">
+                        <button type="button" onClick={() => tradingviewRef.current?.handleTakeSnapshot()}>
+                            <Iconify icon="tabler:camera" className="text-[20px] text-[#a4a5ac]" />
+                        </button>
+                    </li> */}
                 </>)}
                 
                 <li>
@@ -163,9 +174,16 @@ const SpotChart: React.FC = () => {
                         )}
                     />
                 </li>
-                <li>
-                    
-                </li>
+                {chartType === 'basic' && <li className="flex items-center ml-1">
+                    <button type="button" onClick={() => tradingviewRef.current?.toggleFullScreen()}>
+                        <Iconify icon="icon-park-outline:full-screen-two" className="text-[20px] text-[#a4a5ac]" />
+                    </button>
+                </li>}
+                {/* <li className="flex items-center ml-1">
+                    <button type="button" onClick={() => tradingviewRef.current?.handleMaximizePane()}>
+                        <Iconify icon="material-symbols:fullscreen-rounded" className="text-[22px] text-[#a4a5ac]" />
+                    </button>
+                </li> */}
             </ul>
             {
                 chartType === 'depth' ? <DepthChart data={ depthData }/>

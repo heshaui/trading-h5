@@ -27,6 +27,9 @@ export interface TradingviewRefHandle {
   handleAddIndicator: () => void;
   handleChartScreenshot: () => void;
   toggleFullScreen: () => void;
+  handleMaximizePane: () => void; // k线最大窗格
+  handleTakeSnapshot: () => void; // 保存快照
+  handleOpenSettings: () => void; // 设置
 }
 
 // 时间间隔转换工具函数
@@ -143,6 +146,8 @@ const Tradingview: React.ForwardRefRenderFunction<
           "volume.color.1": "#FF0000", 
           "volume.transparency": 30,
           "volume.width": 1,
+          "showRelativeVolume": false,  // 关键属性
+          "volume.paneSize": "full"     // 让柱子都朝上
         });
       });
 
@@ -364,6 +369,27 @@ const Tradingview: React.ForwardRefRenderFunction<
     }
   };
 
+  // k线窗格最大化
+  const handleMaximizePane = () => {
+    if (tvWidget) {
+      tvWidget.chart().executeActionById("pane_fullscreen_action");
+    }
+  };
+
+  // 打开快照
+  const handleTakeSnapshot = () => {
+    tvWidget.takeScreenshot().then((url: string) => {
+      console.log("Chart snapshot URL:", url);
+    });
+  };
+
+  // 打开设置
+  const handleOpenSettings = () => {
+    if (tvWidget) {
+      tvWidget.chart().executeActionById("chartProperties");
+    }
+  };
+
   // expose imperative handlers
   useImperativeHandle(ref, () => ({
     addVolumeDistribution,
@@ -371,6 +397,9 @@ const Tradingview: React.ForwardRefRenderFunction<
     handleAddIndicator,
     handleChartScreenshot,
     toggleFullScreen,
+    handleMaximizePane,
+    handleTakeSnapshot,
+    handleOpenSettings
   }));
 
   const setChartType = (typeCode: number) => {

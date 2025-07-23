@@ -10,6 +10,7 @@ import type { KLineData, OrderData } from '@/context/exchange-providers/Exchange
 import SpotHeader from './SpotHeader';
 import SpotTabs from './SpotTabs';
 import SportOrder from './SpotOrder';
+import SportTrade from './SpotTrade';
 
 const ExchangeContent: React.FC = observer(() => {
     const [coinData, setCoinData] = useState<any>();
@@ -295,13 +296,15 @@ const ExchangeContent: React.FC = observer(() => {
     }, [currentPair]);
 
     return (
-        <>
+        <div className="pb-[76px]">
             <SpotHeader coinData={coinData} />
             {/* 行情、盘口、最新成交 */}
             <SpotTabs />
             {/* 当前委托、历史委托、历史成交、资产 */}
             <SportOrder />
-        </>
+            {/* 买卖 */}
+            <SportTrade />
+        </div>
     );
 });
 

@@ -163,6 +163,9 @@ const SpotChart: React.FC = () => {
                         )}
                     />
                 </li>
+                <li>
+                    
+                </li>
             </ul>
             {
                 chartType === 'depth' ? <DepthChart data={ depthData }/>

@@ -173,12 +173,12 @@ const AssetsPage: React.FC = observer(() => {
                             {banlanceShow ? <Iconify icon={'clarity:eye-show-line'} className={`${styles.tip_color} font-20`} /> : <Iconify icon={'ep:hide'} className={`${styles.tip_color} font-18`} />}
                         </button>
                     </div>
-                    {banlanceShow ? <> <p className='font-32 font-w-700 mt-1 line-40 mb-0'>{balanceAll.balance || '0.00'} USDT
+                    {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-40 mb-0'>{balanceAll.balance || '0.00'} USDT
                         {/* {tableData?.[0]?.balance || '--'} */}
                     </p>
                         <p className={`${styles.tip_color} font-14 line-20 mt-1`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance || '0.00'}</p></> :
                         <>
-                            <p className='font-32 font-w-700 mt-1 line-40 mb-0'>******</p>
+                            <p className='text-[24] font-w-700 mt-1 line-40 mb-0'>******</p>
                             <p className={`${styles.tip_color} font-14 line-20 mt-1`}>******</p>
                         </>}
                     <div className='font-14 mt-4 flex-x align-center line-20'>

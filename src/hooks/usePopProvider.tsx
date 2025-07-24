@@ -10,8 +10,9 @@ import {
 // 偏好设置枚举
 export enum PopTypeEnum {
 	INDEX = 0,
-	FEE_COIN = 1,
-	TRADE_RULE = 2,
+	FEE_COIN = 1, // 币种选择
+	TRADE_RULE = 2, // 交易规则
+	PLACE_OREER = 3, // 下订单
 }
 
 interface PopTypeContextType {

@@ -281,3 +281,53 @@
 .spot-segmented .ant-segmented-thumb {
     border-radius: 36px !important;
 }
+
+// 买卖拖地条
+.spotSlider {
+    height: 17px;
+    margin: 0 10px 16px !important;
+    .ant-slider-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--background16);
+        border: 4px solid var(--background5);
+        box-sizing: content-box;
+        inset-block-start: -7px;
+    }
+    .ant-slider-dot-active {
+        border-color: var(--theme-03);
+    }
+    .ant-slider-track {
+        background-color: var(--theme-03);
+    }
+    .ant-slider-handle::after,
+    .ant-slider-handle:hover::after {
+        width: 14px;
+        height: 14px;
+        box-shadow: 0 0 0 2px var(--theme-color) !important;
+    }
+    &.ant-slider-horizontal .ant-slider-handle {
+        inset-block-start: -1px;
+    }
+    &.ant-slider:hover {
+        .ant-slider-dot {
+            border-color: var(--background5);
+        }
+        .ant-slider-dot-active {
+            border-color: var(--theme-03);
+        }
+        .ant-slider-track {
+            background-color: var(--theme-03);
+        }
+        .ant-slider-handle::after,
+        .ant-slider-handle:hover::after {
+            width: 14px;
+            height: 14px;
+            box-shadow: 0 0 0 2px var(--theme-color) !important;
+        }
+        .ant-slider-handle {
+            inset-block-start: -1px;
+        }
+    }
+    
+}

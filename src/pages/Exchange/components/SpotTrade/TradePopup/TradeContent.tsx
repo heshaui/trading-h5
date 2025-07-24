@@ -34,6 +34,9 @@ import { useNavigate } from "react-router-dom";
 import { add, lastD, roundDown } from "@/utils";
 import { useCoinList } from "@/hooks/use-coinList";
 // import SpotModal from "@/components/spotModal/placeOrder_modal";
+import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
+
+import ConfirmOrder from "./ConfirmOrder";
 
 interface DataType {
   data: any;
@@ -54,13 +57,16 @@ type Props = {
   onOrderSuccess?: () => void; // 添加回调函数属性
   orderData?: DataType[];
   tradePrice?: number;
+  onOk: () => void;
+  onCancel: () => void;
 };
-const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }: Props) => {
+const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, onOk, onCancel }: Props) => {
   const { t } = useLanguage(["spot"]);
   const { isLight } = useTheme();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const updateOrder = appStore.getUpdateFlag();
+  const { popType, setPopType } = usePopTypeContext();
   // 获取币种列表
   // const coinList = appStore.getCoinList();
   const { coinList } = useCoinList();
@@ -538,6 +544,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
         message.error(res.message);
       }
       setLoading(false);
+      onOk();
     });
   };
 
@@ -624,9 +631,10 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
       console.log(noRemind, "noRemind");
       if (noRemind === "true") {
         setModalData(modalData);
-        setModalOpen(true);
+        // setModalOpen(true);
+        setPopType(PopTypeEnum.PLACE_OREER)
       } else {
-        setModalOpen(false);
+        // setModalOpen(false);
         handelSubmitOrder();
       }
     });
@@ -797,16 +805,24 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
       disabled={!isLoggedIn}
       value={sliderValue}
       tooltip={{
-        open: true,
         zIndex: 1000,
         placement: "top",
         // getPopupContainer: (triggerNode) => triggerNode,
         color: "var(--theme-color)", // 设置悬浮框背景颜色为橙色
-        formatter: (value) => `${(value || 0).toFixed(2)}%`,
+        formatter: (value) =>  (value || 0), // `${(value || 0).toFixed(2)}%`,
         autoAdjustOverflow: false,
       }}
+      className="spotSlider"
     />
   );
+
+  if (popType === PopTypeEnum.PLACE_OREER) {
+    return <ConfirmOrder 
+      orderData={modalData}
+      onOk={() => handelSubmitOrder()} 
+      onCancel={onCancel} 
+    />
+  }
 
   return (
     <div className="p-4">
@@ -861,7 +877,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
             },
             Slider: {
               railBg: "var(--background16)", // 滑块轨道背景色
-              railHoverBg: "var(--background25)", // 滑块轨道悬浮背景色
+              railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
             },
           },
         }}
@@ -1212,15 +1228,15 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
                 />
               </Form.Item>
               {priceDisabled && SliderRender()}
-              <ul className={`font-14 ${styles.tip_color1} mb-5`}>
-                <li className="flex justify-between align-center mb-1">
-                  <p>{t("spot.trade.available")}</p>
+              <ul className={`font-14 mb-[30px]`}>
+                <li className="flex justify-between align-center mb-[10px]">
+                  <p className="tip-color">{t("spot.trade.available")}</p>
                   {/* <p>{userBalance.find(item => item.coinName === currentPair?.baseSymbol)?.balance || '--'} {currentPair?.baseSymbol}</p> */}
                   {isLoggedIn ? (
-                    <p>
-                      {roundNum(currentPair?.baseSymbol || "")}{" "}
-                      {currentPair?.baseSymbol}{" "}
-					  <Iconify icon="gg:add" className="text-[20px]" onClick={() => {
+                    <p className="flex items-center">
+                      <span>{roundNum(currentPair?.baseSymbol || "")}{" "}
+                      {currentPair?.baseSymbol}{" "}</span>
+					            <Iconify icon="gg:add" className="text-[20px] ml-1" onClick={() => {
                           setSpotModal(true);
                       }}/>
                     </p>
@@ -1229,23 +1245,26 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
                   )}
                 </li>
                 <li className="flex justify-between align-center">
-                  <Tooltip
-                    title={
-                      !priceDisabled
+                  <Popover
+                      content={
+                        !priceDisabled
                         ? segmentedvalue === "buy"
                           ? t("spot.tooltip.buyAvailableLimit")
                           : t("spot.tooltip.sellAvailableLimit")
                         : segmentedvalue === "buy"
                         ? t("spot.tooltip.buyAvailableMarket")
                         : t("spot.tooltip.sellAvailableMarket")
-                    }
+                      }
+                      trigger='click'
+                      placement='top'
+                      mode={isLight ? 'light' : 'dark'}
                   >
-                    <p>
+                    <p className="tip-color leading-[20px] border-b border-dashed border-[#9e9e9e]">
                       {segmentedvalue === "buy"
                         ? t("spot.trade.canBuy")
                         : t("spot.trade.canSell")}
                     </p>
-                  </Tooltip>
+                  </Popover>
 
                   {isLoggedIn ? (
                     <p>
@@ -1280,7 +1299,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
                 style={{ width: "100%", height: "50px", borderRadius: "32px" }}
                 htmlType="button"
                 onClick={() => {
-				  navigate('/login')
+				          navigate('/login')
                 }}
               >
                 {t("spot.modal.login")}
@@ -1309,20 +1328,9 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice }:
                   placement='left'
                   mode={isLight ? 'light' : 'dark'}
               >
-                <div
-                  className={styles.fee_icon}
-                  style={{ marginRight: "4px", verticalAlign: "middle" }}
-                >
-                  <Iconify icon="mdi:percent-circle-outline" size={16} />
-                  <span
-                    className={styles.fee_text}
-                    style={{
-                      fontSize: "12px",
-                      paddingTop: "2px",
-                      borderBottom: "1px dashed var(--border-color, #ddd)",
-                      paddingBottom: "3px",
-                    }}
-                  >
+                <div className="flex items-center">
+                  <Iconify icon="mdi:percent-circle-outline" className="text-[16px] mr-1" />
+                  <span className="text-[14px] border-b border-dashed border-[#9e9e9e]">
                     {t("spot.label.fee")}
                   </span>
                 </div>

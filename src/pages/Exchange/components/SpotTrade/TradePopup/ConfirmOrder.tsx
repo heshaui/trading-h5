@@ -6,9 +6,11 @@ import appStore from '@/store';
 
 interface Props {
 	orderData: any;
+	onOk: () => void;
+  	onCancel: () => void;
 }
 
-const ConfirmOrder:React.FC<Props> = ({ orderData }) => {
+const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 	const { t } = useLanguage('spot');
 	// 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
@@ -32,10 +34,9 @@ const ConfirmOrder:React.FC<Props> = ({ orderData }) => {
             }
             
         }
-        
+        onOk()
         // 这里可以添加点击验证码弹窗确认按钮后的处理逻辑
     };
-	const handCancel = () => {}
 
 	return (
 		<div>
@@ -94,7 +95,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData }) => {
 				</p>
 			</Checkbox>
 			<div className="flex justify-between gap-x-[10px] px-4">
-				<button className="w-[50%] rounded-[22px] h-[44px] cancel_btn2 flex justify-center items-center" onClick={handCancel}>
+				<button className="w-[50%] rounded-[22px] h-[44px] cancel_btn2 flex justify-center items-center" onClick={onCancel}>
 					{t('cancel')}
 				</button>
 				<button className="w-[50%] rounded-[22px] h-[44px] default_btn flex justify-center items-center" onClick={handOk}>

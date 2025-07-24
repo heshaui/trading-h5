@@ -155,7 +155,7 @@ const UserIcon: React.FC = observer(() => {
                             <span className={`${styles.title_color} font-16 font-w-500`}>
                                 {userInfo?.email ? encryptString(userInfo?.email) :
                                     userInfo?.phone ? encryptString(userInfo?.phone) :
-                                        '--'}
+                                        userInfo?.registerAccount ? encryptString(userInfo?.registerAccount) :'--'}
                             </span>
                             <div className={`${styles.tip_color} font-14 font-w-400 flex-x algin-center justify-start`}>
                                 UID：{userInfo?.userId || '--'}

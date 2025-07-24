@@ -16,6 +16,8 @@ interface InviteInfoType {
 const InvitePage: React.FC = () => {
     const { t } = useLanguage('userCenter');
     const userInfo = appStore.getUserInfo()
+	const kvConfig=appStore.getKvConfigAll()
+
     const [inviteInfo, setInviteInfo] = useState<InviteInfoType>({
         inviteCode: '',
         inviteLink: ''
@@ -39,7 +41,7 @@ const InvitePage: React.FC = () => {
     }, [])
     return (< >
         <InviteCard />
-        <div className="border border-[var(--border-color4)] rounded-md mt-[20px]">
+        {kvConfig?.account_configuration === '1' &&<div className="border border-[var(--border-color4)] rounded-md mt-[20px]">
             <div className="px-[20px] border-b border-[var(--border-color4)] h-[50px] leading-[50px] text-[18px] font-medium">
                 {t('overview.recommend.inviteFriend')}
             </div>
@@ -70,7 +72,7 @@ const InvitePage: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}
     </>
     );
 };

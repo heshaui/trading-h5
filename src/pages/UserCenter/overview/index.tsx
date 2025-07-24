@@ -7,6 +7,7 @@ import InvitePage from '../components/overview/Invite';
 import styles from './index.module.scss'
 import { UserCenterLayout } from '@/components/MenuItems'
 
+
 const Overview: React.FC = () => {
 	return (
 		<div className={styles.container}>
@@ -14,7 +15,7 @@ const Overview: React.FC = () => {
 			<Assets />
 			<SafeLogPage />
 			<EquipmentPage />
-			<InvitePage />
+			 <InvitePage />
 		</div>
 	);
 };

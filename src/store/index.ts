@@ -17,7 +17,8 @@ import { inviteInfoType, usdtRateType } from "@/type/userCenter/overview"
 import { registerInfoType } from "@/type/store"
 import { getConfig } from '@/services/flash';
 import { fetchRateData, fetchLangData } from './langAndRate';
-// const { isLoggedIn} = useAuth()
+import {autoConvertLangCode} from '@/utils/stringMap'
+
 // 添加这个辅助函数来检查是否在浏览器环境
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -337,16 +338,15 @@ class AppStore {
 
         try {
             // 首先尝试从 lang 获取语言
-            const lang = localStorage.getItem('i18nextLng');
+            const lang = localStorage.getItem(LOCAL_STORAGE_KEY.LANG);
             const languageList = localStorage.getItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST);
             if (languageList) {
                 this.languageList = JSON.parse(languageList)
             } else {
                 this.languageList = []
             }
-
             if (lang) {
-                this.lang = lang;
+                this.lang =autoConvertLangCode(lang,'long') 
             } else {
                 this.lang = '';
             }
@@ -657,7 +657,7 @@ class AppStore {
     setLangList(langList: any[]) {
         this.languageList = langList;
         if (isBrowser()) {
-            localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList));
+           localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList))
         }
     }
     initKvConfig() {

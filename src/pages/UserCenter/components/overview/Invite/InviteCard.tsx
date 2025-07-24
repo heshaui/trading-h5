@@ -11,13 +11,15 @@ import { getCarouselImageList } from '@/services/userCenter';
 import { carouselImageContentsType } from '@/type/userCenter/overview'
 import styles from '@/pages/UserCenter/overview/index.module.scss';
 import appStore from '@/store';
+import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
+import { autoConvertLangCode } from '@/utils/stringMap'
 
 const InviteCard: React.FC = () => {
     const { t, currentLanguage } = useLanguage('userCenter');
     const { isDark } = useTheme();
     const navigate = useNavigate();
     const [carouselPic, setCarouselPic] = useState<any[]>([]);
-	const kvConfig=appStore.getKvConfigAll()
+    const kvConfig = appStore.getKvConfigAll()
     const getCarouselPic = async () => {
         const res = await getCarouselImageList()
         if (res.code === '0') {
@@ -26,7 +28,7 @@ const InviteCard: React.FC = () => {
     }
     const getLanguage = useCallback((carouselImageContents: carouselImageContentsType[]) => {
         // const carouselImageContents: carouselImageContentsType[] = carouselPic
-        const language = localStorage.getItem('lang') || 'en_US'
+        const language = autoConvertLangCode(localStorage.getItem(LOCAL_STORAGE_KEY.LANG) || 'en_US', 'long')
         let imgRes = carouselImageContents.filter((item: carouselImageContentsType) => item.languageCode === language)
         // 3. 如果当前语言没有对应内容，则使用英文内容
         if (!imgRes || imgRes.length === 0) {
@@ -44,11 +46,11 @@ const InviteCard: React.FC = () => {
     }, [currentLanguage]);
     return (
         <>
-            {!(carouselPic.length === 0&&kvConfig?.account_configuration === '0')&&<div className="leading-[25px] text-[18px] font-medium mb-[12px] mt-[30px]">
+            {!(carouselPic.length === 0 && kvConfig?.account_configuration === '0') && <div className="leading-[25px] text-[18px] font-medium mb-[12px] mt-[30px]">
                 {/* 为你推荐 */}
                 {t('overview.recommend.title')}
             </div>}
-            {(carouselPic.length === 0&&kvConfig?.account_configuration === '1') ? <div
+            {(carouselPic.length === 0 && kvConfig?.account_configuration === '1') ? <div
                 className="px-[16px] py-[20px] border border-[var(--border-color4)] rounded-md"
                 onClick={() => navigate('/invite')}
             >

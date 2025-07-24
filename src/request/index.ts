@@ -1,5 +1,5 @@
-import { LOCAL_STORAGE_KEY } from '../config/apiConfig';
-import appStore from '../store';
+import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
+import appStore from '@/store';
 // import { useAuth } from '@/context/AuthContext';
 // import router from 'react-router';
 // import { toast } from 'sonner';

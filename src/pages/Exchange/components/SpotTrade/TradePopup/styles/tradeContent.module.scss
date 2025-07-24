@@ -1,0 +1,142 @@
+.header_tip {
+    margin-top: 6px;
+}
+
+.tip_color {
+    color: var(--text-color6);
+}
+
+.theme_color {
+    color: var(--theme-color);
+}
+
+.btn_style {
+    /* box-shadow: 0px 4px 18px 0px #FF5F1F4D; */
+    /* box-shadow: 0px 4px 18px 0px var(--theme-shadow); */
+    border-radius: 32px;
+    padding: 4px 14px;
+    min-width: 88px;
+}
+.sumbit_btn{
+    width: 100%;
+    height: 50px;
+    border-radius: 32px;
+    background-color: #00C788;
+    color: #fff;
+}
+
+.tip_color1 {
+    color: var(--text-color4);
+}
+
+.tip_color2 {
+    color: var(--tip-color2);
+}
+
+.title_color {
+    color: var(--text-color5)
+}
+.hover_color:hover{
+    color: var(--theme-color);
+}
+.segmented_box{
+    border: 1px solid #00C788;
+    border-radius: 36px !important;
+}
+.segmented_box_red{
+    border: 1px solid #FF4D4F;
+    border-radius: 36px !important;
+}
+
+/* 输入框组件 */
+.mail_input{
+    height: 50px;
+    border-radius: 8px;
+    text-align: end;
+    background-color: var(--background7);
+    color: var(--text-color5);
+    border-color: var(--border-color4) !important;
+}
+/* 输入框文本位置 */
+.mail_input .ant-input-number-input{
+    text-align: end !important;
+}
+/* 输入框组件覆盖 */
+.mail_input:focus,
+.mail_input:focus-within {
+   border-color: var(--text-color3) !important;
+   box-shadow: none;
+   /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
+}
+/* 鼠标聚焦且移出样式 */
+.mail_input:focus:not(:hover){
+    background-color: var(--homeground);
+    color: #fff;
+    box-shadow: none;
+}
+/* 鼠标滑过 */
+.mail_input:hover{
+    border-color: var(--text-color3);
+}
+
+
+
+/* 手续费容器样式 */
+.fee_container {
+    position: relative;
+    padding: 10px 0;
+    cursor: pointer;
+    /* border-bottom: 1px dashed var(--border-color, #ddd); */
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .fee_icon {
+    color: var(--text-color4, #666);
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .fee_text {
+    color: var(--text-color3, #333);
+    font-size: 12px;
+  }
+  
+  /* 提示框样式 */
+  .fee_tooltip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    display: none;
+    z-index: 10;
+    margin-top: 8px;
+  }
+  
+  .fee_tooltip_content {
+    background-color: var(--background7, #fff);
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .fee_tooltip_title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text---text-color8);
+  }
+  
+  .fee_tooltip_details {
+    font-size: 13px;
+    color: var(--text-color3, #666);
+    line-height: 1.4;
+  }
+  
+  /* 鼠标悬停时显示提示框 */
+  .fee_container:focus .fee_tooltip {
+    display: block;
+  } 
+
+/* @media (min-width: 1680px) {} */

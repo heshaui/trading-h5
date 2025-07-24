@@ -173,12 +173,12 @@ const AssetsPage: React.FC = observer(() => {
                             {banlanceShow ? <Iconify icon={'clarity:eye-show-line'} className={`${styles.tip_color} font-20`} /> : <Iconify icon={'ep:hide'} className={`${styles.tip_color} font-18`} />}
                         </button>
                     </div>
-                    {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-40 mb-0'>{balanceAll.balance || '0.00'} USDT
+                    {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>{balanceAll.balance ? Number(balanceAll.balance).toFixed(2) : '0.00'} USDT
                         {/* {tableData?.[0]?.balance || '--'} */}
                     </p>
-                        <p className={`${styles.tip_color} font-14 line-20 mt-1`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance || '0.00'}</p></> :
+                        <p className={`${styles.tip_color} font-14 line-20 mt-1`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance ? Number(balanceAll.usdBalance).toFixed(2) : '0.00'}</p></> :
                         <>
-                            <p className='text-[24] font-w-700 mt-1 line-40 mb-0'>******</p>
+                            <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>******</p>
                             <p className={`${styles.tip_color} font-14 line-20 mt-1`}>******</p>
                         </>}
                     <div className='font-14 mt-4 flex-x align-center line-20'>
@@ -188,7 +188,7 @@ const AssetsPage: React.FC = observer(() => {
                         {banlanceShow ? <span className={`${Number(todayProfit) > 0 ? styles.success_icon : Number(todayProfit) < 0 ? styles.error_icon : styles.tip_color} font-12`}>
                             {Number(todayProfit) < 0 ? "-" : "+"}
                             &nbsp;{balanceAll?.symbol||'--'}&nbsp;
-                            {Number(todayProfit) ? Math.abs(Number(todayProfit)) : 0}
+                            {Number(todayProfit) ? Math.abs(Number(todayProfit)).toFixed(2) : 0}
                         </span> :
                             <span className={`${styles.tip_color} font-12 flex-x-cc`}>******</span>
                         }

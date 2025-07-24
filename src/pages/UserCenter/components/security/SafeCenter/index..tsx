@@ -8,6 +8,7 @@ import { Skeleton, Image } from 'antd-mobile'
 import { getSafeCenter, getPhoneClose } from "@/services/safeCenter";
 import { encryptString, encryptData } from "@/utils/encrypt";
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig";
+import { encryptIp } from '@/utils/encrypt';
 import appStore from "@/store";
 
 import GoogleIcon from '@/assets/images/userCenter/safe/icon_google.svg';
@@ -615,7 +616,11 @@ const SafeCenter: React.FC = observer(() => {
 									<div className="flex justify-between items-center">
 										<div className="flex-1">
 											<h4 className="leading-[22px] text-[16px] font-medium mb-[2px]">{ item.tip }</h4>
-											<p className="leading-[17px] text-[12px] font-normal text-[var(--text-color6)]">{ item.value }</p>
+											<p className="leading-[17px] text-[12px] font-normal text-[var(--text-color6)]">
+												{
+													item.type === 'recentIp' ? encryptIp(item.value) : item.value
+												}
+											</p>
 										</div>
 										<div className="shrink-0">
 											<button

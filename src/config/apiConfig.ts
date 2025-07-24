@@ -19,7 +19,7 @@ export const LOCAL_STORAGE_KEY = {
     PATH_FORBIDDEN: 'path_forbidden', // 禁止路径
     RATE_KEY: 'rate_key', // 汇率key
     CACHED_RATE_DATA: 'cachedRateData', // 缓存汇率数据
-    LANG: 'lang', // 当前语言
+    LANG: 'i18nextLng', // 当前语言
     LANGUAGE_LIST:'cachedLanguageList', //语言列表
     KV_CONFIG:'kv_config', // kv配置
     FLASH_CONFIG: 'flash_config', // 闪兑配置

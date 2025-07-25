@@ -13,10 +13,8 @@ export const getThemeColorFromStorage = (): string => {
                 const parsedTheme = themeData
                 if (parsedTheme && parsedTheme.theme && parsedTheme.theme.color) {
                     const newThemeColor = parsedTheme.theme.color || '#FF5F1F';
-                    
                     // 检查主题色是否发生变化
                     if (cachedThemeColor && cachedThemeColor !== newThemeColor) {
-                        console.log(`🎨 主题色已更新: ${cachedThemeColor} → ${newThemeColor}`);
                         // 触发主题色更新事件
                         window.dispatchEvent(new CustomEvent('themeColorUpdate', { 
                             detail: { 
@@ -133,6 +131,7 @@ export const getThemeVariables = () => {
         light: {
             '--background': '#ffffff',
             '--theme-color': themeColor,
+            '--theme-02': getColorWithOpacity(themeColor, 0.2),
             '--theme-03': getColorWithOpacity(themeColor, 0.3),
             '--theme-05': getColorWithOpacity(themeColor, 0.5),
             '--theme-005': getColorWithOpacity(themeColor, 0.05),
@@ -254,6 +253,7 @@ export const getThemeVariables = () => {
         dark: {
             '--background': '#0a0a0a',
             '--theme-color': themeColor,
+            '--theme-02': getColorWithOpacity(themeColor, 0.2),
             '--theme-03': getColorWithOpacity(themeColor, 0.3),
             '--theme-05': getColorWithOpacity(themeColor, 0.5),
             '--theme-005': getColorWithOpacity(themeColor, 0.05),

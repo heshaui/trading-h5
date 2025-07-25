@@ -26,7 +26,7 @@ type PropsType = {
   coinSelect: any[]
 }
 
-export default function GiftTable({coinSelect}: PropsType) {
+export default function GiftTable({ coinSelect }: PropsType) {
   const { t } = useLanguage(['assets']);
   const [tableData, setTableData] = useState<RechargeDataType[]>([]);
   const navigate = useNavigate();
@@ -39,17 +39,19 @@ export default function GiftTable({coinSelect}: PropsType) {
     page: 1,
     pageSize: 10,
     total: 0,
-    symbol: ''
+    symbol: '',
+    startTime: '',
+    endTime: ''
   })
   const getStatus = (status: number) => {
-    const statusText =Number(status)
+    const statusText = Number(status)
     switch (statusText) {
       case 0:
         return t('select.pending') //'待发放';
       case 1:
         return t('select.done') //'已完成'
       default:
-        return statusText||'--'
+        return statusText || '--'
     }
   }
   const columns: ColumnType<RechargeDataType>[] = [
@@ -67,12 +69,13 @@ export default function GiftTable({coinSelect}: PropsType) {
       render: (_value, record) => {
         const coin = coninList.find((item: any) => item.coinName === record.symbol || item.coinId === record.symbol)
         const text = roundDown(record.amount, coin?.unitScale || 0)
-      return <div className='flex-x-cc'>
-        <div className='mr-1'>
-          <div className={`font-14 font-w-500 ${styles.title_color}`} >{text || '0'}</div>
-        <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
+        return <div className='flex-x-cc'>
+          <div className='mr-1'>
+            <div className={`font-14 font-w-500 ${styles.success_icon}`} >{text || '0'}</div>
+            <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
+          </div>
         </div>
-      </div>},
+      },
     },
   ];
 
@@ -92,6 +95,8 @@ export default function GiftTable({coinSelect}: PropsType) {
         pageSize: pageParam.current.pageSize,
         symbol: pageParam.current.symbol || null,
         billType: 'GIFT',
+        startTime: pageParam.current.startTime || null,
+        endTime: pageParam.current.endTime || null
       });
       if (res.code === '0') {
         setTableData(res.data.list)
@@ -117,15 +122,15 @@ export default function GiftTable({coinSelect}: PropsType) {
   }, [])
 
   return (<>
-      {/* 赠币 */}
-      <div className={`${styles.table_box} w-full `}>
+    {/* 赠币 */}
+    <div className={`${styles.table_box} w-full `}>
       <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
         <SelectPop
           options={coinSelect}
           placeholder={t('assetsAccount.currency')}
           title={t("billDetails.selectCoin")}
           onChange={(value) => {
-            pageParam.current.page=1
+            pageParam.current.page = 1
             pageParam.current.symbol = value as string || ''
             getRecordData();
           }}
@@ -152,50 +157,49 @@ export default function GiftTable({coinSelect}: PropsType) {
               </div>
             </div>
           )}
-          // defaultValue={symbolSelect[0]?.value}
+        // defaultValue={symbolSelect[0]?.value}
         />
         <div className='flex-1 flex-x align-center justify-end'>
           <button
-            // onClick={() => setDatePopVisible(true)}
+          onClick={() => setDatePopVisible(true)}
           >
             {/* {t('spot.columns.cancel')} */}
             <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />
           </button>
-          {/* <DateTimePop
+          <DateTimePop
             popupVisible={datePopVisible}
             onOpen={() => setDatePopVisible(true)}
             handlePopupClose={() => setDatePopVisible(false)}
-            title={t('spot.select.filter')}
+            title={t('btnText.filter', { ns: 'common' })}
             onChange={(value) => {
-              pageParam.current.startTime = value[0]?.startOf('day').valueOf() || ''
-              pageParam.current.endTime = value[1]?.endOf('day').valueOf() || ''
+              pageParam.current.startTime = value[0]?.startOf('day').valueOf()?.toString() || ''
+              pageParam.current.endTime = value[1]?.endOf('day').valueOf()?.toString() || ''
               getRecordData()
             }}
-            defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
-            minDate={dayjs().subtract(6, 'month')}
-            maxDate={dayjs().endOf('day')}
-            placeholder={[t('spot.select.startTime'), t('spot.select.endTime')]}
-          /> */}
-        </div>
-      </div>
-        <div className={`${styles.table_content} w-full px-4 py-4`}>
-          <CustomTable
-            columns={columns}
-            dataSource={tableData}
-            className={`table-box`}
-            pagination={{
-              current: pageParam.current.page,
-              pageSize: pageParam.current.pageSize,
-              total: pageParam.current.total,
-              hideOnSinglePage: true,
-              onChange: (page, pageSize) => pageChange(page, pageSize),
-            }}
-            loading={loading}
-            locale={{ emptyText: <NoData textColor='#A4A5AC'  /> }}
-            p1cardBorder='none'
+            // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
+            quickSelect={true}
+            placeholder={[t('btnText.startDate', { ns: 'common' }), t('btnText.endDate', { ns: 'common' })]}
           />
         </div>
       </div>
+      <div className={`${styles.table_content} w-full px-4 py-4`}>
+        <CustomTable
+          columns={columns}
+          dataSource={tableData}
+          className={`table-box`}
+          pagination={{
+            current: pageParam.current.page,
+            pageSize: pageParam.current.pageSize,
+            total: pageParam.current.total,
+            hideOnSinglePage: true,
+            onChange: (page, pageSize) => pageChange(page, pageSize),
+          }}
+          loading={loading}
+          locale={{ emptyText: <NoData textColor='#A4A5AC' /> }}
+          p1cardBorder='none'
+        />
+      </div>
+    </div>
   </>
   );
 };

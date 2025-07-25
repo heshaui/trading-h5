@@ -1,8 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
 import styles from '../styles/layout.module.scss'
-
+import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import { MenuType, IconType } from '@/type/public/menu';
@@ -28,7 +27,7 @@ const withSpotLayout = <P extends object>(
         const defaultMenuList: MenuType[] = [
             {
                 path: '/spotOrder', //'/spot/assets',
-                icon: <SpotSvg className="w-[24px] h-[24px] title-color" />,
+                icon: <SpotSvg className="w-[24px] h-[24px] " />,
                 title: t('spot.spotOrder', { ns: 'spot' }), //'现货订单',
             }
         ];

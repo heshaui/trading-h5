@@ -80,7 +80,7 @@ function DelectModal({ open, onCancel, onOk, errMsg, orderId,type }: Props) {
                     <img 
                         src={errIcon}
                         alt="" 
-                        className={`${styles.icon_box} mr-10`} 
+                        className={`${styles.icon_box}`} 
                     />
                     <p className={`${styles.title_color} mt-1 font-20 font-w-500 text-center`}>
                         {errMsg || `${type===1?t('spot.cancelOrderModal.title3'): t('spot.cancelOrderModal.title2')}`}

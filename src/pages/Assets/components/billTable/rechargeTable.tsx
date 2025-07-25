@@ -26,7 +26,7 @@ type PropsType = {
 }
 
 export default function RechargeTable({coinSelect}: PropsType) {
-  const { t } = useLanguage(['assets']);
+  const { t } = useLanguage(['assets','common']);
   const [tableData, setTableData] = useState<RechargeDataType[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,9 @@ export default function RechargeTable({coinSelect}: PropsType) {
     page: 1,
     pageSize: 10,
     total: 0,
-    symbol: ''
+    symbol: '',
+    startTime: '',
+    endTime: ''
   })
   const getStatus = (status: number) => {
     const statusText = Number(status)
@@ -68,7 +70,7 @@ export default function RechargeTable({coinSelect}: PropsType) {
         const text = roundDown(record.amount, coin?.unitScale || 0)
       return <div className='flex-x-cc'>
         <div className='mr-1'>
-          <div className={`font-14 font-w-500 ${styles.title_color}`} >{text || '0'}</div>
+          <div className={`font-14 font-w-500 ${styles.success_icon}`} >{text || '0'}</div>
         <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
         </div>
         {/* <button className={`${styles.button} font-12 font-w-400`}>
@@ -95,6 +97,8 @@ export default function RechargeTable({coinSelect}: PropsType) {
         pageSize: pageParam.current.pageSize,
         symbol: pageParam.current.symbol || null,
         billType: 'RECHARGE',
+        startTime: pageParam.current.startTime || null,
+        endTime: pageParam.current.endTime || null
       });
       if (res.code === '0') {
         setTableData(res.data.list)
@@ -169,26 +173,26 @@ export default function RechargeTable({coinSelect}: PropsType) {
         />
         <div className='flex-1 flex-x align-center justify-end'>
           <button
-            // onClick={() => setDatePopVisible(true)}
+            onClick={() => setDatePopVisible(true)}
           >
             {/* {t('spot.columns.cancel')} */}
             <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />
           </button>
-          {/* <DateTimePop
+             <DateTimePop
             popupVisible={datePopVisible}
             onOpen={() => setDatePopVisible(true)}
             handlePopupClose={() => setDatePopVisible(false)}
-            title={t('spot.select.filter')}
-            onChange={(value) => {
-              pageParam.current.startTime = value[0]?.startOf('day').valueOf() || ''
-              pageParam.current.endTime = value[1]?.endOf('day').valueOf() || ''
+            title={t('btnText.filter',{ns:'common'})}
+            onChange={(value)=>{
+              pageParam.current.startTime = value[0]?.startOf('day').valueOf()?.toString() || ''
+              pageParam.current.endTime = value[1]?.endOf('day').valueOf()?.toString() || ''
               getRecordData()
             }}
-            defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
-            minDate={dayjs().subtract(6, 'month')}
-            maxDate={dayjs().endOf('day')}
-            placeholder={[t('spot.select.startTime'), t('spot.select.endTime')]}
-          /> */}
+            // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
+            // maxDate={dayjs().endOf('day')}
+            quickSelect={true}
+            placeholder={[t('btnText.startDate',{ns:'common'}), t('btnText.endDate',{ns:'common'})]}
+            />
         </div>
       </div>
         <div className={`${styles.table_content} w-full px-4 py-4`}>

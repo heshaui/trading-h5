@@ -116,3 +116,16 @@
     font-size: 14px;
     font-weight: 500;
 }
+.warning_box {
+    color: var(--waring-color);
+    background-color: var(--waring-bg);
+    /* width: 400px; */
+    /* height: 41px; */
+    padding: 12px 10px;
+    border-radius: 8px;
+}
+.btn_style2{
+    width: 100%;
+    height: 50px;
+    border-radius: 53px;
+}

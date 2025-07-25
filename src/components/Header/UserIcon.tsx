@@ -13,7 +13,8 @@ import userInfoDark from '@/assets/images/public/icon_userInfo_dark.png';
 import appStore from '@/store';
 import { encryptString } from '@/utils/encrypt';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { Iconify } from '../icon';
+import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 interface ListItem {
     key: string;
     title: string;
@@ -31,6 +32,7 @@ const UserIcon: React.FC = observer(() => {
     const location = useLocation();
     const currentPath = location.pathname;
     const token = appStore.getToken();
+    const { copyFn } = useCopyToClipboard();
     const handleUserClick = () => {
         // 处理用户图标点击事件
         setVisible(true)
@@ -128,7 +130,7 @@ const UserIcon: React.FC = observer(() => {
             closeOnMaskClick
             position='left'
             bodyStyle={{ width: '100vw' }}
-            bodyClassName={styles.userCenterPopContainer}
+            bodyClassName={`${styles.userCenterPopContainer} safe-py`}
         >
             <div >
                 <div className={`flex-x algin-center justify-end w-full`}>
@@ -152,10 +154,17 @@ const UserIcon: React.FC = observer(() => {
                             <span className={`${styles.title_color} font-16 font-w-500`}>
                                 {userInfo?.email ? encryptString(userInfo?.email) :
                                     userInfo?.phone ? encryptString(userInfo?.phone) :
-                                        '--'}
+                                        userInfo?.registerAccount ? encryptString(userInfo?.registerAccount) :'--'}
                             </span>
-                            <span className={`${styles.tip_color} font-14 font-w-400`}>
-                                UID：{userInfo?.userId || '--'}</span>
+                            <div className={`${styles.tip_color} font-14 font-w-400 flex-x algin-center justify-start`}>
+                                UID：{userInfo?.userId || '--'}
+                                <button onClick={()=>{
+                                    copyFn(userInfo?.userId)
+                                }}>
+                                    <Iconify icon="icon-park-solid:copy" className={`ml-2 ${styles.copy_icon}`} size={14} /> 
+                                </button>
+                               
+                                </div>
                         </div>
                     </div>
                     <ul className='mt-4'>

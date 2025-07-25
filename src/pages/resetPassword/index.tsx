@@ -51,3 +51,6 @@ function ResetPassword() {
 }
 
 export default ResetPassword;
+export const meta = {
+	requireAuth: false
+}

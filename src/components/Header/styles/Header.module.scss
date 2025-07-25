@@ -16,6 +16,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  // padding: 8px 0; // 内容区域内边距
   border-bottom: 0.5px solid var(--border-color11);
   padding-left: max(env(safe-area-inset-left), 16px);
   padding-right: max(env(safe-area-inset-right), 16px);
@@ -99,17 +100,17 @@
   }
 }
 
-// iOS设备特殊处理
-@media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-  // iPhone X/XS
-  .headerContent {
-    padding-top: 44px; // 状态栏高度
-  }
-}
+// // iOS设备特殊处理
+// @media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+//   // iPhone X/XS
+//   .headerContent {
+//     padding-top: 44px; // 状态栏高度
+//   }
+// }
 
-@media screen and (device-width: 414px) and (device-height: 896px) {
-  // iPhone XR/11
-  .headerContainer {
-    padding-top: 44px; // 状态栏高度
-  }
-} 
+// @media screen and (device-width: 414px) and (device-height: 896px) {
+//   // iPhone XR/11
+//   .headerContainer {
+//     padding-top: 44px; // 状态栏高度
+//   }
+// } 

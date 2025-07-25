@@ -31,7 +31,9 @@ interface DateTimePopProps {
   disabled?: boolean;
   className?: string;
   disabledDate?: (currentDate: Dayjs, info?: { from?: Dayjs; type?: string }) => boolean; // 新增：禁用日期函数
-  type?: 'range' | 'date'
+  type?: 'range' | 'date',
+  footerOfTop?: React.ReactNode | false,
+  quickSelect?: boolean // 是否显示快捷选择按钮（近7天、30天、90天）
 }
 
 const DateTimePop = forwardRef<any, DateTimePopProps>(({
@@ -51,24 +53,28 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
   className = '',
   disabledDate,
   type = 'range',
+  footerOfTop = false,
+  quickSelect = false
 }, ref) => {
   const { t } = useLanguage(['common']);
-  
-  // 内部状态管理 - 优先使用value，其次使用defaultValue
+
+  // 内部状态管理 - 优先使用value，其次使用defaultValue，最后默认为当天
   const [startDate, setStartDate] = useState<Date | null>(() => {
     if (value?.[0]) return value[0].toDate();
     if (defaultValue?.[0]) return defaultValue[0].toDate();
-    return null;
+    // 如果没有传入defaultValue，默认为当天开始时间
+    return dayjs().startOf('day').toDate();
   });
   const [endDate, setEndDate] = useState<Date | null>(() => {
     if (value?.[1]) return value[1].toDate();
     if (defaultValue?.[1]) return defaultValue[1].toDate();
-    return null;
+    // 如果没有传入defaultValue，默认为当天结束时间
+    return dayjs().endOf('day').toDate();
   });
-  
+
   // 当前选择的是开始时间还是结束时间
   const [selectingType, setSelectingType] = useState<'start' | 'end'>('start');
-  
+
   // 自定义内容状态
   const [customStates, setCustomStates] = useState<Record<string, boolean>>(() => {
     const states: Record<string, boolean> = {};
@@ -77,6 +83,92 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
     });
     return states;
   });
+
+  // 快捷选择状态
+  const [quickSelectState, setQuickSelectState] = useState<'7days' | '30days' | '90days' | null>(null);
+
+  // 检查日期范围是否符合快捷选择
+  const checkQuickSelectMatch = (start: Dayjs | null, end: Dayjs | null): '7days' | '30days' | '90days' | null => {
+    if (!start || !end) return null;
+    
+    const now = dayjs();
+    const days7Ago = now.subtract(6, 'day').startOf('day');
+    const days30Ago = now.subtract(29, 'day').startOf('day');
+    const days90Ago = now.subtract(89, 'day').startOf('day');
+    const today = now.endOf('day');
+
+    // 检查是否是近7天
+    if (start.isSame(days7Ago, 'day') && end.isSame(today, 'day')) {
+      return '7days';
+    }
+    // 检查是否是近30天  
+    if (start.isSame(days30Ago, 'day') && end.isSame(today, 'day')) {
+      return '30days';
+    }
+    // 检查是否是近90天
+    if (start.isSame(days90Ago, 'day') && end.isSame(today, 'day')) {
+      return '90days';
+    }
+    
+    return null;
+  };
+
+  // 初始化快捷选择状态
+  useEffect(() => {
+    if (defaultValue && defaultValue[0] && defaultValue[1]) {
+      // 有传入defaultValue时，检查是否匹配快捷选择
+      const matchedQuickSelect = checkQuickSelectMatch(defaultValue[0], defaultValue[1]);
+      setQuickSelectState(matchedQuickSelect);
+    } else {
+      // 没有传入defaultValue时，检查当天是否匹配快捷选择（当天应该不匹配任何快捷选择）
+      const today = dayjs();
+      const matchedQuickSelect = checkQuickSelectMatch(today.startOf('day'), today.endOf('day'));
+      setQuickSelectState(matchedQuickSelect);
+    }
+  }, [defaultValue]);
+
+  // 监听日期变化，检查是否匹配快捷选择
+  useEffect(() => {
+    if (startDate && endDate) {
+      const matchedQuickSelect = checkQuickSelectMatch(dayjs(startDate), dayjs(endDate));
+      if (matchedQuickSelect !== quickSelectState) {
+        setQuickSelectState(matchedQuickSelect);
+      }
+    }
+  }, [startDate, endDate]);
+
+  // 快捷选择处理函数
+  const handleQuickSelect = (type: '7days' | '30days' | '90days') => {
+    // 如果点击的是当前已选中的选项，则取消选中
+    if (quickSelectState === type) {
+      setQuickSelectState(null);
+      return;
+    }
+    
+    const now = dayjs();
+    let startDate: Dayjs;
+    let endDate: Dayjs = now.endOf('day');
+    
+    switch (type) {
+      case '7days':
+        startDate = now.subtract(6, 'day').startOf('day');
+        break;
+      case '30days':
+        startDate = now.subtract(29, 'day').startOf('day');
+        break;
+      case '90days':
+        startDate = now.subtract(89, 'day').startOf('day');
+        break;
+    }
+    
+    // 更新状态
+    setStartDate(startDate.toDate());
+    setEndDate(endDate.toDate());
+    setQuickSelectState(type);
+    
+    // 触发onChange回调
+    onChange?.([startDate, endDate]);
+  };
 
   // 监听value变化，支持受控模式
   useEffect(() => {
@@ -89,9 +181,21 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
   // 暴露给父组件的方法
   useImperativeHandle(ref, () => ({
     reset: () => {
-      // 重置到defaultValue，如果没有defaultValue则重置为null
-      setStartDate(defaultValue?.[0] ? defaultValue[0].toDate() : null);
-      setEndDate(defaultValue?.[1] ? defaultValue[1].toDate() : null);
+      if (defaultValue && defaultValue[0] && defaultValue[1]) {
+        // 有传入defaultValue时，重置为传入的时间
+        setStartDate(defaultValue[0].toDate());
+        setEndDate(defaultValue[1].toDate());
+        
+        // 检查传入的时间是否匹配快捷选择，如果匹配则选中对应的Checkbox
+        const matchedQuickSelect = checkQuickSelectMatch(defaultValue[0], defaultValue[1]);
+        setQuickSelectState(matchedQuickSelect);
+      } else {
+        // 没有传入defaultValue时，重置为当天，取消Checkbox选中
+        setStartDate(dayjs().startOf('day').toDate());
+        setEndDate(dayjs().endOf('day').toDate());
+        setQuickSelectState(null);
+      }
+      
       // 重置自定义内容状态
       const resetStates: Record<string, boolean> = {};
       customContent.forEach(item => {
@@ -122,13 +226,13 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
   };
 
   // 处理日期选择
-  const handleDateChange = (date: Date) => {
+  const handleDateSelect = (date: Date) => {
     const selectedDate = dayjs(date);
-    
-    // 检查是否被禁用
+
+    // 检查是否有禁用日期函数并且当前日期被禁用
     if (disabledDate) {
       const info = {
-        from: selectingType === 'start' ? (endDate ? dayjs(endDate) : undefined) : (startDate ? dayjs(startDate) : undefined),
+        from: selectingType === 'start' ? undefined : startDate ? dayjs(startDate) : undefined,
         type: 'day'
       };
       if (disabledDate(selectedDate, info)) {
@@ -137,11 +241,15 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
         return;
       }
     }
+    
+    // 手动选择日期时清除快捷选择状态
+    setQuickSelectState(null);
+    
     if (type === 'date') {
       setStartDate(date);
       return;
     }
-    
+
     if (selectingType === 'start') {
       setStartDate(date);
       // 如果选择的开始时间大于结束时间，清空结束时间
@@ -163,7 +271,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
       ...prev,
       [key]: checked
     }));
-    
+
     // 调用对应的onChange回调
     const item = customContent.find(item => item.key === key);
     if (item?.onChange) {
@@ -177,20 +285,31 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
       startDate ? dayjs(startDate) : null,
       endDate ? dayjs(endDate) : null
     ];
-    
+
     if (onChange) {
       onChange(result);
     }
-    
+
     handlePopupClose();
   };
 
   // 重置选择
   const handleReset = () => {
-    // 重置到defaultValue，如果没有defaultValue则重置为null
-    setStartDate(defaultValue?.[0] ? defaultValue[0].toDate() : null);
-    setEndDate(defaultValue?.[1] ? defaultValue[1].toDate() : null);
-    
+    if (defaultValue && defaultValue[0] && defaultValue[1]) {
+      // 有传入defaultValue时，重置为传入的时间
+      setStartDate(defaultValue[0].toDate());
+      setEndDate(defaultValue[1].toDate());
+      
+      // 检查传入的时间是否匹配快捷选择，如果匹配则选中对应的Checkbox
+      const matchedQuickSelect = checkQuickSelectMatch(defaultValue[0], defaultValue[1]);
+      setQuickSelectState(matchedQuickSelect);
+    } else {
+      // 没有传入defaultValue时，重置为当天，取消Checkbox选中
+      setStartDate(dayjs().startOf('day').toDate());
+      setEndDate(dayjs().endOf('day').toDate());
+      setQuickSelectState(null);
+    }
+
     // 重置自定义内容状态
     const resetStates: Record<string, boolean> = {};
     customContent.forEach(item => {
@@ -207,14 +326,14 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
     if (selectingType === 'end' && startDate) {
       // 选择结束时间时，最小日期为开始时间
       let minDate = startDate;
-      
+
       // 如果有disabledDate函数，需要考虑禁用日期的限制
       if (disabledDate) {
         // 这里可以根据disabledDate的逻辑来调整最小日期
         // 例如：如果有7天限制，可以设置为startDate
         minDate = startDate;
       }
-      
+
       return minDate;
     }
     return minDate ? minDate.toDate() : undefined;
@@ -224,13 +343,13 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
     if (selectingType === 'start' && endDate) {
       // 选择开始时间时，最大日期为结束时间
       let maxDate = endDate;
-      
+
       // 如果有disabledDate函数，需要考虑禁用日期的限制
       if (disabledDate) {
         // 这里可以根据disabledDate的逻辑来调整最大日期
         maxDate = endDate;
       }
-      
+
       return maxDate;
     }
     return maxDate ? maxDate.toDate() : undefined;
@@ -277,8 +396,8 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
           {/* 头部 */}
           <div className={`${styles.popHeader} h-[50px] flex-x justify-between align-center mb-4 pl-4`}>
             <h3 style={{ margin: 0 }} className={styles.title_color}>{title}</h3>
-            <Button 
-              size="small" 
+            <Button
+              size="small"
               onClick={handlePopupClose}
               style={{ background: 'transparent', border: 'none' }}
             >
@@ -288,14 +407,14 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
 
           {/* 自定义内容区域 */}
           {(customHeader || customContent.length > 0) && (
-            <div className={`${styles.customContent} px-4 mb-4`}>
+            <div className={`${styles.customContent} px-4`}>
               {/* 完全自定义的header */}
               {customHeader && (
                 <div className="mb-3">
                   {customHeader}
                 </div>
               )}
-              
+
               {/* 自定义内容项 */}
               {customContent.map((item) => (
                 <div key={item.key} className="mb-3">
@@ -320,55 +439,98 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
               ))}
             </div>
           )}
-
+          {quickSelect&&<div className={`w-full flex-x align-center justify-between pb-4 px-4 ${styles.border_bottom}`}>
+            <Checkbox
+              checked={quickSelectState === '7days'}
+              onChange={() => handleQuickSelect('7days')}
+              style={{
+                '--icon-size': '18px',
+                '--font-size': '14px',
+                '--gap': '8px'
+              }}
+              className="quickSelect"
+            >
+              <span className={`${styles.title_color} font-14`}>
+                {t('btnText.last7Days', { ns: 'common' }) }
+              </span>
+            </Checkbox>
+            <Checkbox
+              checked={quickSelectState === '30days'}
+              onChange={() => handleQuickSelect('30days')}
+              style={{
+                '--icon-size': '18px',
+                '--font-size': '14px',
+                '--gap': '8px'
+              }}
+              className="quickSelect"
+            >
+              <span className={`${styles.title_color} font-14`}>
+                {t('btnText.last30Days', { ns: 'common' }) }
+              </span>
+            </Checkbox>
+            <Checkbox
+              checked={quickSelectState === '90days'}
+              onChange={() => handleQuickSelect('90days')}
+              style={{
+                '--icon-size': '18px',
+                '--font-size': '14px',
+                '--gap': '8px'
+              }}
+              className="quickSelect"
+            >
+              <span className={`${styles.title_color} font-14`}>
+                {t('btnText.last90Days', { ns: 'common' }) }
+              </span>
+            </Checkbox>
+          </div>}
           {/* 日期选择区域 */}
-          <div className="px-4 mb-4">
+          <div className={`px-4 mb-4 `}>
             {/* 显示当前选择的日期范围 - 可点击切换选择模式 */}
-            {type === 'range' && 
-            <div className="mb-4 p-3 rounded-lg" style={{ backgroundColor: 'var(--background5)' }}>
-              <div className="flex justify-between items-center">
-                <button
-                  className={`flex-x-cc flex-1 text-left p-2 rounded ${selectingType === 'start' ? 'bg-blue-100' : ''}`}
-                  onClick={() => setSelectingType('start')}
-                  style={{
-                    backgroundColor: selectingType === 'start' ? 'var(--theme-color)' : 'transparent',
-                    color: selectingType === 'start' ? '#fff' : 'var(--text-color5)',
-                    border: 'none',
-                    borderRadius: '4px',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  <span className={`font-14`}>
-                    {startDate ? dayjs(startDate).format('YYYY-MM-DD') : placeholder[0]}
+            {type === 'range' &&
+              <div className={`mb-4 p-3 rounded-lg ${styles.border_bottom}`} style={{ backgroundColor: 'var(--background5)' }}>
+                <div className="flex justify-between items-center">
+                  <button
+                    className={`flex-x-cc flex-1 text-left p-2 rounded ${selectingType === 'start' ? 'bg-blue-100' : ''}`}
+                    onClick={() => setSelectingType('start')}
+                    style={{
+                      backgroundColor: selectingType === 'start' ? 'var(--theme-color)' : 'transparent',
+                      color: selectingType === 'start' ? '#fff' : 'var(--text-color6)',
+                      border: 'none',
+                      borderRadius: '4px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span className={`font-16`}>
+                      {startDate ? dayjs(startDate).format('YYYY-MM-DD') : placeholder[0]}
+                    </span>
+                  </button>
+                  <span className={`font-12 ${styles.tip_color} px-2`}>
+                    {t('btnText.to')}
                   </span>
-                </button>
-                <span className={`font-12 ${styles.tip_color} px-2`}>
-                  {t('btnText.to')}
-                </span>
-                <button
-                  className={`flex-x-cc flex-1 text-right p-2 rounded ${selectingType === 'end' ? 'bg-blue-100' : ''}`}
-                  onClick={() => setSelectingType('end')}
-                  style={{
-                    backgroundColor: selectingType === 'end' ? 'var(--theme-color)' : 'transparent',
-                    color: selectingType === 'end' ? '#fff' : 'var(--text-color5)',
-                    border: 'none',
-                    borderRadius: '4px',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  <span className={`font-14`}>
-                    {endDate ? dayjs(endDate).format('YYYY-MM-DD') : placeholder[1]}
-                  </span>
-                </button>
+                  <button
+                    className={`flex-x-cc flex-1 text-right p-2  rounded ${selectingType === 'end' ? 'bg-blue-100' : ''}`}
+                    onClick={() => setSelectingType('end')}
+                    style={{
+                      backgroundColor: selectingType === 'end' ? 'var(--theme-color)' : 'transparent',
+                      color: selectingType === 'end' ? '#fff' : 'var(--text-color6)',
+                      border: 'none',
+                      borderRadius: '4px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span className={`font-16`}>
+                      {endDate ? dayjs(endDate).format('YYYY-MM-DD') : placeholder[1]}
+                    </span>
+                  </button>
+                </div>
               </div>
-            </div>
             }
 
             {/* 日期选择器 */}
-            <div  className={`${styles.datePickerViewBox}`}>
+            <div className={`${styles.datePickerViewBox}`}>
               <DatePickerView
                 value={selectingType === 'start' ? (startDate || undefined) : (endDate || undefined)}
-                onChange={handleDateChange}
+                onChange={handleDateSelect}
                 min={minDateValue}
                 max={maxDateValue}
                 precision="day"
@@ -387,34 +549,40 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
           </div>
 
           {/* 底部按钮 */}
-          <div className="flex px-4 pt-2" style={{ gap: '12px' }}>
-            <Button
-              block
-              fill="outline"
-              onClick={handleReset}
-              style={{
-                '--border-color': 'var(--border-color4)',
-                '--text-color': 'var(--text-color6)',
-                backgroundColor: 'var(--background15)'
-              }}
-              className={`${styles.radius_36}`}
-            >
-              {/* 重置 */}
-              {t('btnText.reset')}
-            </Button>
-            <Button
-              block
-              color="primary"
-              onClick={handleConfirm}
-              style={{
-                '--background-color': 'var(--theme-color)',
-                '--border-color': 'var(--theme-color)'
-              }}
-              className={`${styles.radius_36}`}
-            >
-              {/* 确定 */}
-              {t('btnText.confirm')}
-            </Button>
+          <div>
+            {footerOfTop ? footerOfTop : null}
+            <div className="flex px-4 pt-2" style={{ gap: '12px' }}>
+
+              <Button
+                block
+                fill="outline"
+                onClick={handleReset}
+                style={{
+                  '--border-color': 'var(--border-color4)',
+                  '--text-color': 'var(--text-color6)',
+                  '--border-radius': '36px',
+                  backgroundColor: 'var(--background15)',
+                }}
+                className={`${styles.radius_36}`}
+              >
+                {/* 重置 */}
+                {t('btnText.reset')}
+              </Button>
+              <Button
+                block
+                color="primary"
+                onClick={handleConfirm}
+                style={{
+                  '--background-color': 'var(--theme-color)',
+                  '--border-color': 'var(--theme-color)',
+                  '--border-radius': '36px',
+                }}
+                className={`${styles.radius_36}`}
+              >
+                {/* 确定 */}
+                {t('btnText.confirm')}
+              </Button>
+            </div>
           </div>
         </div>
       </Popup>
@@ -423,9 +591,9 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
 });
 
 // 包装组件以支持Form.Item
-const DateTimePopWrapper: React.FC<DateTimePopProps & { name?: string }> = ({ 
-  name = "dateRange", 
-  ...props 
+const DateTimePopWrapper: React.FC<DateTimePopProps & { name?: string }> = ({
+  name = "dateRange",
+  ...props
 }) => {
   return (
     <Form.Item name={name} noStyle>

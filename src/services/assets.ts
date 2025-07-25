@@ -157,11 +157,13 @@ export function getUserALlLimit(): Promise<any> {
     method: 'GET',
   });
 }
-interface paramsType3 {
+interface   paramsType3 {
   pageNo: number
   pageSize: number
   billType: string
   symbol?: string | null
+  startTime?: string | null
+  endTime?: string | null
 }
 // 获取用户资产订单列表
 export function getOrderList(data: paramsType3): Promise<any> {

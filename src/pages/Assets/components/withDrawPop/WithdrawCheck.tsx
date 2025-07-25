@@ -135,7 +135,7 @@ function WithdrawMoneyCheck({ open, onCancel, withdrawInfo, onOk }: Props) {
             // }}
             bodyClassName={styles.popContainer}
         >
-            <div className={`${styles.title_color} flex-y justify-between h-full pb-5`}>
+            <div className={`${styles.title_color} flex-y justify-between h-full safe-pb`}>
                 {/* 标题栏 */}
                 <div className={`${styles.pop_header} flex-x algin-center justify-between`}>
                     <span className={`${styles.title_color} flex-1`}>{t('withdrawMoney.tipText2')}</span>

@@ -4,17 +4,7 @@ import { Iconify } from '@/components/icon';
 import { Popup } from 'antd-mobile';
 import styles from '../styles/index.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-// 定义图标类型
-type IconType = string | React.ReactNode;
-
-// 定义菜单项类型
-interface MenuType {
-  title: string;
-  icon: IconType;
-  path: string;
-  type?: 'p1' | 'p2'|'p3';
-}
+import { MenuType, IconType } from '@/type/public/menu';
 
 interface MenuPopupProps {
   visible: boolean;
@@ -84,7 +74,15 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, theme, onClose, menuList
                   // ${ active 
                   //   ? 'bg-[var(--theme-color)] text-white' 
                   //   : 'bg-[var(--background6)] hover:bg-[var(--background3)]' }
-                  onClick={() => handleMenuClick(menu.path)}
+                  onClick={() => {
+                    // 如果存在自定义点击事件，优先使用
+                    if (menu.onClick) {
+                      menu.onClick()
+                    } else {
+                      // 没有自定义点击事件时，执行路由跳转
+                      handleMenuClick(menu.path)
+                    }
+                  }}
                   style={{ minWidth: '80px', flex: '1' }}
                 >
                   <div className={`mb-[8px] ${active ? `${styles.active_show} text-[var(--theme-color)]` : 'text-[var(--text-color5)]'} 

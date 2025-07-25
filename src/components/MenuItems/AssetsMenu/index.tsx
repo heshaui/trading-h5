@@ -8,6 +8,7 @@ import styles from '../styles/layout.module.scss'
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import { MenuType, IconType } from '@/type/public/menu';
+import  {useWithdraw} from "@/hooks/useWithdraw";
 
 
 // 高阶组件函数
@@ -16,30 +17,35 @@ const withAssetsLayout = <P extends object>(
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
         const { t } = useLanguage('assets');
+        const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
 
         // 默认菜单列表
         const defaultMenuList: MenuType[] = [
             {
-                path: '/assets/deposit', 
-                icon: <CashSvg className="w-[24px] h-[24px] title-color" />,
+                path: '/assets/toUp', 
+                icon: <CashSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.deposit', { ns: 'assets' }), //'充值',
                 type: 'p2',
+                
             },
             {
                 path: '/assets/withdraw', 
-                icon: <DepositSvg className="w-[24px] h-[24px] title-color" />,
+                icon: <DepositSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.withdraw', { ns: 'assets' }), //'提现',
                 type: 'p2',
+                onClick: () => {
+                    goWithdraw()
+                }
             },
             {
                 path: '/assets', 
-                icon: <SpotSvg className="w-[24px] h-[24px] title-color" />,
+                icon: <SpotSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.assetsAccount', { ns: 'assets' }), //'现货账户',
                 type: 'p3',
             },
             {
                 path: '/assets/bill', 
-                icon: <BillingSvg className="w-[24px] h-[24px] title-color" />,
+                icon: <BillingSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.billDetails', { ns: 'assets' }), //'账单',
                 type: 'p3',
             },

@@ -37,6 +37,8 @@ export default function WithdrawTable({coinSelect}: PropsType) {
     pageSize: 10,
     total: 0,
     symbol: '',
+    startTime: '',
+    endTime: ''
   })
 
   const getStatus = (status: number) => {
@@ -86,7 +88,7 @@ export default function WithdrawTable({coinSelect}: PropsType) {
         }
         >
           <div className='mr-1 flex-y  align-end'>
-            <div className={`font-14 font-w-500 ${styles.title_color}`} >{text || '0'}</div>
+            <div className={`font-14 font-w-500 ${styles.error_icon}`} >{text || '0'}</div>
             <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
           </div>
           <div className={`${styles.button} font-12 font-w-400`}>
@@ -111,6 +113,8 @@ export default function WithdrawTable({coinSelect}: PropsType) {
         pageSize: pageParam.current.pageSize,
         symbol: pageParam.current.symbol || null,
         billType: 'WITHDRAW',
+        startTime: pageParam.current.startTime || null,
+        endTime: pageParam.current.endTime || null
       });
       if (res.code === '0') {
         setTableData(res.data.list)
@@ -175,25 +179,24 @@ export default function WithdrawTable({coinSelect}: PropsType) {
           />
           <div className='flex-1 flex-x align-center justify-end'>
             <button
-              // onClick={() => setDatePopVisible(true)}
+              onClick={() => setDatePopVisible(true)}
             >
               <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />
             </button>
-            {/* <DateTimePop
-              popupVisible={datePopVisible}
-              onOpen={() => setDatePopVisible(true)}
-              handlePopupClose={() => setDatePopVisible(false)}
-              title={t('spot.select.filter')}
-              onChange={(value) => {
-                pageParam.current.startTime = value[0]?.startOf('day').valueOf() || ''
-                pageParam.current.endTime = value[1]?.endOf('day').valueOf() || ''
-                getRecordData()
-              }}
-              defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
-              minDate={dayjs().subtract(6, 'month')}
-              maxDate={dayjs().endOf('day')}
-              placeholder={[t('spot.select.startTime'), t('spot.select.endTime')]}
-            /> */}
+            <DateTimePop
+            popupVisible={datePopVisible}
+            onOpen={() => setDatePopVisible(true)}
+            handlePopupClose={() => setDatePopVisible(false)}
+            title={t('btnText.filter',{ns:'common'})}
+            onChange={(value)=>{
+              pageParam.current.startTime = value[0]?.startOf('day').valueOf()?.toString() || ''
+              pageParam.current.endTime = value[1]?.endOf('day').valueOf()?.toString() || ''
+              getRecordData()
+            }}
+            // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
+            quickSelect={true}
+            placeholder={[t('btnText.startDate',{ns:'common'}), t('btnText.endDate',{ns:'common'})]}
+            />
           </div>
         </div>
         <div className={`${styles.table_content} w-full px-4 py-4`}>

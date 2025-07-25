@@ -1,8 +1,9 @@
-import { LOCAL_STORAGE_KEY } from '../config/apiConfig';
-import appStore from '../store';
+import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
+import appStore from '@/store';
 // import { useAuth } from '@/context/AuthContext';
 // import router from 'react-router';
 // import { toast } from 'sonner';
+import {autoConvertLangCode} from '@/utils/stringMap'
 
 const BASE_URL = process.env.REACT_APP_API_BASE;
 /**
@@ -27,7 +28,7 @@ export async function request<T>(
     // 'Content-Type': '',
     'Authorization': `${getToken()}`, // 获取 token（可选）
     'sa-token': `${getToken()}`,
-    'lang': localStorage.getItem('lang') || 'en_US',
+    'lang': autoConvertLangCode(localStorage.getItem(LOCAL_STORAGE_KEY.LANG) || 'en_US', 'long'),
     // 'ambit-saas': process.env.NEXT_PUBLIC_AMBIT_SAAS||'',
   };
   

@@ -1,4 +1,3 @@
-
 .success_icon {
     color: #00C788;
 }
@@ -6,10 +5,16 @@
 .error_icon {
     color: #FF4D4F;
 }
+
+.warning_icon {
+    color: #FF5F1F;
+}
+
 .tip_color {
     color: var(--text-color6);
 }
-.tip_color2{
+
+.tip_color2 {
     color: var(--tip-color2);
 }
 
@@ -27,13 +32,14 @@
 
 
 
-.border_bottom{
+.border_bottom {
     border-bottom: 0.5px solid var(--border-color11);
 }
 
 .left-icon {
     font-size: 24px;
 }
+
 .user_header {
     height: 50px;
     display: flex;
@@ -42,11 +48,13 @@
     padding: 0 16px;
     // border-bottom: 1px solid var(--border-color4);
 }
-.content_img{
+
+.content_img {
     width: 160px;
     height: 100%;
     object-fit: cover;
 }
+
 .tables_content {
     border: none;
 
@@ -69,4 +77,44 @@
             font-size: 14px;
         }
     }
+}
+
+.cancel_btn {
+    border-radius: 36px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: 113px;
+    height: 32px;
+}
+
+.border_none {
+    border-color: transparent;
+    :global {
+        .left-icon{
+            font-size: 20px;
+        }
+        .content-heaer-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+}
+
+.modal_footerBtn{
+    min-width: 80px;
+    padding: 8px 28px;
+    border-radius: 53px;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.warning_box {
+    color: var(--theme-color);
+    background-color: var(--theme-02);
+    /* width: 400px; */
+    /* height: 41px; */
+    padding: 2px 4px;
+    border-radius: 3px;
 }

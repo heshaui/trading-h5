@@ -31,11 +31,11 @@ export const layout = 'header-only';
 
 const WithdrawMoneyPage = observer(() => {
   const { t } = useLanguage('assets');
-  const allConfig = appStore.getKvConfigAll();
-  const { isDayMode } = useThemeMode();
   const [checkOpen, setCheckOpen] = useState(false);
-  const rateData = appStore.getRateData() || [];
+  const userInfo = appStore.getUserInfo();
   const rateKey = appStore.getRateKey()?.replace(/\s+/g, '')
+  const token = appStore.getToken();
+  const allConfig = appStore.getKvConfigAll();
   const navigate = useNavigate();
 
   // 商户支持的币种协议(网络)
@@ -44,7 +44,6 @@ const WithdrawMoneyPage = observer(() => {
   const [coinSelect, setCoinSelect] = useState<coinSelectType[]>([])
   const [coinLoading, setCoinLoading] = useState(false)
   const [coinIdHistory, setCoinIdHistory] = useState(0)
-  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
   // 币种余额信息
   const [coninInfo, setConinInfo] = useState<coinInfoType>({} as coinInfoType)
 
@@ -62,14 +61,11 @@ const WithdrawMoneyPage = observer(() => {
 
   const [form] = Form.useForm();
 
-  // 添加状态来存储用户信息
-  const [userInfo, setUserInfo] = useState<any>(null);
 
   // 添加状态来跟踪是否显示 MEMO
   const [showMemo, setShowMemo] = useState(false);
 
   const [allowWithdraw, setAllowWithdraw] = useState(false)
-  const { resetState } = useResetStateContext();
   const [addressInput, setAddressInput] = useState('');
 
   // 控制地址下拉菜单的显示状态
@@ -80,19 +76,6 @@ const WithdrawMoneyPage = observer(() => {
 
   const [userAllLimit, setUserAllLimit] = useState<limitType>({} as limitType)
 
-  // 在 useEffect 中获取用户信息
-  // useEffect(() => {
-  //   getUserData()
-  //   // 从localStorage恢复搜索历史
-  //   const savedHistory = localStorage.getItem('coinSearchHistory');
-  //   if (savedHistory) {
-  //     try {
-  //       setSearchHistory(JSON.parse(savedHistory));
-  //     } catch (error) {
-  //       console.error('Failed to parse search history:', error);
-  //     }
-  //   }
-  // }, []);
   // 获取用户24小时限额
   const getUserALlLimitData = async () => {
     try {
@@ -105,21 +88,6 @@ const WithdrawMoneyPage = observer(() => {
         content: String(error),
         icon: 'fail'
       })
-    }
-  }
-  const getUserData = async () => {
-    try {
-      const res = await getLoginUserInfo()
-      if (res.code === "0") {
-        setUserInfo(res.data)
-      } else {
-        Toast.show({
-          content: res.message,
-          icon: 'fail'
-        })
-      }
-    } catch (error) {
-      console.error(t('safeModal.getUserInfoError'), error);
     }
   }
 
@@ -580,7 +548,7 @@ const WithdrawMoneyPage = observer(() => {
     if (!allowWithdraw) return
     form.validateFields()
       .then((values) => {
-        const coinExtInfo=coinExtSelect.find(item => item.value === values.protocolId)
+        const coinExtInfo = coinExtSelect.find(item => item.value === values.protocolId)
         const params = {
           coinId: values.tenantId,
           toAddress: values.addressId,
@@ -602,7 +570,7 @@ const WithdrawMoneyPage = observer(() => {
           // countWithdrawFee: nul(amountNum, coninInfo.withdrawFee) > coninInfo.minWithdrawFee ? nul(amountNum, coninInfo.withdrawFee) : coninInfo.minWithdrawFee,
           countWithdrawFee: withdrawFee(amountNum || 0, coninInfo.withdrawFee, coninInfo.minWithdrawFee) || 0,
 
-      }
+        }
         setWithdrawInfo(params)
         setCheckOpen(true)
       })
@@ -618,7 +586,19 @@ const WithdrawMoneyPage = observer(() => {
     // 获取24小时限额
     getUserALlLimitData()
 
-}
+  }
+  useEffect(() => {
+    // 检查身份认证和安全设置
+    const needsKyc = userInfo?.merchantWithdrawalStatus === 1 && userInfo?.realnessStatus === 0;
+    const needsGoogleAuth = !userInfo?.isGoogleAuth;
+    if (!token || userInfo?.withdrawalStatus !== 1 || needsKyc || needsGoogleAuth) {
+      navigate('/assets')
+      Toast.show({
+        content: t('assetsAccount.button.withdrawError'),
+        icon: 'fail'
+      })
+    }
+  }, [userInfo])
   useEffect(() => {
     getCoinAllData()
     getAllProtocolTypeList()
@@ -644,17 +624,17 @@ const WithdrawMoneyPage = observer(() => {
             <p className={`${styles.tip_color} mb-1`}>{t('withdrawMoney.estimatedArrival')}</p>
             <p className={`${styles.title_color} mb-1 font-18 font-w-500`}>
               {countNum(amountNum || 0, coninInfo.withdrawFee || 0, coninInfo.minWithdrawFee || 0) || 0}
-              {coninInfo.coinName || '--'}
+              {coninInfo.coinName || ''}
 
             </p>
             <p className={`${styles.tip_color} mb-1`}>{t('withdrawMoney.fee')} <span className={`${styles.title_color}`}>
               {withdrawFee(amountNum || 0, coninInfo.withdrawFee || 0, coninInfo.minWithdrawFee || 0) || 0}
-              {coninInfo.coinName || '--'}
+              {coninInfo.coinName || ''}
             </span></p>
           </div>
           <button type='submit' className={`${styles.withdraw_btn} mr-2 ${allowWithdraw ? 'default_btn' : 'disabled_btn2 cursor-not-allowed'}`}
             onClick={onFinish}>
-            {t('withdrawMoney.withdraw')}
+            {t('withdrawMoney.wthdraw')}
           </button>
         </div>
       </div>
@@ -846,28 +826,15 @@ const WithdrawMoneyPage = observer(() => {
                         </div>
                       )
                     }}
-                  //     reservedHeight={'60px'}
-                  //     popupRender={(menu) => {
-                  //     // // 检查是否有可用的地址
-                  //     // const availableAddresses = filteredAddressOptions.filter(item => 
-                  //     //     coinExtSelect.some(coinExt => coinExt.protocolName === item.protocolName)
-                  //     // );
-
-                  //     return (
-                  //         <>
-                  //             {menu}
-                  //             <div  className='w-full flex-x-cc'>
-                  //             <button
-                  //                 type='button'
-                  //                 className={`default_btn font-16 font-w-500 mt-6 mb-6 ${styles.btn_style}`}
-                  //                 onClick={() => navigate('/assets/address')}
-                  //             >
-                  //                 {t('withdrawMoney.addAddress')}
-                  //             </button>
-                  //             </div>
-                  //         </>
-                  //     );
-                  // }}
+                    // contentFooter={
+                    //   <button
+                    //     type='button'
+                    //     className={`default_btn font-16 font-w-500 mt-6  ${styles.btn_style2} flex-x-cc`}
+                    //     onClick={() => navigate('/assets/addAddress')}
+                    //   >
+                    //     {t('withdrawMoney.addAddress')}
+                    //   </button>
+                    // }
                   // onChange={(value, option) => addressChange(value, option)}
 
                   />
@@ -924,6 +891,15 @@ const WithdrawMoneyPage = observer(() => {
                   </li>
                 </ul>);
               }}
+              contentFooter={
+                <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb-2_5`}>
+                  <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
+                  <span>
+                    {/* 请注意，这里仅展示了Metawave平台所支持的充币网络，如果您使用本平台不支持的网络充币，将可能导致资产损失。 */}
+                    {t('withdrawMoney.networkWarning2', { platformName: allConfig?.tenant_cache_name || '--' })}
+                  </span>
+                </p>
+              }
             />
           </Form.Item>
 
@@ -988,7 +964,7 @@ const WithdrawMoneyPage = observer(() => {
               <p className={`${styles.title_color}`}>
                 {/* 50.13USDT */}
                 {coninInfo.balance || '0'}&nbsp;
-                {coninInfo.coinName || '--'}
+                {coninInfo.coinName || ''}
               </p>
             </li>
             <li className={`flex-x justify-between mb-5`}>
@@ -996,14 +972,14 @@ const WithdrawMoneyPage = observer(() => {
               <p className={`${styles.title_color}`}>
                 {/* 10-10,000USDT */}
                 {/* {coninInfo.minWithdraw||'0'}-{coninInfo.maxWithdraw||'0'}{coninInfo.coinName||'--'} */}
-                {coninInfo.minWithdraw || '0'}-{coninInfo.maxWithdraw || '0'}&nbsp;{coninInfo.coinName || '--'}
+                {coninInfo.minWithdraw || '0'}-{coninInfo.maxWithdraw || '0'}&nbsp;{coninInfo.coinName || ''}
               </p>
             </li>
             <li className={`flex-x justify-between mb-5`}>
               <p>{t('withdrawMoney.dayLimit')}</p>
               {/* 24h限额 */}
               <p><span className={`${styles.title_color}`}>{userAllLimit.mix ? getCoinRateData(coninInfo.coinName, userAllLimit.mix) : '0'}</span>
-                / {userAllLimit.max ? getCoinRateData(coninInfo.coinName, userAllLimit.max) : '0'}&nbsp;{coninInfo.coinName || '--'}</p>
+                / {userAllLimit.max ? getCoinRateData(coninInfo.coinName, userAllLimit.max) : '0'}&nbsp;{coninInfo.coinName || ''}</p>
             </li>
           </ul>
 

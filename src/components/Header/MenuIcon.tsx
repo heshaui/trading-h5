@@ -142,9 +142,9 @@ const MenuIcon: React.FC = observer(() => {
             closeOnMaskClick
             position='left'
             bodyStyle={{ width: '100vw' }}
-            bodyClassName={styles.popContainer}
+            bodyClassName={`${styles.popContainer} safe-py`}
         >
-            <div>
+            <div >
                 <div className={`${styles.pop_header} flex-x algin-center justify-end w-full`}>
                 <button onClick={()=>{
                     setVisible(false);

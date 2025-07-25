@@ -17,7 +17,8 @@ import { inviteInfoType, usdtRateType } from "@/type/userCenter/overview"
 import { registerInfoType } from "@/type/store"
 import { getConfig } from '@/services/flash';
 import { fetchRateData, fetchLangData } from './langAndRate';
-// const { isLoggedIn} = useAuth()
+import {autoConvertLangCode} from '@/utils/stringMap'
+
 // 添加这个辅助函数来检查是否在浏览器环境
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -56,7 +57,7 @@ class AppStore {
     languageList: any[] = [];
     kvConfig: Record<string, any> = {};
     inviteInfo: inviteInfoType = {} as inviteInfoType;
-    banlanceShow: boolean = true;
+    banlanceShow: boolean = false;
 
     // 添加 flash 配置状态
     flashConfig: any = { minTradeU: 0, maxTradeU: 0 };
@@ -337,16 +338,15 @@ class AppStore {
 
         try {
             // 首先尝试从 lang 获取语言
-            const lang = localStorage.getItem('i18nextLng');
+            const lang = localStorage.getItem(LOCAL_STORAGE_KEY.LANG);
             const languageList = localStorage.getItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST);
             if (languageList) {
                 this.languageList = JSON.parse(languageList)
             } else {
                 this.languageList = []
             }
-
             if (lang) {
-                this.lang = lang;
+                this.lang =autoConvertLangCode(lang,'long') 
             } else {
                 this.lang = '';
             }
@@ -657,7 +657,7 @@ class AppStore {
     setLangList(langList: any[]) {
         this.languageList = langList;
         if (isBrowser()) {
-            localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList));
+           localStorage.setItem(LOCAL_STORAGE_KEY.LANGUAGE_LIST, JSON.stringify(langList))
         }
     }
     initKvConfig() {
@@ -737,14 +737,17 @@ class AppStore {
     setBanlanceShow(banlanceShow: boolean) {
         this.banlanceShow = banlanceShow;
         if (isBrowser()) {
-            sessionStorage.setItem('banlanceShow', JSON.stringify(banlanceShow));
+            localStorage.setItem('banlanceShow', JSON.stringify(banlanceShow));
         }
     }
     initBanlanceShow() {
         if (!isBrowser()) return;
-        const banlanceShow = sessionStorage.getItem('banlanceShow') || 'true';
-        if (banlanceShow) {
+        const banlanceShow = localStorage.getItem('banlanceShow');
+        if (banlanceShow !== null) {
             this.banlanceShow = JSON.parse(banlanceShow);
+        } else {
+            // 默认不展示
+            this.banlanceShow = false;
         }
     }
 

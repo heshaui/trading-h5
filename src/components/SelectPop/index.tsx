@@ -35,8 +35,10 @@ interface SelectPopProps {
   renderBtn?: ((open: () => void) => React.ReactNode) | 'buttom' | 'selectInput' // 自定义触发按钮
   bodyStyle?: React.CSSProperties; // 弹窗body的样式
   activeType?: 'background' | 'icon' // 选中样式
-  emptyRender?:React.ReactNode; // 自定义空状态渲染
+  emptyRender?: React.ReactNode; // 自定义空状态渲染
   allowClear?: boolean; // 是否允许清空
+  contentFooter?: React.ReactNode; // 自定义内容区域底部渲染
+  contentHeader?: React.ReactNode; // 自定义内容区域头部渲染
 }
 
 const SelectPop = forwardRef<any, SelectPopProps>(({
@@ -58,14 +60,14 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   displayMode = 'label', // 新增参数，默认显示label
   bodyClassName,
   renderBtn = 'buttom',
-  bodyStyle={
+  bodyStyle = {
     height: '60vh',
-    borderTopLeftRadius: '8px',
-    borderTopRightRadius: '8px',
   },
   activeType = 'background',
   emptyRender,
   allowClear = true,
+  contentFooter,
+  contentHeader
 }, ref) => {
   const [searchValue, setSearchValue] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -77,11 +79,11 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
     blur: () => handlePopupClose(),
     open: () => handlePopupOpen(),
     close: () => handlePopupClose(),
-    clearSelection: (change:boolean=false) => {
+    clearSelection: (change: boolean = false) => {
       // 清空选中状态，但不触发onChange回调
       setSelectedValue(undefined);
       if (change) {
-        onChange?.('' as any, {label: '', value: ''}); // 传递空字符串
+        onChange?.('' as any, { label: '', value: '' }); // 传递空字符串
       }
     },
   }));
@@ -125,9 +127,9 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
       console.warn('This option is disabled');
       return;
     }
-    
+
     const newValue = option.value;
-    
+
     // 如果点击的是已选中的选项，根据allowClear决定是否取消选择
     if (selectedValue === newValue) {
       if (allowClear) {
@@ -142,7 +144,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
       setSelectedValue(newValue);
       onChange?.(newValue, option);
     }
-    
+
     handlePopupClose();
   };
 
@@ -204,7 +206,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
                 {getDisplayLabel()}
               </p>
-              <Iconify icon="eva:arrow-down-fill" size={14} />
+              <Iconify icon="eva:arrow-down-fill" size={14} className={`${styles.tip_color}`} />
             </div>
           </Button> :
           renderBtn === 'selectInput' ?
@@ -214,7 +216,8 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
                 {getDisplayLabel()}
               </p>
-              <Iconify icon="icon-park:down" size={24} />
+              <Iconify icon="famicons:chevron-down-outline" size={20}
+                className={`${styles.tip_color} ${popupVisible ? styles.activ_icon : ''}`} />
             </div> :
             typeof renderBtn === 'function' ? renderBtn(handlePopupOpen) : null
       }
@@ -224,12 +227,22 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
         onMaskClick={handlePopupClose}
         position="bottom"
         bodyClassName={`${styles.popContainer} ${bodyClassName}`}
-        bodyStyle={{ ...bodyStyle}}
+        bodyStyle={{
+          borderTopLeftRadius: '8px',
+          borderTopRightRadius: '8px',
+          ...bodyStyle
+        }}
       >
-        <div className="pb-4 flex flex-col h-full">
-          <div className="flex justify-between items-center mb-4 h-[50px] text-[14px] font-medium px-4 border-b border-[var(--border-color6)]">
-            <h3 style={{ margin: 0 }} className={styles.title_color}>{title || placeholder || ''}</h3>
-            <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={handlePopupClose} />
+        <div className="py-4 h-full popup_body_box">
+          <div className={`${styles.popHeader} flex-x justify-between align-center mb-4 pl-4 pb-3 font-w-500 popup_header_box`}>
+            <h3 className={styles.title_color}>{title || placeholder || ''}</h3>
+            <Button
+              size="small"
+              onClick={handlePopupClose}
+              style={{ background: 'transparent', border: 'none' }}
+            >
+              <Iconify icon="eva:close-fill" size={20} className={styles.tip_color} />
+            </Button>
           </div>
 
           {showSearch && (
@@ -240,13 +253,17 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                 onChange={handleSearch}
                 clearable
                 style={{ '--border-radius': '8px' }}
-                className={styles.search_bar}
+                className={`${styles.search_bar} popup_search_bar`}
               />
             </div>
           )}
-          
-          <div style={{ flex: 1, minHeight: '0', overflowY: 'auto' }} className="px-4">
-            {/* <div style={{ maxHeight: `calc(${bodyStyle?.height} - 44px - ${!showSearch?'52px':'0px'})`, overflowY: 'auto' }} className="selectPop-options"> */}
+          <div
+            style={{ maxHeight: `calc(${bodyStyle?.height} - 54px - ${showSearch ? '60px' : '0px'})`, overflowY: 'auto' }}
+            // style={{ maxHeight: '480px', overflowY: 'auto' }} 
+            className="selectPop-options pb-5">
+            <div className=" contentHeader w-full">
+              {contentHeader}
+            </div>
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option, index) => (
                 <div
@@ -261,18 +278,13 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                     pointerEvents: option.disabled ? 'none' : 'auto'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ flex: 1 }}>
+                  <div className="flex-x align-center justify-between selectPop-options-label">
+                    <div className="flex-1">
                       {getOptionRenderer()(option)}
                     </div>
                     {option.disabled && (
-                      <span style={{ 
-                        fontSize: '12px', 
-                        color: '#999', 
-                        marginLeft: '8px',
-                        fontStyle: 'italic'
-                      }}>
-                        <Iconify icon="lsicon:disable-outline" size={24} />
+                      <span className="font-12 text-color6 ml-2 font-italic">
+                        <Iconify icon="lsicon:disable-outline" size={24}  />
                       </span>
                     )}
                   </div>
@@ -285,9 +297,13 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               ))
             ) : (
               <div style={{ padding: '20px 0', textAlign: 'center' }}>
-                {emptyRender ? emptyRender: <NoData />}
+                {emptyRender ? emptyRender : <NoData />}
               </div>
             )}
+            <div className="px-4 mt-5 contentFooter w-full">
+              {contentFooter}
+            </div>
+
           </div>
         </div>
       </Popup>
@@ -314,14 +330,14 @@ const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
   notFoundContent?: React.ReactNode;
   onFocus?: () => void;
 }>((props, ref) => {
-  const { 
+  const {
     allowClear = true, // 确保有默认值
-    loading, 
-    notFoundContent, 
-    onFocus, 
+    loading,
+    notFoundContent,
+    onFocus,
     onChange,
     value,
-    ...restProps 
+    ...restProps
   } = props;
 
   const selectRef = React.useRef<any>(null);
@@ -335,12 +351,12 @@ const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
   const handleChange = (newValue: string | number | undefined, option: OptionItem) => {
     // 将undefined转换为空字符串，更好地与Antd表单集成
     const formValue = newValue === undefined ? '' : newValue;
-    
+
     // 调用原始onChange（如果存在），传递转换后的值
     if (onChange) {
       onChange(formValue, option);
     }
-    
+
     // 手动触发表单验证，特别是当值变为undefined时
     setTimeout(() => {
       // 触发自定义事件来通知表单值已变化
@@ -354,7 +370,7 @@ const SelectPopAntdWrapper = React.forwardRef<any, SelectPopProps & {
   };
 
   return (
-    <SelectPop 
+    <SelectPop
       ref={selectRef}
       {...restProps}
       value={value}

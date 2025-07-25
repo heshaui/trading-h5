@@ -49,7 +49,7 @@ const actionConfig: Record<ActionType.WITHDRAW | ActionType.DEPOSIT, ActionConfi
   [ActionType.DEPOSIT]: {
     permission: 'canRecharge',
     errorKey: 'assetsAccount.button.depositError2',
-    route: '/assets/deposit'
+    route: '/assets/toUp'
   }
 };
 const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) => {

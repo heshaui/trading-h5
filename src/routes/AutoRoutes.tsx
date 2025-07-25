@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Iconify } from '@/components/icon';
 // 包含页头、页脚
 import MainLayout from './layouts/MainLayout';
 // 空页面
@@ -45,8 +46,16 @@ const routes = pageModules.keys().map((key: string) => {
 
 // console.log(routes)
 
+const Loading = () => {
+  return (
+    <div className="w-full h-[100vh] flex justify-center items-center">
+      <Iconify icon="eos-icons:bubble-loading" className="theme-color text-[48px]" />
+    </div>
+  )
+}
+
 const AutoRoutes = () => (
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<Loading />}>
     <Routes>
       {routes.map(({ path, element, layout, requireAuth }) => {
         const Layout = layoutMap[layout] || MainLayout;

@@ -180,7 +180,7 @@ const AssetsPage: React.FC = observer(() => {
                     {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>{balanceAll.balance ? Number(balanceAll.balance).toFixed(2) : '0.00'} USDT
                         {/* {tableData?.[0]?.balance || '--'} */}
                     </p>
-                        <p className={`${styles.tip_color} font-14 line-20 mt-1`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance ? Number(balanceAll.usdBalance).toFixed(2) : '0.00'}</p></> :
+                        <p className={`${styles.tip_color} font-14 line-20 mt-1 ltr-text`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance ? Number(balanceAll.usdBalance).toFixed(2) : '0.00'}</p></> :
                         <>
                             <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>******</p>
                             <p className={`${styles.tip_color} font-14 line-20 mt-1`}>******</p>
@@ -189,7 +189,7 @@ const AssetsPage: React.FC = observer(() => {
                         {/* 今日盈亏 */}
                         {t('overview.assets.todayProfitLoss')}
                         <Iconify icon="ep:warning" className={`${styles.tip_color} font-12 mx-1`} />
-                        {banlanceShow ? <span className={`${Number(todayProfit) > 0 ? styles.success_icon : Number(todayProfit) < 0 ? styles.error_icon : styles.tip_color} font-12`}>
+                        {banlanceShow ? <span className={`ltr-text ${Number(todayProfit) > 0 ? styles.success_icon : Number(todayProfit) < 0 ? styles.error_icon : styles.tip_color} font-12`}>
                             {Number(todayProfit) < 0 ? "-" : "+"}
                             &nbsp;{balanceAll?.symbol||'--'}&nbsp;
                             {Number(todayProfit) ? Math.abs(Number(todayProfit)).toFixed(2) : 0}
@@ -202,15 +202,15 @@ const AssetsPage: React.FC = observer(() => {
                     <AssetsAreaChart chartData={balanceByDay} />
                 </div>
             </div>
-            <div className='mt-5'>
+            <div className='mt-5 flex'>
                 <button type='button' className={`${styles.btn} mr-4 ${styles.saveBtn}`}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/assets/toUp')}
                 >
                     {/* 充值 */}
                     {t('overview.assets.deposit')}
                 </button>
                 <button type='button' className={`${styles.cancleBtn}  ${styles.btn}`}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/assets/withdraw')}
                 >
                     {/* 提现 */}
                     {t('overview.assets.withdraw')}

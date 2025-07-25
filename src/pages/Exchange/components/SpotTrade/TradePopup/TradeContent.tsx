@@ -17,26 +17,21 @@ import type { SliderSingleProps } from "antd";
 import { useLanguage } from "@/hooks";
 import { useTheme } from "@/hooks";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-// import BuyPage from './buy_page';
 import type { TabsProps } from "antd";
 import { createOrder } from "@/services/spot";
-// import PlaceOrderModal from "../Modal/placeOrder_modal";
 import { encryptData } from "@/utils/encrypt";
-// import ErrorModal from "@/components/spotModal/Error_modal";
-// import SpotBuyModal from "@/components/spotModal/placeOrder_modal";
 import { getUserBalance, getUserBalanceAll } from "@/services/assets";
 import { Toast, Popover } from 'antd-mobile';
 import { CustomTab } from "@/components/CustomCom";
 import appStore from "@/store";
 import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-// import ToastModal from "@/components/spotModal/Toast_modal";
 import { add, lastD, roundDown } from "@/utils";
 import { useCoinList } from "@/hooks/use-coinList";
-// import SpotModal from "@/components/spotModal/placeOrder_modal";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 
 import ConfirmOrder from "./ConfirmOrder";
+import SpotBuyPopup from "./SpotBuyPopup";
 
 interface DataType {
   data: any;
@@ -65,6 +60,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
   const { isLight } = useTheme();
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
   const updateOrder = appStore.getUpdateFlag();
   const { popType, setPopType } = usePopTypeContext();
   // 获取币种列表
@@ -434,8 +430,9 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
 
   const handelSubmitOrder = async () => {
     // 在提交时手动验证必填字段
-    const values = form.getFieldsValue();
+    const values = popType === PopTypeEnum.PLACE_OREER ? modalData : form.getFieldsValue();
     let hasError = false;
+    let errMsg;
 
     // 验证价格字段 - 只在限价模式下验证
     if (!priceDisabled && (!values.price || values.price === "")) {
@@ -446,6 +443,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
         },
       ]);
       hasError = true;
+      errMsg = t("spot.error.enterPrice");
     }
 
     // 验证数量字段
@@ -460,6 +458,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
         },
       ]);
       hasError = true;
+      errMsg = t("spot.error.enterAmount");
     }
 
     // 验证金额字段 - 市价买单或限价单都需要验证
@@ -472,10 +471,15 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
           },
         ]);
         hasError = true;
+        errMsg = t("spot.error.enterTotal");
       }
     }
 
     if (hasError) {
+      if (popType === PopTypeEnum.PLACE_OREER) {
+        message.error(errMsg);
+        setPopType(PopTypeEnum.INDEX)
+      }
       return;
     }
 
@@ -494,57 +498,62 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
       };
       console.log(params, "params");
       setLoading(true);
-      const data = await encryptData(params);
-      const res = await createOrder(data);
-      if (res.code === "0") {
-        getUserBalanceData();
-        setModalOpen(false);
-        form.resetFields();
-        setSliderValue(0);
+      try {
+        const data = await encryptData(params);
+        const res = await createOrder(data);
+        if (res.code === "0") {
+          getUserBalanceData();
+          setModalOpen(false);
+          form.resetFields();
+          setSliderValue(0);
 
-        // 通知父组件下单成功
-        if (typeof onOrderSuccess === "function") {
-          onOrderSuccess();
-          notification.success({
-            message: t("spot.success.orderPlaced"),
-            description: (
-              <div>
+          // 通知父组件下单成功
+          if (typeof onOrderSuccess === "function") {
+            onOrderSuccess();
+            notification.success({
+              message: t("spot.success.orderPlaced"),
+              description: (
                 <div>
-                  {t("spot.label.pair")}: {currentPair?.coinSymbol}/
-                  {currentPair?.baseSymbol}
-                </div>
-                {values.amount && (
                   <div>
-                    {t("spot.label.amount")}: {values.amount}{" "}
-                    {currentPair?.coinSymbol}
+                    {t("spot.label.pair")}: {currentPair?.coinSymbol}/
+                    {currentPair?.baseSymbol}
                   </div>
-                )}
-                <div>
-                  {t("spot.label.price")}:{" "}
-                  {priceDisabled
-                    ? formatWithPrecision(
-                        res.data[1],
-                        currentPair?.baseCoinScale || 8
-                      ) +
-                      " " +
-                      currentPair?.baseSymbol
-                    : formatWithPrecision(
-                        values.price,
-                        currentPair?.baseCoinScale || 8
-                      ) +
-                      " " +
-                      currentPair?.baseSymbol}
+                  {values.amount && (
+                    <div>
+                      {t("spot.label.amount")}: {values.amount}{" "}
+                      {currentPair?.coinSymbol}
+                    </div>
+                  )}
+                  <div>
+                    {t("spot.label.price")}:{" "}
+                    {priceDisabled
+                      ? formatWithPrecision(
+                          res.data[1],
+                          currentPair?.baseCoinScale || 8
+                        ) +
+                        " " +
+                        currentPair?.baseSymbol
+                      : formatWithPrecision(
+                          values.price,
+                          currentPair?.baseCoinScale || 8
+                        ) +
+                        " " +
+                        currentPair?.baseSymbol}
+                  </div>
                 </div>
-              </div>
-            ),
-            duration: 3,
-          });
+              ),
+              duration: 3,
+            });
+          }
+        } else {
+          message.error(res.message);
         }
-      } else {
-        message.error(res.message);
-      }
-      setLoading(false);
-      onOk();
+        setLoading(false);
+        onOk();
+      } catch (err) {
+        setLoading(false);
+        message.error(String(err))
+      }  
     });
   };
 
@@ -632,7 +641,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
       if (noRemind === "true") {
         setModalData(modalData);
         // setModalOpen(true);
-        setPopType(PopTypeEnum.PLACE_OREER)
+        setPopType(PopTypeEnum.PLACE_OREER);
       } else {
         // setModalOpen(false);
         handelSubmitOrder();
@@ -660,8 +669,8 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
       }
     } catch (error) {
 	  Toast.show({
-		icon: 'fail',
-		content: String(error)
+      icon: 'fail',
+      content: String(error)
 	  })
     }
   };
@@ -805,11 +814,15 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
       disabled={!isLoggedIn}
       value={sliderValue}
       tooltip={{
+        open: true,
         zIndex: 1000,
         placement: "top",
-        // getPopupContainer: (triggerNode) => triggerNode,
+        arrow: false,
+        className: "sliderTooltip",
+        destroyOnHidden: true,
+        getPopupContainer: (trigger) => trigger.parentNode as HTMLElement,
         color: "var(--theme-color)", // 设置悬浮框背景颜色为橙色
-        formatter: (value) =>  (value || 0), // `${(value || 0).toFixed(2)}%`,
+        formatter: (value) =>  `${value ? value.toFixed(2) : 0}%`,
         autoAdjustOverflow: false,
       }}
       className="spotSlider"
@@ -825,7 +838,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
   }
 
   return (
-    <div className="p-4">
+    <div ref={containerRef} className="p-4">
       <ConfigProvider
         theme={{
           components: {
@@ -876,13 +889,23 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
               defaultHoverColor: "#fff",
             },
             Slider: {
+              controlSize: 16,
+              dotActiveBorderColor: "var(--theme-05)",
+              dotBorderColor: "var(--background5)",
+              dotSize: 16,
+              handleActiveColor: "var(--theme-color)",
+              handleActiveOutlineColor: "var(--theme-02)",
+              handleColor: "var(--theme-05)",
               railBg: "var(--background16)", // 滑块轨道背景色
               railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
+              trackBg: "var(--theme-05)",
+              trackBgDisabled: "var(--background16)",
+              trackHoverBg: "var(--theme-color)"
             },
           },
         }}
       >
-        <div className={`mb-6`}>
+        <div  className={`mb-6`}>
           <Segmented
             options={[
               {
@@ -985,20 +1008,20 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
                     priceDisabled
                       ? false
                       : {
-                          upIcon: (
+                          upIcon: 
                             <Iconify
                               icon="mdi:chevron-up"
                               size={20}
                               className={`${styles.title_color} ${styles.hover_color}`}
                             />
-                          ),
-                          downIcon: (
+                          ,
+                          downIcon: 
                             <Iconify
                               icon="mdi:chevron-down"
                               size={20}
                               className={`${styles.title_color} ${styles.hover_color}`}
                             />
-                          ),
+                          ,
                         }
                   }
                   formatter={(value: any) => {
@@ -1327,6 +1350,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
                   trigger='click'
                   placement='left'
                   mode={isLight ? 'light' : 'dark'}
+                  getContainer={() => containerRef.current!}
               >
                 <div className="flex items-center">
                   <Iconify icon="mdi:percent-circle-outline" className="text-[16px] mr-1" />
@@ -1337,40 +1361,12 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, o
               </Popover>
             </div>
           </div>
-
-          {/* <PlaceOrderModal
-            open={modalOpen}
-            modalData={modalData}
-            onCancel={() => {
-              setModalOpen(false);
-            }}
-            onOk={() => {
-              handelSubmitOrder();
-            }}
-          /> */}
-          {/* <SpotBuyModal
+          <SpotBuyPopup 
             open={spotModal}
             onCancel={() => {
               setSpotModal(false);
             }}
-            onOk={() => {
-              setSpotModal(false);
-            }}
           />
-          <ErrorModal
-            open={errorModal}
-            onCancel={() => {
-              setErrorModal(false);
-            }}
-            onOk={() => {
-              setErrorModal(false);
-            }}
-          /> */}
-
-          {/* <SpotBuyModal open={modalOpen} onCancel={() => { setModalOpen(false) }} onOk={() => { setModalOpen(false) }} /> */}
-
-          {/* 已挂单/已撤单 */}
-          {/* <ToastModal open={toastModal} type='1' onCancel={() => { setToastModal(false) }} onOk={() => { setToastModal(false) }} toastData={toastData} /> */}
         </div>
       </ConfigProvider>
     </div>

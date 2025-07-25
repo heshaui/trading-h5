@@ -5,6 +5,7 @@ import { useLanguage } from '@/hooks';
 import { PopTypeProvider, usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 
 import TradeContent from './TradeContent';
+import { use } from 'echarts';
 
 type Props = {
   open: boolean;
@@ -15,12 +16,24 @@ type Props = {
 
 const TradePopupContent: React.FC<Props> = ({open, tradeType, onOk, onCancel}) => {
 	const {t} = useLanguage('spot');
-	const { popType } = usePopTypeContext();
+	const { popType, setPopType } = usePopTypeContext();
+	const handleOk = () => {
+		onOk();
+		setPopType(PopTypeEnum.INDEX)
+	}
+	const handleCancel = () => {
+		onCancel();
+		setPopType(PopTypeEnum.INDEX)
+	}
+	useEffect(() => {
+		setPopType(PopTypeEnum.INDEX)
+	}, [open])
 	return (
 		<Popup
 			visible={open}
 			onClose={onCancel}
 			closeOnMaskClick
+			destroyOnClose
 			position="bottom"
 			bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
 			bodyClassName={`${popType === PopTypeEnum.INDEX ? '!h-[628px]' : '!h-auto'} !bg-[var(--background5)] !text-[var(--text-color5)]`}
@@ -29,7 +42,7 @@ const TradePopupContent: React.FC<Props> = ({open, tradeType, onOk, onCancel}) =
 				<span>{t('spot.preferences.orderConfirm')}</span>
 				<Iconify icon="mingcute:close-line" className="text-[14px]" onClick={onCancel} />
 			</p>
-			<TradeContent segmentedType={tradeType} onCancel={onCancel} onOk={onOk} />
+			<TradeContent segmentedType={tradeType} onCancel={handleCancel} onOk={handleOk} />
 		</Popup>
 	)
 }

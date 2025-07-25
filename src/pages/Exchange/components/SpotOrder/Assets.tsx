@@ -88,20 +88,25 @@ const Assets: React.FC = () => {
 				</button>
 			</div>
 			<ul className="max-h-[350px] hideScrollBar">
-				{assetsList.length ? assetsList.map((item) => {
+				{
+				loading ? 
+				<li className="h-[200px] flex justify-center items-center">
+					<Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color" />
+				</li> :
+				assetsList.length ? assetsList.map((item) => {
 					const { balance, rateBalance } = getBalance(item);
 					return (<li key={item.coinId} className="flex justify-between items-center border-b border-color last:border-b-0 h-[65px] px-4">
-						<div>
+						<div className="flex items-center">
 							<Image
 								src={item?.iconUrl}
 								alt={item.coinName}
-								className="w-[20px] h-[20px] rounded-full mr-1"
+								className="!w-[20px] !h-[20px] rounded-full mr-1"
 							/>
 							<span className="text-[14px] font-medium">{item.coinName}</span>
 						</div>
-						<div>
+						<div className="text-right">
 							<p className="text-[14px] font-medium mb-1">{ balance }</p>
-							<p className="text-[12px] text-[#9e9e9e]">{ rateBalance }</p>
+							<p className="text-[12px] text-[#9e9e9e] ltr-text">{ rateBalance }</p>
 						</div>
 					</li>)
 				}) :

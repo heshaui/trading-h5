@@ -131,6 +131,7 @@
             "feeCoin": "Fee Currency"
         },
         "header": {
+            "market": "Market",
             "favorites": "Favorites",
             "spot": "Spot",
             "search": "Search",

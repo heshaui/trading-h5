@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Image } from 'antd-mobile';
 import { useLanguage, useTheme } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { CustomTab } from '@/components/CustomCom';
 import useAuth from '@/hooks/useAuth';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
 import SpotOrderNow from '@/pages/SpotOrder/components/SpotOrderTable/NowOrder';
 import SpotOrderHistory from '@/pages/SpotOrder/components/SpotOrderTable/HistoryOrder';
@@ -20,24 +21,27 @@ const SpotTabs: React.FC = () => {
     const { isLoggedIn } = useAuth();
     const { isLight } = useTheme();
     const navigate = useNavigate();
-    const tabItems = [
-        {
-            key: '1',
-            title: t('spot.tabs.now') // 当前委托
-        },
-        {
-            key: '2',
-            title: t('spot.tabs.history') // 历史委托
-        },
-        {
-            key: '3',
-            title: t('spot.tabs.historyDeal') // 历史成交
-        },
-        {
-            key: '4',
-            title: t('spot.tabs.asset') // 资产
-        }
-    ]
+    const { nowOrderCount, historyOrderCount, historyDealCount, assetsCount } = useExchange();
+    const tabItems = useMemo(() => {
+        return [
+            {
+                key: '1',
+                title: `${t('spot.tabs.now')}${nowOrderCount>0 ? `(${nowOrderCount})` : ''}` // 当前委托
+            },
+            {
+                key: '2',
+                title: `${t('spot.tabs.history')}${historyOrderCount>0 ? `(${historyOrderCount})` : ''}` // 历史委托
+            },
+            {
+                key: '3',
+                title: `${t('spot.tabs.historyDeal')}${historyDealCount>0 ? `(${historyDealCount})` : ''}` // 历史成交
+            },
+            {
+                key: '4',
+                title: `${t('spot.tabs.asset')}${assetsCount>0 ? `(${assetsCount})` : ''}` // 资产
+            }
+        ]
+    }, [nowOrderCount, historyOrderCount, historyDealCount, assetsCount])
 
     // 未登录时的内容
     const NoLogin = () => {
@@ -74,7 +78,25 @@ const SpotTabs: React.FC = () => {
                 activeLineMode='fixed'
                 className="spotTabs safeTabs"
             />
-            {!isLoggedIn ? <NoLogin /> : TabContent()}
+            {/* {!isLoggedIn ? <NoLogin /> : TabContent()} */}
+            {!isLoggedIn ? (
+                <NoLogin />
+            ) : (
+                <>
+                    <div style={{ display: activeTab === '1' ? 'block' : 'none' }}>
+                        <SpotOrderNow />
+                    </div>
+                    <div style={{ display: activeTab === '2' ? 'block' : 'none' }}>
+                        <SpotOrderHistory />
+                    </div>
+                    <div style={{ display: activeTab === '3' ? 'block' : 'none' }}>
+                        <SpotOrderDeal />
+                    </div>
+                    <div style={{ display: activeTab === '4' ? 'block' : 'none' }}>
+                        <Assets />
+                    </div>
+                </>
+            )}
         </div>
     )
 }

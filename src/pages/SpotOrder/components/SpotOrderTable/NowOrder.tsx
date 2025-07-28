@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
 import { getRound } from '@/utils/getUseRate'
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import SelectPop from '@/components/SelectPop'
@@ -55,6 +56,7 @@ const SpotMainPage = observer(() => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const {setNowOrderCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -420,6 +422,11 @@ const SpotMainPage = observer(() => {
         }));
         setTableData(newData);
         setTotal(res.data.count);
+        if (params.direction || params.coinSymbol || params.baseSymbol) {
+          setNowOrderCount(res.data.count);
+        } else {
+          setNowOrderCount(0);
+        }
       } else {
         Toast.show(res.message);
       }

@@ -14,6 +14,7 @@ import { getRound } from '@/utils/getUseRate'
 import { getOrderList, getExchangeCoinList, getOrderInfo } from '@/services/spot'
 import { Toast } from 'antd-mobile'
 import appStore from '@/store';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import { observer } from 'mobx-react-lite';
 import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
@@ -57,6 +58,7 @@ interface SelectParamType {
 const SpotMainPage = observer(() => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
+  const {setHistoryDealCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -383,6 +385,11 @@ const SpotMainPage = observer(() => {
         }));
         setTableData(newData);
         setTotal(res.data?.total);
+        if (params.symbol) {
+          setHistoryDealCount(res.data?.total ?? 0);
+        } else {
+          setHistoryDealCount(0);
+        }
       } else {
         Toast.show({
           content: res.message,

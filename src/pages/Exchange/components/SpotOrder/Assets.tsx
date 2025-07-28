@@ -7,6 +7,7 @@ import { add, roundDown, cut, nul } from "@/utils";
 import { getRate } from "@/utils/getUseRate";
 import appStore from "@/store";
 import { NoData } from '@/components/noData';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
 import { DataType } from "@/type/assets/assetsAccount/assets";
 
@@ -19,6 +20,7 @@ const Assets: React.FC = () => {
 	const [allAssetsList, setAllAssetsList] = useState<DataType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [searchValue, setSearchValue] = useState('');
+	const {setAssetsCount} = useExchange();
 
 	// 获取所有币种余额
     const getAssetsData = async () => {
@@ -47,8 +49,10 @@ const Assets: React.FC = () => {
                 item.coinName.toLowerCase().includes(value.toLowerCase())
             );
             setAssetsList(newData);
+			setAssetsCount(newData.length);
         } else {
             setAssetsList(allAssetsList);
+			setAssetsCount(0);
         }
 	}
 

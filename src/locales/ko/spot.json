@@ -132,6 +132,7 @@
             "feeCoin": "수수료 코인"
         },
         "header": {
+            "market": "시장",
             "favorites": "즐겨찾기",
             "spot": "현물",
             "search": "검색",

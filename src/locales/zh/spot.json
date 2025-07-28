@@ -139,6 +139,7 @@
             "feeCoin": "手续费币种"
         },
         "header": {
+            "market": "市场",
             "favorites": "自选",
             "spot": "现货",
             "search": "搜索",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Popup, SearchBar } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
@@ -6,6 +6,7 @@ import SelectContent from './SelectContent';
 import CustomTab from '@/components/CustomCom/CustomTab';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
 type Props = {
   open: boolean;
@@ -25,17 +26,17 @@ const SelectPopup: React.FC<Props> = observer(({
   const { t } = useLanguage(['spot']);
   const [searchValue, setSearchValue] = useState('');
   const [activeTab, setActiveTab] = useState('spot');
-
-  const tabsItems = [
-		{
-			key: 'favorites',
-			title: t('spot.header.favorites')
-		},
-		{
-			key: 'spot',
-			title: t('spot.header.spot')
-		},
-	]
+  const { favoritesCount, spotCount } = useExchange();
+  const tabsItems = useMemo(() => [
+    {
+      key: 'favorites',
+      title: `${t('spot.header.favorites')}${searchValue && favoritesCount ? `(${favoritesCount})` : ''}`
+    },
+    {
+      key: 'spot',
+      title: `${t('spot.header.spot')}${searchValue && spotCount ? `(${spotCount})` : ''}`
+    }
+  ], [searchValue, favoritesCount, spotCount]);
 
   const handleSearch = (value: string) => {
     setSearchValue(value);
@@ -52,9 +53,13 @@ const SelectPopup: React.FC<Props> = observer(({
       onClose={onCancel}
       closeOnMaskClick
       position='bottom'
-      bodyStyle={{ width: '100vw', height: '70vh' }}
+      bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px', width: '100vw', height: '70vh' }}
       bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
     >
+      <p className="flex justify-between items-center h-[50px] text-[14px] font-medium px-4 border-b border-[var(--border-color6)]">
+        <span>{t('spot.header.market')}</span>
+        <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={onCancel} />
+      </p>
       <div className="flex-col h-full">
         {/* 头部搜索 */}
         <div className="px-4 pt-4 mb-[10px]">

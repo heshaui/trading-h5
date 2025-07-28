@@ -51,10 +51,16 @@ interface symbolSelectType {
   baseSymbol: string,
   coinSymbol: string
 }
-const SpotMainPage = observer(() => {
+interface Props {
+  pageType?: string
+}
+
+const SpotMainPage = observer(({ pageType }: Props) => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  // 是否从现货交易引入
+  const isExchange = pageType === 'exchange';
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -501,8 +507,8 @@ const SpotMainPage = observer(() => {
             />
             <SelectPop
               options={symbolSelect}
-              placeholder={t('spot.columns.symbol')}
-              title={t('spot.columns.symbol')}
+              placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+              title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
               onChange={symbolChange}
             // showSearch={false}
             />

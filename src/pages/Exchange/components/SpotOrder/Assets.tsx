@@ -83,9 +83,9 @@ const Assets: React.FC = () => {
 					onChange={handleSearch}
 					className="searchBar mr4 w-[130px] !h-[32px]"
 				/>
-				<button type="button">
+				{/* <button type="button">
 					<Iconify icon="mingcute:filter-line" className="text-[20px] tip-color" />
-				</button>
+				</button> */}
 			</div>
 			<ul className="max-h-[350px] hideScrollBar">
 				{

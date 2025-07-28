@@ -56,8 +56,8 @@ const SpotTabs: React.FC = () => {
     // tab 内容
     const TabContent = () => {
         switch (activeTab) {
-            case '1': return <SpotOrderNow />;
-            case '2': return <SpotOrderHistory />;
+            case '1': return <SpotOrderNow pageType="exchange" />;
+            case '2': return <SpotOrderHistory pageType="exchange" />;
             case '3': return <SpotOrderDeal />;
             case '4': return <Assets />;
         }

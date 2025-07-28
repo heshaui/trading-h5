@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "盘口",
             "latestTrades": "最新成交",
+            "market": "行情",
             "price": "价格",
             "amount": "数量",
             "total": "累计",
@@ -250,7 +251,8 @@
             "fee": "手续费",
             "feeDetails": "挂单{{maker}}% / 吃单{{taker}}%",
             "kline": "K线",
-            "depth": "深度图"
+            "depth": "深度图",
+            "basic": "基本版"
         }
     }
 }

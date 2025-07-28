@@ -17,11 +17,9 @@ const ExchangeContent: React.FC = observer(() => {
     // 获取时间间隔
     const { 
         timeInterval, 
-        tradePrice,
         updateDepthData, 
         updateKlineData, 
         updateOrderData,
-        updateRecentTrades
     } = useExchange();
     const [klineData, setKlineData] = useState<any>();
     const [currentPair, setCurrentPair] = useState<any>();

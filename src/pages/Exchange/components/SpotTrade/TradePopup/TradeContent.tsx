@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { add, lastD, roundDown } from "@/utils";
 import { useCoinList } from "@/hooks/use-coinList";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
 import ConfirmOrder from "./ConfirmOrder";
 import SpotBuyPopup from "./SpotBuyPopup";
@@ -51,15 +52,15 @@ type Props = {
   segmentedType?: string;
   onOrderSuccess?: () => void; // 添加回调函数属性
   orderData?: DataType[];
-  tradePrice?: number;
   onOk: () => void;
   onCancel: () => void;
 };
-const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, tradePrice, onOk, onCancel }: Props) => {
+const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCancel }: Props) => {
   const { t } = useLanguage(["spot"]);
   const { isLight } = useTheme();
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { tradePrice } = useExchange();
   const containerRef = useRef<HTMLDivElement>(null);
   const updateOrder = appStore.getUpdateFlag();
   const { popType, setPopType } = usePopTypeContext();

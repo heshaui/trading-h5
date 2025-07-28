@@ -65,11 +65,6 @@ interface ExchangeContextValue {
   depthData: DepthData | null;
   updateDepthData: (updater: ((prevData: DepthData | null) => DepthData) | DepthData | null) => void;
   
-  // 最新成交
-  recentTrades: RecentTrade[];
-  updateRecentTrades: (data: RecentTrade[]) => void;
-  addRecentTrade: (trade: RecentTrade) => void;  // 添加单条成交记录
-  
   // 加载状态
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
@@ -148,10 +143,6 @@ export const ExchangeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     
     depthData,
     updateDepthData,
-    
-    recentTrades,
-    updateRecentTrades,
-    addRecentTrade,
     
     isLoading,
     setIsLoading

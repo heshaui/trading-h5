@@ -53,10 +53,15 @@ interface SelectParamType {
   symbol: string;
   notStatus: string | number;
 }
+interface Props {
+  pageType?: string
+}
 
-const SpotMainPage = observer(() => {
+const SpotMainPage = observer(({ pageType }: Props) => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
+  // 是否从现货交易引入
+  const isExchange = pageType === 'exchange';
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -466,6 +471,7 @@ const SpotMainPage = observer(() => {
       });
     }
   };
+
   useEffect(() => {
     initData()
   }, [])
@@ -475,8 +481,8 @@ const SpotMainPage = observer(() => {
       <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
         <SelectPop
           options={symbolSelect}
-          placeholder={t('spot.columns.symbol')}
-          title={t('spot.columns.symbol')}
+          placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+          title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
           onChange={(value) => {
             selectParam.current.symbol = value as string
             getOrderListData();

@@ -49,8 +49,9 @@ function LoginRecord() {
                 userId: userInfo?.userId || isuserId || ''
             });
             if (res.code === '0') {
-                setLoginData(res.data.list)
+                setLoginData(prev => pageNo === 1 ? res.data.list : [...prev, ...res.data.list])
                 setTotal(res.data.count)
+                setHasMore(loginData.length + res.data.list.length < res.data.count)
             }else{
                 Toast.show({
                     icon: 'fail',
@@ -69,12 +70,20 @@ function LoginRecord() {
     }
 
     const loadMore = async () => {
-        setPageNo(prev => prev + 1);
-        loginData.length < total ? await getLoginData() : setHasMore(false)
+        if (loginData.length < total) {
+            setPageNo(prev => prev + 1)
+        } else {
+            setHasMore(false)
+        }
     }
 
     useEffect(() => {
         getLoginData()
+    }, [pageNo, langKey])
+
+    useEffect(() => {
+        setPageNo(1)
+        setLoginData([]) // 切换语言时清空旧数据
     }, [langKey])
 
     return loading ? 

@@ -81,7 +81,7 @@ const SpotChart: React.FC = () => {
                                 <SelectPop 
                                     value={timeInterval}
                                     options={timeIntervalOptions.map(item => ({label: item, value: item}))}
-                                    title={t('spot.select.title')} 
+                                    title={t('spot.select.placeholder')} 
                                     onChange={(value) => handleTimeInterval(value)}
                                     renderBtn={(open) => (
                                         <button 
@@ -103,7 +103,7 @@ const SpotChart: React.FC = () => {
                         <SelectPop 
                             value={chartDisplayType}
                             options={chartDisplayTypeOptions}
-                            title={t('spot.select.title')} 
+                            title={t('spot.select.placeholder')} 
                             showSearch={false}
                             onChange={(value) => setChartDisplayType(Number(value))}
                             renderBtn={(open) => (
@@ -159,7 +159,7 @@ const SpotChart: React.FC = () => {
                     <SelectPop 
                         value={chartType}
                         options={chartTypeOptions}
-                        title={t('spot.select.title')} 
+                        title={t('spot.select.placeholder')} 
                         showSearch={false}
                         onChange={(value) => setChartType(value)}
                         renderBtn={(open) => (

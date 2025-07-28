@@ -86,13 +86,14 @@ function Phonebox() {
 					const res = await getLoginCheck(dataEncrypt)
 					if (res.code === "0") {
 						const data = {
+							...res.data,
 							type: "p",
 							phone: values.phoneNumber,
 							deviceType: "H5",
 							password: values.password,
 							authCodePhone: "",
 							countryCode: values.areaCode,
-							...res.data
+							
 						}
 						setLoginInfo(data)
 						setCodeModelOpen(true)

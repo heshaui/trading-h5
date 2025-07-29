@@ -59,7 +59,6 @@ const configByMode = {
   },
   'phone-fullscreen': {
     disabled_features: [
-      "header_widget",
       "left_toolbar",
       "timeframes_toolbar",
       "symbol_info",
@@ -76,6 +75,7 @@ const configByMode = {
       "header_fullscreen_button",
       "header_screenshot",
       "use_localstorage_for_settings",
+      "header_saveload",
     ],
     enabled_features: [
       "hide_left_toolbar_by_default",
@@ -87,7 +87,6 @@ const configByMode = {
   },
   'tablet-fullscreen': {
     disabled_features: [
-      "header_widget",
       "use_localstorage_for_settings", 
       "timeframes_toolbar",
       "symbol_search",
@@ -97,6 +96,9 @@ const configByMode = {
       "compare_symbol",
       "display_market_status",
       "symbol_change",
+      "header_fullscreen_button",
+      "header_saveload",
+      "symbol_search_hot_key"
     ],
     enabled_features: [
       "study_templates"
@@ -105,7 +107,7 @@ const configByMode = {
 }
 
 const getChartConfig = (isDayMode: boolean, viewMode: string) => {
-  const isTabletFullscreen = viewMode === 'table-fullscreen';
+  const isTabletFullscreen = viewMode === 'tablet-fullscreen';
   const baseConfig = {
     height: 300,
     overrides: {
@@ -117,11 +119,11 @@ const getChartConfig = (isDayMode: boolean, viewMode: string) => {
       "paneProperties.vertGridProperties.color": isTabletFullscreen ? undefined : "transparent",
       "paneProperties.horzGridProperties.color": isTabletFullscreen ? undefined : "transparent",
       // 坐标轴字体
-      "scalesProperties.fontSize": isTabletFullscreen ? 12 : 10,
+      "scalesProperties.fontSize": isTabletFullscreen ? 14 : 12,
       "scalesProperties.textColor": isDayMode ? "#676867" : "#A4A5AC",
       // 指标标题样式
       "studies.legendTextColor": isDayMode ? "#676867" : "#A4A5AC",
-      "studies.legendFontSize": isTabletFullscreen ? 12 : 10,
+      "studies.legendFontSize": isTabletFullscreen ? 14 : 12,
     },
   }
   return {

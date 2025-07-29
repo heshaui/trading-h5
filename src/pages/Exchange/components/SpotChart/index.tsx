@@ -21,7 +21,7 @@ const SpotChart: React.FC = () => {
     const { timeInterval, depthData, klineData, updateTimeInterval } = useExchange();
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
     // k线图视图模式
-    const [viewMode, setViewMode] = useState<ViewMode>('phone');
+    const [viewMode, setViewMode] = useState<ViewMode>(window.innerWidth <= 480 ? 'phone' : 'tablet');
     const [isFullscreen, setIsFullscreen] = useState(false);
     // k线图ref
     const tradingviewRef = useRef<TradingviewRefHandle>(null);
@@ -81,68 +81,56 @@ const SpotChart: React.FC = () => {
             } else if ((el as any).webkitRequestFullscreen) {
                 await (el as any).webkitRequestFullscreen();
             }
-            switch (viewMode) {
-                case 'phone':
-                    setViewMode('phone-fullscreen');
-                    // 强制横屏（只在支持的浏览器和 https 环境下生效）
-                    // @ts-ignore - screen.orientation.lock 在某些浏览器中可用
-                    // if (screen.orientation?.lock) {
-                    //     // @ts-ignore - screen.orientation.lock 在某些浏览器中可用
-                    //     await screen.orientation.lock("landscape");
-                    // }
-                    break;
-                case 'tablet':
-                    setViewMode('tablet-fullscreen');
-                    break;
-            }
         } catch (err) {
             console.error("全屏或锁定横屏失败", err);
         }
     }
 
-    const exitFullscreen = async () => {
-        try {
-            // 解锁屏幕方向（可选）
-            // if (screen.orientation?.unlock) {
-            //     screen.orientation.unlock();
-            // }
-
-            // 退出全屏
-            if (document.exitFullscreen) {
-                await document.exitFullscreen();
-            } else if ((document as any).webkitExitFullscreen) {
-                await (document as any).webkitExitFullscreen();
-            }
-            setIsFullscreen(false);
-            // 恢复之前的视图模式
-            const width = window.innerWidth;
-            setViewMode(width <= 480 ? 'phone' : 'tablet');
-        } catch (err) {
-            console.error("退出全屏失败", err);
-        }
-    };
-
-    // 监听屏幕宽度 + 全屏状态
+    // 监听屏幕变化,更新图表视图
     useEffect(() => {
         const updateMode = () => {
             const width = window.innerWidth;
+
+            // 折叠屏等场景在全屏状态下仍触发 resize
+            if (document.fullscreenElement) {
+                if (width <= 480) {
+                    setViewMode('phone-fullscreen');
+                } else {
+                    setViewMode('tablet-fullscreen');
+                }
+                return;
+            }
+
+            // 非全屏时更新普通视图模式
             if (width <= 480) {
                 setViewMode('phone');
             } else {
                 setViewMode('tablet');
             }
         };
-        updateMode();
+
+        updateMode(); // 初始化调用
         window.addEventListener('resize', updateMode);
-        return () => window.removeEventListener('resize', updateMode);
+
+        // 监听退出全屏事件
+        document.addEventListener('fullscreenchange', () => {
+            const isNowFullscreen = !!document.fullscreenElement;
+            setIsFullscreen(isNowFullscreen);
+            updateMode(); // 离开或进入全屏后都重新计算模式
+        });
+
+        return () => {
+            window.removeEventListener('resize', updateMode);
+            document.removeEventListener('fullscreenchange', updateMode);
+        };
     }, []);
 
     return (
         <div ref={chartRef} className="bg-[var(--background9)] relative">
-            {isFullscreen && <button className="absolute right-4 top-4" onClick={exitFullscreen}>
-                <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" />
-            </button>}
-            <ul className={`h-[34px] flex items-center pl-[10px] pr-4 border-b border-color ${chartType==='depth' ? 'justify-end' : 'hideScrollBar scrollX'}`}>
+            {/* {isFullscreen && <button className="absolute" style={{right: '10px', top: '10px'}} onClick={exitFullscreen}>
+                <Iconify icon="mingcute:close-line" className="text-[12px] text-[#676867]" />
+            </button>} */}
+            {!isFullscreen && <ul className={`h-[34px] flex items-center pl-[10px] pr-4 border-b border-color ${chartType==='depth' ? 'justify-end' : 'hideScrollBar scrollX'}`}>
                 {
                     chartType === 'basic' && dayData.map((item, index) => (
                         <li key={index}>
@@ -242,7 +230,7 @@ const SpotChart: React.FC = () => {
                         renderBtn={(open) => (
                             <button 
                                 type="button" 
-                                className={`text-[12px] ml-2 leading-[22px]`}
+                                className={`text-[12px] ml-2 leading-[22px] whitespace-nowrap`}
                                 onClick={open}
                             >
                                 <span>{getChartName(chartType)}</span>
@@ -261,7 +249,7 @@ const SpotChart: React.FC = () => {
                         <Iconify icon="material-symbols:fullscreen-rounded" className="text-[22px] text-[#a4a5ac]" />
                     </button>
                 </li> */}
-            </ul>
+            </ul>}
             {
                 chartType === 'depth' ? <DepthChart data={ depthData }/>
                 : <div className={isFullscreen ? 'h-[100vh]' : "h-[322px]"}>

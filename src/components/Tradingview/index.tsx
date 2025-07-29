@@ -97,21 +97,17 @@ const Tradingview: React.ForwardRefRenderFunction<
   }, [viewMode, isDayMode])
 
   useEffect(() => {
-  if (tvWidget) {
-    // 保存当前图表状态
-    // const chartState = tvWidget.save();
-    
-    // 重建图表以应用新配置
-    recreateChart();
-    
-    // 恢复之前的状态
-    // tvWidget.load(chartState);
-  }
-}, [viewMode]);
+    if (tvWidget) {
+      // 重建图表以应用新配置
+      recreateChart();
+    }
+    console.log('视图变了', viewMode)
+  }, [viewMode]);
 
   // 创建图表函数
   const createChart = () => {
-    if (!chartContainerRef.current || tvWidget || initCompletedRef.current) {
+    //  || tvWidget || initCompletedRef.current
+    if (!chartContainerRef.current) {
       return;
     }
 

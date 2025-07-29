@@ -5,20 +5,19 @@ import React, {
   useRef,
   forwardRef,
   useImperativeHandle,
+  useMemo
 } from "react";
 import "./Tradingview.module.css";
 import { useThemeMode } from "@/hooks/useThemeMode";
 import jstz from 'jstz';
-import { getMobileConfig, getDesktopConfig } from './config';
-import { LanguageCode, Timezone } from '../../../public/charting_library/charting_library';
+import getChartConfig from './config';
 
 export interface TradingviewProps {
   symbol?: string;
-  showLeftToolbar?: boolean;
   chartType?: number;
   klineData?: any;
   timeInterval?: string;
-  isMobile?: boolean;
+  viewMode?: string
 }
 
 export interface TradingviewRefHandle {
@@ -59,11 +58,10 @@ const Tradingview: React.ForwardRefRenderFunction<
 > = (
   {
     symbol,
-    showLeftToolbar = false,
     chartType = 9,
     klineData = [],
     timeInterval = "15m",
-    isMobile = false,
+    viewMode = 'phone'
   },
   ref
 ) => {
@@ -93,6 +91,23 @@ const Tradingview: React.ForwardRefRenderFunction<
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const prevThemeRef = useRef<boolean | null>(null);
+
+  const chartConfig = useMemo(() => {
+    return getChartConfig(isDayMode, viewMode);
+  }, [viewMode, isDayMode])
+
+  useEffect(() => {
+  if (tvWidget) {
+    // 保存当前图表状态
+    // const chartState = tvWidget.save();
+    
+    // 重建图表以应用新配置
+    recreateChart();
+    
+    // 恢复之前的状态
+    // tvWidget.load(chartState);
+  }
+}, [viewMode]);
 
   // 创建图表函数
   const createChart = () => {
@@ -124,16 +139,22 @@ const Tradingview: React.ForwardRefRenderFunction<
         lang = "en";
       }
 
-      const config = isMobile 
-        ? getMobileConfig(isDayMode, lang as LanguageCode, timezone.name() as Timezone)
-        : getDesktopConfig(isDayMode, lang as LanguageCode, timezone.name() as Timezone);
-
       const widgetOptions = {
         symbol: chartSymbol,
         datafeed: datafeed,
         interval: tvTimeInterval,
         container: chartContainerRef.current,
-        ...config
+        library_path: "/charting_library/",
+        charts_storage_url: "http://saveload.tradingview.com",
+        charts_storage_api_version: "1.1",
+        client_id: "tradingview.com",
+        user_id: "public_user_id",
+        autosize: true,
+        debug: false,
+        locale: lang,
+        timezone: timezone.name(),
+        theme: isDayMode ? "light" : "dark",
+        ...chartConfig
       };
 
       const newWidget = new window.TradingView.widget(widgetOptions as any);
@@ -146,8 +167,6 @@ const Tradingview: React.ForwardRefRenderFunction<
           "volume.color.1": "#FF0000", 
           "volume.transparency": 30,
           "volume.width": 1,
-          "showRelativeVolume": false,  // 关键属性
-          "volume.paneSize": "full"     // 让柱子都朝上
         });
       });
 

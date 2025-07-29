@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon'
 import { Image } from 'antd-mobile';
@@ -14,12 +14,18 @@ import ChartIcon from '@/assets/images/exchange/icon_chart.png';
 import DeleteIcon from '@/assets/images/exchange/icon_delete.png';
 import ValueIcon from '@/assets/images/exchange/icon_value.png';
 
+type ViewMode = 'phone' | 'phone-fullscreen' | 'tablet' | 'tablet-fullscreen';
+
 const SpotChart: React.FC = () => {
     const {t} = useLanguage('spot');
     const { timeInterval, depthData, klineData, updateTimeInterval } = useExchange();
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
+    // k线图视图模式
+    const [viewMode, setViewMode] = useState<ViewMode>('phone');
+    const [isFullscreen, setIsFullscreen] = useState(false);
     // k线图ref
     const tradingviewRef = useRef<TradingviewRefHandle>(null);
+    const chartRef = useRef<HTMLDivElement>(null);
     // 时间默认展示
     const dayData = ["15m", "1h", "4h", "1D"];
     // 所有时间选项
@@ -63,8 +69,79 @@ const SpotChart: React.FC = () => {
         return chartType?.label
     }
 
+    // 全屏
+    const handleFullscreen = async () => {
+        const el = chartRef.current;
+        if (!el) return;
+        setIsFullscreen(true)
+        try {
+            // 进入全屏
+            if (el.requestFullscreen) {
+                await el.requestFullscreen();
+            } else if ((el as any).webkitRequestFullscreen) {
+                await (el as any).webkitRequestFullscreen();
+            }
+            switch (viewMode) {
+                case 'phone':
+                    setViewMode('phone-fullscreen');
+                    // 强制横屏（只在支持的浏览器和 https 环境下生效）
+                    // @ts-ignore - screen.orientation.lock 在某些浏览器中可用
+                    // if (screen.orientation?.lock) {
+                    //     // @ts-ignore - screen.orientation.lock 在某些浏览器中可用
+                    //     await screen.orientation.lock("landscape");
+                    // }
+                    break;
+                case 'tablet':
+                    setViewMode('tablet-fullscreen');
+                    break;
+            }
+        } catch (err) {
+            console.error("全屏或锁定横屏失败", err);
+        }
+    }
+
+    const exitFullscreen = async () => {
+        try {
+            // 解锁屏幕方向（可选）
+            // if (screen.orientation?.unlock) {
+            //     screen.orientation.unlock();
+            // }
+
+            // 退出全屏
+            if (document.exitFullscreen) {
+                await document.exitFullscreen();
+            } else if ((document as any).webkitExitFullscreen) {
+                await (document as any).webkitExitFullscreen();
+            }
+            setIsFullscreen(false);
+            // 恢复之前的视图模式
+            const width = window.innerWidth;
+            setViewMode(width <= 480 ? 'phone' : 'tablet');
+        } catch (err) {
+            console.error("退出全屏失败", err);
+        }
+    };
+
+    // 监听屏幕宽度 + 全屏状态
+    useEffect(() => {
+        const updateMode = () => {
+            const width = window.innerWidth;
+            if (width <= 480) {
+                setViewMode('phone');
+            } else {
+                setViewMode('tablet');
+            }
+        };
+        updateMode();
+        window.addEventListener('resize', updateMode);
+        return () => window.removeEventListener('resize', updateMode);
+    }, []);
+
     return (
-        <>
+        <div ref={chartRef} className="bg-[var(--background9)] relative">
+            {isFullscreen && <button className="absolute right-4 top-4" onClick={exitFullscreen}>
+                <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" />
+            </button>}
             <ul className={`h-[34px] flex items-center pl-[10px] pr-4 border-b border-color ${chartType==='depth' ? 'justify-end' : 'hideScrollBar scrollX'}`}>
                 {
                     chartType === 'basic' && dayData.map((item, index) => (
@@ -175,7 +252,7 @@ const SpotChart: React.FC = () => {
                     />
                 </li>
                 {chartType === 'basic' && <li className="flex items-center ml-1">
-                    <button type="button" onClick={() => tradingviewRef.current?.toggleFullScreen()}>
+                    <button type="button" onClick={handleFullscreen}>
                         <Iconify icon="icon-park-outline:full-screen-two" className="text-[20px] text-[#a4a5ac]" />
                     </button>
                 </li>}
@@ -187,7 +264,7 @@ const SpotChart: React.FC = () => {
             </ul>
             {
                 chartType === 'depth' ? <DepthChart data={ depthData }/>
-                : <div className="h-[322px]">
+                : <div className={isFullscreen ? 'h-[100vh]' : "h-[322px]"}>
                     <Tradingview
                         ref={tradingviewRef}
                         key={`${currentPair?.coinSymbol || ""}_${
@@ -200,15 +277,14 @@ const SpotChart: React.FC = () => {
                         "_" +
                         (currentPair?.groupStatus || "")
                         }
-                        showLeftToolbar={chartType === "basic" ? false : true}
                         chartType={chartDisplayType}
                         klineData={klineData}
                         timeInterval={timeInterval}
-                        isMobile={window.innerWidth <= 768}
+                        viewMode={viewMode}
                     />
                 </div>
             }
-        </>
+        </div>
     )
 }
 

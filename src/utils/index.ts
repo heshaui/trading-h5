@@ -18,9 +18,10 @@ const withdrawFee = (amountNum: number, freeNum: number, minFee?: number) => {
     
     // 计算实际手续费
     const actualFee = nul(amountNum, feeRate)
-    
+    console.log(actualFee);
     // 返回最终手续费(取最小手续费和实际费率计算结果的较大值)
-    return minFee && actualFee < minFee ? minFee : actualFee
+    // return minFee && actualFee < minFee ? minFee : actualFee
+    return minFee||0
 }
 
 // 预估金额

@@ -314,10 +314,13 @@ const WithdrawMoneyPage = observer(() => {
   }
   const filteredAddressOptions = useMemo(() => {
     return addressSelect.map((item: any) => {
+      const coinInfo=coinSelect.find(coinItem=>coinItem.value===form.getFieldValue('tenantId'))
       const isProtocolSupported = coinExtSelect.some(
-        coinExt => coinExt.protocolName === item.protocolName ||
-          coinExt.protocol === item.protocolName ||
-          coinExt.protocolId === item.protocolId
+        (coinExt) =>
+          (coinExt.protocolName === item.protocolName ||
+            coinExt.protocol === item.protocolName ||
+            coinExt.protocolId === item.protocolId)
+          && (coinInfo?.coinId === item.coinId || coinInfo?.coinName === item.coinName)
       );
       return {
         ...item,
@@ -537,11 +540,11 @@ const WithdrawMoneyPage = observer(() => {
     }
   }, [amountNum, allowWithdraw])
   const maxWithdrawAmountBtn = useCallback(() => {
-    if (allowWithdraw) {
+    if (allowWithdraw||checkMaxWithdraw) {
       form.setFieldValue('amount', getMinWithdraw('max'))
       setAmountNum(getMinWithdraw('max'))
     }
-  }, [allowWithdraw])
+  }, [allowWithdraw,checkMaxWithdraw])
 
   // 提交表单
   const onFinish = (values: any) => {
@@ -793,10 +796,14 @@ const WithdrawMoneyPage = observer(() => {
                     }}
                     emptyRender={<NoAddress />}
                     optionRender={(option) => {
+                      const coinInfo = coinSelect.find(item => item.value === form.getFieldValue('tenantId'))
+                      // 检查当前地址的protocolName是否在coinExtSelect中存在,且与当前币种的coinId或coinName一致
                       const isProtocolSupported = coinExtSelect.some(
-                        coinExt => coinExt.protocolName === option.protocolName ||
-                          coinExt.protocol === option.protocolName ||
-                          coinExt.protocolId === option.protocolId
+                        (coinExt) =>
+                          (coinExt.protocolName === option.protocolName ||
+                            coinExt.protocol === option.protocolName ||
+                            coinExt.protocolId === option.protocolId)
+                          && (coinInfo?.coinId === option.coinId || coinInfo?.coinName === option.coinName)
                       );
                       return (
                         //   <div
@@ -826,15 +833,15 @@ const WithdrawMoneyPage = observer(() => {
                         </div>
                       )
                     }}
-                    // contentFooter={
-                    //   <button
-                    //     type='button'
-                    //     className={`default_btn font-16 font-w-500 mt-6  ${styles.btn_style2} flex-x-cc`}
-                    //     onClick={() => navigate('/assets/addAddress')}
-                    //   >
-                    //     {t('withdrawMoney.addAddress')}
-                    //   </button>
-                    // }
+                  // contentFooter={
+                  //   <button
+                  //     type='button'
+                  //     className={`default_btn font-16 font-w-500 mt-6  ${styles.btn_style2} flex-x-cc`}
+                  //     onClick={() => navigate('/assets/addAddress')}
+                  //   >
+                  //     {t('withdrawMoney.addAddress')}
+                  //   </button>
+                  // }
                   // onChange={(value, option) => addressChange(value, option)}
 
                   />

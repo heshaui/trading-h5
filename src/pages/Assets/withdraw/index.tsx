@@ -566,12 +566,12 @@ const WithdrawMoneyPage = observer(() => {
           maxWithdraw: coninInfo.maxWithdraw,
           minRecharge: coninInfo.minRecharge,
 
-          amountAfter: countNum(amountNum || 0, coninInfo.withdrawFee, coninInfo.minWithdrawFee) || 0,
+          amountAfter: countNum(amountNum || 0, coninInfo?.withdrawFee, coninInfo?.minWithdrawFee) || 0,
           protocolName: coinExtInfo?.protocolName,
           protocol: coinExtInfo?.protocol,
           coinName: coninInfo.coinName,
           // countWithdrawFee: nul(amountNum, coninInfo.withdrawFee) > coninInfo.minWithdrawFee ? nul(amountNum, coninInfo.withdrawFee) : coninInfo.minWithdrawFee,
-          countWithdrawFee: withdrawFee(amountNum || 0, coninInfo.withdrawFee, coninInfo.minWithdrawFee) || 0,
+          countWithdrawFee: withdrawFee(amountNum || 0, coninInfo?.withdrawFee, coninInfo?.minWithdrawFee) || 0,
 
         }
         setWithdrawInfo(params)
@@ -626,12 +626,12 @@ const WithdrawMoneyPage = observer(() => {
           <div>
             <p className={`${styles.tip_color} mb-1`}>{t('withdrawMoney.estimatedArrival')}</p>
             <p className={`${styles.title_color} mb-1 font-18 font-w-500`}>
-              {countNum(amountNum || 0, coninInfo.withdrawFee || 0, coninInfo.minWithdrawFee || 0) || 0}
+              {countNum(amountNum || 0, coninInfo?.withdrawFee || 0, coninInfo?.minWithdrawFee || 0) || 0}
               {coninInfo.coinName || ''}
 
             </p>
             <p className={`${styles.tip_color} mb-1`}>{t('withdrawMoney.fee')} <span className={`${styles.title_color}`}>
-              {withdrawFee(amountNum || 0, coninInfo.withdrawFee || 0, coninInfo.minWithdrawFee || 0) || 0}
+              {withdrawFee(amountNum || 0, coninInfo?.withdrawFee || 0, coninInfo?.minWithdrawFee || 0) || 0}
               {coninInfo.coinName || ''}
             </span></p>
           </div>

@@ -894,7 +894,7 @@ const WithdrawMoneyPage = observer(() => {
                   </li>
                   <li className={`${styles.tip_color} font-12 mt-1`}>
                     {/* 手续费： */}
-                    {t('withdrawMoneyCheck.withdrawFee')} {option.withdrawFee || 0}%
+                    {t('withdrawMoneyCheck.withdrawFee')} {option.minWithdrawFee || 0}
                   </li>
                 </ul>);
               }}

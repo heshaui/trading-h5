@@ -119,8 +119,7 @@ const UserIcon: React.FC = observer(() => {
             <Image
                 src={isDayMode ? userDay : userDark}
                 alt="user"
-                width={20}
-                height={20} // 固定高度
+                className="!w-[20px] !h-[20px]"
             />
             {/* <UserOutline fontSize={24} color="#FFFFFF" /> */}
         </button>

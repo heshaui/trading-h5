@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "호가창",
             "latestTrades": "최신 체결",
+            "market": "시세",
             "price": "가격",
             "amount": "수량",
             "total": "총합",
@@ -131,6 +132,7 @@
             "feeCoin": "수수료 코인"
         },
         "header": {
+            "market": "시장",
             "favorites": "즐겨찾기",
             "spot": "현물",
             "search": "검색",
@@ -250,7 +252,8 @@
             "fee": "수수료",
             "feeDetails": "지정가 {{maker}}% / 시장가 {{taker}}%",
             "kline": "캔들 차트",
-            "depth": "호가 깊이 차트"
+            "depth": "호가 깊이 차트",
+            "basic": "기본판"
         }
     }
 }

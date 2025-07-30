@@ -170,3 +170,25 @@ export const encryptData = async (data: any) => {
         };
     }
 };
+
+// 加密ip
+export const encryptIp = (ip: string) => {
+  // 判断 IPv4 格式
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
+    const parts = ip.split('.');
+    return `${parts[0]}.${parts[1]}.*.*`;
+  }
+
+  // 判断 IPv6 格式（8段以内）
+  if (/^[0-9a-fA-F:]+$/.test(ip)) {
+    const parts = ip.split(':');
+    const masked = [
+      parts[0] || '*',
+      parts[1] || '*',
+      '*', '*', '*', '*', '*', '*'
+    ];
+    return masked.join(':');
+  }
+
+  return ip;
+}

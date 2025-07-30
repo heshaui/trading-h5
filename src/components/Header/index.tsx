@@ -42,10 +42,10 @@ const Header = () => {
 
 				{/* 右侧图标 */}
 				<div className={styles.iconGroup}>
-				<div className={`${styles.iconButtonBox} flex-x-cc pr-4`}>
+					<div className={`${styles.iconButtonBox} flex-x-cc pr-4`}>
 						<UserIcon />
 					</div>
-					<div className={` flex-x-cc pl-3`}>
+					<div className={` flex-x-cc pl-4`}>
 						<MenuIcon />
 					</div>
 				</div>

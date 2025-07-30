@@ -74,7 +74,6 @@
         },
         "select": {
             "all": "全部",
-            "title": "请选择",
             "direction": "请选择方向",
             "symbol": "请选择交易对",
             "type": "请选择类型",
@@ -140,6 +139,7 @@
             "feeCoin": "手续费币种"
         },
         "header": {
+            "market": "市场",
             "favorites": "自选",
             "spot": "现货",
             "search": "搜索",

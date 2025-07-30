@@ -13,6 +13,7 @@ import { Toast } from 'antd-mobile'
 import { division, nul, roundDown } from '@/utils';
 import { getRound } from '@/utils/getUseRate'
 import appStore from '@/store';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import { observer } from 'mobx-react-lite';
 import type { DataType, DataLogsType, symbolSelectType, SelectParamType } from '@/type/spot/table';
 import { CustomTable } from '@/components/CustomCom'
@@ -26,10 +27,16 @@ interface CustomContentItem {
   checked?: boolean;
   onChange?: (checked: boolean) => void;
 }
+interface Props {
+  pageType?: string;
+}
 const { RangePicker } = DatePicker;
-const SpotMainPage = observer(() => {
+const SpotMainPage = observer(({ pageType }: Props) => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
+  // 是否是现货交易引入
+  const isExchange = pageType === 'exchange';
+  const {setHistoryOrderCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -381,7 +388,6 @@ const SpotMainPage = observer(() => {
       endTime: selectParam.current.endTime ? dayjs(selectParam.current.endTime).valueOf() : null,
       direction: selectParam.current.direction || selectParam.current.direction?.toString() === '0' ? selectParam.current.direction : null,
       type: selectParam.current.type || selectParam.current.type?.toString() === '0' ? selectParam.current.type : null,
-
     }
     setLoading(true)
     try {
@@ -394,6 +400,11 @@ const SpotMainPage = observer(() => {
         setInitTableData(newData);
         setTableData(newData);
         setTotal(res.data.count);
+        if (params.direction || params.coinSymbol || params.baseSymbol || params.type) {
+          setHistoryOrderCount(res.data.count);
+        } else {
+          setHistoryOrderCount(0);
+        }
       } else {
         Toast.show({
           content: res.message,
@@ -478,8 +489,8 @@ const SpotMainPage = observer(() => {
             />
             <SelectPop
               options={symbolSelect}
-              placeholder={t('spot.columns.symbol')}
-              title={t('spot.columns.symbol')}
+              placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+              title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
               onChange={(value) => {
                 selectParam.current.symbol = value as string
                 getOrderListData()

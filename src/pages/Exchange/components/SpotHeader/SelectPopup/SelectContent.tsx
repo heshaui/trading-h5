@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
@@ -7,7 +7,7 @@ import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/s
 import appStore from '@/store';
 import CustomTab from '@/components/CustomCom/CustomTab';
 import { NoData } from '@/components/noData';
-import styles from '../index.module.scss'
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
 interface SelectContentProps {
     currencyPairs: any[];
@@ -27,7 +27,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     const { t } = useLanguage(['spot']);
     const [activeTab, setActiveTab] = useState('all');
     const [showVolume, setShowVolume] = useState<boolean>(false);
-    
+    const { setFavoritesCount, setSpotCount } = useExchange();
     // 辅助函数：格式化大额数字
     const formatAmount = (amount: number) => {
         if (amount >= 100000000) {
@@ -127,11 +127,31 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         return matchesSearch && matchesTab && matchesType;
     });
 
+    const getPairsCount = () => {
+        let favoritesCount = 0;
+        let spotCount = 0;
+
+        sortedPairList.forEach(pair => {
+            const matchesSearch = pair.coinSymbol.toLowerCase().includes(searchValue.toLowerCase()) ||
+                                pair.baseSymbol.toLowerCase().includes(searchValue.toLowerCase());
+            const matchesTab = activeTab === 'all' ? true : pair.classLabel === activeTab;
+
+            if (matchesSearch && matchesTab) {
+            if (pair.isFavorite) favoritesCount++;
+            spotCount++; // 只要匹配了搜索和标签，就认为是现货数量
+            }
+        });
+        setSpotCount(spotCount);
+        setFavoritesCount(favoritesCount);
+    };
+    useEffect(() => {
+        getPairsCount();
+    }, [searchValue])
+
     // 合并WebSocket数据到币对数据中
     const enrichedPairs = filteredPairs.map(pair => {
         const symbol = `${pair.coinSymbol}_${pair.baseSymbol}_${pair.groupStatus}`;
         const wsKlineData = wsData?.[symbol];
-        
         if (wsKlineData && Array.isArray(wsKlineData) && wsKlineData.length >= 8) {
             const [timestamp, open_price, high_price, low_price, close_price, volume, changePercent, amount] = wsKlineData;
             return {

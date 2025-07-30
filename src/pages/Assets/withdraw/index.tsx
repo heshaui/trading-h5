@@ -592,7 +592,7 @@ const WithdrawMoneyPage = observer(() => {
   }
   useEffect(() => {
     // 检查身份认证和安全设置
-    const needsKyc = userInfo?.merchantWithdrawalStatus === 1 && userInfo?.realnessStatus === 0;
+    const needsKyc = userInfo?.merchantWithdrawalStatus !== 1 ;
     const needsGoogleAuth = !userInfo?.isGoogleAuth;
     if (!token || userInfo?.withdrawalStatus !== 1 || needsKyc || needsGoogleAuth) {
       navigate('/assets')

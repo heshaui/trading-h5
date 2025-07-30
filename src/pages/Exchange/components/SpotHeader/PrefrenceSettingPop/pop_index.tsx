@@ -17,7 +17,7 @@ const PopIndex = observer(() => {
     const navigate = useNavigate();
     const { isLight } = useTheme();
     const { isLoggedIn } = useAuth();
-    const popoverRef = useRef<PopoverRef>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
     const { popType, setPopType } = usePopTypeContext();
     const [popverVisible, setPopverVisible] = useState(false);
     
@@ -45,13 +45,6 @@ const PopIndex = observer(() => {
         localStorage.setItem('marketOrderConfirm', String(checked));
     }
 
-    // 监听显隐变化（包括点击外部）
-    const handleVisibleChange = (visible: any) => {
-        if (!visible) {
-            popoverRef.current?.hide(); // 点击外部时手动关闭
-        }
-    };
-
     const goRule = () => {
         setPopType(PopTypeEnum.TRADE_RULE)
     }
@@ -77,17 +70,17 @@ const PopIndex = observer(() => {
     }
 
     return (
-        <>
+        <div ref={containerRef}>
             {
                 isLoggedIn ? (
                     <>
                         <div className="px-4 pt-5 pb-[23px] border-b border-color">
                             <Popover
-                                ref={popoverRef}
                                 content={<PopverContent />}
                                 trigger='click'
                                 placement='left'
                                 mode={isLight ? 'light' : 'dark'}
+                                getContainer={() => containerRef.current!}
                             >
                                 <button className="text-[12px] leading-[17px] flex items-center tip-color mb-[19px]">
                                     <span className="mr-1">{t('spot.preferences.orderConfirm')}</span>
@@ -155,7 +148,7 @@ const PopIndex = observer(() => {
                     </div>
                 )
             }
-        </>
+        </div>
     );
 });
 

@@ -134,7 +134,7 @@ function BirthdayModal({ open, onCancel, userId, onOk }: Props) {
                 <DateTimePop
                     popupVisible={visible}
                     handlePopupClose={() => setVisible(false)}
-                    title={ t('usersetting.birthday.selectDate') }
+                    title={ t('usersetting.birthday.title') }
                     value={dateRange}
                     onChange={setDateRange}
                     minDate={dayjs('1900-01-01')}

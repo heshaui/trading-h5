@@ -9,17 +9,17 @@ import type { KLineData, OrderData } from '@/context/exchange-providers/Exchange
 
 import SpotHeader from './SpotHeader';
 import SpotTabs from './SpotTabs';
+import SportOrder from './SpotOrder';
+import SportTrade from './SpotTrade';
 
 const ExchangeContent: React.FC = observer(() => {
     const [coinData, setCoinData] = useState<any>();
     // 获取时间间隔
     const { 
         timeInterval, 
-        tradePrice,
         updateDepthData, 
         updateKlineData, 
         updateOrderData,
-        updateRecentTrades
     } = useExchange();
     const [klineData, setKlineData] = useState<any>();
     const [currentPair, setCurrentPair] = useState<any>();
@@ -69,7 +69,7 @@ const ExchangeContent: React.FC = observer(() => {
         });
     }, [currentPair]);
 
-
+    // 获取深度图数据
     const getWsDepthData = useCallback(() => {
         // 如果已经有连接，不要重复创建
         if (depthWsRef.current) return;
@@ -126,6 +126,7 @@ const ExchangeContent: React.FC = observer(() => {
         });
     }, [currentPair]);
 
+    // 历史深度图数据
     const getHistoryDepthData = useCallback(async () => {
         try {
         const response = await fetch(
@@ -147,7 +148,7 @@ const ExchangeContent: React.FC = observer(() => {
         } catch (error) {}
     }, [currentPair, getWsDepthData]);
 
-    // 使用useCallback包装getKlineData函数，确保只有当依赖项变化时才会重新创建函数
+    // 获取k线数据
     const getKlineData = useCallback(() => {
         if (!currentPair || !currentPair.coinSymbol) return;
 
@@ -293,11 +294,15 @@ const ExchangeContent: React.FC = observer(() => {
     }, [currentPair]);
 
     return (
-        <>
+        <div className="pb-[76px]">
             <SpotHeader coinData={coinData} />
             {/* 行情、盘口、最新成交 */}
             <SpotTabs />
-        </>
+            {/* 当前委托、历史委托、历史成交、资产 */}
+            <SportOrder />
+            {/* 买卖 */}
+            <SportTrade />
+        </div>
     );
 });
 

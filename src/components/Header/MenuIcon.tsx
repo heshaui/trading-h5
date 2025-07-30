@@ -132,8 +132,7 @@ const MenuIcon: React.FC = observer(() => {
             <Image
                 src={isDayMode ? menuDay : menuDark}
                 alt="menu"
-                width={20}
-                height={20} // 固定高度
+                className="!w-[20px] !h-[20px]"
             />
         </button>
         <Popup

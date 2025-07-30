@@ -14,6 +14,7 @@ import { getRound } from '@/utils/getUseRate'
 import { getOrderList, getExchangeCoinList, getOrderInfo } from '@/services/spot'
 import { Toast } from 'antd-mobile'
 import appStore from '@/store';
+import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import { observer } from 'mobx-react-lite';
 import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
@@ -53,10 +54,16 @@ interface SelectParamType {
   symbol: string;
   notStatus: string | number;
 }
+interface Props {
+  pageType?: string
+}
 
-const SpotMainPage = observer(() => {
+const SpotMainPage = observer(({ pageType }: Props) => {
   const { t } = useLanguage(['spot']);
   const [form] = Form.useForm();
+  // 是否从现货交易引入
+  const isExchange = pageType === 'exchange';
+  const {setHistoryDealCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -383,6 +390,11 @@ const SpotMainPage = observer(() => {
         }));
         setTableData(newData);
         setTotal(res.data?.total);
+        if (params.symbol) {
+          setHistoryDealCount(res.data?.total ?? 0);
+        } else {
+          setHistoryDealCount(0);
+        }
       } else {
         Toast.show({
           content: res.message,
@@ -466,6 +478,7 @@ const SpotMainPage = observer(() => {
       });
     }
   };
+
   useEffect(() => {
     initData()
   }, [])
@@ -475,8 +488,8 @@ const SpotMainPage = observer(() => {
       <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
         <SelectPop
           options={symbolSelect}
-          placeholder={t('spot.columns.symbol')}
-          title={t('spot.columns.symbol')}
+          placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+          title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
           onChange={(value) => {
             selectParam.current.symbol = value as string
             getOrderListData();

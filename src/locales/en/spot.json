@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "Order Book",
             "latestTrades": "Latest Trades",
+            "market": "Market",
             "price": "Price",
             "amount": "Amount",
             "total": "Total",
@@ -131,6 +132,7 @@
             "feeCoin": "Fee Currency"
         },
         "header": {
+            "market": "Market",
             "favorites": "Favorites",
             "spot": "Spot",
             "search": "Search",
@@ -253,7 +255,8 @@
             "fee": "Fee",
             "feeDetails": "Maker {{maker}}% / Taker {{taker}}%",
             "kline": "K-Line",
-            "depth": "Depth Chart"
+            "depth": "Depth Chart",
+            "basic": "Basic"
         }
     }
 }

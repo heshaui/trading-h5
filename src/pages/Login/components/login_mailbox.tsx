@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../styles/login.module.scss'
 // import { encryptWithPublicKey } from "@/utils/jsENcrypy"; //登录加密
 import { useLanguage } from '@/hooks/useLanguage';
+import { Iconify } from "@/components/icon";
 // import SafeModal from "@/components/myModal/login_safeModal"
 // import SafeModal from "@/components/myModal/login_safeModal2"
 import { encryptData } from "@/utils/encrypt";
@@ -291,9 +292,10 @@ function Mailbox() {
                 {/* 登录 */}
                 {t('loginButton')}
             </button> :
-                <button type="button" className={`${styles.login_loading} font-16 flex-x-cc w-full button-color mt-5`}>
+                <button type="button" className={`${styles.login_loading}  font-16 flex-x-cc w-full button-color mt-5`}>
+                    <Iconify icon="eos-icons:bubble-loading" className="text-[#fff] text-[16px] mr-1" />
                     {/* 登录 */}
-                    {t('loginButton')}
+                    <span>{t('loginButton')}</span>
                 </button>}
             <div className="flex-cc mt-4 font-14">
                 <p>

@@ -15,6 +15,7 @@ import { encryptData } from "@/utils/encrypt";
 import { getLoginCheck } from "@/services/login";
 // import { toast } from "sonner";
 import { Toast, Form, Input } from 'antd-mobile'
+import { Iconify } from "@/components/icon";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop";
@@ -268,8 +269,9 @@ function Phonebox() {
 				{t('loginButton')}
 			</button> :
 				<button type="button" className={`${styles.login_loading} font-16 flex-x-cc w-full button-color mt-5`}>
+					<Iconify icon="eos-icons:bubble-loading" className="text-[#fff] text-[16px] mr-1" />
 					{/* 登录 */}
-					{t('loginButton')}
+					<span>{t('loginButton')}</span>
 				</button>}
 			<div className="flex-cc mt-4 font-14">
 				<p>

@@ -214,7 +214,7 @@ const DepthChart = ({ data }: DepthChartProps) => {
   };
 
   return (
-    <div className="w-full h-[322px] py-4">
+    <div className="w-full h-full py-4">
       <ReactECharts
         echarts={echarts}
         option={option}

@@ -62,7 +62,7 @@ const SpotTabs: React.FC = () => {
         switch (activeTab) {
             case '1': return <SpotOrderNow pageType="exchange" />;
             case '2': return <SpotOrderHistory pageType="exchange" />;
-            case '3': return <SpotOrderDeal />;
+            case '3': return <SpotOrderDeal pageType="exchange" />;
             case '4': return <Assets />;
         }
     }
@@ -84,13 +84,13 @@ const SpotTabs: React.FC = () => {
             ) : (
                 <>
                     <div style={{ display: activeTab === '1' ? 'block' : 'none' }}>
-                        <SpotOrderNow />
+                        <SpotOrderNow pageType="exchange" />
                     </div>
                     <div style={{ display: activeTab === '2' ? 'block' : 'none' }}>
-                        <SpotOrderHistory />
+                        <SpotOrderHistory pageType="exchange" />
                     </div>
                     <div style={{ display: activeTab === '3' ? 'block' : 'none' }}>
-                        <SpotOrderDeal />
+                        <SpotOrderDeal pageType="exchange" />
                     </div>
                     <div style={{ display: activeTab === '4' ? 'block' : 'none' }}>
                         <Assets />

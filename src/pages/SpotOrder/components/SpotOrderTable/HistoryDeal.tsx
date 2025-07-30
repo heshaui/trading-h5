@@ -63,7 +63,6 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   const [form] = Form.useForm();
   // 是否从现货交易引入
   const isExchange = pageType === 'exchange';
-  const {setHistoryDealCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -367,6 +366,14 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     await getOrderListData()
   }
 
+  // 现货交易时使用context
+  const exchangeContext = isExchange ? useExchange() : null;
+  const updateHistoryDealCount = (count: number) => {
+    if (isExchange && exchangeContext) {
+      exchangeContext.setHistoryDealCount(count);
+    }
+  };
+
   const getOrderListData = async () => {
     setLoading(true);
     // const symbol = form.getFieldValue('symbol');
@@ -391,9 +398,9 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         setTableData(newData);
         setTotal(res.data?.total);
         if (params.symbol) {
-          setHistoryDealCount(res.data?.total ?? 0);
+          updateHistoryDealCount(res.data?.total ?? 0);
         } else {
-          setHistoryDealCount(0);
+          updateHistoryDealCount(0);
         }
       } else {
         Toast.show({

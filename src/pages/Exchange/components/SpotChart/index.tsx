@@ -239,20 +239,25 @@ const SpotChart: React.FC = () => {
                         )}
                     />
                 </li>
-                {chartType === 'basic' && <li className="flex items-center ml-1">
+                {/* {chartType === 'basic' && <li className="flex items-center ml-1">
                     <button type="button" onClick={handleFullscreen}>
                         <Iconify icon="icon-park-outline:full-screen-two" className="text-[20px] text-[#a4a5ac]" />
                     </button>
-                </li>}
+                </li>} */}
+                <li className="flex items-center ml-1">
+                    <button type="button" onClick={handleFullscreen}>
+                        <Iconify icon="icon-park-outline:full-screen-two" className="text-[20px] text-[#a4a5ac]" />
+                    </button>
+                </li>
                 {/* <li className="flex items-center ml-1">
                     <button type="button" onClick={() => tradingviewRef.current?.handleMaximizePane()}>
                         <Iconify icon="material-symbols:fullscreen-rounded" className="text-[22px] text-[#a4a5ac]" />
                     </button>
                 </li> */}
             </ul>}
-            {
-                chartType === 'depth' ? <DepthChart data={ depthData }/>
-                : <div className={isFullscreen ? 'h-[100vh]' : "h-[322px]"}>
+            <div className={isFullscreen ? 'h-[100vh]' : "h-[322px]"}>
+                {
+                    chartType === 'depth' ? <DepthChart data={ depthData }/> :
                     <Tradingview
                         ref={tradingviewRef}
                         key={`${currentPair?.coinSymbol || ""}_${
@@ -270,8 +275,8 @@ const SpotChart: React.FC = () => {
                         timeInterval={timeInterval}
                         viewMode={viewMode}
                     />
-                </div>
-            }
+                }   
+            </div>
         </div>
     )
 }

@@ -221,7 +221,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     }
 
     return (
-        <div className="flex-col flex-1 h-[100vh] hideScrollBar">
+        <div className="flex-col flex-1 min-h-0">
             {/* 滚动标签页 */}
             <CustomTab
                 tabsItems={ tabItems }
@@ -297,7 +297,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             </div>
 
             {/* 币对列表 */}
-            <ul className={`px-4 py-[23px] hideScrollBar`}>
+            <ul className={`px-4 py-[23px] flex-1 min-h-0 hideScrollBar`}>
                 {enrichedPairs.length ? enrichedPairs.map((pair: any) => (
                         <li 
                             key={pair.id} 

@@ -62,7 +62,6 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   const navigate = useNavigate();
   // 是否从现货交易引入
   const isExchange = pageType === 'exchange';
-  const {setNowOrderCount} = useExchange();
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -408,6 +407,14 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     }
     await getOrderListData()
   }
+
+  // 现货交易时使用context
+  const exchangeContext = isExchange ? useExchange() : null;
+  const updateOrderCount = (count: number) => {
+    if (isExchange && exchangeContext) {
+      exchangeContext.setNowOrderCount(count);
+    }
+  };
  
   const getOrderListData = async () => {
     const params = {
@@ -428,10 +435,11 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         }));
         setTableData(newData);
         setTotal(res.data.count);
-        if (params.direction || params.coinSymbol || params.baseSymbol) {
-          setNowOrderCount(res.data.count);
+        const hasDirection = params.direction !== undefined && params.direction !== null;
+        if (hasDirection || params.coinSymbol || params.baseSymbol) {
+          updateOrderCount(res.data.count);
         } else {
-          setNowOrderCount(0);
+          updateOrderCount(0);
         }
       } else {
         Toast.show(res.message);
@@ -569,6 +577,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
             className={`spot-table-box spot-pagination`}
             bodyClassName={styles.tables_content}
             headerClassName={styles.tables_header}
+            loading={loading}
             pagination={{
               // showSizeChanger: true,
               current: paramdataRef.current.page,

@@ -36,7 +36,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   const [form] = Form.useForm();
   // 是否是现货交易引入
   const isExchange = pageType === 'exchange';
-  const {setHistoryOrderCount} = useExchange();
+  
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
@@ -376,6 +376,14 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     await getOrderListData()
   }
 
+  // 现货交易时使用context
+  const exchangeContext = isExchange ? useExchange() : null;
+  const updateHistoryOrderCount = (count: number) => {
+    if (isExchange && exchangeContext) {
+      exchangeContext.setHistoryOrderCount(count);
+    }
+  };
+
   const getOrderListData = async () => {
     const params = {
       pageNo: paramdataRef.current.page,
@@ -400,10 +408,12 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         setInitTableData(newData);
         setTableData(newData);
         setTotal(res.data.count);
-        if (params.direction || params.coinSymbol || params.baseSymbol || params.type) {
-          setHistoryOrderCount(res.data.count);
+        const hasDirection = params.direction !== undefined && params.direction !== null;
+        const hasType = params.type !== undefined && params.type !== null;
+        if (hasDirection || params.coinSymbol || params.baseSymbol || hasType) {
+          updateHistoryOrderCount(res.data.count);
         } else {
-          setHistoryOrderCount(0);
+          updateHistoryOrderCount(0);
         }
       } else {
         Toast.show({

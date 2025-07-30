@@ -40,7 +40,7 @@ function LoginRecord() {
     const getLoginData = async () => {
         const userInfo = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || '{}')
         const isuserId = userId ? userId?.toString() : ''
-        setLoading(true)
+        pageNo === 1 && setLoading(true)
         try {
 
             const res = await getUserLoginLogList({

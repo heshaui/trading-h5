@@ -99,16 +99,15 @@ const kvConfig=appStore.getKvConfigAll()
             visible={open}
             onClose={onCancel}
             closeOnMaskClick
-            position='left'
-            bodyStyle={{ width: '100vw' }}
-            bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+            position='bottom'
+            bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+            bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
         >
-            <p className={`${styles.title}`} >
-                {/* 修改昵称 */}
+            <p className="flex justify-between items-center h-[50px] text-[14px] font-medium px-4 border-b border-[var(--border-color6)]">
                 <span>{t('usersetting.modifyNickname')}</span>
-                <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+                <Iconify icon="mingcute:close-line" className="text-[14px]" onClick={onCancel} />
             </p>
-            <div className="p-4">
+            <div className="p-4 pb-[30px]">
                     {/* t() */}
                     <Form
                         name="nickname"

@@ -165,15 +165,15 @@ function LockModal({ open, onCancel, type, onOk }: Props) {
 		visible={open}
 		onClose={onCancel}
 		closeOnMaskClick
-		position='left'
-		bodyStyle={{ width: '100vw' }}
-		bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+		position='bottom'
+    bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+    bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
 	>
-		<p className={`${styles.title}`} >
+		<p className={`${styles.title}`}>
 			<span>{type === '5' ? t('security.lockSafe.setPassword') : t('security.lockSafe.modifyPassword')}</span>
 			<Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
 		</p>
-		<div className="p-4">
+		<div className="p-4 pb-[30px]">
           {/* t() */}
           <Form
             name="nickname"

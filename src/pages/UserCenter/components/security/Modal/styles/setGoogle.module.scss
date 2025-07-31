@@ -17,10 +17,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 8px 8px 0 0;
 }
 .tip_title{
     color: var(--text-color5);
     font-weight: 500;
+    font-size: 16px;
 }
 
 .msg_color {

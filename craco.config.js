@@ -58,6 +58,7 @@ module.exports = {
   },
   // 添加开发服务器代理配置
   devServer: {
+    host: '0.0.0.0',
     proxy: {
       '/ambit-auth': {
         target: 'https://ljx.imbit.work',

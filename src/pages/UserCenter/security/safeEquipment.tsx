@@ -118,15 +118,7 @@ const SafeEquipment: React.FC = () => {
         getDeviceNoData();
     }, []);
 
-	return loading ? 
-	(
-		<div className="p-4">
-			<Skeleton.Title />
-			<Skeleton.Paragraph lineCount={15} animated />
-		</div>
-	)
-	:
-	(
+	return (
 		<div className="p-4">
 			<div className="">
 				<h3 className="text-[20px] leading-[28px] font-medium" onClick={() => navigate(-1)}>
@@ -136,6 +128,11 @@ const SafeEquipment: React.FC = () => {
 				<p className="text-[14px] leading-[20px] font-normal tip-color mt-2">{ t('security.safeSet.deviceManageDesc') }</p>
 			</div>
 			{
+				loading ? 
+				<div className="p-4">
+					<Skeleton.Title />
+					<Skeleton.Paragraph lineCount={15} animated />
+				</div> :
 				deviceNoData && deviceNoData.length ?
 				<ul>
 					{
@@ -182,7 +179,11 @@ const SafeEquipment: React.FC = () => {
 												initial={{ height: 0, opacity: 0 }}
 												animate={{ height: "auto", opacity: 1 }}
 												exit={{ height: 0, opacity: 0 }}
-												transition={{ duration: 0.1 }}
+												transition={{ 
+													type: "tween",
+  													duration: 0.2, 
+													ease: "linear"
+												}}
 												className="overflow-hidden bg-[var(--background10)] rounded-lg px-[10px] py-[16px]"
 											>
 												{

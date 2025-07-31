@@ -296,16 +296,16 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
       visible={open}
       onClose={onCancel}
       closeOnMaskClick
-      position='left'
-      bodyStyle={{ width: '100vw' }}
-      bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+      position='bottom'
+      bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+      bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
     >
       <p className={`${styles.title}`}>
         {/* 安全验证 */}
         <span>{t("security.lockSafe.title")}</span>
         <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
       </p>
-      <div className="p-4 w-[100%]" >
+      <div className="p-4 w-[100%] pb-[30px]" >
           {/* t() */}
           <Form
             name="nickname"

@@ -256,7 +256,7 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
       <div>
         {/* <button
                     type="button"
-                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5 font-14 font-w-500`}
+                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5 font-16 font-w-500`}
                     onClick={handCancel}
                 >
                     取消
@@ -277,9 +277,9 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
       visible={open}
       onClose={onCancel}
       closeOnMaskClick
-      position='left'
-      bodyStyle={{ width: '100vw' }}
-      bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+      position="bottom"
+      bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+      bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
     >
       <p className={`${styles.title}`}>
         <span>

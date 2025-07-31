@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Toast } from 'antd-mobile';
+import { Toast, Skeleton } from 'antd-mobile';
 import { UserCenterLayout } from '@/components/MenuItems/'
 import Certified from '../components/identiry/Certified';
 import NoCertified from '../components/identiry/NoCertified';
@@ -10,12 +10,12 @@ import { LOCAL_STORAGE_KEY } from "@/config/apiConfig"
 
 const Identity: React.FC = () => {
 	const { t } = useLanguage('userCenter');
-	const [userIdentityInfo, setUserIdentityInfo] = useState<any>({
-		authStatus: 2,
-	});
+	const [userIdentityInfo, setUserIdentityInfo] = useState<any>({});
 	const [levelBenefitData, setLevelBenefitData] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const getUserIdentityInfoData = async () => {
 		const userInfo = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || '{}');
+		setLoading(true);
 		try {
 			const res = await getUserIdentityInfo({
 				userId: userInfo.userId || ''
@@ -36,6 +36,8 @@ const Identity: React.FC = () => {
 				icon: 'fail',
 				content: String(error),
 			})
+		} finally {
+			setLoading(false);
 		}
 	}
 	const getLevelBenefitData = async (userId: string | number | null) => {
@@ -100,7 +102,12 @@ const Identity: React.FC = () => {
 			{/* 未认证 - 驳回 - 审核中*/}
 			{/* {(userIdentityInfo?.authStatus === 2||userIdentityInfo?.authStatus === 0||userIdentityInfo?.authStatus === 3) && <NoAuthentication identityInfo={userIdentityInfo}/>} */}
 			{/* 已认证 */}
-			{
+			{	
+				loading ?
+				<div>
+					<Skeleton.Title />
+					<Skeleton.Paragraph animated lineCount={10} />
+				</div> :
 				userIdentityInfo?.authStatus === 1 ? 
 				<Certified identityInfo={userIdentityInfo} levelBenefit={levelBenefitData} /> : 
 				<NoCertified identityInfo={userIdentityInfo} levelBenefit={levelBenefitData}/>

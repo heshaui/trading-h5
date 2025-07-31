@@ -13,12 +13,13 @@ import appStore from '@/store';
 interface WithUserCenterLayoutOptions {
     menuList?: MenuType[]; // 可选的菜单列表，如果不传则使用默认菜单
     currentTitle?: string; // 当前页面标题
+    noMinHeight?: boolean; // 是否需要内容最小高度
 }
 
 // 高阶组件函数
 const withUserCenterLayout = <P extends object>(
     WrappedComponent: React.ComponentType<P>,
-    options: WithUserCenterLayoutOptions = {}
+    options: WithUserCenterLayoutOptions = {noMinHeight: false}
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
         const { t } = useLanguage('common');
@@ -85,7 +86,7 @@ const withUserCenterLayout = <P extends object>(
                 />
                 
                 {/* 页面内容 */}
-                <div className={`flex-1 ${styles.contentContainer}`}>
+                <div className={`flex-1 ${!options.noMinHeight && styles.contentContainer}`}>
                     <WrappedComponent {...props} />
                 </div>
             </div>

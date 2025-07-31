@@ -72,7 +72,6 @@ const Tradingview: React.ForwardRefRenderFunction<
   const [showModal, setShowModal] = useState(false);
   const [showIntervalDialog, setShowIntervalDialog] = useState(false);
   const [tradTime, setTradTime] = useState("1D");
-  
   const [intervals] = useState([
     "1", "3", "5", "15", "30", "60", "120", "240", "360", "480", "720", "D", "W", "M",
   ]);

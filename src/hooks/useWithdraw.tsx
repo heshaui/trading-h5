@@ -50,7 +50,8 @@ export const useWithdraw = () => {
         }
 
         // 检查身份认证和安全设置
-        const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0;
+        // const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0;
+        const needsKyc = currentUserInfo?.merchantWithdrawalStatus !== 1 ;
         const needsGoogleAuth = !currentUserInfo?.isGoogleAuth;
 
         if (needsKyc || needsGoogleAuth) {

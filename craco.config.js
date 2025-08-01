@@ -42,6 +42,16 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
+    configure: (webpackConfig) => {
+      const homepage = process.env.REACT_APP_HOMEPAGE || '/';
+
+      // 修改 publicPath（影响静态资源路径前缀）
+      webpackConfig.output.publicPath = homepage.endsWith('/')
+        ? homepage
+        : `${homepage}/`;
+
+      return webpackConfig;
+    },
   },
   babel: {
     plugins: [

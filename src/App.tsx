@@ -24,7 +24,7 @@ const App: React.FC = observer(() => {
   }, []);
   return (
     <ConfigProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/h5">
         <div className="app">
           <AutoRoutes />
         </div>

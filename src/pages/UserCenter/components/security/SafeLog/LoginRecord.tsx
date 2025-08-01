@@ -102,7 +102,7 @@ function LoginRecord() {
                     loginData.map((item: DataType) => {
                         return (
                             <li className="border border-[var(--border-color4)] rounded-md mb-4 last:mb-0 px-[10px] py-[14px]" key={item.id}>
-                                <h4 className="text-[14px] leading-[20px] font-medium mb-[11px]">{ item.platformType }</h4>
+                                <h4 className="text-[14px] leading-[20px] font-medium mb-[11px]">{ item.platformType || '--' }</h4>
                                 <p className="text-[14px] font-medium leading-5 mb-[13px] flex justify-between items-center">
                                     <span className="tip-color font-normal text-[12px]">{ t('security.loginRecord.time') }</span>
                                     <span>{item.createTime ? dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss') : '--'}</span>

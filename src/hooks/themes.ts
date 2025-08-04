@@ -135,7 +135,7 @@ export const getThemeVariables = () => {
             '--theme-03': getColorWithOpacity(themeColor, 0.3),
             '--theme-05': getColorWithOpacity(themeColor, 0.5),
             '--theme-005': getColorWithOpacity(themeColor, 0.05),
-            '--theme-shadow': getColorWithOpacity(themeColor, 0.3),
+            '--theme-shadow': getColorWithOpacity(themeColor, 0.2),
             '--header-height': '48px',
             '--background2': 'rgb(245, 245, 245)',
             '--background3': '#ffffff',

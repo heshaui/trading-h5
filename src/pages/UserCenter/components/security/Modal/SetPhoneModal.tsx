@@ -296,7 +296,7 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
           form={form}
           size="large"
           style={{ width: "100%" }}
-          initialValues={{ areaCode: "+1" }}
+          // initialValues={{ areaCode: "+1" }}
         >
           <div className={`font-16 font-w-400 mb-2_5 ${styles.tip_title}`}>
           {/* 国家/地区 */}

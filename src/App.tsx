@@ -12,6 +12,8 @@ import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
 import appStore from '@/store';
 import { useEffect } from 'react';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { history } from '@/utils/history';
 
 const App: React.FC = observer(() => {
   // 应用动态主题映射文件
@@ -24,11 +26,11 @@ const App: React.FC = observer(() => {
   }, []);
   return (
     <ConfigProvider>
-      <BrowserRouter>
+      <HistoryRouter history={history as any}>
         <div className="app">
           <AutoRoutes />
         </div>
-      </BrowserRouter>
+      </HistoryRouter>
     </ConfigProvider>
   );
 });

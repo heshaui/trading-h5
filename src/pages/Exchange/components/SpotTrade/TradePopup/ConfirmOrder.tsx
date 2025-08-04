@@ -76,6 +76,13 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 						<p >{orderData.account}{currentPair?.baseSymbol}</p>
 					</li>
 				)}
+				{/* <li>
+					<p className="tip-color">
+						{t('spot.trade.amount2')}
+					</p>
+					<span className="text-[12px] ml-1">{currentPair?.baseCoinScale}</span>
+					<span className="text-[12px] ml-1">{currentPair?.coinScale}</span>
+				</li> */}
 			</ul>
 			{ orderData.type===0 && <div className="bg-[#ff8a26] bg-opacity-[8%] mb-[10px] text-[#ff8a26] text-[12px] rounded-lg px-[10px] py-4 leading-[17px] text-justify flex items-start">
 				<Iconify icon="ep:warning-filled" className="warning_color mr-1 text-[16px]" />

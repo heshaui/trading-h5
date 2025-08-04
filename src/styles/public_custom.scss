@@ -293,7 +293,7 @@
     border-radius: 36px !important;
 }
 
-// 买卖拖地条
+// 买卖拖动条
 .spotSlider {
     height: 16px;
     margin: 0 10px 16px !important;
@@ -319,5 +319,35 @@
     }
     .ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
         border-color: var(--theme-color) !important;
+    }
+}
+// input-number
+.custom-input-number {
+    display: flex;
+    border: 1px solid var(--border-color4);
+    border-radius: 8px;
+    &:focus-within {
+        border-color: var(--text-color3);
+    }
+    .spot_number_input2 {
+        flex: 1;
+        border: none;
+    }
+    .controls {
+        flex-shrink: 0;
+        width: 20px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0 8px 8px 0;
+        border-left: 1px solid var(--border-color4);
+        button {
+            width: 20px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+        }
+        .border-bottom {
+            border-bottom: 1px solid var(--border-color4);
+        }
     }
 }

@@ -6,13 +6,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { StoreContext, rootStore } from './stores';
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode> {/* 严格模式-接口调用两次 */}
     <StoreContext.Provider value={rootStore}>
-      <App />
+        <App />
     </StoreContext.Provider>
   </React.StrictMode>
 );

@@ -484,7 +484,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
       return;
     }
 
-    form.validateFields().then(async (values) => {
+    form.validateFields().then(async () => {
       const params = {
         amount:
           priceDisabled && segmentedvalue === "buy"

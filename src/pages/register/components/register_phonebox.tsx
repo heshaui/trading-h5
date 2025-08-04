@@ -68,7 +68,7 @@ function RegisterPhone() {
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
 				if (loading) return;
-				console.log(values, 111);
+				// console.log(values, 111);
 				if (!values.agree) return Toast.show(t('registerForm.agreeErr'))
 				const data = {
 					type: "p",
@@ -180,7 +180,7 @@ function RegisterPhone() {
 				name="register"
 				form={form}
 				// onFinish={onFinish}
-				initialValues={{ areaCode: "+1" }}
+				// initialValues={{ areaCode: "+1" }}
 				className={`${styles.login_form}`}
 			// onValuesChange={usernameChange}
 			>

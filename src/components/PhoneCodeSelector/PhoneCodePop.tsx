@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle, useCallback } from "react";
 // import { AutoComplete, Flex, Input, Form, ConfigProvider, Select } from "antd";
 import { Iconify } from "@/components/icon/index";
 import { getCountryCode } from "@/services/open";
@@ -28,9 +28,10 @@ interface PhoneCodeSelectProps {
   className?: string;
   value?: string;
   onChange?: (value: string) => void;
+  autoSelectFirst?: boolean; // 是否自动选中第一项，默认为true
 }
 
-const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, value, onChange }, ref) => {
+const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, value, onChange, autoSelectFirst = true }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const [countryCodeList, setCountryCodeList] = useState<CountryCodeItem[]>([]);
   const [searchValue, setSearchValue] = useState("");
@@ -82,6 +83,21 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         option.areaCode?.includes(searchValue)
     );
   }, [groupedOptions, searchValue]);
+
+  // 使用useCallback包装onChange，避免重复触发
+  const handleValueChange = useCallback((newValue: string) => {
+    onChange?.(newValue);
+  }, [onChange]);
+
+  // 自动选中第一项（当数据加载完成且没有选中值时）
+  useEffect(() => {
+    if (autoSelectFirst && filteredOptions.length > 0 && !selectedValue && !searchValue) {
+      const firstOption = filteredOptions[0];
+      const defaultValue = firstOption.value;
+      setSelectedValue(defaultValue);
+      handleValueChange(defaultValue);
+    }
+  }, [filteredOptions, selectedValue, searchValue, autoSelectFirst, handleValueChange]);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -138,13 +154,13 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
   const handleOptionSelect = (option: any) => {
     const newValue = option.value;
     setSelectedValue(newValue);
-    onChange?.(newValue);
+    handleValueChange(newValue);
     handlePopupClose();
   };
 
   // 获取显示的标签
   const getDisplayLabel = (value: string) => {
-    if (!value) return "Please select";
+    if (!value) return  t('titleText.selectCountry');
     const option = groupedOptions.find(opt => opt.value === value);
     return option ? option.value : value;
   };
@@ -156,7 +172,13 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         onClick={handlePopupOpen}
       >
         <div className={`flex-x-cc ${styles.valueSelect}`}>
-          <p className={`flex-1 text-left`}>{getDisplayLabel(selectedValue)}</p>
+          <p className={`flex-1 text-left`}
+          style={{ 
+            overflow: 'hidden', 
+            whiteSpace: 'nowrap', 
+            textOverflow: 'ellipsis',
+            minWidth: 0 
+          }}>{getDisplayLabel(selectedValue)}</p>
           <Iconify icon="eva:arrow-down-fill" size={16} />
         </div>
         
@@ -167,7 +189,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         onMaskClick={handlePopupClose}
         position="bottom"
         bodyStyle={{
-          height: '60vh',
+          maxHeight: '60vh',
           borderTopLeftRadius: '8px',
           borderTopRightRadius: '8px'
         }}
@@ -205,7 +227,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
                   onClick={() => handleOptionSelect(option)}
                   style={{
                     borderBottom: '1px solid #f0f0f0',
-                    backgroundColor: selectedValue === option.value ? '#f0f8ff' : 'transparent',
+                    backgroundColor: selectedValue === option.value ? 'var(--theme-shadow)' : 'transparent',
                     borderRadius: '4px',
                     marginBottom: '4px'
                   }}
@@ -225,10 +247,13 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
 });
 
 // 包装组件以支持Form.Item
-const PhoneCodeSelectWrapper: React.FC<{ className?: string }> = ({ className }) => {
+const PhoneCodeSelectWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean; 
+}> = ({ className, autoSelectFirst = true }) => {
   return (
     <Form.Item name="areaCode" noStyle>
-      <PhoneCodeSelect className={className} />
+      <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
     </Form.Item>
   );
 };

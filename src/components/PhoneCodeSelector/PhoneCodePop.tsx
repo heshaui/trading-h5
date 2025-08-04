@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle, useCallback } from "react";
-// import { AutoComplete, Flex, Input, Form, ConfigProvider, Select } from "antd";
 import { Iconify } from "@/components/icon/index";
 import { getCountryCode } from "@/services/open";
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/phoneCode.module.scss";
 import { NoData } from "../noData";
-import { Form, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
+import { Form as MobileForm, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
 
 interface OptionItem {
   label: React.ReactNode;
@@ -246,17 +245,108 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
   );
 });
 
-// 包装组件以支持Form.Item
-const PhoneCodeSelectWrapper: React.FC<{ 
+// antd-mobile 表单包装组件
+const PhoneCodeSelectMobileWrapper: React.FC<{ 
   className?: string; 
   autoSelectFirst?: boolean; 
 }> = ({ className, autoSelectFirst = true }) => {
   return (
-    <Form.Item name="areaCode" noStyle>
+    <MobileForm.Item name="areaCode" noStyle>
       <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
-    </Form.Item>
+    </MobileForm.Item>
   );
 };
+
+// antd 表单包装组件（懒加载导入）
+const PhoneCodeSelectAntdWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean; 
+}> = ({ className, autoSelectFirst = true }) => {
+  // 动态导入 antd 的 Form 组件
+  const [AntdForm, setAntdForm] = useState<any>(null);
+  
+  useEffect(() => {
+    const loadAntdForm = async () => {
+      try {
+        const { Form } = await import('antd');
+        setAntdForm(Form);
+      } catch (error) {
+        console.warn('Failed to load antd Form component:', error);
+      }
+    };
+    
+    loadAntdForm();
+  }, []);
+  
+  if (!AntdForm) {
+    // 如果 antd 未加载，直接返回基础组件
+    return <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />;
+  }
+  
+  return (
+    <AntdForm.Item name="areaCode" noStyle>
+      <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
+    </AntdForm.Item>
+  );
+};
+
+// 通用包装组件，自动检测环境
+const PhoneCodeSelectWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean;
+  formType?: 'mobile' | 'antd' | 'auto'; // 新增 formType 属性
+}> = ({ className, autoSelectFirst = true, formType = 'auto' }) => {
+  const [detectedFormType, setDetectedFormType] = useState<'mobile' | 'antd' | null>(null);
+  
+  useEffect(() => {
+    if (formType !== 'auto') {
+      setDetectedFormType(formType);
+      return;
+    }
+    
+    // 自动检测当前环境中可用的表单库
+    const detectFormLibrary = async () => {
+      try {
+        // 检测是否有 antd-mobile
+        await import('antd-mobile');
+        
+        // 检测是否有 antd
+        try {
+          await import('antd');
+          // 如果两个都有，优先使用 mobile（因为这是移动端项目）
+          setDetectedFormType('mobile');
+        } catch {
+          setDetectedFormType('mobile');
+        }
+      } catch {
+        try {
+          await import('antd');
+          setDetectedFormType('antd');
+        } catch {
+          setDetectedFormType('mobile'); // 默认使用 mobile
+        }
+      }
+    };
+    
+    detectFormLibrary();
+  }, [formType]);
+  
+  // 根据检测结果或指定类型渲染对应的包装组件
+  if (detectedFormType === 'antd') {
+    return <PhoneCodeSelectAntdWrapper className={className} autoSelectFirst={autoSelectFirst} />;
+  } else {
+    return <PhoneCodeSelectMobileWrapper className={className} autoSelectFirst={autoSelectFirst} />;
+  }
+};
+
+// 导出各种版本供不同场景使用
+export { PhoneCodeSelect }; // 基础组件，不包含任何表单包装
+export { PhoneCodeSelectMobileWrapper }; // antd-mobile 表单包装版本
+export { PhoneCodeSelectAntdWrapper }; // antd 表单包装版本
+export { PhoneCodeSelectWrapper }; // 通用包装组件，支持自动检测
+
+// 默认导出通用包装组件
+export default PhoneCodeSelectWrapper;
 
 // 添加此导出函数以支持服务端翻译加载
 // export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -266,4 +356,3 @@ const PhoneCodeSelectWrapper: React.FC<{
 // 		},
 // 	};
 // };
-export default PhoneCodeSelectWrapper;

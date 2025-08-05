@@ -65,6 +65,8 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   // 获取币种列表
   // const {coinList} = useCoinList();
   const coinList = appStore.getCurrentPairList() || appStore.currencyPairs; // 货币对列表
+  // 如果订单变了就刷新数据
+  const { orderPlace } = appStore.updateFlag;
 
   const [tableData, setTableData] = useState<DataType[]>([]);
   const [paramInfo, sePparamInfo] = useState({
@@ -480,6 +482,10 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     getCoinList()
     getOrderListData()
   }, [])
+
+  useEffect(() => {
+    getOrderListData()
+  }, [orderPlace])
 
 
 

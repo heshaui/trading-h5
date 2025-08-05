@@ -113,13 +113,13 @@ const PopIndex = observer(() => {
                             </div>
                         </div>
                         <div className="px-4 py-[21px]">
-                            <div className="flex justify-between items-center text-[16px] mb-[22px] h-[22px]">
+                            {/* <div className="flex justify-between items-center text-[16px] mb-[22px] h-[22px]">
                                 {t('spot.preferences.feeCoin')} 
                                 <button className="tip-color text-[14px]" onClick={goFeeCoin}>
                                     <span>{t('spot.preferences.receivedCoin')}</span>
                                     <Iconify icon="icon-park-outline:right" className="text-[24px] ml-1" />
                                 </button>
-                            </div>
+                            </div> */}
                             <div className="flex justify-between items-center text-[16px] mb-[22px] h-[22px]">
                                 {t('spot.preferences.tradeRule')} 
                                 <button className="tip-color text-[14px]" onClick={goRule}>

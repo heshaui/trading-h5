@@ -23,6 +23,7 @@ const SpotChart: React.FC = () => {
     // k线图视图模式
     const [viewMode, setViewMode] = useState<ViewMode>(window.innerWidth <= 480 ? 'phone' : 'tablet');
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const isPhone = window.innerWidth <= 480;
     // k线图ref
     const tradingviewRef = useRef<TradingviewRefHandle>(null);
     const chartRef = useRef<HTMLDivElement>(null);
@@ -69,6 +70,15 @@ const SpotChart: React.FC = () => {
         return chartType?.label
     }
 
+    /**
+     * 设置图表全屏后的样式
+     * 手机全屏，且未旋转屏幕：设置padding-top
+     * 手机全屏，旋转屏幕：设置padding-left
+     */
+    const setFullscreenStyle = () => {
+        return ``
+    }
+
     // 全屏
     const handleFullscreen = async () => {
         const el = chartRef.current;
@@ -82,7 +92,7 @@ const SpotChart: React.FC = () => {
                 await (el as any).webkitRequestFullscreen();
             }
         } catch (err) {
-            console.error("全屏或锁定横屏失败", err);
+            console.error("全屏失败", err);
         }
     }
 

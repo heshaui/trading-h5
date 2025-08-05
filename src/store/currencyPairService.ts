@@ -123,7 +123,6 @@ export async function fetchAllCurrencyPairs() {
             throw new Error('Failed to load UsdtPrice');
         }
         const UsdPrice = UsdPriceRes.data;
-
         return {
             success: true,
             data: processedPairs,

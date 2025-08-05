@@ -59,6 +59,8 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
   const { t } = useLanguage(["spot"]);
   const { isLight } = useTheme();
   const [form] = Form.useForm();
+  // 添加 price state
+  const [price, setPrice] = useState<string | number>("");
   const navigate = useNavigate();
   const { tradePrice } = useExchange();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -509,8 +511,9 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
           setSliderValue(0);
 
           // 通知父组件下单成功
-          if (typeof onOrderSuccess === "function") {
-            onOrderSuccess();
+          //if (typeof onOrderSuccess === "function") {
+            // onOrderSuccess();
+            appStore.updateOrderFlag(1);
             notification.success({
               message: t("spot.success.orderPlaced"),
               description: (
@@ -545,7 +548,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
               ),
               duration: 3,
             });
-          }
+          //}
         } else {
           message.error(res.message);
         }
@@ -805,6 +808,32 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
     return Promise.resolve();
   };
 
+  // 自定义计数器函数 type: 0 减 1 加
+  const handlePrice = (type: number) => {
+    const current = Number(form.getFieldValue("price")) || 0;
+    const precision = currentPair?.baseCoinScale || 8;
+    
+    // 根据精度计算步进值
+    const step = 1;//Math.pow(10, -precision);
+    
+    // 计算新价格
+    const updatePrice = type 
+      ? current + step 
+      : Math.max(current - step, 0);
+    
+    // 格式化价格并设置
+    const formattedPrice = formatWithPrecision(updatePrice, precision);
+    
+    // 同时更新 form 和 state
+    form.setFieldsValue({ price: formattedPrice });
+    setPrice(formattedPrice);
+    
+    // 如果有数量，计算总额
+    if (form.getFieldValue('amount')) {
+      calculateTotal();
+    }
+  };
+
   const SliderRender = () => (
     <Slider
       marks={marks}
@@ -986,65 +1015,70 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
               }}
             >
               <Form.Item name="price" className="spot_number_box">
-                <InputNumber
-                  className={`${styles.mail_input} spot_number_input2 `}
-                  style={{
-                    width: "100%",
-                    boxSizing: "border-box",
-                  }}
-                  min={0}
-                  suffix={
-                    !priceDisabled ? (
-                      <div>{currentPair?.baseSymbol}</div>
-                    ) : (
-                      t("spot.select.market")
-                    )
-                  }
-                  prefix={
-                    <span className={`${styles.tip_color2}`}>
-                      {t("spot.trade.price")}
-                    </span>
-                  }
-                  controls={
-                    priceDisabled
-                      ? false
-                      : {
-                          upIcon: 
-                            <Iconify
-                              icon="mdi:chevron-up"
-                              size={20}
-                              className={`${styles.title_color} ${styles.hover_color}`}
-                            />
-                          ,
-                          downIcon: 
-                            <Iconify
-                              icon="mdi:chevron-down"
-                              size={20}
-                              className={`${styles.title_color} ${styles.hover_color}`}
-                            />
-                          ,
-                        }
-                  }
-                  formatter={(value: any) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    const precision = currentPair?.baseCoinScale || 8;
-                    return `${parseFloat(value.toString()).toFixed(
-                      precision
-                    )}`.replace(/\.?0+$/, "");
-                  }}
-                  parser={(value) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    // 只保留数字和第一个小数点
-                    const parsed = value
-                      .toString()
-                      .replace(/[^\d.]/g, "")
-                      .replace(/\.(?=.*\.)/g, "");
-                    return parsed as unknown as number;
-                  }}
-                  disabled={priceDisabled}
-                />
+                <div className={priceDisabled ? '' : 'custom-input-number'}>
+                  <InputNumber
+                    className={`${styles.mail_input} spot_number_input `}
+                    style={{
+                      width: "100%",
+                      boxSizing: "border-box",
+                    }}
+                    min={0}
+                    formatter={(value: any) => {
+                      if (value === "" || value === null || value === undefined)
+                        return "";
+                      const precision = currentPair?.baseCoinScale || 8;
+                      return `${parseFloat(value.toString()).toFixed(
+                        precision
+                      )}`.replace(/\.?0+$/, "");
+                    }}
+                    parser={(value: any): string => {
+                      if (value === "" || value === null || value === undefined)
+                        return "";
+                      // 只保留数字和第一个小数点
+                      return value
+                        .toString()
+                        .replace(/[^\d.]/g, "")
+                        .replace(/\.(?=.*\.)/g, "");
+                    }}
+                    value={price} 
+                    onChange={(value) => { 
+                      setPrice(value ?? "");
+                      form.setFieldsValue({ price: value });
+                      if (form.getFieldValue('amount')) {
+                        calculateTotal();
+                      }
+                    }}
+                    suffix={
+                      !priceDisabled ? (
+                        <div>{currentPair?.baseSymbol}</div>
+                      ) : (
+                        t("spot.select.market")
+                      )
+                    }
+                    prefix={
+                      <span className={`${styles.tip_color2}`}>
+                        {t("spot.trade.price")}
+                      </span>
+                    }
+                    controls={false}
+                  />
+                  {!priceDisabled && <div className="controls">
+                    <button type="button" className="border-bottom" onClick={() => handlePrice(1)}>
+                      <Iconify
+                        icon="mdi:chevron-up"
+                        size={20}
+                        className={`${styles.title_color} ${styles.hover_color}`}
+                      />
+                    </button>
+                    <button type="button" onClick={() => handlePrice(0)}>
+                      <Iconify
+                        icon="mdi:chevron-down"
+                        size={20}
+                        className={`${styles.title_color} ${styles.hover_color}`}
+                      />
+                    </button>
+                  </div>}
+                </div>
               </Form.Item>
               <Form.Item
                 name="amount"

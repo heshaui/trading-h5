@@ -218,7 +218,8 @@
             "cancel": "取消",
             "edit": "修改",
             "login": "登录",
-            "errmax": "最多买入{{max}}"
+            "errmax": "最多买入{{max}}",
+            "precision": "精度"
         },
         "tooltip": {
             "buyAvailableLimit": "可买取决于您买入时的可用余额，以及您想要交易的价格。当您输入想要交易的价格时，可买将自动计算得出",

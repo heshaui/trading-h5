@@ -221,7 +221,8 @@
             "cancel": "Cancel",
             "edit": "Edit",
             "login": "Login",
-            "errmax": "Maximum buy {{max}}"
+            "errmax": "Maximum buy {{max}}",
+            "precision": "Precision"
         },
         "tooltip": {
             "buyAvailableLimit": "Available to buy depends on your available balance and the price at which you want to trade. When you enter your desired price, the available amount will be calculated automatically.",

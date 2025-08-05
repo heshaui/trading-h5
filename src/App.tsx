@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ConfigProvider } from 'antd-mobile';
-import { BrowserRouter } from 'react-router-dom';
 import AutoRoutes from '@/routes/AutoRoutes';
 import { useThemeEffect } from '@/hooks/dayModeChange';
 import { useWebConfig } from '@/hooks/useKv';
@@ -12,6 +11,8 @@ import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
 import appStore from '@/store';
 import { useEffect } from 'react';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { history } from '@/utils/history';
 
 // 根据环境动态配置基础路径
 const getBasename = () => {
@@ -33,11 +34,11 @@ const App: React.FC = observer(() => {
   }, []);
   return (
     <ConfigProvider>
-      <BrowserRouter basename={getBasename()}>
+      <HistoryRouter history={history as any} basename={getBasename()}>
         <div className="app">
           <AutoRoutes />
         </div>
-      </BrowserRouter>
+      </HistoryRouter>
     </ConfigProvider>
   );
 });

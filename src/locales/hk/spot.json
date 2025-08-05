@@ -67,7 +67,8 @@
             "tradeCount": "成交数量",
             "tradeAmount": "成交金额",
             "tradeFee": "手续费",
-            "tradeRole": "角色"
+            "tradeRole": "角色",
+            "dealAmount": "已成交/委托量"
         },
         "select": {
             "all": "全部",

@@ -395,9 +395,22 @@ class AppStore {
                 this.usdtRate = result.usdtPrice;
                 this.setUsdtRate(result.usdtPrice);
 
-                // 如果没有当前选中的币对，设置第一个为当前币对
-                if (!this.currentPair && result.data.length > 0) {
-                    this.setCurrentPair(result.data[0]);
+                // 更新当前币对
+                if (result.data.length > 0) {
+                    if (this.currentPair) {
+                        // 在新列表中查找当前币对
+                        const updatedPair = result.data.find(pair => pair.id === this.currentPair?.id);
+                        if (updatedPair) {
+                            // 如果找到，更新当前币对
+                            this.setCurrentPair(updatedPair);
+                        } else {
+                            // 如果没找到，设置为新列表的第一个
+                            this.setCurrentPair(result.data[0]);
+                        }
+                    } else {
+                        // 如果没有当前币对，设置为新列表的第一个
+                        this.setCurrentPair(result.data[0]);
+                    }
                 }
                 console.log('币对信息：',result.data)
                 return result.data;

@@ -329,7 +329,7 @@
     &:focus-within {
         border-color: var(--text-color3);
     }
-    .spot_number_input2 {
+    .spot_number_input {
         flex: 1;
         border: none;
     }
@@ -349,5 +349,13 @@
         .border-bottom {
             border-bottom: 1px solid var(--border-color4);
         }
+    }
+}
+.spot_number_input {
+    .ant-input-number-input{
+        text-align: right !important;
+    }
+    .ant-input-number-input:focus {
+        text-align: left !important;
     }
 }

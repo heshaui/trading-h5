@@ -814,7 +814,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
     const precision = currentPair?.baseCoinScale || 8;
     
     // 根据精度计算步进值
-    const step = Math.pow(10, -precision);
+    const step = 1;//Math.pow(10, -precision);
     
     // 计算新价格
     const updatePrice = type 
@@ -1017,7 +1017,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
               <Form.Item name="price" className="spot_number_box">
                 <div className={priceDisabled ? '' : 'custom-input-number'}>
                   <InputNumber
-                    className={`${styles.mail_input} spot_number_input2 `}
+                    className={`${styles.mail_input} spot_number_input `}
                     style={{
                       width: "100%",
                       boxSizing: "border-box",

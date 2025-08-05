@@ -207,7 +207,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     //   },
     // },
     {
-      title: t('spot.columns.price2'), //"成交价",
+      title: t('spot.columns.tradePrice'), //"成交价",
       dataIndex: "tradePrice",
       key: "tradePrice",
       align: "center",
@@ -432,12 +432,18 @@ const SpotMainPage = observer(({ pageType }: Props) => {
           }
         })
 
-        setSymbolSelect(selectData)
+        setSymbolSelect([
+          {
+            label: t('spot.select.all'),
+            value: ''
+          },
+          ...selectData
+        ])
         // 设置默认值
         // form.setFieldsValue({
         //   symbol: selectData[0].value
         // })
-        selectParam.current.symbol = selectData[0].value;
+        // selectParam.current.symbol = selectData[0].value;
       }
     } catch (error) {
       Toast.show({

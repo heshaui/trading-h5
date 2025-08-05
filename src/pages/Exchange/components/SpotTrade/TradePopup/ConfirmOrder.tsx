@@ -51,7 +51,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 						{/* 价格 */}
 						{t('spot.modal.price')}
 					</p>
-					<p >
+					<p>
 						{/* 市价 */}
 						{orderData.type===0?t('spot.modal.market'):orderData.price}{currentPair?.baseSymbol}
 					</p>
@@ -63,7 +63,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 							{/* 数量 */}
 							{t('spot.modal.amount')}
 						</p>
-						<p >{orderData.amount}{currentPair?.coinSymbol}</p>
+						<p>{orderData.amount}{currentPair?.coinSymbol}</p>
 					</li>
 				)}
 				{/* 市价卖单不显示成交额 */}
@@ -73,16 +73,15 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 							{/* 成交额 */}
 							{t('spot.trade.amount2')}
 						</p>
-						<p >{orderData.account}{currentPair?.baseSymbol}</p>
+						<p>{orderData.account}{currentPair?.baseSymbol}</p>
 					</li>
 				)}
-				{/* <li>
+				<li className="flex-x align-center justify-between mt-5">
 					<p className="tip-color">
-						{t('spot.trade.amount2')}
+						{t('spot.modal.precision')}
 					</p>
-					<span className="text-[12px] ml-1">{currentPair?.baseCoinScale}</span>
-					<span className="text-[12px] ml-1">{currentPair?.coinScale}</span>
-				</li> */}
+					<p>{currentPair?.baseCoinScale}/{currentPair?.coinScale}</p>
+				</li>
 			</ul>
 			{ orderData.type===0 && <div className="bg-[#ff8a26] bg-opacity-[8%] mb-[10px] text-[#ff8a26] text-[12px] rounded-lg px-[10px] py-4 leading-[17px] text-justify flex items-start">
 				<Iconify icon="ep:warning-filled" className="warning_color mr-1 text-[16px]" />

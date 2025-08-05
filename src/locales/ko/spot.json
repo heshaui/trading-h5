@@ -218,7 +218,8 @@
             "cancel": "취소",
             "edit": "수정",
             "login": "로그인",
-            "errmax": "최대 매수 가능 수량: {{max}}"
+            "errmax": "최대 매수 가능 수량: {{max}}",
+            "precision": "정밀도"
         },
         "tooltip": {
             "buyAvailableLimit": "매수 가능 수량은 보유 잔액과 입력한 가격에 따라 자동 계산됩니다.",

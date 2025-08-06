@@ -43,12 +43,12 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
     configure: (webpackConfig) => {
-      const homepage = process.env.REACT_APP_HOMEPAGE || '/';
+      // 开发环境使用根路径，生产环境使用 /h5
+      const isProduction = process.env.NODE_ENV === 'production';
+      const publicPath = isProduction ? '/h5/' : '/';
 
       // 修改 publicPath（影响静态资源路径前缀）
-      webpackConfig.output.publicPath = homepage.endsWith('/')
-        ? homepage
-        : `${homepage}/`;
+      webpackConfig.output.publicPath = publicPath;
 
       return webpackConfig;
     },

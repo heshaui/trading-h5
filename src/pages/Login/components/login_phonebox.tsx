@@ -60,13 +60,6 @@ function Phonebox() {
 		form
 			.validateFields()
 			.then(async (values) => {
-				console.log(values, 111);
-			})
-	}
-	const onFinish1 = async () => {
-		form
-			.validateFields()
-			.then(async (values) => {
 				// form.resetFields(); // 重置表单
 				// goAuthCode()
 				// const data = {

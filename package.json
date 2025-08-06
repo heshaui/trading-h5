@@ -2,7 +2,7 @@
   "name": "h5-exchange",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/h5",
+  "homepage": "./",
   "scripts": {
     "start": "craco start",
     "build": "craco build",

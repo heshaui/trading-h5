@@ -129,6 +129,7 @@ class AppStore {
                 ...this.updateFlag,
                 orderPlace: this.updateFlag.orderPlace + 1
             };
+            console.log('更新订单了', this.updateFlag.orderPlace)
         } else if (type === 2) {
             this.updateFlag = {
                 ...this.updateFlag,

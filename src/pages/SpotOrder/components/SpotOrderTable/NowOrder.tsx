@@ -173,7 +173,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   [
     ...baseColumns,
     {
-      title: t('spot.columns.price'), //"已成交/委托量",
+      title: t('spot.columns.dealAmount'), //"已成交/委托量",
       key: "tradeAmount",
       dataIndex: "tradeAmount",
       width: 128,
@@ -276,6 +276,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   ];
   const handleDelectOk = (orderId: string[]) => {
     delectOrder(orderId)
+    setDelectModal(false)
   }
   const delectOrder = async (orderId: string[]) => {
     try {
@@ -421,6 +422,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
 
   useEffect(() => {
     getOrderListData()
+    console.log('当前委托更新了')
   }, [orderPlace])
 
 

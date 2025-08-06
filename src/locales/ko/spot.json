@@ -67,7 +67,8 @@
             "tradeCount": "체결 수량",
             "tradeAmount": "체결 금액",
             "tradeFee": "수수료",
-            "tradeRole": "역할"
+            "tradeRole": "역할",
+            "dealAmount": "체결 / 위임량"
         },
         "select": {
             "all": "전체",

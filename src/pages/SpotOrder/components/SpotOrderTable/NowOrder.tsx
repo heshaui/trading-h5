@@ -91,15 +91,8 @@ const SpotMainPage = observer(({ pageType }: Props) => {
   const toastDataRef = useRef<any>({})
   const [delectType, setDelectType] = useState<number>(0);
 
-  const columns: ColumnType<DataType>[] = [
-    // {
-    //   title: t('spot.columns.uploadTime'), //"更新时间",
-    //   dataIndex: "updateTime",
-    //   key: "updateTime",
-    //   width: 128,
-    //   align: "left",
-    //   render: (text, record) => <div>{`${text ? dayjs(text).format('YYYY-MM-DD HH:mm:ss') : dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss')}`} </div>,
-    // },
+
+  const baseColumns: ColumnType<DataType>[] = [
     {
       title: (_value, record) => {
         let directionText
@@ -175,41 +168,49 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         </div >
       },
     },
-    // {
-    //   title: t('spot.columns.type'), //"类型",
-    //   key: "type",
-    //   dataIndex: "type",
-    //   width: 128,
-    //   align: "center",
-    //   render: (_text) => {
-    //     if (_text === 0) {
-    //       return <span >{t('spot.columns.market')}</span>;
-    //     } else if (_text === 1) {
-    //       return <span  >{t('spot.columns.limit')}</span>;
-    //     } else {
-    //       return <span >--</span>;
-    //     }
-    //   },
-    // },
-    // {
-    //   title: t('spot.columns.direction'),//"方向",
-    //   key: "direction",
-    //   dataIndex: "direction",
-    //   width: 128,
-    //   align: "center",
-    //   render: (_status) => {
-    //     let text
-    //     if (_status === 0) {
-    //       text = t('spot.trade.buy')
-    //       return <span className={`${styles.success_icon}`} >{text || '--'}</span>;
-    //     } else if (_status === 1) {
-    //       text = t('spot.trade.sell')
-    //       return <span className={`${styles.error_icon}`} >{text || '--'}</span>;
-    //     } else {
-    //       return '--'
-    //     }
-    //   }
-    // },
+  ]
+  const columns: ColumnType<DataType>[] = isExchange ? 
+  [
+    ...baseColumns,
+    {
+      title: t('spot.columns.dealAmount'), //"已成交/委托量",
+      key: "tradeAmount",
+      dataIndex: "tradeAmount",
+      width: 128,
+      align: "center",
+      render: (amount, record) => {
+        const amountRes = getRound(record.symbol, record.amount); // 数量
+        const dealRes = getRound(record.symbol, record.tradedAmount); // 已成交数量
+        return <span>{dealRes.scaleResult}/{amountRes.scaleResult}</span>;
+      },
+    },
+    {
+      title: t('spot.columns.price'), //"价格",
+      key: "price",
+      dataIndex: "price",
+      width: 128,
+      align: "center",
+      render: (_status, record) => {
+        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+        const { baseScaleResult } = getRound(record.symbol, _status)
+        return <>{record.type === 1 ? <div className=''>
+          <p className='text-right '> {baseScaleResult}</p>
+          {/* <Tooltip title={t('spot.modal.edit')}>
+            <button
+              onClick={() => {
+                Toast.show('接口：暂不做')
+              }}
+            >
+              <Iconify icon="mingcute:edit-3-line" className={`${styles.tip_color} mx-1`} size={20} />
+            </button>
+          </Tooltip> */}
+        </div> : <p className='text-right'> {t('spot.select.market')}</p>}</>
+
+      },
+    },
+  ] :
+  [
+    ...baseColumns,
     {
       title: t('spot.columns.price'), //"价格",
       key: "price",
@@ -258,29 +259,6 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         }
       },
     },
-    // {
-    //   title: t('spot.columns.completion'), //"完成度",
-    //   key: "amount",
-    //   dataIndex: "amount",
-    //   width: 128,
-    //   align: "center",
-    //   render: (_amount, record) => {
-    //     // amount/tradedAmount
-    //     // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-    //     const amount = nul(division(record.tradedAmount, _amount), 100)
-    //     const { baseScaleResult } = getRound(record.symbol, amount)
-    //     return < >
-    //       {_amount ?
-    //         <span className={`${styles.tip_color2}`}>
-    //           {/* {record.tradedAmount && record.tradedAmount.toString() !== '0' ?  `${roundDown(nul(division(record.tradedAmount, _amount),100),coin?.baseCoinScale)}%` : '0%'} */}
-    //           {record.tradedAmount && record.tradedAmount.toString() !== '0' ? `${roundDown(baseScaleResult, 2)}%` : '0%'}
-    //         </span> : '0'
-    //       }
-    //     </ >
-
-
-    //   },
-    // },
     {
       title: t('spot.columns.amount'), //成交额,
       key: "turnover",
@@ -294,52 +272,11 @@ const SpotMainPage = observer(({ pageType }: Props) => {
 
         return <span >{_turnover ? `${baseScaleResult}` : '0'}</span>;
       },
-    },
-    // {
-    //   title: <button className={`error_icon`}
-    //     onClick={() => {
-    //       setDelectIdAllAll(tableData.map((item) => item.orderId))
-    //       setDelectModal(true)
-    //     }}
-    //   >{t('spot.columns.cancel')}</button>, //"全撤",
-    //   key: "operation",
-    //   width: 128,
-    //   align: "center",
-    //   render: (_status, record) => {
-    //     return <Tooltip title={t('spot.modal.cancel')} placement="left">
-    //       <button
-    //         onClick={() => {
-
-    //           // setDelectIdAll([record.orderId])
-    //           // setDelectOneSuccess(true)
-    //           setToastData({
-    //             coinSymbol: record.coinSymbol,
-    //             symbol: record.symbol,
-    //             baseSymbol: record.baseSymbol,
-    //             price: record.price,
-    //             amount: record.amount,
-    //           })
-    //           toastDataRef.current = {
-    //             coinSymbol: record.coinSymbol,
-    //             symbol: record.symbol,
-    //             baseSymbol: record.baseSymbol,
-    //             price: record.price,
-    //             amount: record.amount,
-    //           }
-    //           // setToastModal(true)
-    //           delectOne([record.orderId])
-    //         }}
-    //       >
-    //         <Iconify icon="mingcute:delete-2-line" className='error_icon' size={24} />
-    //       </button>
-    //     </Tooltip>;
-    //   },
-    // },
-
-
+    }
   ];
   const handleDelectOk = (orderId: string[]) => {
     delectOrder(orderId)
+    setDelectModal(false)
   }
   const delectOrder = async (orderId: string[]) => {
     try {
@@ -485,6 +422,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
 
   useEffect(() => {
     getOrderListData()
+    console.log('当前委托更新了')
   }, [orderPlace])
 
 

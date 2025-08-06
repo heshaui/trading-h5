@@ -67,7 +67,8 @@
             "tradeCount": "Trade Quantity",
             "tradeAmount": "Trade Amount",
             "tradeFee": "Fee",
-            "tradeRole": "Role"
+            "tradeRole": "Role",
+            "dealAmount": "Completed/Delegated"
         },
         "select": {
             "all": "All",

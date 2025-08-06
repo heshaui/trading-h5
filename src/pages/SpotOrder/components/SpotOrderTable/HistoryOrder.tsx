@@ -302,6 +302,30 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       value: 1
     }
   ]
+  const statusSelect: { label: string, value: string | number }[] = [
+    {
+      label: t('spot.select.all'),
+      value: ''
+    },
+    {
+      label: t('spot.select.completed'),
+      value: 1
+    },
+    {
+      label: t('spot.select.failed'),
+      value: 2
+    },
+    {
+      label: t('spot.select.canceled'),
+      value: 3
+    },
+    {
+      label: t('spot.select.partial'),
+      value: 5
+    }
+  ]
+  // 状态值
+  const statusArr = [0, 1, 2, 3, 4, 5, 6]
 
   const pageChange = async (page: number, pageSize: number) => {
     // const pageData = {
@@ -389,13 +413,13 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       pageNo: paramdataRef.current.page,
       pageSize: paramdataRef.current.pageSize,
       orderType: 1,
-      notStatus: selectParam.current.notStatus ? '3' : null,
+      notStatus: selectParam.current.notStatus,
       coinSymbol: selectParam.current.symbol ? `${selectParam.current.symbol.split('/')[0]}` : null,
       baseSymbol: selectParam.current.symbol ? `${selectParam.current.symbol.split('/')[1]}` : null,
       startTime: selectParam.current.startTime ? dayjs(selectParam.current.startTime).valueOf() : null,
       endTime: selectParam.current.endTime ? dayjs(selectParam.current.endTime).valueOf() : null,
       direction: selectParam.current.direction || selectParam.current.direction?.toString() === '0' ? selectParam.current.direction : null,
-      type: selectParam.current.type || selectParam.current.type?.toString() === '0' ? selectParam.current.type : null,
+      // type: selectParam.current.type || selectParam.current.type?.toString() === '0' ? selectParam.current.type : null,
     }
     setLoading(true)
     try {
@@ -409,8 +433,8 @@ const SpotMainPage = observer(({ pageType }: Props) => {
         setTableData(newData);
         setTotal(res.data.count);
         const hasDirection = params.direction !== undefined && params.direction !== null;
-        const hasType = params.type !== undefined && params.type !== null;
-        if (hasDirection || params.coinSymbol || params.baseSymbol || hasType) {
+        //const hasType = params.type !== undefined && params.type !== null;
+        if (hasDirection || params.coinSymbol || params.baseSymbol || params.notStatus) {
           updateHistoryOrderCount(res.data.count);
         } else {
           updateHistoryOrderCount(0);
@@ -507,12 +531,21 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               }}
             // showSearch={false}
             />
-            <SelectPop
+            {/* <SelectPop
               options={typeSelect}
               placeholder={t('spot.columns.type')}
               title={t('spot.columns.type')}
               onChange={(value) => {
                 selectParam.current.type = value as string || ''
+                getOrderListData()
+              }}
+            /> */}
+            <SelectPop
+              options={statusSelect}
+              placeholder={t('spot.columns.status')}
+              title={t('spot.columns.status')}
+              onChange={(value) => {
+                selectParam.current.notStatus = value !== '' ? statusArr.filter((item:number) => item !== value).join(',') : ''
                 getOrderListData()
               }}
             />

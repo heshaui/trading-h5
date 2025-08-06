@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
-import { Toast } from 'antd-mobile';
+import { Toast, Tabs } from 'antd-mobile';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import appStore from '@/store';
-import CustomTab from '@/components/CustomCom/CustomTab';
 import { NoData } from '@/components/noData';
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
+
+import CoinTabs from './CoinTabs';
 
 interface SelectContentProps {
     currencyPairs: any[];
@@ -38,27 +39,6 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             return amount.toFixed(2);
         }
     };
-
-    // 标签页配置
-    const tabItems = [
-        { key: 'all', title: t('spot.header.all') },
-        { key: '1', title: t('spot.header.mainArea') },
-        { key: '2', title: t('spot.header.innovationArea') },
-        { key: '3', title: t('spot.header.newCoinArea') },
-        { key: '4', title: 'AI' },
-        { key: '5', title: 'Meme' },
-        { key: '6', title: 'NFT' },
-        { key: '7', title: 'DeFi' },
-        { key: '8', title: 'Web3' },
-        { key: '9', title: 'Payments' },
-        { key: '10', title: 'Launchpad' },
-        { key: '11', title: 'Layer2' },
-        { key: '12', title: 'Solana' },
-        { key: '13', title: 'RWA' },
-        { key: '14', title: 'Launchpool' },
-        { key: '15', title: t('spot.header.gameMetaverse') },
-        { key: '16', title: t('spot.header.storage') },
-    ];
 
     // 处理排序
     const [sortField, setSortField] = useState<string>('');
@@ -223,15 +203,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     return (
         <div className="flex-col flex-1 min-h-0">
             {/* 滚动标签页 */}
-            <CustomTab
-                tabsItems={ tabItems }
-                activeKey={activeTab}
-                onChange={setActiveTab}
-                stretch={false}
-                activeLineMode='auto'
-                className="avatarTabs coinTabs"
-            />
-
+            <CoinTabs activeKey={activeTab} onChange={setActiveTab} />
             {/* 列表头部 */}
             <div className="flex justify-between gap-x-[10px] h-[17] items-center px-4 tip-color text-[12px]">
                 <div

@@ -97,7 +97,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
       <div>
          <div className="border-color border-[1px] p-4 mb-4 rounded-[8px] relative">
             {/* 认证标题 */}
-            <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex t">
+            <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex items-center">
                {/* 标准身份认证 */}
                {t("identity.standardAuth.title")} 
                {/* <div className="text-[14px] text-[var(--text-color6)] ml-[10px] flex">

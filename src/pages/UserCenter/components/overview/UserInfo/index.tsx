@@ -74,9 +74,9 @@ const UserInfo: React.FC = () => {
   return (
     <div>
       {/* 用户信息 */}
-      <div className={styles.userInfo}>
-        <div className="flex">
-          <div className="mr-2">
+      <div className={`${styles.userInfo} gap-x-[10px]`}>
+        <div className="flex flex-1 min-w-0">
+          <div className="mr-2 shrink-0">
             {loginInfo?.avatarUrl ? 
             <Image src={loginInfo?.avatarUrl}
               alt="avatarUrl"
@@ -89,8 +89,8 @@ const UserInfo: React.FC = () => {
               className={styles.userInfo_pic} 
             />}
           </div>
-          <div>
-              <div className={styles.userInfo_name}>{loginInfo?.account || '--'}</div>
+          <div className="flex-1 min-w-0">
+              <div className={`${styles.userInfo_name} truncate`}>{loginInfo?.account || '--'}</div>
               <div className={styles.userInfo_uid}>
                   UID：{loginInfo?.userId || '--'}
                   <Iconify icon="icon-park-solid:copy"
@@ -100,7 +100,7 @@ const UserInfo: React.FC = () => {
               </div>
           </div>
         </div>
-        <div>
+        <div className="shrink-0">
             <button type='button' className={`${styles.userInfo_btn}`} onClick={() => navigate('/userCenter/setting')}>
                 {/* 个人资料 */}
                 {t('overview.personalInfo')}

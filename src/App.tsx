@@ -11,6 +11,7 @@ import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
 import appStore from '@/store';
 import { useEffect } from 'react';
+// 在非组件ts中使用路由跳转
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@/utils/history';
 
@@ -22,6 +23,8 @@ const getBasename = () => {
   }
   return process.env.REACT_APP_BASE_PATH || '/';
 };
+// 读取配置文件的前缀
+const BASENAME = process.env.REACT_APP_HOMEPAGE || '/';
 
 const App: React.FC = observer(() => {
   // 应用动态主题映射文件
@@ -34,7 +37,7 @@ const App: React.FC = observer(() => {
   }, []);
   return (
     <ConfigProvider>
-      <HistoryRouter history={history as any} basename={getBasename()}>
+      <HistoryRouter history={history as any} basename={BASENAME}>
         <div className="app">
           <AutoRoutes />
         </div>

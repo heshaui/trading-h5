@@ -3,6 +3,8 @@ import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon';
 import { observer } from 'mobx-react-lite';
 import { Toast } from 'antd-mobile';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useQueryParams from '@/hooks/useQueryParams';
 import appStore from '@/store';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import { getPairsRate } from "@/utils/getUseRate";
@@ -15,6 +17,9 @@ const WS_URL = `${process.env.REACT_APP_WS_API_BASE}/ws/multi`;
 
 const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     const { t } = useLanguage('spot');
+    const query = useQueryParams();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [selectPopupOpen, setSelectPopupOpen] = useState<boolean>(false);
     const [isFavorite, setIsFavorite] = useState(false); // 添加收藏状态
@@ -35,6 +40,35 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
     const currencyPairsArray = appStore.currencyPairs || [];
+    
+    // 处理路由参数变化，包括页面内跳转
+    useEffect(() => {
+        const { symbol } = query;
+
+        if (symbol && typeof symbol === 'string') {
+            const [coinSymbol, baseSymbol] = symbol.split('/');
+
+            if (coinSymbol && baseSymbol) {
+                const matchedPairs = appStore.getCurrencyPairsByBase(baseSymbol);
+                const matchedPair = matchedPairs.find(pair =>
+                    pair.coinSymbol === coinSymbol && pair.baseSymbol === baseSymbol
+                );
+
+                if (matchedPair) {
+                    appStore.setCurrentPair(matchedPair);
+                }
+            }
+
+            // 移除 URL 中的 symbol 参数（保持其他参数不变）
+            const params = new URLSearchParams(location.search);
+            params.delete('symbol');
+
+            navigate({
+                pathname: location.pathname,
+                search: params.toString()
+            }, { replace: true });
+        }
+    }, [query.symbol]);
 
     // WebSocket连接和数据处理
     useEffect(() => {

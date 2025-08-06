@@ -67,7 +67,7 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
             isPhoneAuth: 1,
             newPhone: values.phoneNumber,
             phoneCode: values.code || "",
-            countryCode: values.areaCode.replace("+", ""),
+            countryCode: values.areaCode?.replace("+", ""),
             type: 2,
             googleCode: values.googleCode || "",
             code: values.emailCode || "",
@@ -80,7 +80,7 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
             phoneStatus: 1,
             newPhone: values.phoneNumber,
             phoneCode: values.code,
-            countryCode: values.areaCode.replace("+", ""),
+            countryCode: values.areaCode?.replace("+", ""),
             type: 1,
             platformType: "H5",
           };
@@ -380,7 +380,6 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
             {t("security.google")}
             </div>
             <Form.Item
-            noStyle
             name="googleCode"
             rules={[{ required: true, message: t("security.codeError") }]}
             >

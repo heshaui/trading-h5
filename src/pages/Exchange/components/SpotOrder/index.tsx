@@ -16,7 +16,7 @@ import noLoginDarkIcon from '@/assets/images/public/icon_nologin_dark.png';
 
 
 const SpotTabs: React.FC = () => {
-    const {t} = useLanguage('spot');
+    const {t, currentLanguage} = useLanguage(['spot', 'common']);
     const [activeTab, setActiveTab] = useState('1');
     const { isLoggedIn } = useAuth();
     const { isLight } = useTheme();
@@ -41,7 +41,7 @@ const SpotTabs: React.FC = () => {
                 title: `${t('spot.tabs.asset')}${assetsCount>0 ? `(${assetsCount})` : ''}` // 资产
             }
         ]
-    }, [nowOrderCount, historyOrderCount, historyDealCount, assetsCount])
+    }, [nowOrderCount, historyOrderCount, historyDealCount, assetsCount, currentLanguage])
 
     // 未登录时的内容
     const NoLogin = () => {
@@ -49,10 +49,10 @@ const SpotTabs: React.FC = () => {
             <div className="w-full flex-col justify-center items-center pt-[58px] pb-[76px]">
                 <img src={isLight ? noLoginLightIcon : noLoginDarkIcon} className="w-[160px] h-[160px]" />
                 <p className="h-[20px] flex justify-center items-center text-[14px] font-medium">
-                    <button className="text-[#ff5f1f]" onClick={() => navigate('/login')}>登录</button>
-                    <span className="mx-2">或</span>
-                    <button className="text-[#ff5f1f] mr-2" onClick={() => navigate('/register')}>立即注册</button>
-                    <span>开始交易</span>
+                    <button className="text-[#ff5f1f]" onClick={() => navigate('/login')}>{t('common:noLogin.tip2')}</button>
+                    <span className="mx-2">{t('common:noLogin.or')}</span>
+                    <button className="text-[#ff5f1f] mr-2" onClick={() => navigate('/register')}>{t('common:noLogin.tip3')}</button>
+                    <span>{t('common:noLogin.tip1')}</span>
                 </p>
             </div>
         )

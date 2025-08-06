@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 import { Toast, Image, ImageUploader } from 'antd-mobile';
 import type { ImageUploadItem } from 'antd-mobile/es/components/image-uploader';
@@ -10,6 +10,7 @@ import { postSaveIdentity } from "@/services/userCenter";
 import { encryptData } from '@/utils/encrypt'
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTheme } from '@/hooks/useTheme';
+import { observer } from 'mobx-react-lite';
 
 import frontageLightImg from '@/assets/images/userCenter/identity/frontage_day1.png';
 import frontageDarkImg from '@/assets/images/userCenter/identity/frontage_night1.png';
@@ -36,7 +37,7 @@ interface UploadCardProps {
     userInfo: EventType;
 }
 
-const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => {
+const UploadCard: React.FC<UploadCardProps> =observer(({ onNext, onPrev, userInfo }) => {
     const { t } = useLanguage(['userCenter']);
     const [frontFileLoading, setFrontFileLoading] = useState<boolean>(false);
     const [frontFileUrl, setFrontFileUrl] = useState<string>('');
@@ -47,10 +48,21 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
     const [isLoading, setIsLoading] = useState(false); // 提交loading
     const { isLight } = useTheme(); // 使用 hook
 
-    // Check if all required files are uploaded
     const checkFilesComplete = () => {
         return !!frontFileUrl && !!backFileUrl && !!selfieFileUrl;
     };
+
+    const frontageImg = useMemo(() => {
+        return isLight ? frontageLightImg : frontageDarkImg
+    }, [isLight])
+
+    const backImg = useMemo(() => {
+        return isLight ? backLightImg : backDarkImg
+    }, [isLight])
+
+    const handcardImg = useMemo(() => {
+        return isLight ? handcardLightImg : handcardDarkImg
+    }, [isLight])
 
 
     const uploadConfig = {
@@ -186,19 +198,20 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
             <div className="flex flex-col items-center">
                 <div 
                     className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
-                    style={{ backgroundImage: `url(${isLight ? frontageLightImg : frontageDarkImg})` }}
+                    style={{ backgroundImage: `url(${frontageImg})` }}
                 >
-                    {frontFileUrl && <div className="w-full h-full flex justify-center items-center">
+                    {/* {frontFileUrl && <div className="w-full h-full flex justify-center items-center">
                         <Image 
                             src={frontFileUrl}
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
-                    </div>}
+                    </div>} */}
                     <ImageUploader
                         maxCount={1}
                         {...frontUploadProps}
-                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        className="w-full h-full absolute top-0 flex justify-center items-center custom-card-upload"
                         disableUpload={frontFileLoading}
+                        onDelete={() => setFrontFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
                                 <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background15)] flex justify-center items-center tip-color">
@@ -216,19 +229,20 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                 </div>
                 <div 
                     className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
-                    style={{ backgroundImage: `url(${isLight ? backLightImg : backDarkImg})` }}
+                    style={{ backgroundImage: `url(${backImg})` }}
                 >
-                    {backFileUrl && <div className="w-full h-full flex justify-center items-center">
+                    {/* {backFileUrl && <div className="w-full h-full flex justify-center items-center">
                         <Image 
                             src={backFileUrl}
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
-                    </div>}
+                    </div>} */}
                     <ImageUploader
                         maxCount={1}
                         {...backUploadProps}
-                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        className="w-full h-full absolute top-0 flex justify-center items-center custom-card-upload"
                         disableUpload={backFileLoading}
+                        onDelete={() => setBackFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
                                 <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
@@ -246,19 +260,20 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
                 </div>
                 <div 
                     className="flex justify-center relative mb-[40px] bg-no-repeat bg-center bg-cover w-[324px] h-[211px]"
-                    style={{ backgroundImage: `url(${isLight ? handcardLightImg : handcardDarkImg})` }}
+                    style={{ backgroundImage: `url(${handcardImg})` }}
                 >
-                    {selfieFileUrl && <div className="w-full h-full flex justify-center items-center">
+                    {/* {selfieFileUrl && <div className="w-full h-full flex justify-center items-center">
                         <Image 
                             src={selfieFileUrl}
                             className="!w-[280px] !h-[166px] rounded-[10px]"
                         />
-                    </div>}
+                    </div>} */}
                     <ImageUploader
                         maxCount={1}
                         {...selfieUploadProps}
-                        className="w-full h-full absolute top-0 flex justify-center items-center"
+                        className="w-full h-full absolute top-0 flex justify-center items-center custom-card-upload"
                         disableUpload={selfieFileLoading}
+                        onDelete={() => setSelfieFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
                                 <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
@@ -323,6 +338,6 @@ const UploadCard: React.FC<UploadCardProps> = ({ onNext, onPrev, userInfo }) => 
             </div>
 		</div>
     );
-}
+})
 
 export default UploadCard;

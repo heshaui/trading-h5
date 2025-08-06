@@ -569,15 +569,15 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
       const availableCoin =
         userBalance.find((item) => item.coinName === currentPair?.coinSymbol)
           ?.balance || 0;
-      if (availableCoin <= 0) {
-		Toast.show({
-			icon: 'fail',
-			content: t("spot.error.insufficientSellBalance", {
-				symbol: currentPair?.coinSymbol,
-			})
-		})
-        return;
-      }
+        if (availableCoin <= 0) {
+          Toast.show({
+            icon: 'fail',
+            content: t("spot.error.insufficientSellBalance", {
+              symbol: currentPair?.coinSymbol,
+            })
+          })
+          return;
+        }
     }
 
     // 在提交时手动验证必填字段

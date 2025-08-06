@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Toast } from 'antd-mobile';
+import { useLanguage } from "./useLanguage";
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ const isValidText = (text: string|number | null | undefined): text is string => 
 
 export const useCopyToClipboard = (): ReturnType => {
 	const [copiedText, setCopiedText] = useState<CopiedValue>(null);
-
+	const { t } = useLanguage('common')
 	const copyFn: CopyFn = async (text) => {
 		// 检查文本是否为有效值
 		if (!isValidText(text)) {
@@ -44,7 +45,7 @@ export const useCopyToClipboard = (): ReturnType => {
 			setCopiedText(text);
 			Toast.show({
                 icon: 'success',
-                content: 'Success!',
+                content: t('copySuccess'),
             })
 			
 			return true;

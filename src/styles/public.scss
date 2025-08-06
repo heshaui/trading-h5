@@ -767,6 +767,7 @@ button {
   -ms-overflow-style: none;  // IE and Edge
   scrollbar-width: none;  // Firefox
   &.scrollX {
+    min-width: 0;
     overflow-y: hidden;
     overflow-x: auto;
   }

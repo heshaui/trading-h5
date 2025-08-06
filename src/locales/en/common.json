@@ -140,6 +140,7 @@
       "invalidFileType": "Invalid file type"
     },
     "selectAvatar": "Please select an avatar",
+    "defaultAvatar": "Default",
     "avatarSuccess": "Avatar modified successfully",
     "birthday": {
       "title": "Add Birthday",

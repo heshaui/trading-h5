@@ -5,7 +5,6 @@ import { Iconify } from "@/components/icon";
 import { Toast, Tabs } from 'antd-mobile';
 import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
 import appStore from '@/store';
-import CustomTab from '@/components/CustomCom/CustomTab';
 import { NoData } from '@/components/noData';
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 
@@ -40,26 +39,6 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             return amount.toFixed(2);
         }
     };
-
-    // 标签页配置
-    const tabItems = [
-        { key: '1', title: t('spot.header.mainArea') },
-        { key: '2', title: t('spot.header.innovationArea') },
-        { key: '3', title: t('spot.header.newCoinArea') },
-        { key: '4', title: 'AI' },
-        { key: '5', title: 'Meme' },
-        { key: '6', title: 'NFT' },
-        { key: '7', title: 'DeFi' },
-        { key: '8', title: 'Web3' },
-        { key: '9', title: 'Payments' },
-        { key: '10', title: 'Launchpad' },
-        { key: '11', title: 'Layer2' },
-        { key: '12', title: 'Solana' },
-        { key: '13', title: 'RWA' },
-        { key: '14', title: 'Launchpool' },
-        { key: '15', title: t('spot.header.gameMetaverse') },
-        { key: '16', title: t('spot.header.storage') },
-    ];
 
     // 处理排序
     const [sortField, setSortField] = useState<string>('');

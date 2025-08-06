@@ -93,17 +93,17 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
     return (
         <div>
             <div className="border-color border-[1px] p-4 mb-4 rounded-[8px] relative">
-                <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex t">
+                <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex items-center">
                     {/* 标准身份认证 */}
-                    {t('identity.standardAuth.title')}    
-                    <div className="text-[14px] text-[var(--text-color6)] ml-[10px] flex">
+                    <div>{t('identity.standardAuth.title')}</div> 
+                    <div className="text-[14px] text-[var(--text-color6)] ml-[10px] flex items-center">
                         <Iconify icon="mingcute:safety-certificate-line" className="text-[20px] success_icon mr-1" />
                         {/* 已认证 */}
                         {t('identity.status.verified')}
                     </div>
                 </div>
                 <div className="flex justify-between items-end">
-                    <div className="text-[12px] text-[var(--text-color6)] mb-5">
+                    <div className="text-[12px] text-[var(--text-color6)] mb-5 max-w-[209px]">
                         <Iconify icon="emojione-monotone:small-blue-diamond" className="text-[20px] error_icon" />
                         {/* 已完成身份认证，开始您的货币之旅吧！ */}
                         {t('overview.identityAuth.verified')}

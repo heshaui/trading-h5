@@ -380,7 +380,6 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
             {t("security.google")}
             </div>
             <Form.Item
-            noStyle
             name="googleCode"
             rules={[{ required: true, message: t("security.codeError") }]}
             >

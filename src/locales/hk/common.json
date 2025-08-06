@@ -144,6 +144,7 @@
     "invalidFileType": "无效的文件类型"
   },
   "selectAvatar": "请选择或选择头像",
+  "defaultAvatar": "默认",
   "avatarSuccess": "头像修改成功",
   "birthday": {
     "title": "添加生日",

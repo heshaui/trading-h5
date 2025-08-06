@@ -23,7 +23,7 @@ interface DataType {
 	settingType: string
 }
 function SafeSet() {
-	const { t } = useLanguage('userCenter');
+	const { t, currentLanguage } = useLanguage('userCenter');
     const navigate = useNavigate();
     const { userId } = useParams();
     const [loginData, setLoginData] = useState<DataType[]>([]);
@@ -96,12 +96,12 @@ function SafeSet() {
 
     useEffect(() => {
         getLoginData()
-    }, [pageNo, langKey])
+    }, [pageNo, currentLanguage])
 
     useEffect(() => {
         setPageNo(1)
         setLoginData([]) // 切换语言时清空旧数据
-    }, [langKey])
+    }, [currentLanguage])
 
     return loading ? 
     (

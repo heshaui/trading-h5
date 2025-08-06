@@ -84,7 +84,7 @@ interface SafeDataType {
 //  -绑定-1确认弹窗-2添加/修改邮箱
 
 const SafeCenter: React.FC = observer(() => {
-	const { t } = useLanguage('userCenter');
+	const { t, currentLanguage } = useLanguage('userCenter');
 	const navigate = useNavigate();
 	const [safeData, setSafeData] = useState<SafeDataType>({});
 	const [phoneModalOpen, setPhoneModalOpen] = useState(false); // 手机修改/设置弹窗
@@ -503,7 +503,7 @@ const SafeCenter: React.FC = observer(() => {
 
 	useEffect(() => {
 		getSafeCenterData();
-	}, [langKey]);
+	}, [currentLanguage]);
 
 	return (
 		<>

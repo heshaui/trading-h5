@@ -78,8 +78,8 @@ const SpotTabs: React.FC = () => {
                 activeLineMode='fixed'
                 className="spotTabs safeTabs"
             />
-            {/* {!isLoggedIn ? <NoLogin /> : TabContent()} */}
-            {!isLoggedIn ? (
+            {!isLoggedIn ? <NoLogin /> : TabContent()}
+            {/* {!isLoggedIn ? (
                 <NoLogin />
             ) : (
                 <>
@@ -96,7 +96,7 @@ const SpotTabs: React.FC = () => {
                         <Assets />
                     </div>
                 </>
-            )}
+            )} */}
         </div>
     )
 }

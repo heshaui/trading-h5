@@ -24,6 +24,7 @@ import { getUserBalance, getUserBalanceAll } from "@/services/assets";
 import { Toast, Popover } from 'antd-mobile';
 import { CustomTab } from "@/components/CustomCom";
 import appStore from "@/store";
+import { observer } from 'mobx-react-lite';
 import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { add, lastD, roundDown } from "@/utils";
@@ -55,7 +56,7 @@ type Props = {
   onOk: () => void;
   onCancel: () => void;
 };
-const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCancel }: Props) => {
+const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk, onCancel }: Props) => {
   const { t } = useLanguage(["spot"]);
   const { isLight } = useTheme();
   const [form] = Form.useForm();
@@ -814,7 +815,7 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
     const precision = currentPair?.baseCoinScale || 8;
     
     // 根据精度计算步进值
-    const step = 1;//Math.pow(10, -precision);
+    const step = Math.pow(10, -precision);
     
     // 计算新价格
     const updatePrice = type 
@@ -1406,6 +1407,6 @@ const SpotTradePage = ({ segmentedType, onOrderSuccess, orderData, onOk, onCance
       </ConfigProvider>
     </div>
   );
-};
+});
 
 export default SpotTradePage;

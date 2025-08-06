@@ -3,6 +3,7 @@ import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon';
 import { Checkbox } from "antd";
 import appStore from '@/store';
+import { getRound } from '@/utils/getUseRate';
 
 interface Props {
 	orderData: any;
@@ -20,6 +21,27 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
     const handleCheckboxChange = (e: any) => {
         setNoRemind(e.target.checked);
     };
+
+	// 处理价格和数量的精度
+	const formatPrice = (price: string | number) => {
+		const priceInfo = getRound(
+			`${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
+			price,
+			currentPair?.coinSymbol,
+			currentPair?.baseSymbol
+		);
+		return priceInfo.baseScaleResult;
+	};
+
+	const formatAmount = (amount: string | number) => {
+		const amountInfo = getRound(
+			`${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
+			amount,
+			currentPair?.coinSymbol,
+			currentPair?.baseSymbol
+		);
+		return amountInfo.scaleResult;
+	};
 
 	const handOk = async () => {
         console.log('提交订单');
@@ -53,7 +75,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 					</p>
 					<p>
 						{/* 市价 */}
-						{orderData.type===0?t('spot.modal.market'):orderData.price}{currentPair?.baseSymbol}
+						{orderData.type===0 ? t('spot.modal.market') : formatPrice(orderData.price)} {currentPair?.baseSymbol}
 					</p>
 				</li>
 				{/* 市价买单不显示数量 */}
@@ -63,7 +85,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 							{/* 数量 */}
 							{t('spot.modal.amount')}
 						</p>
-						<p>{orderData.amount}{currentPair?.coinSymbol}</p>
+						<p>{formatAmount(orderData.amount)} {currentPair?.coinSymbol}</p>
 					</li>
 				)}
 				{/* 市价卖单不显示成交额 */}
@@ -73,15 +95,9 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 							{/* 成交额 */}
 							{t('spot.trade.amount2')}
 						</p>
-						<p>{orderData.account}{currentPair?.baseSymbol}</p>
+						<p>{formatPrice(orderData.account)} {currentPair?.baseSymbol}</p>
 					</li>
 				)}
-				<li className="flex-x align-center justify-between mt-5">
-					<p className="tip-color">
-						{t('spot.modal.precision')}
-					</p>
-					<p>{currentPair?.baseCoinScale}/{currentPair?.coinScale}</p>
-				</li>
 			</ul>
 			{ orderData.type===0 && <div className="bg-[#ff8a26] bg-opacity-[8%] mb-[10px] text-[#ff8a26] text-[12px] rounded-lg px-[10px] py-4 leading-[17px] text-justify flex items-start">
 				<Iconify icon="ep:warning-filled" className="warning_color mr-1 text-[16px]" />

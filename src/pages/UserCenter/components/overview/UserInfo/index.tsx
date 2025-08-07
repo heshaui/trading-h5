@@ -76,7 +76,7 @@ const UserInfo: React.FC = () => {
       {/* 用户信息 */}
       <div className={`${styles.userInfo} gap-x-[10px]`}>
         <div className="flex flex-1 min-w-0 items-center">
-          <div className="mr-2 shrink-0">
+          <div className="mr-[8px] shrink-0">
             {loginInfo?.avatarUrl ? 
             <Image src={loginInfo?.avatarUrl}
               alt="avatarUrl"
@@ -92,9 +92,9 @@ const UserInfo: React.FC = () => {
           <div className="flex-1 min-w-0">
               <div className={`${styles.userInfo_name} truncate`}>{loginInfo?.account || '--'}</div>
               <div className={styles.userInfo_uid}>
-                  UID：{loginInfo?.userId || '--'}
+                  <span className="mr-[4px]">UID：{loginInfo?.userId || '--'}</span>
                   <Iconify icon="icon-park-solid:copy"
-                      className='ml-1 cursor-pointer' size={18}
+                      className='text-[18px]'
                       onClick={() => copyFn(loginInfo?.userId?.toString() || '')}
                   />
               </div>

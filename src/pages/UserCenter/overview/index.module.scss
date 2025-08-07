@@ -10,8 +10,8 @@
     min-height: 48px;
 }
 .userInfo_pic {
-    width: 48px;
-    height: 48px;
+    width: 48px !important;
+    height: 48px !important;
     border-radius: 50%;
 }
 
@@ -24,6 +24,8 @@
 }
 
 .userInfo_uid {
+    display: inline-flex;
+    align-items: center;
     line-height: 22px;
     font-weight: 400;
     color: var(--text-color6);

@@ -41,6 +41,9 @@
     font-weight: 400;
     margin-top: 10px;
 }
+.theme_color {
+    color: var(--theme-color);
+}
 .code_err{
     display: inline-block;
     position: absolute;

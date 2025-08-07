@@ -12,6 +12,7 @@ interface UserInfo {
     merchantWithdrawalStatus?: number;
     realnessStatus?: number;
     isGoogleAuth?: boolean;
+    userLevel?: string;
 }
 
 export const useWithdraw = () => {
@@ -21,10 +22,21 @@ export const useWithdraw = () => {
     const goWithdraw = useCallback((userInfo?: UserInfo) => {
         // 如果没有传入 userInfo，从 store 获取
         const currentUserInfo = userInfo || appStore.getUserInfo();
-        
 
+
+
+
+        // 检查身份认证和安全设置
+        // const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0;
+        const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 0&&currentUserInfo?.userLevel==='L0'
+        const needsGoogleAuth = !currentUserInfo?.isGoogleAuth;
+
+        if (needsKyc || needsGoogleAuth) {
+            setWithdrawStatusPopOpen(true);
+            return;
+        }
         // 检查提现状态
-        if (currentUserInfo?.withdrawalStatus !== 1) {
+        if (currentUserInfo?.withdrawalStatus !== 1||currentUserInfo?.merchantWithdrawalStatus !== 1) {
             // 显示禁止提现弹窗
             Modal.show({
                 content: <>
@@ -48,21 +60,11 @@ export const useWithdraw = () => {
             })
             return;
         }
-
-        // 检查身份认证和安全设置
-        // const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0;
-        const needsKyc = currentUserInfo?.merchantWithdrawalStatus !== 1 ;
-        const needsGoogleAuth = !currentUserInfo?.isGoogleAuth;
-
-        if (needsKyc || needsGoogleAuth) {
-            setWithdrawStatusPopOpen(true);
-            return;
-        }
         // 所有条件满足，跳转到提现页面
         navigate('/assets/withdraw');
     }, [navigate, t]);
 
-    return { 
+    return {
         goWithdraw,
         withdrawStatusPopOpen,
         setWithdrawStatusPopOpen,

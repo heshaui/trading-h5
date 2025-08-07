@@ -68,7 +68,7 @@ const CoinTabs: React.FC<Props> = ({activeKey, onChange}) => {
 	}, []);
 
 	return (
-		<div className="flex px-[16px] py-[16px] items-center">
+		<div className="flex px-[16px] h-[52px] items-center">
 			{/* { key: 'all', title: t('spot.header.all') }, */}
 			<button
 				type="button"
@@ -81,16 +81,16 @@ const CoinTabs: React.FC<Props> = ({activeKey, onChange}) => {
 			</button>}
 
 			<div
-				className="flex-1 hideScrollBar scrollX h-[20px] whitespace-nowrap min-w-0 flex items-center"
+				className="flex-1 hideScrollBar scrollX h-full min-w-0"
 				ref={scrollRef}
 			>
-				<div className="inline-flex">
+				<div className="flex w-max items-center h-full">	
 				{tabItems.map((tab, index) => (
 					<div
 						key={tab.key}
 						ref={(el) => (tabRefs.current[index] = el)}
 						onClick={() => handleTabClick(tab.key, index)}
-						className={`text-[12px] h-[20px] rounded-[4px] py-0 px-[6px] mr-[35px] last:mr-0 ${
+						className={`text-[12px] shrink-0 leading-[20px] rounded-[4px] py-0 px-[6px] mr-[35px] last:mr-0 ${
 							activeKey === tab.key ? 'font-medium bg-[var(--background19)] text-[var(--text-color5)]' : 'text-[var(--text-color6)]'
 						}`}
 					>

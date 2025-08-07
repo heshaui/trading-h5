@@ -75,7 +75,7 @@ const UserInfo: React.FC = () => {
     <div>
       {/* 用户信息 */}
       <div className={`${styles.userInfo} gap-x-[10px]`}>
-        <div className="flex flex-1 min-w-0">
+        <div className="flex flex-1 min-w-0 items-center">
           <div className="mr-2 shrink-0">
             {loginInfo?.avatarUrl ? 
             <Image src={loginInfo?.avatarUrl}

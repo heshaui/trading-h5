@@ -14,6 +14,9 @@ import { observer } from 'mobx-react-lite';
 import { BalanceAllType, TodayEarningsType, YesterdayBalanceType } from '@/type/assets/assetsAccount/assets'
 import  {useWithdraw} from "@/hooks/useWithdraw";
 
+import { ReactComponent as CloseeyeSvg } from '@/assets/icons/userCenter/close-eye.svg';
+import { ReactComponent as OpeneyeSvg } from '@/assets/icons/userCenter/open-eye.svg';
+
 interface chartDataType {
     balance: string,
     time: string,
@@ -176,7 +179,7 @@ const AssetsPage: React.FC = observer(() => {
                         <button type='button' className='ml-1'
                             onClick={() => setBanlanceShow(!banlanceShow)}
                         >
-                            {banlanceShow ? <Iconify icon={'clarity:eye-show-line'} className={`${styles.tip_color} font-20`} /> : <Iconify icon={'ep:hide'} className={`${styles.tip_color} font-18`} />}
+                            {banlanceShow ? <OpeneyeSvg className="tip-color text-[20px]" /> : <CloseeyeSvg className="tip-color text-[20px]" />}
                         </button>
                     </div>
                     {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>{balanceAll.balance ? Number(balanceAll.balance).toFixed(2) : '0.00'} USDT

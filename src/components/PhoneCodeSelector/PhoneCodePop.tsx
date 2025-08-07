@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle } from "react";
-// import { AutoComplete, Flex, Input, Form, ConfigProvider, Select } from "antd";
+import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle, useCallback } from "react";
 import { Iconify } from "@/components/icon/index";
 import { getCountryCode } from "@/services/open";
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/phoneCode.module.scss";
 import { NoData } from "../noData";
-import { Form, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
+import { Form as MobileForm, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
 
 interface OptionItem {
   label: React.ReactNode;
@@ -28,9 +27,10 @@ interface PhoneCodeSelectProps {
   className?: string;
   value?: string;
   onChange?: (value: string) => void;
+  autoSelectFirst?: boolean; // 是否自动选中第一项，默认为true
 }
 
-const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, value, onChange }, ref) => {
+const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, value, onChange, autoSelectFirst = true }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const [countryCodeList, setCountryCodeList] = useState<CountryCodeItem[]>([]);
   const [searchValue, setSearchValue] = useState("");
@@ -82,6 +82,21 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         option.areaCode?.includes(searchValue)
     );
   }, [groupedOptions, searchValue]);
+
+  // 使用useCallback包装onChange，避免重复触发
+  const handleValueChange = useCallback((newValue: string) => {
+    onChange?.(newValue);
+  }, [onChange]);
+
+  // 自动选中第一项（当数据加载完成且没有选中值时）
+  useEffect(() => {
+    if (autoSelectFirst && filteredOptions.length > 0 && !selectedValue && !searchValue) {
+      const firstOption = filteredOptions[0];
+      const defaultValue = firstOption.value;
+      setSelectedValue(defaultValue);
+      handleValueChange(defaultValue);
+    }
+  }, [filteredOptions, selectedValue, searchValue, autoSelectFirst, handleValueChange]);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -138,13 +153,13 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
   const handleOptionSelect = (option: any) => {
     const newValue = option.value;
     setSelectedValue(newValue);
-    onChange?.(newValue);
+    handleValueChange(newValue);
     handlePopupClose();
   };
 
   // 获取显示的标签
   const getDisplayLabel = (value: string) => {
-    if (!value) return "Please select";
+    if (!value) return  t('titleText.selectCountry');
     const option = groupedOptions.find(opt => opt.value === value);
     return option ? option.value : value;
   };
@@ -156,7 +171,13 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         onClick={handlePopupOpen}
       >
         <div className={`flex-x-cc ${styles.valueSelect}`}>
-          <p className={`flex-1 text-left`}>{getDisplayLabel(selectedValue)}</p>
+          <p className={`flex-1 text-left`}
+          style={{ 
+            overflow: 'hidden', 
+            whiteSpace: 'nowrap', 
+            textOverflow: 'ellipsis',
+            minWidth: 0 
+          }}>{getDisplayLabel(selectedValue)}</p>
           <Iconify icon="eva:arrow-down-fill" size={16} />
         </div>
         
@@ -167,7 +188,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
         onMaskClick={handlePopupClose}
         position="bottom"
         bodyStyle={{
-          height: '60vh',
+          maxHeight: '60vh',
           borderTopLeftRadius: '8px',
           borderTopRightRadius: '8px'
         }}
@@ -205,7 +226,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
                   onClick={() => handleOptionSelect(option)}
                   style={{
                     borderBottom: '1px solid #f0f0f0',
-                    backgroundColor: selectedValue === option.value ? '#f0f8ff' : 'transparent',
+                    backgroundColor: selectedValue === option.value ? 'var(--theme-shadow)' : 'transparent',
                     borderRadius: '4px',
                     marginBottom: '4px'
                   }}
@@ -224,14 +245,108 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
   );
 });
 
-// 包装组件以支持Form.Item
-const PhoneCodeSelectWrapper: React.FC<{ className?: string }> = ({ className }) => {
+// antd-mobile 表单包装组件
+const PhoneCodeSelectMobileWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean; 
+}> = ({ className, autoSelectFirst = true }) => {
   return (
-    <Form.Item name="areaCode" noStyle>
-      <PhoneCodeSelect className={className} />
-    </Form.Item>
+    <MobileForm.Item name="areaCode" noStyle>
+      <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
+    </MobileForm.Item>
   );
 };
+
+// antd 表单包装组件（懒加载导入）
+const PhoneCodeSelectAntdWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean; 
+}> = ({ className, autoSelectFirst = true }) => {
+  // 动态导入 antd 的 Form 组件
+  const [AntdForm, setAntdForm] = useState<any>(null);
+  
+  useEffect(() => {
+    const loadAntdForm = async () => {
+      try {
+        const { Form } = await import('antd');
+        setAntdForm(Form);
+      } catch (error) {
+        console.warn('Failed to load antd Form component:', error);
+      }
+    };
+    
+    loadAntdForm();
+  }, []);
+  
+  if (!AntdForm) {
+    // 如果 antd 未加载，直接返回基础组件
+    return <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />;
+  }
+  
+  return (
+    <AntdForm.Item name="areaCode" noStyle>
+      <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
+    </AntdForm.Item>
+  );
+};
+
+// 通用包装组件，自动检测环境
+const PhoneCodeSelectWrapper: React.FC<{ 
+  className?: string; 
+  autoSelectFirst?: boolean;
+  formType?: 'mobile' | 'antd' | 'auto'; // 新增 formType 属性
+}> = ({ className, autoSelectFirst = true, formType = 'auto' }) => {
+  const [detectedFormType, setDetectedFormType] = useState<'mobile' | 'antd' | null>(null);
+  
+  useEffect(() => {
+    if (formType !== 'auto') {
+      setDetectedFormType(formType);
+      return;
+    }
+    
+    // 自动检测当前环境中可用的表单库
+    const detectFormLibrary = async () => {
+      try {
+        // 检测是否有 antd-mobile
+        await import('antd-mobile');
+        
+        // 检测是否有 antd
+        try {
+          await import('antd');
+          // 如果两个都有，优先使用 mobile（因为这是移动端项目）
+          setDetectedFormType('mobile');
+        } catch {
+          setDetectedFormType('mobile');
+        }
+      } catch {
+        try {
+          await import('antd');
+          setDetectedFormType('antd');
+        } catch {
+          setDetectedFormType('mobile'); // 默认使用 mobile
+        }
+      }
+    };
+    
+    detectFormLibrary();
+  }, [formType]);
+  
+  // 根据检测结果或指定类型渲染对应的包装组件
+  if (detectedFormType === 'antd') {
+    return <PhoneCodeSelectAntdWrapper className={className} autoSelectFirst={autoSelectFirst} />;
+  } else {
+    return <PhoneCodeSelectMobileWrapper className={className} autoSelectFirst={autoSelectFirst} />;
+  }
+};
+
+// 导出各种版本供不同场景使用
+export { PhoneCodeSelect }; // 基础组件，不包含任何表单包装
+export { PhoneCodeSelectMobileWrapper }; // antd-mobile 表单包装版本
+export { PhoneCodeSelectAntdWrapper }; // antd 表单包装版本
+export { PhoneCodeSelectWrapper }; // 通用包装组件，支持自动检测
+
+// 默认导出通用包装组件
+export default PhoneCodeSelectWrapper;
 
 // 添加此导出函数以支持服务端翻译加载
 // export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -241,4 +356,3 @@ const PhoneCodeSelectWrapper: React.FC<{ className?: string }> = ({ className })
 // 		},
 // 	};
 // };
-export default PhoneCodeSelectWrapper;

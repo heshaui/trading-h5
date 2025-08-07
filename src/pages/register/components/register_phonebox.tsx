@@ -67,8 +67,8 @@ function RegisterPhone() {
 			.validateFields()
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
-				if (loading) return;
-				console.log(values, 111);
+				// if (loading) return;
+				// console.log(values, 111);
 				if (!values.agree) return Toast.show(t('registerForm.agreeErr'))
 				const data = {
 					type: "p",
@@ -180,7 +180,7 @@ function RegisterPhone() {
 				name="register"
 				form={form}
 				// onFinish={onFinish}
-				initialValues={{ areaCode: "+1" }}
+				// initialValues={{ areaCode: "+1" }}
 				className={`${styles.login_form}`}
 			// onValuesChange={usernameChange}
 			>
@@ -319,15 +319,11 @@ function RegisterPhone() {
 				</Form.Item>
 			</Form>
 
-			{!loading ? <button type="submit" className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
+			<button type="submit" className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
 				onClick={onFinish}>
 				{/* 注册 */}
 				{t('registerForm.registerButton')}
-			</button> :
-				<button type="button" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
-					{/* 注册 */}
-					{t('registerForm.registerButton')}
-				</button>}
+			</button> 
 
 			<div className="flex-cc mt-4">
 				<p>

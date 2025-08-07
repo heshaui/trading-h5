@@ -207,12 +207,14 @@ function AuthCode() {
     navigate("/login");
   };
 
-  // 过滤输入，只允许数字
+  // 过滤输入，只允许数字，并限制长度为6位
   const handleInputChange = (value: string) => {
     // 只保留数字
     const filteredValue = value.replace(/[^0-9]/g, "");
-    setCodeInputValue(filteredValue);
-    form.setFieldsValue({ code: filteredValue });
+    // 限制最大长度为6位
+    const limitedValue = filteredValue.slice(0, 6);
+    setCodeInputValue(limitedValue);
+    form.setFieldsValue({ code: limitedValue });
   };
 
   useEffect(() => {
@@ -267,7 +269,9 @@ function AuthCode() {
           }
         >
           <Input
-            type="number"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
             autoComplete="off"
             className={`${styles.mail_input}`}
             style={{ color: "var(--text-color5)" }}

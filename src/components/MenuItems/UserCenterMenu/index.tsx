@@ -4,6 +4,7 @@ import { ReactComponent as AssetsSvg } from '@/assets/icons/userCenter/wallet.sv
 import { ReactComponent as IdentitySvg } from '@/assets/icons/userCenter/idcard-line.svg';
 import { ReactComponent as InviteSvg } from '@/assets/icons/userCenter/invite.svg';
 import { ReactComponent as OrderSvg } from '@/assets/icons/userCenter/order.svg';
+import { ReactComponent as OverviewSvg } from '@/assets/icons/userCenter/overview.svg';
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from '../styles/layout.module.scss'
@@ -31,7 +32,7 @@ const withUserCenterLayout = <P extends object>(
         const defaultMenuList: MenuType[] = [
             {
                 title: t('common.router.overview'),
-                icon: 'pixelarticons:dashboard',
+                icon: <OverviewSvg className="w-[24px] h-[24px] p-[3px]"/>,
                 path: '/userCenter'
             },
             {

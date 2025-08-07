@@ -10,13 +10,15 @@ import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
 import { getLoginInfo } from '@/services/overview';
 import { encryptString } from '@/utils/encrypt';
 import { Iconify } from "@/components/icon"
+import { observer } from 'mobx-react-lite';
 import IdentifyStatus from './IdentifyStatus';
 import styles from '@/pages/UserCenter/overview/index.module.scss';
 
 import iconAvatarDark from '@/assets/images/userCenter/overview/icon_avatarUrl_dark.png';
 import iconAvatarLight from '@/assets/images/userCenter/overview/icon_avatarUrl_day.png';
+import { ReactComponent as CopyFillSvg } from '@/assets/icons/userCenter/copy-fill.svg';
 
-const UserInfo: React.FC = () => {
+const UserInfo: React.FC = observer(() => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useLanguage('userCenter');
   const { isDark } = useTheme();
@@ -93,9 +95,9 @@ const UserInfo: React.FC = () => {
               <div className={`${styles.userInfo_name} truncate`}>{loginInfo?.account || '--'}</div>
               <div className={styles.userInfo_uid}>
                   <span className="mr-[4px]">UID：{loginInfo?.userId || '--'}</span>
-                  <Iconify icon="icon-park-solid:copy"
-                      className='text-[18px]'
-                      onClick={() => copyFn(loginInfo?.userId?.toString() || '')}
+                  <CopyFillSvg  
+                    className="text-[18px] text-[#a4a5ac]"
+                    onClick={() => copyFn(loginInfo?.userId?.toString() || '')}
                   />
               </div>
           </div>
@@ -131,6 +133,6 @@ const UserInfo: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default UserInfo; 

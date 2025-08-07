@@ -47,7 +47,7 @@ const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
                         <span className={`${styles.tip_color} font-12 font-w-400`}>{t('withdrawMoney.tipText3')}</span>
                     </div>
                     <ul className={`${styles.pop_content_body} flex-y `}>
-                        {(userInfo?.merchantWithdrawalStatus !== 1 ) ? <li className='flex-x-cc mt-5'>
+                        {(userInfo?.realnessStatus !== 1 ) ? <li className='flex-x-cc mt-5'>
                             <IdCard className="w-[20px] h-[20px] title-color mr-2_5" />
                             <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
                                 <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip2')}</span>

@@ -63,7 +63,7 @@ export default function RegisterMail() {
             .validateFields()
             .then(async (values: any) => {
                 // form.resetFields(); // 重置表单
-                if (loading) return;
+                // if (loading) return;
                 // console.log(values, 111);
                 // "请先同意用户协议和隐私政策"
                 if (!values.agree) return Toast.show(t('registerForm.agreeErr'))
@@ -290,15 +290,11 @@ export default function RegisterMail() {
                 </Form.Item>
             </Form>
 
-            {!loading ? <button type="submit" className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
+            <button type="submit" className={`${styles.login_button} flex-x-cc w-full button-color mt-5`}
                 onClick={handleFinish}>
                 {/* 注册 */}
                 {t('registerForm.registerButton')}
-            </button> :
-                <button type="button" className={`${styles.login_loading} flex-x-cc w-full button-color mt-5`}>
-                    {/* 注册 */}
-                    {t('registerForm.registerButton')}
-                </button>}
+            </button> 
 
             <div className="flex-cc mt-4">
                 <p>

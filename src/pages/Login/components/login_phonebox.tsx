@@ -56,13 +56,11 @@ function Phonebox() {
 		const visitorId = await result.get();
 		return visitorId.visitorId;
 	};
-
 	const onFinish = async () => {
 		form
 			.validateFields()
 			.then(async (values) => {
 				// form.resetFields(); // 重置表单
-				// console.log(values, 111);
 				// goAuthCode()
 				// const data = {
 				// 	type: "p",
@@ -94,29 +92,15 @@ function Phonebox() {
 							password: values.password,
 							authCodePhone: "",
 							countryCode: values.areaCode,
-							
+
 						}
 						setLoginInfo(data)
 						setCodeModelOpen(true)
-						// if(!((res.data.openAll === 1 && res.data.isGoogleAuth === 1&&(res.data.isEmailAuth === 0 && res.data.isPhoneAuth === 0)) || 
-						// (res.data.openAll === 0 && res.data.isGoogleAuth === 1))){
-						//     toast.success(t('success'))
-						// }
 						const showArr = isShowArr(res.data.isGoogleAuth, res.data.isEmailAuth, res.data.isPhoneAuth, 'login', res.data.openAll);
 						if (showArr && showArr.length > 0 && (showArr.includes('email') || showArr.includes('phone'))) {
 							Toast.show(t('success'))
 						}
 					} else if (res.code === "10044") {
-						// const data = {
-						//     ...res.data,
-						//     type: "m",
-						//     email: values.email,
-						//     deviceType: "H5",
-						//     password: values.password,
-						//     authCodeMail: "",
-
-						// }
-						// setLoginInfo(data)
 						setCodeModelOpen(true)
 						Toast.show(t('safeModal.codeValid'))
 					} else {
@@ -179,7 +163,7 @@ function Phonebox() {
 				name="login"
 				form={form}
 				// onFinish={onFinish}
-				initialValues={{ areaCode: "+1" }}
+				// initialValues={{ areaCode: "+1" }}
 				className={`${styles.login_form}`}
 			>
 				<div className={`${styles.title_color} mb-1 font-16 font-w-500`}>
@@ -211,8 +195,12 @@ function Phonebox() {
                                 //     );
                                 // }}
 							/> */}
-
-						<PhoneCodeSelector />
+						<Form.Item
+							noStyle
+							name="areaCode"
+						>
+							<PhoneCodeSelector />
+						</Form.Item>
 						{/* </Form.Item> */}
 						<Form.Item
 							name="phoneNumber"

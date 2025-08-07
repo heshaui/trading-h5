@@ -3,16 +3,16 @@ export const getNextJsLocale = (langCode: string, type: number = 0): string => {
     // 确保 langCode 是小写的，以便更一致地匹配
     const lowerLangCode = langCode.toLowerCase();
     if (type === 0) {
-        if (lowerLangCode.startsWith('zh_')) return 'zh';
-        if (lowerLangCode.startsWith('ja_')) return 'ja';
-        if (lowerLangCode.startsWith('ko_')) return 'ko';
-        if (lowerLangCode.startsWith('tw_')) return 'tw';
+        if (lowerLangCode.startsWith('zh')) return 'zh';
+        if (lowerLangCode.startsWith('ja')) return 'ja';
+        if (lowerLangCode.startsWith('ko')) return 'ko';
+        if (lowerLangCode.startsWith('tw')) return 'tw';
         return 'en';
     }else {
         // 更精确的匹配
-        if (lowerLangCode.startsWith('zh_') || lowerLangCode === 'zh') return 'zh_CN';
-        if (lowerLangCode.startsWith('ja_') || lowerLangCode === 'ja') return 'ja_JP';
-        if (lowerLangCode.startsWith('ko_') || lowerLangCode === 'ko') return 'ko_KR';
+        if (lowerLangCode.startsWith('zh') || lowerLangCode === 'zh') return 'zh_CN';
+        if (lowerLangCode.startsWith('ja') || lowerLangCode === 'ja') return 'ja_JP';
+        if (lowerLangCode.startsWith('ko') || lowerLangCode === 'ko') return 'ko_KR';
         return 'en_US';
     }
 };

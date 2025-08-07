@@ -507,7 +507,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                                     className="position-relative"
                                 >
                                     <Input
-                                        type='number'
+                                        // type='number'
                                         autoComplete="off"
                                         styles={{ input: { color: "var(--text-color5)" } }}
                                         className={`${styles.input_box} modal-input`}
@@ -550,7 +550,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                                     className="position-relative"
                                 >
                                     <Input
-                                        type='number'
+                                        // type='number'
                                         autoComplete="off"
                                         styles={{ input: { color: "var(--text-color5)" } }}
                                         className={`${styles.input_box} modal-input`}
@@ -593,7 +593,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                                     className="position-relative"
                                 >
                                     <Input
-                                        type='number'
+                                        // type='number'
                                         autoComplete="off"
                                         styles={{ input: { color: "var(--text-color5)" } }}
                                         className={`${styles.input_box} modal-input`}

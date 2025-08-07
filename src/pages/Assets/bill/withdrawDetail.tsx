@@ -162,9 +162,9 @@ const SpotOrderPage = () => {
 			align: "center",
 			render: (_status) => {
 				return <div className={`flex-x algin-start`}>{_status || '--'}
-					<button onClick={() => copyFn(_status)}>
+					{_status&&<button onClick={() => copyFn(_status)}>
 						<Iconify icon="mingcute:copy-2-line" className="ml-2 tip_color" size={14} />
-					</button>
+					</button>}
 
 				</div>;
 			},

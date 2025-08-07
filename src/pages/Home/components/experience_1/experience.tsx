@@ -142,7 +142,7 @@ export default function Experience() {
                             // onChange={(val) => onChange(val)} 
                             className={`${styles.custom_input_home}`} />}
                         <button className={`${styles.experience_main_btn} font-16 flex-x-cc mt-4`}
-                            onClick={() => picClick(bgUrl?.url || defaultPic())}
+                            onClick={() => picClick(bgUrl?.url)}
                         >{bgUrl?.buttonText}</button>
                     </div>
                 </div>

@@ -5,6 +5,9 @@ export const useThemeMode = () => {
         // 初始化时从 localStorage 获取状态
         if (typeof window !== 'undefined') {
             const savedMode = localStorage.getItem('theme');
+            if(!savedMode){
+                return true;
+            }
             return savedMode === 'light';
         }
         return true;

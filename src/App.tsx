@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ConfigProvider } from 'antd-mobile';
-import { BrowserRouter } from 'react-router-dom';
 import AutoRoutes from '@/routes/AutoRoutes';
 import { useThemeEffect } from '@/hooks/dayModeChange';
 import { useWebConfig } from '@/hooks/useKv';
@@ -16,8 +15,14 @@ import { useEffect } from 'react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@/utils/history';
 
-// 读取配置文件的前缀
-const BASENAME = process.env.REACT_APP_HOMEPAGE || '/';
+// 根据环境动态配置基础路径
+const getBasename = () => {
+  // 生产环境使用 /h5，开发环境使用根路径
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.REACT_APP_BASE_PATH || '/h5';
+  }
+  return process.env.REACT_APP_BASE_PATH || '/';
+};
 
 const App: React.FC = observer(() => {
   // 应用动态主题映射文件
@@ -30,7 +35,7 @@ const App: React.FC = observer(() => {
   }, []);
   return (
     <ConfigProvider>
-      <HistoryRouter history={history as any} basename={BASENAME}>
+      <HistoryRouter history={history as any} basename={getBasename()}>
         <div className="app">
           <AutoRoutes />
         </div>

@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { StoreContext, rootStore } from './stores';
 
+console.log('version:1.0.0.2')
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

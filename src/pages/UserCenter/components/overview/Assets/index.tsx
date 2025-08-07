@@ -123,9 +123,9 @@ const AssetsPage: React.FC = observer(() => {
                 const initData = res.data.map((item: any) => {
                     const usdBalance = getRate('USDT', item.balance, rateKeyName)
                     return {
-                        balance: Number(usdBalance.rate) || 0,
+                        balance: Number(usdBalance.rate).toFixed(2) || 0,
                         time: item.time,
-                        recharge: Number(item.recharge) || 0,
+                        recharge: Number(item.recharge).toFixed(2) || 0,
                         symbol: usdBalance.symbol
                     }
                 }).sort((a: any, b: any) => new Date(a.time).getTime() - new Date(b.time).getTime());

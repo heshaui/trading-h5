@@ -48,7 +48,7 @@ function QuestionModal({ open, onOk, acount, acount2, type, onCancel, onAgain }:
                 </h4>
                 <ul>
                     <li className={`${styles.tip_color} font-w-400`}>
-                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.text_color} mr-2`} size={10} />
+                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.theme_color} mr-2`} size={10} />
                         {(type === "m" || type === "email" || type === "mail") && (<>
                             {/* 确保您的邮箱为 */}
                             {t('check1')}
@@ -74,12 +74,12 @@ function QuestionModal({ open, onOk, acount, acount2, type, onCancel, onAgain }:
                         </>)}
                     </li>
                     <li className={`${styles.tip_color} font-w-400`}>
-                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.text_color} mr-2`} size={10} />
+                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.theme_color} mr-2`} size={10} />
                         {/* 检查验证码是否位于垃圾箱中 */}
                         {t('check4')}
                     </li>
                     <li className={`${styles.tip_color} font-w-400`}>
-                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.text_color} mr-2`} size={10} />
+                        <Iconify icon="mingcute:diamond-square-fill" className={`${styles.theme_color} mr-2`} size={10} />
                         {/* 验证码可能存在延迟，过了10分钟后再试 */}
                         {t('check5')}
                     </li>

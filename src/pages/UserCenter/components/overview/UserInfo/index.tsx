@@ -77,9 +77,9 @@ const UserInfo: React.FC = observer(() => {
     <div>
       {/* 用户信息 */}
       <div className={`${styles.userInfo} gap-x-[10px]`}>
-        <div className="flex flex-1 min-w-0">
-          <div className="mr-2 shrink-0">
-            {!loginInfo?.avatarUrl ? 
+        <div className="flex flex-1 min-w-0 items-center">
+          <div className="mr-[8px] shrink-0">
+            {loginInfo?.avatarUrl ? 
             <Image src={loginInfo?.avatarUrl}
               alt="avatarUrl"
               fit="cover"
@@ -94,7 +94,7 @@ const UserInfo: React.FC = observer(() => {
           <div className="flex-1 min-w-0">
               <div className={`${styles.userInfo_name} truncate`}>{loginInfo?.account || '--'}</div>
               <div className={styles.userInfo_uid}>
-                  UID：{loginInfo?.userId || '--'}
+                  <span className="mr-[4px]">UID：{loginInfo?.userId || '--'}</span>
                   <CopyFillSvg  
                     className="text-[18px] text-[#a4a5ac]"
                     onClick={() => copyFn(loginInfo?.userId?.toString() || '')}

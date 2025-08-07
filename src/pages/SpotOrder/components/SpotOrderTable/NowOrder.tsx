@@ -73,6 +73,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
     type: '',
     selsect: ''
   });
+  
   const [total, setTotal] = useState(0);
 
   const paramdataRef = useRef({
@@ -159,8 +160,16 @@ const SpotMainPage = observer(({ pageType }: Props) => {
             className={`${styles.cancel_btn} cancel_btn2 font-12 `}
             onClick={() => {
               setDelectIdAll([record.orderId])
-              setDelectType(1)
-              setDelectModal(true)
+              // setDelectType(1)
+              // setDelectModal(true)
+              toastDataRef.current = {
+                coinSymbol: record.coinSymbol,
+                symbol: record.symbol,
+                baseSymbol: record.baseSymbol,
+                price: record.price,
+                amount: record.amount,
+              }
+              delectOrder([record.orderId],1)
             }}
           >
             {t('spot.select.cancelOrder')}
@@ -169,33 +178,33 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       },
     },
   ]
-  const columns: ColumnType<DataType>[] = isExchange ? 
-  [
-    ...baseColumns,
-    {
-      title: t('spot.columns.dealAmount'), //"已成交/委托量",
-      key: "tradeAmount",
-      dataIndex: "tradeAmount",
-      width: 128,
-      align: "center",
-      render: (amount, record) => {
-        const amountRes = getRound(record.symbol, record.amount); // 数量
-        const dealRes = getRound(record.symbol, record.tradedAmount); // 已成交数量
-        return <span>{dealRes.scaleResult}/{amountRes.scaleResult}</span>;
+  const columns: ColumnType<DataType>[] = isExchange ?
+    [
+      ...baseColumns,
+      {
+        title: t('spot.columns.dealAmount'), //"已成交/委托量",
+        key: "tradeAmount",
+        dataIndex: "tradeAmount",
+        width: 128,
+        align: "center",
+        render: (amount, record) => {
+          const amountRes = getRound(record.symbol, record.amount); // 数量
+          const dealRes = getRound(record.symbol, record.tradedAmount); // 已成交数量
+          return <span>{dealRes.scaleResult}/{amountRes.scaleResult}</span>;
+        },
       },
-    },
-    {
-      title: t('spot.columns.price'), //"价格",
-      key: "price",
-      dataIndex: "price",
-      width: 128,
-      align: "center",
-      render: (_status, record) => {
-        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-        const { baseScaleResult } = getRound(record.symbol, _status)
-        return <>{record.type === 1 ? <div className=''>
-          <p className='text-right '> {baseScaleResult}</p>
-          {/* <Tooltip title={t('spot.modal.edit')}>
+      {
+        title: t('spot.columns.price'), //"价格",
+        key: "price",
+        dataIndex: "price",
+        width: 128,
+        align: "center",
+        render: (_status, record) => {
+          // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+          const { baseScaleResult } = getRound(record.symbol, _status)
+          return <>{record.type === 1 ? <div className=''>
+            <p className='text-right '> {baseScaleResult}</p>
+            {/* <Tooltip title={t('spot.modal.edit')}>
             <button
               onClick={() => {
                 Toast.show('接口：暂不做')
@@ -204,25 +213,25 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               <Iconify icon="mingcute:edit-3-line" className={`${styles.tip_color} mx-1`} size={20} />
             </button>
           </Tooltip> */}
-        </div> : <p className='text-right'> {t('spot.select.market')}</p>}</>
+          </div> : <p className='text-right'> {t('spot.select.market')}</p>}</>
 
+        },
       },
-    },
-  ] :
-  [
-    ...baseColumns,
-    {
-      title: t('spot.columns.price'), //"价格",
-      key: "price",
-      dataIndex: "price",
-      width: 128,
-      align: "center",
-      render: (_status, record) => {
-        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-        const { baseScaleResult } = getRound(record.symbol, _status)
-        return <>{record.type === 1 ? <div className=''>
-          <p className='text-right '> {baseScaleResult}</p>
-          {/* <Tooltip title={t('spot.modal.edit')}>
+    ] :
+    [
+      ...baseColumns,
+      {
+        title: t('spot.columns.price'), //"价格",
+        key: "price",
+        dataIndex: "price",
+        width: 128,
+        align: "center",
+        render: (_status, record) => {
+          // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+          const { baseScaleResult } = getRound(record.symbol, _status)
+          return <>{record.type === 1 ? <div className=''>
+            <p className='text-right '> {baseScaleResult}</p>
+            {/* <Tooltip title={t('spot.modal.edit')}>
             <button
               onClick={() => {
                 Toast.show('接口：暂不做')
@@ -231,54 +240,55 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               <Iconify icon="mingcute:edit-3-line" className={`${styles.tip_color} mx-1`} size={20} />
             </button>
           </Tooltip> */}
-        </div> : <p className='text-right'> {t('spot.select.market')}</p>}</>
+          </div> : <p className='text-right'> {t('spot.select.market')}</p>}</>
 
+        },
       },
-    },
-    {
-      title: t('spot.columns.quantity'), //"数量",
-      key: "amount",
-      dataIndex: "amount",
-      width: 128,
-      align: "center",
-      render: (_status, record) => {
-        // const {scaleResult} = getRound(record.symbol, _status)
-        // return <>
-        // {scaleResult}
-        // </>
-        const { scaleResult } = getRound(record.symbol, _status);
-        const res = getRound(record.symbol, record.tradedAmount);
-        if (record.type === 0 && record.direction === 0) {
-          if (record.status === 1 || record.status === 5) {
-            return <span>{res.scaleResult}</span>;
+      {
+        title: t('spot.columns.quantity'), //"数量",
+        key: "amount",
+        dataIndex: "amount",
+        width: 128,
+        align: "center",
+        render: (_status, record) => {
+          // const {scaleResult} = getRound(record.symbol, _status)
+          // return <>
+          // {scaleResult}
+          // </>
+          const { scaleResult } = getRound(record.symbol, _status);
+          const res = getRound(record.symbol, record.tradedAmount);
+          if (record.type === 0 && record.direction === 0) {
+            if (record.status === 1 || record.status === 5) {
+              return <span>{res.scaleResult}</span>;
+            } else {
+              return <span>--</span>;
+            }
           } else {
-            return <span>--</span>;
+            return <span>{scaleResult}</span>;
           }
-        } else {
-          return <span>{scaleResult}</span>;
-        }
+        },
       },
-    },
-    {
-      title: t('spot.columns.amount'), //成交额,
-      key: "turnover",
-      dataIndex: "turnover",
-      width: 128,
-      align: "center",
-      render: (_turnover, record) => {
-        // const totalAmount = record.amount && record.price ? roundDown(nul(record.amount, record.price),2) : '0'
-        // const coin = coinList.find((item: any) => item.symbol === record.symbol);
-        const { baseScaleResult } = getRound(record.symbol, _turnover)
+      {
+        title: t('spot.columns.amount'), //成交额,
+        key: "turnover",
+        dataIndex: "turnover",
+        width: 128,
+        align: "center",
+        render: (_turnover, record) => {
+          // const totalAmount = record.amount && record.price ? roundDown(nul(record.amount, record.price),2) : '0'
+          // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+          const { baseScaleResult } = getRound(record.symbol, _turnover)
 
-        return <span >{_turnover ? `${baseScaleResult}` : '0'}</span>;
-      },
-    }
-  ];
+          return <span >{_turnover ? `${baseScaleResult}` : '0'}</span>;
+        },
+      }
+    ];
   const handleDelectOk = (orderId: string[]) => {
     delectOrder(orderId)
     setDelectModal(false)
   }
-  const delectOrder = async (orderId: string[]) => {
+  const delectOrder = async (orderId: string[], type: number = 0) => {
+    // type 0 全部撤单 1 单个撤单
     try {
       const paeam = {
         orderId: orderId,
@@ -286,10 +296,34 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       const encrypt = await encryptData(paeam)
       const res = await revocationOrder(encrypt)
       if (res.code === '0') {
-        Toast.show({
-          content: t('spot.toastModal.canceled'),
-          icon: 'success',
-        })
+        // Toast.show({
+        //   content: t('spot.toastModal.canceled'),
+        //   icon: 'success',
+        // })
+        if (type === 1) {
+          notification.success({
+            message: t('spot.toastModal.canceled'), //'已撤单',
+            description: (
+              <ul className={`flex-col flex-ai-start flex-1 ${styles.title_color} ml-2`}>
+                <li className={` mt-5 font-14 font-w-400 `}>
+                  {t('spot.toastModal.pair')}: {toastDataRef.current?.symbol}
+                </li>
+                <li className={` mt-3 font-14 font-w-400 `}>
+                  {t('spot.toastModal.price')}: {toastDataRef.current?.price}&nbsp;{toastDataRef.current?.symbol?.split('/')?.[1] || '--'}
+                </li>
+                <li className={` mt-3 font-14 font-w-400 `}>
+                  {t('spot.toastModal.cancelAmount')}: {toastDataRef.current?.amount}&nbsp;{toastDataRef.current?.symbol?.split('/')?.[0] || '--'}
+                </li>
+              </ul>
+            ),
+            duration: 3
+          })
+        } else {
+          notification.success({
+            message:t('spot.toastModal.canceled'), //'已撤单',
+            duration: 3
+          })
+        }
         getOrderListData()
       } else {
         Toast.show({
@@ -354,7 +388,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       exchangeContext.setNowOrderCount(count);
     }
   };
- 
+
   const getOrderListData = async () => {
     const params = {
       pageNo: paramdataRef.current.page,

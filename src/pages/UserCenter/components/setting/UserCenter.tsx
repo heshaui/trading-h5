@@ -154,7 +154,7 @@ const UserCenter: React.FC = () => {
 										}
 									</div>
 									:
-									<p className="text-[14px] flex-1 min-w-0 truncate ml-[36px]">{item.bindValue || '-'}</p>
+									<p className="text-[14px] flex-1 min-w-0 max-w-[112px] truncate ml-[10px]">{item.bindValue || '-'}</p>
 								}
 								{ 
 									item.type === 'birthday' && item.bindValue ? '' : <Iconify icon="mingcute:right-line" className="text-[16px] font-medium ml-1 text-[#9e9e9e]" />

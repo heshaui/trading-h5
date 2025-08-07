@@ -520,7 +520,7 @@ const SafeCenter: React.FC = observer(() => {
 							</li>
 						) :
 						(
-							<li className="p-5 flex" key={item.type}>
+							<li className="p-5 flex hover:bg-[var(--bgc-color)] active:bg-[var(--bgc-color)]" key={item.type}>
 								<div className="shrink-0 mr-[14px]">
 									<img
 										src={item.icon}
@@ -602,7 +602,7 @@ const SafeCenter: React.FC = observer(() => {
 							</li>
 						) : 
 						(
-							<li className="p-5 flex" key={item.type}>
+							<li className="p-5 flex hover:bg-[var(--bgc-color)] active:bg-[var(--bgc-color)]" key={item.type}>
 								<div className="shrink-0 mr-[14px]">
 									<img
 										src={item.icon}

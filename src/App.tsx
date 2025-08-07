@@ -11,6 +11,7 @@ import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
 import appStore from '@/store';
 import { useEffect } from 'react';
+// 在非组件ts中使用路由跳转
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@/utils/history';
 

@@ -146,7 +146,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
         );
 
         if (coinPairData) {
-          navigate('/exchange');
+          navigate(`/exchange?symbol=${coinPairData.coinSymbol}/${coinPairData.baseSymbol}`);
           // console.log('交易');
         } else {
           Toast.show({

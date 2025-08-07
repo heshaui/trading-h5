@@ -12,6 +12,7 @@ import { getRate, getCoinRate } from '@/utils/getUseRate';
 import appStore from '@/store';
 import { observer } from 'mobx-react-lite';
 import { BalanceAllType, TodayEarningsType, YesterdayBalanceType } from '@/type/assets/assetsAccount/assets'
+import  {useWithdraw} from "@/hooks/useWithdraw";
 
 interface chartDataType {
     balance: string,
@@ -22,7 +23,8 @@ interface chartDataType {
 const AssetsPage: React.FC = observer(() => {
     const { t } = useLanguage('userCenter');
     const navigate = useNavigate();
-    
+    const { goWithdraw } = useWithdraw();
+
     // 使用 store 中的余额显示状态
     const banlanceShow = appStore.getBanlanceShow();
     const setBanlanceShow = (show: boolean) => appStore.setBanlanceShow(show);
@@ -210,7 +212,7 @@ const AssetsPage: React.FC = observer(() => {
                     {t('overview.assets.deposit')}
                 </button>
                 <button type='button' className={`${styles.cancleBtn}  ${styles.btn}`}
-                    onClick={() => navigate('/assets/withdraw')}
+                    onClick={() => goWithdraw()}
                 >
                     {/* 提现 */}
                     {t('overview.assets.withdraw')}

@@ -413,7 +413,6 @@ class AppStore {
                         this.setCurrentPair(result.data[0]);
                     }
                 }
-                console.log('币对信息：',result.data)
                 return result.data;
             } else {
                 throw result.error;

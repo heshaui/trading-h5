@@ -23,13 +23,12 @@ interface DataType {
     status: string,
 }
 function LoginRecord() {
-    const { t } = useLanguage('userCenter');
+    const { t, currentLanguage } = useLanguage('userCenter');
     const navigate = useNavigate();
     const { userId } = useParams();
     const [loginData, setLoginData] = useState<DataType[]>([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
-    const langKey = appStore.getLang();
     const [pageNo, setPageNo] = useState(1)
     const [hasMore, setHasMore] = useState(true)
 
@@ -79,12 +78,12 @@ function LoginRecord() {
 
     useEffect(() => {
         getLoginData()
-    }, [pageNo, langKey])
+    }, [pageNo, currentLanguage])
 
     useEffect(() => {
         setPageNo(1)
         setLoginData([]) // 切换语言时清空旧数据
-    }, [langKey])
+    }, [currentLanguage])
 
     return loading ? 
     (

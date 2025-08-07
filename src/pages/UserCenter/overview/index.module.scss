@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    height: 48px;
+    min-height: 48px;
 }
 .userInfo_pic {
     width: 48px;
@@ -32,7 +32,7 @@
 
 .userInfo_btn {
     min-width: 88px;
-    height: 36px;
+    min-height: 36px;
     border-radius: 23px;
     padding: 8px 16px;
     background: var(--btncolor6);

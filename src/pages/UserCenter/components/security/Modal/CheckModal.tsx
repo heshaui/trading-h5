@@ -32,7 +32,7 @@ function CheckModal({ open, onCancel, type, onOk }: Props) {
             <div className="flex-x-cc mt-10 mb-3" >
                 <button
                     type="button"
-                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5 font-14 font-w-500`}
+                    className={`${styles.modal_footerBtn} cancel_btn2 mr-5`}
                     onClick={handCancel}
                 >
                     {t('security.changeCheck.cancel')}

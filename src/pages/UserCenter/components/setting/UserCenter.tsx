@@ -30,13 +30,12 @@ interface SafeListItem {
 }
 
 const UserCenter: React.FC = () => {
-	const { t } = useLanguage('userCenter');
+	const { t, currentLanguage } = useLanguage('userCenter');
 	const [loadingSkeleton, setLoadingSkeleton] = useState(true)
-  	const langKey = appStore.getLang();
 	const [necknameOpen, setNecknameOpen] = useState(false);
     const [avatarUrlOpen, setAvatarUrlOpen] = useState(false);
     const [birthdayOpen, setBirthdayOpen] = useState(false);
-	const userInfoList: SafeListItem[] = [
+	const userInfoList: SafeListItem[] =  [
 		{
 			title: t('account.nickname'),
 			type: "nickname",
@@ -118,7 +117,7 @@ const UserCenter: React.FC = () => {
 
 	useEffect(() => {
 		getUserCenterData();
-	}, [langKey])
+	}, [currentLanguage])
 
 	return (
 		<ul className="border-b border-[var(--border-color4)] px-4">

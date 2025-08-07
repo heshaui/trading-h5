@@ -4,7 +4,7 @@ import appStore from '@/store';
 // import router from 'react-router';
 // import { toast } from 'sonner';
 import {autoConvertLangCode} from '@/utils/stringMap'
-import { history } from '@/utils/history';
+import { push } from '@/utils/history';
 
 const BASE_URL = process.env.REACT_APP_API_BASE;
 /**
@@ -76,10 +76,9 @@ export async function request<T>(
 }
   // 登出方法
   const logout = () => {
-     
       appStore.clearToken();
       // 触发自定义事件
-      history.push('/login');
+      push('/login');
   };
 // 获取 Token（如果有鉴权）
 export function getToken() {

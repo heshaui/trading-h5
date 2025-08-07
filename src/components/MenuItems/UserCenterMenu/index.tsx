@@ -22,7 +22,7 @@ const withUserCenterLayout = <P extends object>(
     options: WithUserCenterLayoutOptions = {noMinHeight: false}
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
-        const { t } = useLanguage('common');
+        const { t, currentLanguage } = useLanguage('common');
         const navigate = useNavigate();
         const location = useLocation();
         const currentPath = location.pathname;
@@ -73,7 +73,7 @@ const withUserCenterLayout = <P extends object>(
                 }
                 return true
             });
-        }, [kvConfig?.account_configuration, currentPath]);
+        }, [kvConfig?.account_configuration, currentPath, currentLanguage]);
 
         return (
             <div className={`user-center-page flex flex-col`}>

@@ -569,15 +569,15 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
       const availableCoin =
         userBalance.find((item) => item.coinName === currentPair?.coinSymbol)
           ?.balance || 0;
-      if (availableCoin <= 0) {
-		Toast.show({
-			icon: 'fail',
-			content: t("spot.error.insufficientSellBalance", {
-				symbol: currentPair?.coinSymbol,
-			})
-		})
-        return;
-      }
+        if (availableCoin <= 0) {
+          Toast.show({
+            icon: 'fail',
+            content: t("spot.error.insufficientSellBalance", {
+              symbol: currentPair?.coinSymbol,
+            })
+          })
+          return;
+        }
     }
 
     // 在提交时手动验证必填字段
@@ -1062,6 +1062,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                       </span>
                     }
                     controls={false}
+                    disabled={priceDisabled}
                   />
                   {!priceDisabled && <div className="controls">
                     <button type="button" className="border-bottom" onClick={() => handlePrice(1)}>
@@ -1230,7 +1231,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                         // message.error(`可用${currentPair?.baseSymbol}余额不足`);
                         message.error(
                           t("spot.tooltip.insufficientBalance", {
-                            symbol: currentPair?.baseSymbol,
+                            symbolName: currentPair?.baseSymbol,
                           })
                         );
                         // 自动将金额调整为可用余额

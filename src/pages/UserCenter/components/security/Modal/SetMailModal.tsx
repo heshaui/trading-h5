@@ -351,7 +351,7 @@ function SetMailModal({ open, onCancel, type, acountInfo, onOk }: Props) {
             </div>
             <Form.Item
               name="code"
-              rules={[{ required: true, message: t("security.codeErrorr") }]}
+              rules={[{ required: true, message: t("security.codeError") }]}
             >
               <Input
                 autoComplete="off"

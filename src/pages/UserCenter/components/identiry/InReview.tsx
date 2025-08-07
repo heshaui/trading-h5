@@ -30,7 +30,7 @@ const InReview: React.FC = () => {
 					className="w-full h-[50px] flex rounded-[25px] justify-center items-center bg-[var(--theme-color)] text-[#fff] text-[16px] font-medium"
 					onClick={() => navigate('/')}
 				>
-					{/* 回到首页 */}
+					{/* 前往首页 */}
 					{t('identity.sumbit.goHome')}
 				</button>
 			</div>

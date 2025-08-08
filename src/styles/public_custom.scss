@@ -1,8 +1,14 @@
 /* input */
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
-.ant-input-outlined:hover {
+.ant-input-outlined:hover,
+.ant-input-outlined:focus
+ {
     background: transparent !important;
     background-color: transparent !important;
+}
+
+.ant-input:focus {
+    background: transparent !important;
 }
 
 .ant-input::placeholder {
@@ -22,13 +28,24 @@
 
 /*步骤条*/
 .custom-steps {
+    &.ant-steps .ant-steps-item-icon {
+        background-color: transparent;
+        border: 2px solid var(--theme-color);
+        .ant-steps-icon {
+            color: var(--theme-color);
+        }
+    }
     &.ant-steps .ant-steps-item-process .ant-steps-item-icon {
         background-color: var(--theme-color);
         border-color: var(--theme-color);
+        .ant-steps-icon {
+            color: #fff;
+        }
     }
 
     &.ant-steps .ant-steps-item-tail::after {
-        background: var(--border-color10) !important;
+        background: transparent !important;
+        border-left: 1px dashed #676867;
     }
     .ant-steps-item-finish .ant-steps-item-tail::after {
         background: var(--theme-color) !important;

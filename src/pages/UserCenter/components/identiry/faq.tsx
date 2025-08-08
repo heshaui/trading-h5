@@ -45,7 +45,7 @@ const Faq: React.FC = () => {
 
     return (
         <div className="border-color border-[1px] px-[10px] pt-[20px] rounded-[8px] mt-5"> 
-            <p className="font-medium text-[18px] pb-[16px]">常见问题</p>
+            <p className="font-medium text-[18px] pb-[16px]">{t('identity.title4')}</p>
             <ul>
                 {itemList.map((item: ItemType) => (
                     <li className="pb-[20px]" key={item.key}>

@@ -392,3 +392,12 @@
 .adm-picker-view-mask-middle {
     border-color: var(--border-color4) !important;
 }
+// 邮箱自动补全弹窗样式（全局）
+.adm-popover {
+    .adm-popover-inner {
+        background-color: var(--background5) !important;
+    }
+    .adm-popover-arrow {
+        color: var(--background5) !important;
+    }
+}

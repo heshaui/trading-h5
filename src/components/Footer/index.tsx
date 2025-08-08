@@ -21,6 +21,7 @@ import iconDown from '../../assets/icons/public/icon_download_line.png';
 import discord from '@/assets/icons/public/icon_discord.png';
 import { DownOutline, UpOutline } from 'antd-mobile-icons';
 import { useThemeMode } from '@/hooks/useThemeMode';
+import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
 
 
 // 添加社交媒体项的接口
@@ -181,8 +182,9 @@ const Footer = () => {
 									<span className="flex-1 text-left">{item.bottomName || "--"}</span>
 									{item.children && item.children.length > 0 && (
 										<span className="ml-2">
-											<DownOutline 
+											<DownSvg 
 												color="var(--text-color5)"
+												 className='w-[24px] h-[24px]'
 												style={{
 													transition: 'transform 0.3s ease',
 													transform: expandedItems[`item-${index}`] ? 'rotate(180deg)' : 'rotate(0deg)'

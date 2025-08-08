@@ -14,6 +14,7 @@ import {
 import { getFingerprint } from "@/hooks/user-fingerprint";
 import { useLanguage } from '@/hooks/useLanguage';
 import QuestionModal from "@/components/LoginAboutPop/questionModal";
+import appStore from "@/store";
 
 interface acountType {
     countryCode?: string;
@@ -60,10 +61,10 @@ type Props = {
     onOk: (event: returnInfoType) => void;
     onCancel: () => void;
     type?: string;
-    acountInfo: SafeDataType;
+    // acountInfo: SafeDataType;
 };
 
-function WithdrawSafe({ open, onCancel, type, onOk, acountInfo }: Props) {
+function WithdrawSafe({ open, onCancel, type, onOk, }: Props) {
     const { t } = useLanguage('assets');
     const [isCounting, setIsCounting] = useState(false);
     const [isCounting2, setIsCounting2] = useState(false);
@@ -79,6 +80,7 @@ function WithdrawSafe({ open, onCancel, type, onOk, acountInfo }: Props) {
     const [phoneCodeInputValue, setPhoneCodeInputValue] = useState("");
     const [googleCodeInputValue, setGoogleCodeInputValue] = useState("");
     const [errOpen, setErrOpen] = useState(false);
+    const acountInfo = appStore.getUserInfo()||appStore.userInfo
 
     const [form] = Form.useForm();
 

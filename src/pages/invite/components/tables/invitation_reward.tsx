@@ -1,6 +1,6 @@
 // import { Button, Form, Input,Tabs } from "antd";
 // import { type CSSProperties, useState, useRef } from "react";
-import styles from "../../styles/invite.module.css"
+import styles from "../../styles/invite.module.scss"
 import { Iconify } from "@/components/icon/index";
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";

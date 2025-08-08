@@ -11,6 +11,9 @@ import appStore from '@/store';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { CustomTab } from '@/components/CustomCom';
 import { NoData } from '@/components/noData';
+import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
+
 interface ListItem {
   key: string;
   title: string;
@@ -220,7 +223,10 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
             {languageNames[currentLanguage as keyof typeof languageNames]}
           </div>
 
-          <DownOutline fontSize={18} color="var(--text-color5)" />
+          <DownSvg 
+            color="var(--text-color5)"
+            className='w-[24px] h-[24px]'
+          />
 
 
         </button>
@@ -243,7 +249,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
                 }}
                   className={styles.tip_color}
                 >
-                  <CloseOutline fontSize={22} />
+                 <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
                 </button>
               </div>
               <div className={styles.tabContent}>
@@ -275,7 +281,7 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
                   }}
                     className={styles.tip_color}
                   >
-                    <CloseOutline fontSize={22} />
+                      <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
                   </button>
                 </div>
                 <CustomTab

@@ -15,6 +15,9 @@ import { encryptString } from '@/utils/encrypt';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Iconify } from '../icon';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
+// import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
+
 interface ListItem {
     key: string;
     title: string;
@@ -139,7 +142,7 @@ const UserIcon: React.FC = observer(() => {
                     }}
                         className={styles.tip_color}
                     >
-                        <CloseOutline fontSize={24} />
+                         <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
                     </button>
                 </div>
                 {token?<div className='pt-4'>

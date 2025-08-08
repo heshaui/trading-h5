@@ -5,6 +5,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/phoneCode.module.scss";
 import { NoData } from "../noData";
 import { Form as MobileForm, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
 
 interface OptionItem {
   label: React.ReactNode;
@@ -49,7 +50,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
       setSelectedValue(value);
     }
   }, [value]);
-  
+
   // 国家选项列表
   const groupedOptions = useMemo(() => {
     if (!countryCodeList.length) return [];
@@ -159,7 +160,7 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
 
   // 获取显示的标签
   const getDisplayLabel = (value: string) => {
-    if (!value) return  t('titleText.selectCountry');
+    if (!value) return t('titleText.selectCountry');
     const option = groupedOptions.find(opt => opt.value === value);
     return option ? option.value : value;
   };
@@ -172,52 +173,54 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
       >
         <div className={`flex-x-cc ${styles.valueSelect}`}>
           <p className={`flex-1 text-left`}
-          style={{ 
-            overflow: 'hidden', 
-            whiteSpace: 'nowrap', 
-            textOverflow: 'ellipsis',
-            minWidth: 0 
-          }}>{getDisplayLabel(selectedValue)}</p>
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              minWidth: 0
+            }}>{getDisplayLabel(selectedValue)}</p>
           <Iconify icon="eva:arrow-down-fill" size={16} />
         </div>
-        
+
       </Button>
-      
+
       <Popup
         visible={popupVisible}
         onMaskClick={handlePopupClose}
         position="bottom"
         bodyStyle={{
-          maxHeight: '60vh',
+          minHeight: '60vh',
           borderTopLeftRadius: '8px',
           borderTopRightRadius: '8px'
         }}
       >
-        <div style={{ padding: '16px',}}>
+        <div style={{ padding: '16px', }} className="title_color">
           <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h3 style={{ margin: 0 }}>
               {/* 选择国家/地区 */}
               {t('titleText.selectCountry')}
-              </h3>
-            <Button 
-              size="small" 
+            </h3>
+            <Button
+              size="small"
               onClick={handlePopupClose}
               style={{ background: 'transparent', border: 'none' }}
             >
-              <Iconify icon="eva:close-fill" size={20} />
+              <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
+
             </Button>
           </div>
-          
+
           <div style={{ marginBottom: '16px' }}>
             <SearchBar
               placeholder={t("search")}
               value={searchValue}
               onChange={handleSearch}
               style={{ '--border-radius': '8px' }}
+              className={`${styles.search_bar} popup_search_bar`}
             />
           </div>
-          
-          <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+
+          <div className={`${styles.popup_scroll_box}`}>
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <div
@@ -225,8 +228,8 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
                   className="flex justify-between items-center py-3 px-2 cursor-pointer"
                   onClick={() => handleOptionSelect(option)}
                   style={{
-                    borderBottom: '1px solid #f0f0f0',
-                    backgroundColor: selectedValue === option.value ? 'var(--theme-shadow)' : 'transparent',
+                    borderBottom: '1px solid var(--border-color4)',
+                    backgroundColor: selectedValue === option.value ? 'var(--background-menu-item)' : 'transparent',
                     borderRadius: '4px',
                     marginBottom: '4px'
                   }}
@@ -246,9 +249,9 @@ const PhoneCodeSelect = forwardRef<any, PhoneCodeSelectProps>(({ className, valu
 });
 
 // antd-mobile 表单包装组件
-const PhoneCodeSelectMobileWrapper: React.FC<{ 
-  className?: string; 
-  autoSelectFirst?: boolean; 
+const PhoneCodeSelectMobileWrapper: React.FC<{
+  className?: string;
+  autoSelectFirst?: boolean;
 }> = ({ className, autoSelectFirst = true }) => {
   return (
     <MobileForm.Item name="areaCode" noStyle>
@@ -258,13 +261,13 @@ const PhoneCodeSelectMobileWrapper: React.FC<{
 };
 
 // antd 表单包装组件（懒加载导入）
-const PhoneCodeSelectAntdWrapper: React.FC<{ 
-  className?: string; 
-  autoSelectFirst?: boolean; 
+const PhoneCodeSelectAntdWrapper: React.FC<{
+  className?: string;
+  autoSelectFirst?: boolean;
 }> = ({ className, autoSelectFirst = true }) => {
   // 动态导入 antd 的 Form 组件
   const [AntdForm, setAntdForm] = useState<any>(null);
-  
+
   useEffect(() => {
     const loadAntdForm = async () => {
       try {
@@ -274,15 +277,15 @@ const PhoneCodeSelectAntdWrapper: React.FC<{
         console.warn('Failed to load antd Form component:', error);
       }
     };
-    
+
     loadAntdForm();
   }, []);
-  
+
   if (!AntdForm) {
     // 如果 antd 未加载，直接返回基础组件
     return <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />;
   }
-  
+
   return (
     <AntdForm.Item name="areaCode" noStyle>
       <PhoneCodeSelect className={className} autoSelectFirst={autoSelectFirst} />
@@ -291,25 +294,25 @@ const PhoneCodeSelectAntdWrapper: React.FC<{
 };
 
 // 通用包装组件，自动检测环境
-const PhoneCodeSelectWrapper: React.FC<{ 
-  className?: string; 
+const PhoneCodeSelectWrapper: React.FC<{
+  className?: string;
   autoSelectFirst?: boolean;
   formType?: 'mobile' | 'antd' | 'auto'; // 新增 formType 属性
 }> = ({ className, autoSelectFirst = true, formType = 'auto' }) => {
   const [detectedFormType, setDetectedFormType] = useState<'mobile' | 'antd' | null>(null);
-  
+
   useEffect(() => {
     if (formType !== 'auto') {
       setDetectedFormType(formType);
       return;
     }
-    
+
     // 自动检测当前环境中可用的表单库
     const detectFormLibrary = async () => {
       try {
         // 检测是否有 antd-mobile
         await import('antd-mobile');
-        
+
         // 检测是否有 antd
         try {
           await import('antd');
@@ -327,10 +330,10 @@ const PhoneCodeSelectWrapper: React.FC<{
         }
       }
     };
-    
+
     detectFormLibrary();
   }, [formType]);
-  
+
   // 根据检测结果或指定类型渲染对应的包装组件
   if (detectedFormType === 'antd') {
     return <PhoneCodeSelectAntdWrapper className={className} autoSelectFirst={autoSelectFirst} />;

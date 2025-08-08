@@ -17,6 +17,7 @@
   font-size: 16px;
   transition: border-color 0.3s ease;
   color: var(--text-color5) !important;
+
   &:focus {
     border-color: var(--theme-color, #1890ff);
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
@@ -32,12 +33,11 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #fff;
+  // background-color: pink;
   border: 1px solid var(--border-color);
   border-top: none;
   border-radius: 0 0 10px 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
   max-height: 300px;
   overflow: hidden;
 }
@@ -65,14 +65,20 @@
 .suggestionItem {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  cursor: pointer;
   transition: background-color 0.2s ease;
-  border-bottom: 1px solid #f8f8f8;
+  // border-bottom: 1px solid var(--border-color4);
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+  margin: 2px 4px;
 
-  &:hover {
-    background-color: #f5f5f5;
-  }
+  // &:hover {
+  //   background-color: var(--background-menu-item);
+  // }
 
   &:last-child {
     border-bottom: none;
@@ -86,7 +92,7 @@
   .suggestionText {
     flex: 1;
     font-size: 14px;
-    color: #333;
+    color: var(--text-color5);
   }
 
   .suggestionTag {

@@ -184,8 +184,8 @@ export default function RechargeTable({coinSelect}: PropsType) {
             handlePopupClose={() => setDatePopVisible(false)}
             title={t('btnText.filter',{ns:'common'})}
             onChange={(value)=>{
-              pageParam.current.startTime = value[0]?.startOf('day').valueOf()?.toString() || ''
-              pageParam.current.endTime = value[1]?.endOf('day').valueOf()?.toString() || ''
+              pageParam.current.startTime = value[0]?.startOf('day').format('YYYY-MM-DD HH:mm:ss') || ''
+              pageParam.current.endTime = value[1]?.endOf('day').format('YYYY-MM-DD HH:mm:ss') || ''
               getRecordData()
             }}
             // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}

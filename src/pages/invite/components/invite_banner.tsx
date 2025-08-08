@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/invite.module.css';
+import styles from '../styles/invite.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 import type { CSSProperties } from 'react';

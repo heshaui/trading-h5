@@ -148,19 +148,20 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       align: "center",
       render: (_status: any, record: DataType) => {
         const { scaleResult: amountScaleResult } = getRound(record.symbol, _status);
-        const res = getRound(record.symbol, record.tradedAmount);
+        // const res = getRound(record.symbol, record.tradedAmount);
+        const { scaleResult: tradedAmountScaleResult } = getRound(record.symbol, record.tradedAmount);
+
 
         let amountText
         if (record.type === 0 && record.direction === 0) {
           if (record.status === 1 || record.status === 5) {
-            amountText = amountScaleResult
+            amountText = tradedAmountScaleResult
           } else {
             amountText = '--'
           }
         } else {
           amountText = amountScaleResult
         }
-        const { scaleResult: tradedAmountScaleResult } = getRound(record.symbol, record.tradedAmount);
         const tradedAmountText = tradedAmountScaleResult ? tradedAmountScaleResult : '0'
         //   if(!Number(record.turnover) && record.type === 0){
         //     return <span>--</span>;

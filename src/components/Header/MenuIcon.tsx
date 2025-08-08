@@ -6,13 +6,14 @@ import menuDay from '@/assets/icons/public/icon_menu_day.png';
 import menuDark from '@/assets/icons/public/icon_menu_dark.png';
 import userDay from '@/assets/icons/public/icon_user_day.png';
 import { Image, Popup } from 'antd-mobile';
-import { CloseOutline } from 'antd-mobile-icons';
 import { ExpandableMenu, MenuItemType } from '@/components/MenuItems';
 import { useTranslation } from "react-i18next";
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 import LanguageToggle from '@/components/LanguageToggle';
 import appStore from '@/store';
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
+
 
 const MenuIcon: React.FC = observer(() => {
 	// const { t } = useTranslation("common");
@@ -151,7 +152,7 @@ const MenuIcon: React.FC = observer(() => {
                 }}
                 className={styles.tip_color}
                 >
-                    <CloseOutline fontSize={24} />
+                    <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
                 </button>
                 </div>
                 <div className='pt-4'>

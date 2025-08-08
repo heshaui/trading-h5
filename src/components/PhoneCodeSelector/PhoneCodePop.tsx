@@ -3,7 +3,7 @@ import { Iconify } from "@/components/icon/index";
 import { getCountryCode } from "@/services/open";
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from "./styles/phoneCode.module.scss";
-import { NoData } from "../noData";
+import { NoData } from "@/components/noData";
 import { Form as MobileForm, Input, Picker, Button, Popup, SearchBar } from 'antd-mobile'
 import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
 

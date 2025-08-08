@@ -400,13 +400,15 @@ const SafeCenter: React.FC = observer(() => {
 			if (code === "0") {
 				setLoadingSkeleton(false);
 				setSafeData(data);
-				const localUserInfo = JSON.parse(
-					localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || "{}"
-				);
-				localStorage.setItem(
-					LOCAL_STORAGE_KEY.USER_INFO,
-					JSON.stringify(Object.assign({}, localUserInfo, data))
-				);
+				// const localUserInfo = JSON.parse(
+				// 	localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || "{}"
+				// );
+				// localStorage.setItem(
+				// 	LOCAL_STORAGE_KEY.USER_INFO,
+				// 	JSON.stringify(Object.assign({}, localUserInfo, data))
+				// );
+				// 更新个人信息
+				appStore.updateUserInfo(data)
 				const securityMethodsCount = checkMethodsCount(data);
 				const baseSafeData = initBaseSafeList.map((item: SafeListItem) => {
 				if (data.hasOwnProperty(item.type)) {

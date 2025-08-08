@@ -51,12 +51,11 @@ type Props = {
 function WithdrawMoneyCheck({ open, onCancel, withdrawInfo, onOk }: Props) {
     const { t } = useLanguage('assets');
     const [safeModalOpen, setSafeModalOpen] = useState(false)
-    const [userInfo, setUserInfo] = useState({})
+    // const [userInfo, setUserInfo] = useState({})
     const [totastOpen, setTotastOpen] = useState(false)
     const [totastMessage, setTotastMessage] = useState('')
     const [totastType, setTotastType] = useState('')
     const { setResetState } = useResetStateContext();
-
     const handCancel = () => {
         onCancel()
     };
@@ -222,7 +221,7 @@ function WithdrawMoneyCheck({ open, onCancel, withdrawInfo, onOk }: Props) {
 
             <WithdrawMoneySafe open={safeModalOpen}
                 onCancel={() => setSafeModalOpen(false)}
-                acountInfo={userInfo}
+                // acountInfo={userInfo}
                 onOk={safeModalOk} />
             {/* <TotastModal open={totastOpen} message={totastMessage} type={totastType} onCancel={() => setTotastOpen(false)}/> */}
         </Popup>

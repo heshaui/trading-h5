@@ -140,6 +140,15 @@ const SafeCenter: React.FC = observer(() => {
 			],
 			noBindBtn: [
 				{
+					/* 解绑 */
+					title: t("security.unbind"),
+					onok: () => {
+						setCheckModalOpen(true);
+						setCheckType("4");
+					},
+					key: "close",
+				},
+				{
 					/* 绑定 */
 					title: t("security.bind"),
 					onbind: () => {

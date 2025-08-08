@@ -292,7 +292,7 @@ function BindGoogleModal({ open, onCancel, type, onOk, acountInfo }: Props) {
             <p className={`${styles.title}`}>
               {/* 输入验证码开启谷歌验证器 */}
               <span>{t("security.bindGoogle.modalTitle")}</span>
-              <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+              <Iconify icon="mingcute:close-line" className="text-[24px] text-[var(--text-color9)]" onClick={onCancel} />
             </p>
             <div className="p-4 pb-[30px]">
                 <div className="flex-col flex-ai-center" style={{ width: "100%" }}>

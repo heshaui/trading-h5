@@ -171,7 +171,7 @@ function LockModal({ open, onCancel, type, onOk }: Props) {
 	>
 		<p className={`${styles.title}`}>
 			<span>{type === '5' ? t('security.lockSafe.setPassword') : t('security.lockSafe.modifyPassword')}</span>
-			<Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+			<Iconify icon="mingcute:close-line" className="text-[24px] text-[var(--text-color9)]" onClick={onCancel} />
 		</p>
 		<div className="p-4 pb-[30px]">
           {/* t() */}

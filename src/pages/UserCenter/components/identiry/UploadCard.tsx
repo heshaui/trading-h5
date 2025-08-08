@@ -18,6 +18,7 @@ import backLightImg from '@/assets/images/userCenter/identity/back_day2.png';
 import backDarkImg from '@/assets/images/userCenter/identity/back_night2.png';
 import handcardLightImg from '@/assets/images/userCenter/identity/handcard_day3.png';
 import handcardDarkImg from '@/assets/images/userCenter/identity/handcard_night3.png';
+import { ReactComponent as UploadIcon } from '@/assets/icons/userCenter/icon_upload.svg'
 
 interface EventType {
     surname: string;
@@ -214,8 +215,8 @@ const UploadCard: React.FC<UploadCardProps> =observer(({ onNext, onPrev, userInf
                         onDelete={() => setFrontFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
-                                <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background15)] flex justify-center items-center tip-color">
-                                    <Iconify icon={frontFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
+                                <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background9)] flex justify-center items-center tip-color">
+                                    <UploadIcon className="!w-[24px] !h-[24px]" />
                                     <span className={`font-14 font-w-400 ml-[6px]`}>
                                         {t('identity.upload.uploadFile')}
                                     </span>
@@ -245,11 +246,11 @@ const UploadCard: React.FC<UploadCardProps> =observer(({ onNext, onPrev, userInf
                         onDelete={() => setBackFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
-                                <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
-                                    <Iconify icon={backFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-                                    <p className={`font-14 font-w-400 ml-[6px]`}>
+                                <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background9)] flex justify-center items-center tip-color">
+                                    <UploadIcon className="!w-[24px] !h-[24px]" />
+                                    <span className={`font-14 font-w-400 ml-[6px]`}>
                                         {t('identity.upload.uploadFile')}
-                                    </p>
+                                    </span>
                                 </div>
                                 <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
                                     {t('identity.upload.backFile')}
@@ -276,11 +277,11 @@ const UploadCard: React.FC<UploadCardProps> =observer(({ onNext, onPrev, userInf
                         onDelete={() => setSelfieFileUrl('')}
                         children={
                             <div className="w-[160px] flex flex-col">
-                                <div className="w-full h-[48px] border bg-[var(--background15)] border-[var(--border-color4)] rounded-lg flex justify-center items-center tip-color">
-                                    <Iconify icon={selfieFileLoading ? "eos-icons:bubble-loading" : "solar:upload-linear"} className="text-[24px]" />
-                                    <p className={`font-14 font-w-400 ml-[6px]`}>
+                                <div className="w-full h-[48px] border rounded-lg border-[var(--border-color4)] bg-[var(--background9)] flex justify-center items-center tip-color">
+                                    <UploadIcon className="!w-[24px] !h-[24px]" />
+                                    <span className={`font-14 font-w-400 ml-[6px]`}>
                                         {t('identity.upload.uploadFile')}
-                                    </p>
+                                    </span>
                                 </div>
                                 <div className={`font-16 font-w-500 mt-[6px] leading-[22px] text-center text-[var(--text-color5)]`}>
                                     {t('identity.upload.selfieFile')}

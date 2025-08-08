@@ -45,19 +45,17 @@ const Faq: React.FC = () => {
 
     return (
         <div className="border-color border-[1px] px-[10px] pt-[20px] rounded-[8px] mt-5"> 
-            <p className="font-medium text-[18px] pb-4">常见问题</p>
+            <p className="font-medium text-[18px] pb-[16px]">常见问题</p>
             <ul>
                 {itemList.map((item: ItemType) => (
                     <li className="pb-[20px]" key={item.key}>
-                        <div className="flex justify-between mb-2">
-                            <h4 className="font-medium text-[14px]">{ item.label }</h4>
-                            <div>
-                                <Iconify 
-                                    icon={ activeMap[item.key] ? "icon-park-solid:up-one" : "icon-park-solid:down-one"}
-                                    className='text-[20px] text-[#a4a5ac]'
-                                    onClick={() => toggleItem(item.key)}
-                                />
-                            </div>
+                        <div className={`flex justify-between items-center h-[17px] ${activeMap[item.key] ? 'mb-[8px]' : ''}`}>
+                            <h4 className="font-medium leading-[17px] text-[14px]">{ item.label }</h4>
+                            <Iconify 
+                                icon={ activeMap[item.key] ? "icon-park-solid:up-one" : "icon-park-solid:down-one"}
+                                className='text-[14px] text-[#a4a5ac]'
+                                onClick={() => toggleItem(item.key)}
+                            />
                         </div>
                         <AnimatePresence initial={false}>
                             {
@@ -68,7 +66,7 @@ const Faq: React.FC = () => {
                                         animate={{ height: "auto", opacity: 1 }}
                                         exit={{ height: 0, opacity: 0 }}
                                         transition={{ duration: 0.1 }}
-                                        className="text-[12px] font-normal text-[var(--text-color6)]"
+                                        className="text-[12px] leading-[17px] font-normal text-[var(--text-color6)]"
                                     >
                                         {item.content}
                                     </motion.div>

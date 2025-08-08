@@ -303,7 +303,7 @@ function LockSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
       <p className={`${styles.title}`}>
         {/* 安全验证 */}
         <span>{t("security.lockSafe.title")}</span>
-        <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+        <Iconify icon="mingcute:close-line" className="text-[24px] text-[var(--text-color9)]" onClick={onCancel} />
       </p>
       <div className="p-4 w-[100%] pb-[30px]" >
           {/* t() */}

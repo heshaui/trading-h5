@@ -13,6 +13,12 @@
 .ant-input-affix-wrapper .anticon.ant-input-password-icon {
     color: var(--text-color4);
 }
+// input清空按钮颜色
+.ant-input-suffix {
+    .ant-input-clear-icon {
+        color: #a4a5ac !important;
+    }
+}
 
 /*步骤条*/
 .custom-steps {
@@ -380,4 +386,9 @@
         width: 100%;
         height: 100%;
     }   
+}
+
+// 时间选择器选中上下边框颜色
+.adm-picker-view-mask-middle {
+    border-color: var(--border-color4) !important;
 }

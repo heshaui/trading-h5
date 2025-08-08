@@ -286,7 +286,7 @@ function PhoneSafeModal({ open, onCancel, type, onOk, acountInfo }: Props) {
             {/* 安全验证 */}
             <span>{t("security.mailSafe.title")}</span>
             {/* {type}{acountInfo.type}  */}
-            <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+            <Iconify icon="mingcute:close-line" className="text-[24px] text-[var(--text-color9)]" onClick={onCancel} />
         </p>
         <div className="p-4 pb-[30px]">
           {/* t() */}

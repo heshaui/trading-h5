@@ -47,7 +47,8 @@
 }
 .input_box{
     background: var(--background5);
-    color: var(--text-color6);
+    border-color: var(--border-color4);
+    color: var(--text-color5);
 }
 /* 输入框组件覆盖 */
 .input_box:focus,
@@ -61,7 +62,6 @@
     background-color: transparent;
     color: #fff;
     box-shadow: none;
-    color: var(--text-color6) !important;
 }
 /* 鼠标滑过 */
 .input_box:hover{

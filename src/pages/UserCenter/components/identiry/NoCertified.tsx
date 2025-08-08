@@ -105,7 +105,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
                   icon="mingcute:safe-alert-line" className="w-[20px] h-[20px] mr-1" size={20} />
                   {t("identity.status.unverified")}
                </div> */}
-               <IdentifyStatus realnessStatus={identityInfo?.authStatus} />
+               <IdentifyStatus realnessStatus={identityInfo?.authStatus} textClassName="tip-color" />
             </div>
             {/* 认证状态-未认证 */}
             {identityInfo && identityInfo?.authStatus === 2 && (
@@ -141,7 +141,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
             {/* 认证状态-重新认证 */}
             {identityInfo && identityInfo?.authStatus === 0 && (
                <div
-                className={`font-14 font-w-400 mt-3 error_icon flex align-start`}
+                className={`font-14 font-w-400 mt-3 tip-color flex align-start`}
                >
                   {!identityInfo?.remark ? (
                      <div className="flex align-center">
@@ -172,7 +172,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
             )}
             {/* 认证状态-审核中 */}
             {identityInfo && identityInfo?.authStatus === 3 && (
-               <div className={`font-14 font-w-400 mt-3 error_icon`}>
+               <div className={`font-14 font-w-400 mt-3 tip-color`}>
                   <Iconify
                      icon="emojione-monotone:small-blue-diamond"
                      className="error_icon text-[20px]"

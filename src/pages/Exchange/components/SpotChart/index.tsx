@@ -9,10 +9,13 @@ import SelectPop from '@/components/SelectPop';
 import DepthChart from '@/components/DepthChart';
 import Tradingview, { TradingviewRefHandle } from "@/components/Tradingview";
 
-import StockIcon from '@/assets/images/exchange/icon_stock.png';
-import ChartIcon from '@/assets/images/exchange/icon_chart.png';
-import DeleteIcon from '@/assets/images/exchange/icon_delete.png';
-import ValueIcon from '@/assets/images/exchange/icon_value.png';
+
+import { ReactComponent as StockIcon } from '@/assets/images/exchange/icon_stock.svg';
+import { ReactComponent as ChartIcon } from '@/assets/images/exchange/icon_chart.svg';
+import { ReactComponent as DeleteIcon } from '@/assets/images/exchange/icon_delete.svg';
+import { ReactComponent as ValueIcon } from '@/assets/images/exchange/icon_value.svg';
+import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings.svg';
+import { ReactComponent as FullscreenIcon } from '@/assets/images/exchange/icon_Fullscreen.svg';
 
 type ViewMode = 'phone' | 'phone-fullscreen' | 'tablet' | 'tablet-fullscreen';
 
@@ -182,46 +185,23 @@ const SpotChart: React.FC = () => {
                             showSearch={false}
                             onChange={(value) => setChartDisplayType(Number(value))}
                             renderBtn={(open) => (
-                                <Image
-                                    src={ StockIcon }
-                                    alt="exchange"
-                                    className="!w-[20px] !h-[20px] ml-1"
-                                    onClick={open}
-                                />
-                                // <Iconify icon="bx:candles" className="text-[20px] text-[#a4a5ac] ml-1" />
+                                <StockIcon className="!w-[20px] !h-[20px] ml-1" onClick={open} />
                             )}
                         />
                     </li>
                     <li>
-                        <Image
-                            src={ChartIcon}
-                            alt="exchange"
-                            className="!w-[20px] !h-[20px] ml-1"
-                            onClick={() =>
-                                tradingviewRef.current?.handleAddIndicator()
-                            }
-                        />
+                        <ChartIcon className="!w-[20px] !h-[20px] ml-1" onClick={() => tradingviewRef.current?.handleAddIndicator()} />
                     </li>
                     <li className="flex items-center ml-1">
                         <button type="button" onClick={() => tradingviewRef.current?.handleOpenSettings()}>
-                            <Iconify icon="uil:setting" className="text-[20px] text-[#a4a5ac]" />
+                            <SettingIcon className="!w-[20px] !h-[20px]"/>
                         </button>
                     </li>
                     <li>
-                        <Image
-                            src={DeleteIcon}
-                            alt="exchange"
-                            className="!w-[20px] !h-[20px] ml-1"
-                            onClick={() => tradingviewRef.current?.resetChart()}
-                        />
+                        <DeleteIcon className="!w-[20px] !h-[20px] ml-1" onClick={() => tradingviewRef.current?.resetChart()} />
                     </li>
                     <li>
-                        <Image
-                            src={ValueIcon}
-                            alt="exchange"
-                            className="!w-[20px] !h-[20px] ml-1"
-                            onClick={() => tradingviewRef.current?.addVolumeDistribution()}
-                        />
+                        <ValueIcon className="!w-[20px] !h-[20px] ml-1" onClick={() => tradingviewRef.current?.addVolumeDistribution()} />
                     </li>
                     {/* <li className="flex items-center ml-1">
                         <button type="button" onClick={() => tradingviewRef.current?.handleTakeSnapshot()}>
@@ -256,7 +236,7 @@ const SpotChart: React.FC = () => {
                 </li>} */}
                 <li className="flex items-center ml-1">
                     <button type="button" onClick={handleFullscreen}>
-                        <Iconify icon="icon-park-outline:full-screen-two" className="text-[20px] text-[#a4a5ac]" />
+                        <FullscreenIcon className="!w-[20px] !h-[20px]" />
                     </button>
                 </li>
                 {/* <li className="flex items-center ml-1">

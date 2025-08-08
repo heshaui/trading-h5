@@ -287,7 +287,7 @@ function SetPhoneModal({ open, onCancel, type, acountInfo, onOk }: Props) {
           ? t("security.phoneSafe.setPhone")
           : t("security.phoneSafe.modifyPhone")}
         </span>
-        <Iconify icon="mingcute:close-line" className="text-[24px] text-[#676867]" onClick={onCancel} />
+        <Iconify icon="mingcute:close-line" className="text-[24px] text-[var(--text-color9)]" onClick={onCancel} />
       </p>
       <div className="p-4">
         {/* t() */}

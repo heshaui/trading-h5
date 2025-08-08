@@ -19,9 +19,9 @@ import { history } from '@/utils/history';
 const getBasename = () => {
   // 生产环境使用 /h5，开发环境使用根路径
   if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_BASE_PATH || '/h5';
+    return process.env.PUBLIC_URL || '/h5';
   }
-  return process.env.REACT_APP_BASE_PATH || '/';
+  return process.env.PUBLIC_URL || '/';
 };
 
 const App: React.FC = observer(() => {

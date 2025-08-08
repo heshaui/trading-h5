@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history';
 
 // 读取配置文件的前缀
-const BASENAME = process.env.REACT_APP_HOMEPAGE || '/';
+const BASENAME = process.env.PUBLIC_URL || '/';
 const history = createBrowserHistory();
 
 const buildPath = (path: string) => {

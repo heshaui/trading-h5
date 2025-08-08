@@ -185,7 +185,7 @@ const AssetsPage: React.FC = observer(() => {
                     {banlanceShow ? <> <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>{balanceAll.balance ? Number(balanceAll.balance).toFixed(2) : '0.00'} USDT
                         {/* {tableData?.[0]?.balance || '--'} */}
                     </p>
-                        <p className={`${styles.tip_color} font-14 line-20 mt-1 ltr-text`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{balanceAll.usdBalance ? Number(balanceAll.usdBalance).toFixed(2) : '0.00'}</p></> :
+                        <p className={`${styles.tip_color} font-14 line-20 mt-1 ltr-text`}>≈&nbsp;{balanceAll?.symbol||'--'}&nbsp;{Number.isFinite(Number(balanceAll?.usdBalance)) ? Number(balanceAll.usdBalance).toFixed(2) : '0.00'}</p></> :
                         <>
                             <p className='text-[24] font-w-700 mt-1 line-32 mb-0'>******</p>
                             <p className={`${styles.tip_color} font-14 line-20 mt-1`}>******</p>

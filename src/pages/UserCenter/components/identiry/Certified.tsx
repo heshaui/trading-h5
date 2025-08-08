@@ -116,17 +116,15 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
                 {/* 账户权益 */}
                 {t('identity.certified.accountBenefits')}
             </div>
-            <ul >
+            <ul className="border-color border-[1px] px-2.5 mb-4 pt-[18px] rounded-[8px]">
                 {levelBenefit && levelBenefit.map((item: levelBenefitType) => (
-                <li className="border-color border-[1px] px-2.5 mb-4 pt-[18px] rounded-[8px]" key={item.benefitId}>
-                    <p className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between ">
-                        <span className="text-[12px] font-normal text-[var(--text-color6)]">{lableShow(item.benefitValue)}</span> 
-                        <span>{
-                            item.status1 === 0 ?
-                                t('identity.certified.forbidden') : // 禁止
-                                (item.value1 && item.params1) ? getBenefitValue(item.value1) : t('identity.certified.allow') // 允许
-                        }</span>
-                    </p>
+                <li className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between " key={item.benefitId}>
+                    <span className="text-[12px] font-normal text-[var(--text-color6)]">{lableShow(item.benefitValue)}</span> 
+                    <span>{
+                        item.status1 === 0 ?
+                            t('identity.certified.forbidden') : // 禁止
+                            (item.value1 && item.params1) ? getBenefitValue(item.value1) : t('identity.certified.allow') // 允许
+                    }</span>
                 </li>
                 ))}
             </ul>

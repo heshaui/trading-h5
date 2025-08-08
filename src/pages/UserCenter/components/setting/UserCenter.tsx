@@ -10,7 +10,7 @@ import appStore from '@/store';
 
 import NickNameIcon from '@/assets/images/userCenter/userSettings/icon_nickname.svg';
 import AvatarIcon from '@/assets/images/userCenter/userSettings/icon_avatar.svg';
-import UserIcon from '@/assets/images/userCenter/userSettings/icon_user.svg';
+import UserIcon from '@/assets/icons/userCenter/icon_user.svg';
 import BrithdayIcon from '@/assets/images/userCenter/userSettings/icon_brithday.svg';
 
 import NickNameModal from './NickNamePopup';
@@ -31,7 +31,7 @@ interface SafeListItem {
 
 const UserCenter: React.FC = () => {
 	const { t, currentLanguage } = useLanguage('userCenter');
-	const [loadingSkeleton, setLoadingSkeleton] = useState(true)
+	const [loadingSkeleton, setLoadingSkeleton] = useState(false)
 	const [necknameOpen, setNecknameOpen] = useState(false);
     const [avatarUrlOpen, setAvatarUrlOpen] = useState(false);
     const [birthdayOpen, setBirthdayOpen] = useState(false);
@@ -74,37 +74,39 @@ const UserCenter: React.FC = () => {
 	});
 
 	const getUserCenterData = async () => {
+		setLoadingSkeleton(true)
 		try {
-		const res = await getUserCenter();
-		const { code, data } = res;
-		if (code === '0') {
-			setLoadingSkeleton(false)
-			setUserInfo(data);
-			const localUserInfo = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || '{}')
-			localStorage.setItem(LOCAL_STORAGE_KEY.USER_INFO, JSON.stringify(Object.assign({}, localUserInfo, data)))
-			// 遍历 userInfoList
-			const updatedUserInfoList = userInfoList.map(item => {
-			if (data.hasOwnProperty(item.type)) {
-				if (item.type === 'birthday') {
-				const value = data[item.type];
-				return {
+			const res = await getUserCenter();
+			const { code, data } = res;
+			if (code === '0') {
+				setLoadingSkeleton(false)
+				setUserInfo(data);
+				const localUserInfo = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY.USER_INFO) || '{}')
+				localStorage.setItem(LOCAL_STORAGE_KEY.USER_INFO, JSON.stringify(Object.assign({}, localUserInfo, data)))
+				// 遍历 userInfoList
+				const updatedUserInfoList = userInfoList.map(item => {
+				if (data.hasOwnProperty(item.type)) {
+					if (item.type === 'birthday') {
+					const value = data[item.type];
+					return {
+						...item,
+						bindValue: value ? dayjs(value).format('YYYY/MM/DD') : '',
+						isBind: Boolean(value),
+					};
+					}
+					const value = data[item.type];
+					return {
 					...item,
-					bindValue: value ? dayjs(value).format('YYYY/MM/DD') : '',
+					bindValue: value,
 					isBind: Boolean(value),
-				};
+					};
 				}
-				const value = data[item.type];
-				return {
-				...item,
-				bindValue: value,
-				isBind: Boolean(value),
-				};
+				return item;
+				});
+				setUserCenterData(updatedUserInfoList);
 			}
-			return item;
-			});
-			setUserCenterData(updatedUserInfoList);
-		}
 		} catch (error) {
+			setLoadingSkeleton(false)
 			Toast.show({
 				icon: 'fail',
 				content: String(error),

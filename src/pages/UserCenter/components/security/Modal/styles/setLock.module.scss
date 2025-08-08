@@ -23,11 +23,11 @@
     color: var(--text-color5);
 }
 .tip_color{
-  color: var(--text-color4);
+  color: var(--text-color6);
 }
 
 .msg_color {
-    color: #676867;
+    color: var(--text-color6);
     font-size: 14px;
 }
 .icon_box{
@@ -59,7 +59,8 @@
 .input_box{
     height: 50px;
     background: var(--background5);
-    color: var(--text-color6);
+    border-color: var(--border-color4);
+    color: var(--text-color5);
 }
 /* 输入框组件覆盖 */
 .input_box:focus,
@@ -73,7 +74,7 @@
     background-color: var(--homeground5);
     color: #fff;
     box-shadow: none !important;
-    color: var(--text-color6) !important;
+    color: var(--text-color5) !important;
 }
 /* 鼠标滑过 */
 .input_box:hover{

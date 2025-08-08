@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import styles from './styles/Popup.module.scss';
+import styles from '../styles/Popup.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { Popup, Toast } from 'antd-mobile';
 import { Input, Form, ConfigProvider } from 'antd';
@@ -18,7 +18,7 @@ import { isShowArr } from "@/utils/filterLang";
 import store from '@/store';
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { encryptData } from "@/utils/encrypt";
-import QuestionModal from "./questionModal";
+import QuestionModal from "@/components/LoginAboutPop/questionModal";
 
 interface acountType {
     type: string;

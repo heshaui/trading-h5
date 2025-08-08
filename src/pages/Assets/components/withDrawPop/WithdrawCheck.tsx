@@ -93,7 +93,7 @@ function WithdrawMoneyCheck({ open, onCancel, withdrawInfo, onOk }: Props) {
                 // setTotastType('loading')
                 onOk?.()
                 Toast.show({
-                    content: t('withdrawMoneyCheck.submitSuccess'),
+                    content: t('withdrawTable.withdrawSuccess'),
                     icon: 'success'
                 });
             } else if (res.code === '1') {

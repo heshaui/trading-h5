@@ -60,7 +60,7 @@ export default function RegisterMail() {
     // 当注册状态不为 EMAIL 时不渲染组件
     const handleFinish = async () => {
         form
-            .validateFields()
+            .validateFields(['email', 'password'])
             .then(async (values: any) => {
                 // form.resetFields(); // 重置表单
                 // if (loading) return;
@@ -110,22 +110,23 @@ export default function RegisterMail() {
         if (typeof value === 'string') {
             value = value.trim();
         }
-        if (!value) {
-            return Promise.reject(new Error(t('registerForm.passwordNull')));
-        }
+        
+        // if (!value) {
+        //     return Promise.reject(new Error(t('registerForm.passwordNull')));
+        // }
         // 检查长度是否在 8 - 100 位之间
         if (value.length < 8 || value.length > 100) {
-            return Promise.reject();
+            return Promise.reject(new Error(t('registerForm.passwordPlaceholder')));
         }
         // 检查是否包含数字
         const hasNumber = /.*\d+.*/
         if (!hasNumber.test(value)) {
-            return Promise.reject();
+            return Promise.reject(new Error(t('registerForm.passwordnum')));
         }
         // 检查是否包含大写字母
         const hasUpperCase = /.*[A-Z].*/
         if (!hasUpperCase.test(value)) {
-            return Promise.reject();
+            return Promise.reject(new Error(t('registerForm.passwordletter')));
         }
 
         return Promise.resolve();
@@ -206,7 +207,11 @@ export default function RegisterMail() {
                     {/* 密码 */}
                     {t('registerForm.passwordTitle')}
                 </div>
-                <Form.Item name="password" rules={[{ validator: validatePassword }]}
+                <Form.Item name="password" 
+                    rules={[
+                        { required: true, message: t('registerForm.passwordNull') },
+                        { validator: validatePassword }
+                    ]}
                     className={`${styles.login_form_item}`}>
                     <Input
                         type="password"

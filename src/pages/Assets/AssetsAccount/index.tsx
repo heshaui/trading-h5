@@ -34,9 +34,10 @@ import { getToken } from "@/request";
 import { CustomTable } from "@/components/CustomCom";
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import AccountPop from "../components/AccountPop";
-import WithdrawStatusPop from "@/components/withDrawStatusPop";
-import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png";
 import { useWithdraw } from "@/hooks/useWithdraw";
+import { ReactComponent as EyeSvg } from '@/assets/icons/assets/icon_eye.svg';
+import { ReactComponent as EyeCloseSvg } from '@/assets/icons/assets/icon- closeEye.svg';
+
 
 const AssetsMainPage = observer(() => {
     const { t } = useLanguage(['assets', 'flash']);
@@ -833,7 +834,10 @@ const AssetsMainPage = observer(() => {
                                     <button type='button' className='ml-1'
                                         onClick={() => setBanlanceShow(!banlanceShow)}
                                     >
-                                        {banlanceShow ? <Iconify icon={'clarity:eye-show-line'} className={`${styles.title_color} font-20`} /> : <Iconify icon={'ep:hide'} className={`${styles.tip_color} font-18`} />}
+                                        {/* {banlanceShow ? <Iconify icon={'clarity:eye-show-line'} className={`${styles.title_color} font-20`} /> :
+                                         <Iconify icon={'ep:hide'} className={`${styles.tip_color} font-18`} />} */}
+                                         {banlanceShow ? <EyeSvg className={`${styles.title_color} font-20`} /> : 
+                                         <EyeCloseSvg className={`${styles.tip_color} font-20`} />}
                                     </button>
                                 </p>
                                 {banlanceShow ? <div
@@ -883,9 +887,9 @@ const AssetsMainPage = observer(() => {
                                         <span className="font-w-500 font-12 ml-1">
                                             {!rateKeyName ||
                                                 rateKeyName === "" ||
-                                                rateKeyName === "NaN"
+                                                rateKeyName === "NaN"||rateKeyName?.includes("NaN")
                                                 ? "--"
-                                                : rateKeyName}
+                                                : rateKeyName} {rateKeyName}
                                         </span>
                                     </p>
                                 </div> : <p className={`${styles.tip_color} font-12 flex-x-cc`}>******</p>}

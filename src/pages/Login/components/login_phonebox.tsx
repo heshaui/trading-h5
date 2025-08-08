@@ -19,7 +19,7 @@ import { Iconify } from "@/components/icon";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import PhoneCodeSelector from "@/components/PhoneCodeSelector/PhoneCodePop";
-import SafeModal from "@/components/LoginAboutPop/loginModal";
+import SafeModal from "./loginModal";
 
 
 interface useInfoType {
@@ -154,6 +154,8 @@ function Phonebox() {
 		setPhoneCodeInputValue(filteredValue);
 		form.setFieldsValue({ phoneNumber: filteredValue });
 	};
+
+	
 	if (loginType !== LoginTypeEnum.PHONE) return null;
 
 	return (

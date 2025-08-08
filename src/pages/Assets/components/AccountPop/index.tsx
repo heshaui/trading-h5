@@ -16,7 +16,8 @@ import { getRate, getCoinRate, getCoinRound } from "@/utils/getUseRate";
 import {
   getCoinById,
 } from "@/services/assets";
-import  {useWithdraw} from "@/hooks/useWithdraw";
+import { useWithdraw } from "@/hooks/useWithdraw";
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
 
 
 
@@ -175,9 +176,9 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
       // 检查权限并执行相应操作
       if (data?.[config.permission] === 1) {
         // 权限通过，执行跳转
-        if(type === ActionType.WITHDRAW){
+        if (type === ActionType.WITHDRAW) {
           goWithdraw();
-        }else{
+        } else {
           navigate(config.route || '/');
         }
         // navigate(config.route || '/');
@@ -220,7 +221,7 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
           }}
             className={styles.title_color}
           >
-            <CloseOutline fontSize={20} />
+            <CloseSvg fontSize={24} className={`w-[14px] h-[14px] ${styles.title_color}`} />
           </button>
         </div>
         <div className={`${styles.pop_main} flex-1 px-2`}>

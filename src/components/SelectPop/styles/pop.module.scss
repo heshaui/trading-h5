@@ -61,10 +61,11 @@
 
   p {
     font-size: 14px;
-    color: var(--text-color6);
+    color: var(--text-color5);
 
     &.placeholder {
-      color: var(--text-color4);
+      // color: var(--text-color4);
+      color: var(--text-color5);
       opacity: 0.7;
     }
   }
@@ -185,7 +186,7 @@
 }
 
 .placeholder {
-  color: var(--text-color6);
+  color: var(--text-color5);
 }
 
 .active_icon{

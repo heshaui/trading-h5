@@ -64,7 +64,7 @@ function RegisterPhone() {
 
 	const onFinish = async () => {
 		form
-			.validateFields()
+			.validateFields(['email', 'password'])
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
 				// if (loading) return;
@@ -99,22 +99,22 @@ function RegisterPhone() {
 		if (typeof value === 'string') {
 			value = value.trim();
 		}
-		if (!value) {
-			return Promise.reject(new Error(t('registerForm.passwordNull')));
-		}
+		// if (!value) {
+		//     return Promise.reject(new Error(t('registerForm.passwordNull')));
+		// }
 		// 检查长度是否在 8 - 100 位之间
 		if (value.length < 8 || value.length > 100) {
-			return Promise.reject();
+			return Promise.reject(new Error(t('registerForm.passwordPlaceholder')));
 		}
 		// 检查是否包含数字
 		const hasNumber = /.*\d+.*/
 		if (!hasNumber.test(value)) {
-			return Promise.reject();
+			return Promise.reject(new Error(t('registerForm.passwordnum')));
 		}
 		// 检查是否包含大写字母
 		const hasUpperCase = /.*[A-Z].*/
 		if (!hasUpperCase.test(value)) {
-			return Promise.reject();
+			return Promise.reject(new Error(t('registerForm.passwordletter')));
 		}
 
 		return Promise.resolve();
@@ -240,7 +240,10 @@ function RegisterPhone() {
 					{t('passwordTitle')}
 				</div>
 				<Form.Item name="password"
-					rules={[{ validator: validatePassword }]}
+					rules={[
+						{ required: true, message: t('registerForm.passwordNull') },
+						{ validator: validatePassword }
+					]}
 					className={`${styles.login_form_item}`}
 				>
 					<Input type="password"
@@ -323,7 +326,7 @@ function RegisterPhone() {
 				onClick={onFinish}>
 				{/* 注册 */}
 				{t('registerForm.registerButton')}
-			</button> 
+			</button>
 
 			<div className="flex-cc mt-4">
 				<p>

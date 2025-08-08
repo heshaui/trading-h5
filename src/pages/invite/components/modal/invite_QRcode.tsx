@@ -92,6 +92,7 @@ function QRCodeModal({ open,qrcode, onCancel ,onOk}: Props) {
                     body: styles.modal_body,
                     footer: styles.modal_footer,
                 }}
+                closable={false}
             >
                 <div className="flex-col flex-ai-center" style={{ width: "100%" }}>
                 <QRCode value={qrcode}

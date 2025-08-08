@@ -164,7 +164,7 @@ export default function InviteTable({coinSelect}: PropsType) {
             onClick={() => setDatePopVisible(true)}
           >
             {/* {t('spot.columns.cancel')} */}
-            <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />
+            <Iconify icon="mingcute:filter-line" className={`${styles.title_color} ml-1`} size={20} />
           </button>
           <DateTimePop
             popupVisible={datePopVisible}

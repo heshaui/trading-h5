@@ -181,7 +181,7 @@ export default function WithdrawTable({coinSelect}: PropsType) {
             <button
               onClick={() => setDatePopVisible(true)}
             >
-              <Iconify icon="mingcute:filter-line" className={`${styles.tip_color} ml-1`} size={20} />
+              <Iconify icon="mingcute:filter-line" className={`${styles.title_color} ml-1`} size={20} />
             </button>
             <DateTimePop
             popupVisible={datePopVisible}

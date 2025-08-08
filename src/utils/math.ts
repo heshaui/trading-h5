@@ -18,24 +18,41 @@ function add(arg1: number, arg2: number): number {
 }
 
 function cut(arg1: number, arg2: number): string {
-  let r1: number;
-  let r2: number;
-  let m = 0;
-  let n = 0;
-
-  try {
-    r1 = arg1.toString().split('.')[1].length;
-  } catch (e) {
-    r1 = 0;
+  // 确保参数是数字类型，并转换为字符串
+  const num1 = Number(arg1);
+  const num2 = Number(arg2);
+  
+  // 检查是否为有效数字
+  if (isNaN(num1) || isNaN(num2)) {
+    return '0';
   }
-  try {
-    r2 = arg2.toString().split('.')[1].length;
-  } catch (e) {
-    r2 = 0;
+  
+  // 将数字转换为字符串，避免科学记数法
+  const str1 = num1.toPrecision(15).replace(/(\.\d*?[1-9])0+$|\.0*$/, '$1');
+  const str2 = num2.toPrecision(15).replace(/(\.\d*?[1-9])0+$|\.0*$/, '$1');
+  
+  // 获取小数位数
+  const decimal1 = str1.includes('.') ? str1.split('.')[1].length : 0;
+  const decimal2 = str2.includes('.') ? str2.split('.')[1].length : 0;
+  const maxDecimal = Math.max(decimal1, decimal2);
+  
+  // 确保精度计算正确
+  if (maxDecimal > 10) {
+    // 对于超高精度的数字，使用 BigInt 进行计算
+    const factor = BigInt(10 ** Math.min(maxDecimal, 15));
+    const bigInt1 = BigInt(Math.round(num1 * Number(factor)));
+    const bigInt2 = BigInt(Math.round(num2 * Number(factor)));
+    const resultBig = (bigInt1 - bigInt2);
+    const result = Number(resultBig) / Number(factor);
+    return result.toFixed(maxDecimal);
+  } else {
+    // 普通精度使用标准方法
+    const factor = Math.pow(10, maxDecimal);
+    const int1 = Math.round(num1 * factor);
+    const int2 = Math.round(num2 * factor);
+    const result = (int1 - int2) / factor;
+    return result.toFixed(maxDecimal);
   }
-  m = 10 ** Math.max(r1, r2);
-  n = r1 >= r2 ? r1 : r2;
-  return ((arg1 * m - arg2 * m) / m).toFixed(n);
 }
 
 function nul(arg1: number | string, arg2: number | string): number {
@@ -202,33 +219,66 @@ function roundOff(num: number | string | undefined | null, places: number = 0): 
  * @returns 处理后的数字
  */
 function roundDown(num: number | string | undefined | null, placesNum: number | string = 0): string {
-  if (num === undefined || num === null || !num) return '0';
   const places = Number(placesNum);
-  // 将输入转换为字符串
-  const numStr = typeof num === 'string' ? num : num.toString();
+  
+  // 验证 places 是否为有效数字
+  if (isNaN(places) || places < 0) {
+    return places === 0 ? '0' : `0.${'0'.repeat(Math.max(0, places))}`;
+  }
 
-  // 如果输入是0，直接返回0
-  if (parseFloat(numStr) === 0) return '0';
+  // 创建格式化的零值
+  const formatZero = () => places === 0 ? '0' : `0.${'0'.repeat(places)}`;
+  
+  // 处理空值和无效输入
+  if (num === undefined || num === null || num === '') return formatZero();
+  
+  // 将输入转换为字符串，并处理特殊情况
+  let numStr: string;
+  if (typeof num === 'string') {
+    numStr = num.trim();
+  } else if (typeof num === 'number') {
+    if (isNaN(num) || !isFinite(num)) return formatZero();
+    numStr = num.toString();
+  } else {
+    return formatZero();
+  }
+
+  // 检查是否为空字符串或无效格式
+  if (!numStr || numStr === 'NaN' || numStr === 'Infinity' || numStr === '-Infinity') {
+    return formatZero();
+  }
+
+  // 验证数字格式
+  const numValue = parseFloat(numStr);
+  if (isNaN(numValue)) return formatZero();
+
+  // 如果输入是0，直接返回格式化的0
+  if (numValue === 0) {
+    return formatZero();
+  }
 
   // 分割整数和小数部分
   const [intPart, decPart = ''] = numStr.split('.');
 
+  // 验证整数部分
+  const intValue = parseInt(intPart || '0');
+  if (isNaN(intValue)) return formatZero();
+
   // 如果要求的精度为0，直接返回整数部分
   if (places === 0) {
-    return parseInt(intPart).toString()
+    return intValue.toString();
   }
 
   // 如果没有小数部分，补充指定数量的0
   if (!decPart) {
-    return `${intPart}.${'0'.repeat(places)}`;
+    return `${intValue}.${'0'.repeat(places)}`;
   }
 
   // 处理小数部分：只保留指定位数，并补充0到指定精度
   const truncatedDecimal = decPart.slice(0, places).padEnd(places, '0');
 
-  // 组合整数和小数部分，转换回数字
-  // return parseFloat(`${intPart}.${truncatedDecimal}`);
-  return `${intPart}.${truncatedDecimal}`
+  // 返回最终结果
+  return `${intValue}.${truncatedDecimal}`;
 }
 
 /**

@@ -111,7 +111,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 				checked={noRemind}
 				onChange={handleCheckboxChange}
 			>
-				<p className="text-[14px]">
+				<p className="text-[14px] text-[var(--text-color5)]">
 					{/* 不再提醒,可在交易设置中，开启或关闭提示。 */}
 					{t('spot.modal.noRemind')}
 				</p>

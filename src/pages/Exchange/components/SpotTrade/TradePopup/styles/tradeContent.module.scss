@@ -53,8 +53,7 @@
     height: 50px;
     border-radius: 8px;
     text-align: end;
-    background-color: var(--background7);
-    color: var(--text-color5);
+    background-color: transparent;
     border-color: var(--border-color4) !important;
 }
 /* 输入框文本位置 */
@@ -66,6 +65,7 @@
 .mail_input:focus-within {
    border-color: var(--text-color3) !important;
    box-shadow: none;
+   background-color: transparent;
    /* box-shadow: 0 0 0 1px var(--text_color3) !important; */
 }
 /* 鼠标聚焦且移出样式 */

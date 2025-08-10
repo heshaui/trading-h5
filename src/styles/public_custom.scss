@@ -1,6 +1,8 @@
 /* input */
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
-.ant-input-outlined:hover {
+.ant-input-outlined:hover,
+.ant-input-number-outlined.ant-input-number-status-error:not(.ant-input-number-disabled),
+.ant-input-number-outlined:hover {
     background: transparent !important;
     background-color: transparent !important;
 }
@@ -17,6 +19,14 @@
 .ant-input-suffix {
     .ant-input-clear-icon {
         color: #a4a5ac !important;
+    }
+}
+
+// switch
+.adm-switch-checkbox {
+    background: var(--background21);
+    &.adm-switch-checkbox:before {
+        background: var(--background21);
     }
 }
 
@@ -319,6 +329,10 @@
     }
 }
 .custom-checkbox {
+    .ant-checkbox .ant-checkbox-inner {
+        background-color: transparent !important;
+        border-color: var(--border-color4) !important;
+    }
     .ant-checkbox-checked .ant-checkbox-inner {
         background-color: var(--theme-color) !important;
         border-color: var(--theme-color) !important;
@@ -326,6 +340,7 @@
     .ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
         border-color: var(--theme-color) !important;
     }
+    
 }
 // input-number
 .custom-input-number {
@@ -337,6 +352,9 @@
     }
     .spot_number_input {
         flex: 1;
+        border: none;
+    }
+    .ant-input-number-outlined.ant-input-number-status-error:not(.ant-input-number-disabled) {
         border: none;
     }
     .controls {
@@ -360,10 +378,26 @@
 .spot_number_input {
     .ant-input-number-input{
         text-align: right !important;
+        color: var(--text-color5) !important;
     }
     .ant-input-number-input:focus {
         text-align: left !important;
     }
+    &.ant-input-number-disabled {
+        background-color: var(--border-color4) !important;
+        .ant-input-number-suffix {
+            color: #9e9e9e;
+        }
+    }
+    .ant-input-number-suffix {
+        color: var(--text-color5);
+    }
+    &.ant-input-number-outlined:hover {
+        background-color: transparent !important;
+    }
+}
+.adm-popover.adm-popover-dark {
+    --background: #333;
 }
 
 // 身份证上传

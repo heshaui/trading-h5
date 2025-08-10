@@ -423,6 +423,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                   ) : (
                     <Checkbox
                       checked={customStates[item.key]}
+                      className="custom-checkbox"
                       onChange={(checked) => handleCustomContentChange(item.key, checked)}
                       style={{
                         '--icon-size': '18px',
@@ -448,7 +449,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--font-size': '14px',
                 '--gap': '8px'
               }}
-              className="quickSelect"
+              className="quickSelect custom-checkbox"
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last7Days', { ns: 'common' }) }
@@ -462,7 +463,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--font-size': '14px',
                 '--gap': '8px'
               }}
-              className="quickSelect"
+              className="quickSelect custom-checkbox"
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last30Days', { ns: 'common' }) }
@@ -476,7 +477,7 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--font-size': '14px',
                 '--gap': '8px'
               }}
-              className="quickSelect"
+              className="quickSelect custom-checkbox"
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last90Days', { ns: 'common' }) }

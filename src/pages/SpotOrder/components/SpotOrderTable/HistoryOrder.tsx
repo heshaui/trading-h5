@@ -578,7 +578,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
                   selectParam.current.notStatus = e.target.checked ? '3' : ''
                   getOrderListData()
                 }}
-                className={`${styles.checkbox}`}
+                className={`${styles.checkbox} custom-checkbox`}
               >
                 <span className={`${styles.title_color} font-14`}>
                   {t('spot.select.hideAllCancel')}

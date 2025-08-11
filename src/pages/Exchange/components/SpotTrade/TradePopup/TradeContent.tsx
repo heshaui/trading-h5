@@ -202,7 +202,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
   };
 
   // 修改处理精度的辅助函数，移除多余的0
-  const formatWithPrecision = (value: number | string, precision: number) => {
+  const formatWithPrecision = (value: number | string, precision: number): any => {
     if (!value && value !== 0) return "";
     // 先格式化到指定精度，然后移除末尾多余的0和可能的小数点
     return Number(value)
@@ -520,7 +520,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
               description: (
                 <div>
                   <div>
-                    {t("spot.label.pair")}: {currentPair?.coinSymbol}/
+                    {t("spot.toastModal.pair")}: {currentPair?.coinSymbol}/
                     {currentPair?.baseSymbol}
                   </div>
                   {values.amount && (
@@ -1293,7 +1293,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                   <p className="tip-color">{t("spot.trade.available")}</p>
                   {/* <p>{userBalance.find(item => item.coinName === currentPair?.baseSymbol)?.balance || '--'} {currentPair?.baseSymbol}</p> */}
                   {isLoggedIn ? (
-                    <p className="flex items-center">
+                    <p className="flex items-center text-[var(--text-color5)]">
                       <span>{roundNum(currentPair?.baseSymbol || "")}{" "}
                       {currentPair?.baseSymbol}{" "}</span>
 					            <Iconify icon="gg:add" className="text-[20px] ml-1" onClick={() => {
@@ -1301,7 +1301,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                       }}/>
                     </p>
                   ) : (
-                    <p>--</p>
+                    <p className="text-[var(--text-color5)]">--</p>
                   )}
                 </li>
                 <li className="flex justify-between align-center">
@@ -1327,14 +1327,14 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                   </Popover>
 
                   {isLoggedIn ? (
-                    <p>
+                    <p className="text-[var(--text-color5)]">
                       {segmentedvalue === "buy"
                         ? getAvailableToBuy()
                         : getAvailableToSell()}
                       {currentPair?.coinSymbol}
                     </p>
                   ) : (
-                    <p>--</p>
+                    <p className="text-[var(--text-color5)]">--</p>
                   )}
                 </li>
               </ul>

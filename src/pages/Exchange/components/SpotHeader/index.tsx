@@ -43,8 +43,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
 
     // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
-    const currencyPairsArray = appStore.allCurrencyPairs || [];
-    
+    const currencyPairsArray = appStore.allCurrencyPairs?.length ? appStore.allCurrencyPairs : appStore.currencyPairs || [];
     // 处理路由参数变化，包括页面内跳转
     useEffect(() => {
         const { symbol } = query;

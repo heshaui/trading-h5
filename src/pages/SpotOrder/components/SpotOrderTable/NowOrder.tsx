@@ -495,6 +495,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               options={directionSelect}
               placeholder={t('spot.columns.direction')}
               title={t('spot.columns.direction')}
+              activeType='icon'
               onChange={directionChange}
             // showSearch={false}
             />
@@ -502,6 +503,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               options={symbolSelect}
               placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
               title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+              activeType='icon'
               onChange={symbolChange}
             // showSearch={false}
             />

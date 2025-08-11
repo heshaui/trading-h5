@@ -179,7 +179,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
 
   // 默认选项渲染
   const defaultRenderOption = (option: OptionItem) => (
-    <div className={showValue ? "flex justify-between items-center" : "flex-x-cc"}>
+    <div className={showValue ? "flex justify-between items-center" : `${activeType === 'icon' ? 'text-left' : 'flex-x-cc'}`}>
       <span className="font-14">{option.label}</span>
       {showValue && <span className="font-14 text-color6">{option.value}</span>}
     </div>
@@ -270,7 +270,9 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                   key={`${option.value}-${index}`}
                   className={`${styles.selectItem} px-4 py-2 cursor-pointer  ${styles.title_color} 
                   ${selectedValue === option.value && activeType === 'background' ? styles.active_select : ''} relative selectPop-options-item 
-                  ${option.disabled ? styles.disabled_option : ''}`}
+                  ${option.disabled ? styles.disabled_option : ''}
+                  `
+                }
                   onClick={() => handleOptionSelect(option)}
                   style={{
                     opacity: option.disabled ? 0.5 : 1,
@@ -279,7 +281,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                   }}
                 >
                   <div className="flex-x align-center justify-between selectPop-options-label">
-                    <div className="flex-1">
+                    <div className={`flex-1`}>
                       {getOptionRenderer()(option)}
                     </div>
                     {option.disabled && (
@@ -287,12 +289,13 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                         <Iconify icon="lsicon:disable-outline" size={24}  />
                       </span>
                     )}
+                    {selectedValue === option.value && activeType === 'icon' && !option.disabled && (
+                      // className={`${styles.active_icon} selectPop-active-icon`}
+                      <div>
+                        <Iconify icon='ep:success-filled' size={20} className="theme-color" />
+                      </div>
+                    )}
                   </div>
-                  {selectedValue === option.value && activeType === 'icon' && !option.disabled && (
-                    <div className={`${styles.active_icon} selectPop-active-icon`}>
-                      <Iconify icon='ep:success-filled' size={20} className="theme-color" />
-                    </div>
-                  )}
                 </div>
               ))
             ) : (

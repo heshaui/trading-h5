@@ -6,6 +6,7 @@ import { reaction } from "mobx";
 import { debounce } from "lodash";
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import type { KLineData, OrderData } from '@/context/exchange-providers/ExchangeProvider';
+import useAuth from '@/hooks/useAuth';
 
 import SpotHeader from './SpotHeader';
 import SpotTabs from './SpotTabs';
@@ -14,6 +15,7 @@ import SportTrade from './SpotTrade';
 
 const ExchangeContent: React.FC = observer(() => {
     const [coinData, setCoinData] = useState<any>();
+    const { isLoggedIn } = useAuth();
     // 获取时间间隔
     const { 
         timeInterval, 
@@ -228,7 +230,7 @@ const ExchangeContent: React.FC = observer(() => {
 
     useEffect(() => {
         try {
-            appStore.loadCurrencyPairs('all')
+            appStore.loadCurrencyPairs(isLoggedIn ? 'all' : 'show')
                 .then((result) => {
                     const currentPairList = appStore.getCurrentPair() ||
                         (appStore.currencyPairs && appStore.currencyPairs.length > 0
@@ -244,7 +246,7 @@ const ExchangeContent: React.FC = observer(() => {
         } catch (error) {
             console.error('Error in loadCurrencyPairs:', error);
         }
-    }, []);
+    }, [isLoggedIn]);
 
     // 添加一个新的 useEffect 来监听 appStore 中的币对变化
     useEffect(() => {

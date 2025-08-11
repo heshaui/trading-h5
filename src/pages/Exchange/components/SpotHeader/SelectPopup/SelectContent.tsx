@@ -135,7 +135,6 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                 spotCount++; // 只要匹配了搜索和标签，就认为是现货数量
             }
         });
-        console.log('币对列表', sortedPairList)
         setSpotCount(spotCount);
         setFavoritesCount(favoritesCount);
     };

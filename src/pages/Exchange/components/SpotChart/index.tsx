@@ -161,6 +161,7 @@ const SpotChart: React.FC = () => {
                                     options={timeIntervalOptions.map(item => ({label: item, value: item}))}
                                     title={t('spot.select.placeholder')} 
                                     onChange={(value) => handleTimeInterval(value)}
+                                    activeType="icon"
                                     renderBtn={(open) => (
                                         <button 
                                             type="button" 
@@ -182,6 +183,7 @@ const SpotChart: React.FC = () => {
                             value={chartDisplayType}
                             options={chartDisplayTypeOptions}
                             title={t('spot.select.placeholder')} 
+                            activeType="icon"
                             showSearch={false}
                             onChange={(value) => setChartDisplayType(Number(value))}
                             renderBtn={(open) => (
@@ -216,6 +218,7 @@ const SpotChart: React.FC = () => {
                         options={chartTypeOptions}
                         title={t('spot.select.placeholder')} 
                         showSearch={false}
+                        activeType="icon"
                         onChange={(value) => setChartType(value)}
                         renderBtn={(open) => (
                             <button 

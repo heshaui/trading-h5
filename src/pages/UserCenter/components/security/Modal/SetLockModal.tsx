@@ -167,7 +167,7 @@ function LockModal({ open, onCancel, type, onOk }: Props) {
 		closeOnMaskClick
 		position='bottom'
     bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-    bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
+    bodyClassName="!h-auto !bg-[var(--background17)] !text-[var(--text-color5)]"
 	>
 		<p className={`${styles.title}`}>
 			<span>{type === '5' ? t('security.lockSafe.setPassword') : t('security.lockSafe.modifyPassword')}</span>

@@ -31,7 +31,7 @@ const PrefrenceSettingContent: React.FC<Props> = observer(({ open, onCancel }) =
             position='right'
             closeOnMaskClick
             bodyStyle={{ width: '80vw', height: '100vh' }}
-            bodyClassName="!bg-[var(--background5)] !text-[var(--text-color5)]"
+            bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
         >
             <div className="flex-col h-full">
                 {/* 头部 */}

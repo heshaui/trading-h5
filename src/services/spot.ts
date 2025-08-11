@@ -1,6 +1,7 @@
 import { request } from '@/request/index';
 import { API_MODULE_NAME } from '@/config/apiConfig';
 const fixUrl = `/${API_MODULE_NAME.AMBIT_USER_WEB}`
+const homeUrl = `/${API_MODULE_NAME.AMBIT_HOME_WEB}`
 
 interface createOrderType {
     amount:number,
@@ -125,10 +126,9 @@ export function getOrderInfo(data:any): Promise<any> {
     });
 }
 
-// 查询商户币种——现货交易选择币种时的币种数据，交易开启，不显示的币种也返回
-export function getAllCurrencyList(): Promise<any> {
-    return request(`${fixUrl}/home-web/v1/exchange-coin/tenantCurrencyCoinList`, {
-        method: 'POST'
+// 查询所有币种,包括show:0的
+export function getAllExchangeCoinList(): Promise<any> {
+    return request(`${fixUrl}/user-web/v1/exchange-coin/exchangeCoinALl`, {
+        method: 'GET'
     });
 }
-

@@ -53,7 +53,7 @@ const DeleteModal: React.FC<Props> = ({open, onOk, onCancel}) => {
             visible={open}
             title={ <ModalTitle /> }
             content={ <ModalContent /> }
-            bodyClassName="!pt-0 !bg-[var(--background5)]"
+            bodyClassName="!pt-0 !bg-[var(--background17)]"
             closeOnMaskClick={true}
             onClose={onCancel}
         />

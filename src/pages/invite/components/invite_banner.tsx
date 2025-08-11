@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/invite.module.css';
+import styles from '../styles/invite.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 import type { CSSProperties } from 'react';
@@ -124,32 +124,46 @@ const InviteBanner = ({ onReturn, inviteInfo = { inviteCode: '', inviteLink: '' 
                             <div className='flex-x align-center justify-between'>
                                 <Form.Item name="inviteCode" className='flex-1'
                                     rules={[{ required: true, message: t('invite.inputInviteCode2') }]}>
-                                    <Input 
+                                    {/* <Input
                                         className={`${styles.input_box} modal-input`}
                                         maxLength={25}
                                         placeholder={t('invite.inputInviteCode')}
-                                        disabled={true}
+                                        // disabled={true}
                                         suffix={
-                                            <Iconify 
+                                            <Iconify
                                                 icon="icon-park-outline:copy"
-                                                className='ml-1 cursor-pointer' 
+                                                className='ml-1 cursor-pointer'
                                                 size={18}
                                                 onClick={() => {
                                                     copyFn(inviteInfo?.inviteCode || '')
                                                 }}
                                             />
                                         }
-                                    />
+                                    /> */}
+                                    <div className={`flex-x-cc ${styles.input_box2} modal-input`}>
+                                        <div className={` flex-1 flex-x align-center`}>
+                                            <p className={`font-16 font-w-400 flex-x align-center ${styles.title_color}`}>{inviteInfo?.inviteCode || t('invite.inputInviteCode')}</p>
+                                        </div>
+                                        <Iconify
+                                            icon="icon-park-outline:copy"
+                                            className='ml-1 cursor-pointer title_color'
+                                            size={18}
+                                            onClick={() => {
+                                                copyFn(inviteInfo?.inviteCode || '')
+                                            }}
+                                        />
+                                    </div>
                                 </Form.Item>
+
                                 <Form.Item className=''>
                                     <button type='button' className='cursor-pointer ml-3'
-                                    onClick={()=>{
-                                        setQRcodeOpen(true)
-                                    }}
+                                        onClick={() => {
+                                            setQRcodeOpen(true)
+                                        }}
                                     >
-                                        <Image src={isDayMode ? qrcodeDay :qrcodeDark} 
-                                        alt="invite_modal" width={20} height={20} />
-                                      
+                                        <Image src={isDayMode ? qrcodeDay : qrcodeDark}
+                                            alt="invite_modal" width={20} height={20} />
+
                                     </button>
                                     {/* <QRCode value={`${BASE_URL}/register?inviteCode=${inviteInfo.inviteCode}`}
                                         style={{ backgroundColor: "transparent", padding: "0", minWidth: "20px" }}
@@ -159,10 +173,10 @@ const InviteBanner = ({ onReturn, inviteInfo = { inviteCode: '', inviteLink: '' 
 
                             <p className={`font-16 font-w-400 mb-2_5 ${styles.title_color}`}>{t('invite.inviteLink')}</p>
                             <Form.Item name="inviteLink" rules={[{ required: true, message: t('invite.inputInviteLink2') }]}>
-                                <Input className={`${styles.input_box} modal-input`}
+                                {/* <Input className={`${styles.input_box} modal-input`}
                                     maxLength={25}
                                     placeholder={t('invite.inputInviteLink')}
-                                    disabled={true}
+                                    // disabled={true}
                                     suffix={
                                         <Iconify icon="icon-park-outline:copy"
                                             className='ml-1 cursor-pointer' size={18}
@@ -171,13 +185,26 @@ const InviteBanner = ({ onReturn, inviteInfo = { inviteCode: '', inviteLink: '' 
                                             }}
                                         />
                                     }
-                                />
+                                /> */}
+                                <div className={`flex-x-cc ${styles.input_box2} modal-input`}>
+                                        <div className={` flex-1 flex-x align-center overflow-hidden line-1`}>
+                                            <p className={`font-16 font-w-400 flex-x align-center ${styles.title_color}`}>{inviteInfo.inviteLink || t('invite.inputInviteLink')}</p>
+                                        </div>
+                                        <Iconify
+                                            icon="icon-park-outline:copy"
+                                            className='ml-1 cursor-pointer title_color'
+                                            size={18}
+                                            onClick={() => {
+                                                copyFn(inviteInfo.inviteLink || '')
+                                            }}
+                                        />
+                                    </div>
                             </Form.Item>
-                            <Form.Item 
-                            noStyle
+                            <Form.Item
+                                noStyle
                             >
                                 <button type='submit' className={`default_btn w-full mb-4 flex-x-cc ${styles.invite_btn}`}
-                                style={{width:'100%'}}
+                                    style={{ width: '100%' }}
                                     onClick={onSubmit}
                                 >
                                     {t('invite.inviteBtn')}
@@ -189,11 +216,11 @@ const InviteBanner = ({ onReturn, inviteInfo = { inviteCode: '', inviteLink: '' 
             </div>
 
         </div>
-        <InviteQRcodeModal 
-            open={qrcodeOpen} 
-            qrcode={inviteInfo.inviteLink} 
-            onCancel={() => setQRcodeOpen(false)} 
-            onOk={() => setQRcodeOpen(false)} 
+        <InviteQRcodeModal
+            open={qrcodeOpen}
+            qrcode={inviteInfo.inviteLink}
+            onCancel={() => setQRcodeOpen(false)}
+            onOk={() => setQRcodeOpen(false)}
         />
     </>
     );

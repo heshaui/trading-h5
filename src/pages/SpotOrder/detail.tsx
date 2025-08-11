@@ -7,7 +7,7 @@ import { CustomTab } from '@/components/CustomCom';
 import { Iconify } from "@/components/icon"
 import type { ColumnsType } from "antd/es/table";
 import dayjs from 'dayjs';
-import { useState, useEffect, useRef, useMemo,useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useLanguage } from '@/hooks/useLanguage';
 import type { TabsProps } from 'antd';
 import useQueryParams from '@/hooks/useQueryParams';
@@ -77,13 +77,13 @@ const SpotOrderPage = () => {
 				icon: isDayMode ? success_part_day : success_part_dark
 			};
 		}
-	}, [isDayMode,recordData])
+	}, [isDayMode, recordData])
 
 
 	const handleGoBack = () => {
-		navigate('/spotOrder', { 
+		navigate('/spotOrder', {
 			state: { fromDetail: true },
-			replace: true 
+			replace: true
 		});
 	};
 	// 判断状态
@@ -131,7 +131,7 @@ const SpotOrderPage = () => {
 		const amount = nul(division(recordData?.tradedAmount, recordData?.amount), 100)
 		const { baseScaleResult } = getRound(recordData.symbol, amount)
 		return < >
-			{recordData?.amount ?
+			{recordData?.status === 1 ? `100%` : recordData?.amount ?
 				<span >
 					{recordData.tradedAmount && recordData.tradedAmount.toString() !== '0' ? `${roundDown(baseScaleResult, 2)}%` : '0%'}
 				</span> : '0'
@@ -189,6 +189,42 @@ const SpotOrderPage = () => {
 				</div>
 			},
 		},
+		// {
+		// 	title: t('spot.columns.quantity'), //"数量",
+		// 	key: "amount",
+		// 	dataIndex: "amount",
+		// 	width: 128,
+		// 	align: "center",
+		// 	render: (_status: any, record: DataType) => {
+		// 	  const { scaleResult } = getRound(record.symbol, _status);
+		// 	  const res = getRound(record.symbol, record.tradedAmount);
+		// 	  if (record.type === 0&& record.direction === 0) {
+		// 		if (record.status === 1 || record.status === 5) {
+		// 		  return <span>{res.scaleResult}</span>;
+		// 		} else {
+		// 		  return <span>--</span>;
+		// 		}
+		// 	  } else {
+		// 		return <span>{scaleResult}</span>;
+		// 	  }
+		// 	//   if(!Number(record.turnover) && record.type === 0){
+		// 	//     return <span>--</span>;
+		// 	//   }else{
+		// 	//   return <span>{_status ? scaleResult : '0'}</span>;
+		// 	// }
+		// 	},
+		//   },
+		//   {
+		// 	title: t('spot.columns.count'), //"成交数量",
+		// 	key: "tradedAmount",
+		// 	dataIndex: "tradedAmount",
+		// 	width: 128,
+		// 	align: "center",
+		// 	render: (_status: any, record: DataType) => {
+		// 	  const { scaleResult } = getRound(record.symbol, _status);
+		// 	  return <span>{_status ? scaleResult : '0'}</span>;
+		// 	},
+		//   },
 		{
 			title: `${t('spot.columns.count')}/${t('spot.columns.quantity')}`, //"成交数量/数量",
 			key: "amount",
@@ -197,25 +233,23 @@ const SpotOrderPage = () => {
 			align: "center",
 			render: (_status: any, record: DataType) => {
 				const { scaleResult: amountScaleResult } = getRound(record.symbol, _status);
-				const res = getRound(record.symbol, record.tradedAmount);
+				// const res = getRound(record.symbol, record.tradedAmount);
+				const { scaleResult: tradedAmountScaleResult } = getRound(record.symbol, record.tradedAmount);
+
 
 				let amountText
 				if (record.type === 0 && record.direction === 0) {
 					if (record.status === 1 || record.status === 5) {
-						amountText = amountScaleResult
+						amountText = tradedAmountScaleResult
 					} else {
 						amountText = '--'
 					}
 				} else {
 					amountText = amountScaleResult
 				}
-				const { scaleResult: tradedAmountScaleResult } = getRound(record.symbol, record.tradedAmount);
+
 				const tradedAmountText = tradedAmountScaleResult ? tradedAmountScaleResult : '0'
-				//   if(!Number(record.turnover) && record.type === 0){
-				//     return <span>--</span>;
-				//   }else{
-				//   return <span>{_status ? scaleResult : '0'}</span>;
-				// }
+
 				return <span>{tradedAmountText}/{amountText}</span>;
 			},
 		},
@@ -257,17 +291,18 @@ const SpotOrderPage = () => {
 			// width: 158,
 			align: "center",
 			render: (_status, record) => {
+				const symbol = record.symbol.split('/')
 				let fee
 				if (record.direction === 0) {
 					// directionText = t('spot.trade.buy')
-					fee=nul(record.takerFee,record.turnover)
+					fee = nul(record.takerFee, record.turnover)
 				} else if (record.direction === 1) {
-					fee=nul(record.makerFee,record.turnover)
+					fee = nul(record.makerFee, record.turnover)
 				} else {
 					fee = '--'
 				}
 
-				return <span>{fee}</span>;
+				return <span>{fee}{symbol?.[0] || '--'}</span>;
 			},
 		},
 		{
@@ -277,8 +312,9 @@ const SpotOrderPage = () => {
 			width: 128,
 			align: "center",
 			render: (_status: any, record: DataType) => {
+				const symbol = record.symbol.split('/')
 				const { baseScaleResult } = getRound(record.symbol, _status);
-				return <span>{_status ? baseScaleResult : '0'}</span>;
+				return <span>{_status ? baseScaleResult : '0'} {symbol?.[1] || '--'}</span>;
 			},
 		},
 		{

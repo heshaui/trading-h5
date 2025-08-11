@@ -1,10 +1,17 @@
 /* input */
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
 .ant-input-outlined:hover,
+.ant-input-outlined:focus,
 .ant-input-number-outlined.ant-input-number-status-error:not(.ant-input-number-disabled),
-.ant-input-number-outlined:hover {
+.ant-input-number-outlined:hover, 
+.ant-input-number-outlined:focus
+{
     background: transparent !important;
     background-color: transparent !important;
+}
+
+.ant-input:focus {
+    background: transparent !important;
 }
 
 .ant-input::placeholder {
@@ -32,16 +39,30 @@
 
 /*步骤条*/
 .custom-steps {
+    &.ant-steps .ant-steps-item-icon {
+        background-color: transparent;
+        border: 2px solid var(--theme-color);
+        .ant-steps-icon {
+            color: var(--theme-color);
+        }
+    }
     &.ant-steps .ant-steps-item-process .ant-steps-item-icon {
         background-color: var(--theme-color);
         border-color: var(--theme-color);
+        .ant-steps-icon {
+            color: #fff;
+        }
     }
 
     &.ant-steps .ant-steps-item-tail::after {
-        background: var(--border-color10) !important;
+        background: none !important;
+        border-left: 1px dashed #676867;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
     }
     .ant-steps-item-finish .ant-steps-item-tail::after {
-        background: var(--theme-color) !important;
+        border-color: var(--theme-color) !important;
     }
 
     &.ant-steps .ant-steps-item-finish .ant-steps-item-icon {
@@ -425,4 +446,13 @@
 // 时间选择器选中上下边框颜色
 .adm-picker-view-mask-middle {
     border-color: var(--border-color4) !important;
+}
+// 邮箱自动补全弹窗样式（全局）
+.adm-popover {
+    .adm-popover-inner {
+        background-color: var(--background5) !important;
+    }
+    .adm-popover-arrow {
+        color: var(--background5) !important;
+    }
 }

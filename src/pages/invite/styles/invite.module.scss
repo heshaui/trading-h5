@@ -49,10 +49,6 @@
     color: var(--btncolor5)
 }
 
-.input_box {
-    background: var(--background5) !important;
-    color: var(--text-color6) !important;
-}
 
 .invite_btn {
     border-radius: 53px;
@@ -173,6 +169,21 @@
 .header_banner{
     width: 100%;
     min-height: 595px;
+}
+.input_box {
+    background: transparent !important;
+    color: var(--text-color5) !important;
+    // border-color: var(--border-color4) !important;
+    border: 1px solid var(--border-color4) !important;
+    border-radius: 8px ;
+}
+.input_box2 {
+    background: transparent !important;
+    color: var(--text-color5) !important;
+    padding: 8px 10px;
+    height: 50px;
+    border: 1px solid var(--border-color4) !important;
+    border-radius: 8px ;
 }
 
 @media (max-width:680px) {

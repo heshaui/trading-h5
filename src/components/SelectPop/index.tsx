@@ -206,7 +206,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
               <p className={`mr-1 text-left ${!getSelectedOption() ? styles.title_color : styles.title_color}`}>
                 {getDisplayLabel()}
               </p>
-              <Iconify icon="eva:arrow-down-fill" size={14} className={`${styles.tip_color}`} />
+              <Iconify icon="eva:arrow-down-fill" size={14} className={`${styles.title_color}`} />
             </div>
           </Button> :
           renderBtn === 'selectInput' ?

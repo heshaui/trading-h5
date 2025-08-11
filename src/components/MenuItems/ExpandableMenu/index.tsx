@@ -4,6 +4,9 @@ import { DownOutline } from 'antd-mobile-icons';
 import { Image } from 'antd-mobile';
 import styles from '../styles/ExpandableMenu.module.scss';
 import ThemeToggle from '@/components/ThemeToggle';
+import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
+// import { ReactComponent as UpSvg } from '@/assets/icons/public/icon_up.svg';
+
 
 // 定义菜单项的类型
 export interface MenuItemType {
@@ -86,8 +89,9 @@ const ExpandableMenu: React.FC<ExpandableMenuProps> = observer(({ menuItems, onI
                             </span>
                             {hasChildren && (
                                 <div className={styles.arrowWrapper}>
-                                    <DownOutline
+                                    <DownSvg
                                         color="var(--text-color5)"
+                                        className='w-[24px] h-[24px]'
                                         style={{
                                             transition: 'transform 0.3s ease',
                                             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'

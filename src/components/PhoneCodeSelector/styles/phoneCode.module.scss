@@ -46,3 +46,14 @@
     align-items: center;
     justify-content: space-between;
 }
+.search_bar {
+    height: 40px;
+  
+    :global(.adm-input) {
+      height: 40px !important;
+    }
+  }
+  .popup_scroll_box{
+    max-height: 400px;
+    overflow-y: auto;
+  }

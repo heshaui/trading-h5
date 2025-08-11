@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle } from "react";
-import { Form, Input } from 'antd-mobile';
+import { Form, Input,Popover } from 'antd-mobile';
 import { Iconify } from "@/components/icon/index";
 import { emailSuffixes } from "@/utils/enum";
 import { useLanguage } from '@/hooks/useLanguage';
@@ -180,17 +180,25 @@ const EmailAutoComplete = forwardRef<any, EmailAutoProps>(({
       setIsFocused(false);
       setShowSuggestions(false);
       onBlur?.();
-    }, 200);
+    }, 150);
   };
 
   const handleSuggestionSelect = (suggestion: SuggestionItem) => {
     setInputValue(suggestion.value);
     onChange?.(suggestion.value);
     setShowSuggestions(false);
+    setIsFocused(false);
     
     // 如果选择的是邮箱后缀建议，保存到历史
     if (suggestion.type === 'suffix') {
       saveEmailToHistory(suggestion.value);
+    }
+  };
+
+  const handlePopoverVisibleChange = (visible: boolean) => {
+    if (!visible) {
+      setShowSuggestions(false);
+      setIsFocused(false);
     }
   };
 
@@ -207,54 +215,88 @@ const EmailAutoComplete = forwardRef<any, EmailAutoProps>(({
       : <Iconify icon="eva:email-outline" size={16} className={styles.suggestionIcon} />;
   };
 
-  return (
-    <div className={`${styles.emailAutoContainer} ${className || ''}`}>
-      <div className={styles.inputWrapper}>
-        <Input
-          value={inputValue}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          onEnterPress={handleInputComplete}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={styles.emailInput}
-          clearable
-        />
-        
-        {/* 建议下拉框 */}
-        {showSuggestions && suggestions.length > 0 && (
-          <div className={styles.suggestionsDropdown}>
-            <div className={styles.suggestionsContainer}>
-              {!inputValue && showHistory && historyEmails.length > 0 && (
-                <div className={styles.suggestionHeader}>
-                  <Iconify icon="eva:clock-outline" size={14} />
-                  <span className={styles.headerText}>
-                    {/* 历史输入 */}
-                    {t('titleText.historyInput')}
-                    </span>
-                </div>
-              )}
-              {suggestions.map((suggestion, index) => (
-                <div
-                  key={`${suggestion.type}-${suggestion.value}-${index}`}
-                  className={`${styles.suggestionItem} ${suggestion.type === 'history' ? styles.historyItem : styles.suffixItem}`}
-                  onClick={() => handleSuggestionSelect(suggestion)}
-                >
-                  {/* {getSuggestionIcon(suggestion.type)} */}
-                  <span className={styles.suggestionText}>{suggestion.label}</span>
-                  {suggestion.type === 'history' && (
-                    <span className={styles.suggestionTag}>
-                        {/* 历史 */}
-                        {t('titleText.history')}
-                        </span>
-                  )}
-                </div>
-              ))}
-            </div>
+  // 渲染建议列表内容
+  const renderSuggestionsContent = () => {
+    if (!suggestions.length) return null;
+
+    return (
+      <div 
+        className={styles.suggestionsContainer}
+        style={{
+          maxHeight: '240px',
+          overflowY: 'auto',
+          padding: '8px 0',
+          minWidth: '300px',
+          maxWidth: 'calc(100vw - 50px)',
+        }}
+      >
+        {!inputValue && showHistory && historyEmails.length > 0 && (
+          <div className={styles.suggestionHeader}>
+            <Iconify icon="eva:clock-outline" size={14} />
+            <span className={styles.headerText}>
+              {/* 历史输入 */}
+              {t('titleText.historyInput')}
+            </span>
           </div>
         )}
+        {suggestions.map((suggestion, index) => (
+          <div
+            key={`${suggestion.type}-${suggestion.value}-${index}`}
+            className={`${styles.suggestionItem} ${suggestion.type === 'history' ? styles.historyItem : styles.suffixItem}`}
+            onClick={() => handleSuggestionSelect(suggestion)}
+          >
+            {/* {getSuggestionIcon(suggestion.type)} */}
+            <span className={styles.suggestionText} style={{ flex: 1 }}>
+              {suggestion.label}
+            </span>
+            {suggestion.type === 'history' && (
+              <span 
+                className={styles.suggestionTag}
+                style={{
+                  fontSize: '12px',
+                  color: 'var(--adm-color-weak)',
+                  backgroundColor: 'var(--adm-color-fill)',
+                  padding: '2px 6px',
+                  borderRadius: '10px'
+                }}
+              >
+                {/* 历史 */}
+                {t('titleText.history')}
+              </span>
+            )}
+          </div>
+        ))}
       </div>
+    );
+  };
+
+  return (
+    <div className={`${styles.emailAutoContainer} ${className || ''} auto-container-popover`}>
+      <Popover
+        content={renderSuggestionsContent()}
+        placement="bottom"
+        visible={showSuggestions && suggestions.length > 0}
+        // visible={true}
+        onVisibleChange={handlePopoverVisibleChange}
+        trigger={["manual"] as any}
+        destroyOnHide
+        getContainer={() => document.body}
+        // getContainer={() => document.querySelector('.auto-container-popover') as HTMLElement}
+      >
+        <div className={styles.inputWrapper}>
+          <Input
+            value={inputValue}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            onEnterPress={handleInputComplete}
+            placeholder={placeholder}
+            disabled={disabled}
+            className={styles.emailInput}
+            clearable
+          />
+        </div>
+      </Popover>
     </div>
   );
 });

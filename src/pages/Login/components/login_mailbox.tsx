@@ -19,7 +19,7 @@ import { Toast, Form, Input } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { isShowArr } from "@/utils/filterLang";
 import EmailAuto from "@/components/EmailAuto";
-import SafeModal from "@/components/LoginAboutPop/loginModal";
+import SafeModal from "./loginModal";
 
 
 interface useInfoType {
@@ -215,6 +215,7 @@ function Mailbox() {
         // router.push("/register")
         navigate("/register")
     }
+ 
     // 当登录状态不为 LOGIN 时不渲染组件;
     if (loginType !== LoginTypeEnum.EMAIL) return null;
     return (
@@ -266,9 +267,8 @@ function Mailbox() {
                     {/* 密码 */}
                     {t('passwordTitle')}
                 </div>
-                <Form.Item name="password" rules={[
-                    { required: true, message: t('passwordNull') }
-                ]}
+                <Form.Item name="password" 
+                rules={[ { required: true, message: t('passwordNull') }]}
                     className={`${styles.login_form_item}`}>
                     <Input
                         type="password"

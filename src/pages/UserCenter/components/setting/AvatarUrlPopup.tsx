@@ -276,7 +276,7 @@ const AvatarUrlPopup: React.FC<Props> = ({ open, onCancel, userId, onOk, current
       closeOnMaskClick
       position="bottom"
       bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-      bodyClassName="!h-[433px] !bg-[var(--background5)] !text-[var(--text-color5)]"
+      bodyClassName="!h-[433px] !bg-[var(--background17)] !text-[var(--text-color5)]"
     >
       <p className="flex justify-between items-center h-[50px] text-[14px] font-medium px-4 border-b border-[var(--border-color6)]">
         <span>{t('usersetting.modifyAvatar')}</span>

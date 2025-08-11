@@ -59,9 +59,7 @@ const AutoRoutes = () => (
     <Routes>
       {routes.map(({ path, element, layout, requireAuth }) => {
         const Layout = layoutMap[layout] || MainLayout;
-        const wrapped = requireAuth
-          ? <AuthRoute>{element}</AuthRoute>
-          : element;
+        const wrapped = <AuthRoute requireAuth={requireAuth}>{element}</AuthRoute>
 
         return (
           <Route

@@ -38,7 +38,8 @@ class AppStore {
     userInfo: UserInfoType = {} as UserInfoType;
 
     // 添加币对信息列表
-    currencyPairs: CurrencyPairType[] = [];
+    currencyPairs: CurrencyPairType[] = []; // show:1 的币对
+    allCurrencyPairs: CurrencyPairType[] = []; // 所有币对
     // 添加当前选中的币对
     currentPair: CurrencyPairType | null = null;
     // 添加原始币对数据
@@ -245,6 +246,7 @@ class AppStore {
         try {
             const pairsJson = localStorage.getItem(LOCAL_STORAGE_KEY.CURRENCY_PAIRS);
             const currentPairJson = localStorage.getItem(LOCAL_STORAGE_KEY.CURRENT_PAIR);
+            const allCurrentPairJson = localStorage.getItem(LOCAL_STORAGE_KEY.ALL_CURRENCY_PAIRS);
 
             if (pairsJson) {
                 this.currencyPairs = JSON.parse(pairsJson);
@@ -252,6 +254,10 @@ class AppStore {
 
             if (currentPairJson) {
                 this.currentPair = JSON.parse(currentPairJson);
+            }
+
+            if (allCurrentPairJson) {
+                this.allCurrencyPairs = JSON.parse(allCurrentPairJson);
             }
         } catch (error) {
             console.error('Failed to load currency pairs from storage:', error);
@@ -380,19 +386,19 @@ class AppStore {
         }
     }
     // 从API加载币对信息
-    async loadCurrencyPairs() {
+    async loadCurrencyPairs(type: 'all' | 'show' = 'show') {
         try {
             this.isLoadingCurrencyData = true;
 
             // 使用currencyPairService中的方法替代重复代码
-            const result = await fetchAllCurrencyPairs();
+            const result = await fetchAllCurrencyPairs(type);
 
             if (result.success) {
                 // 更新原始数据
                 this.rawCurrencyData = result.rawData;
 
                 // 更新币对列表
-                this.setCurrencyPairs(result.data);
+                type === 'all' ? this.setAllCurrencyPairs(result.data) : this.setCurrencyPairs(result.data);
                 this.usdtRate = result.usdtPrice;
                 this.setUsdtRate(result.usdtPrice);
 
@@ -448,6 +454,14 @@ class AppStore {
         this.currencyPairs = pairs;
         if (isBrowser()) {
             localStorage.setItem(LOCAL_STORAGE_KEY.CURRENCY_PAIRS, JSON.stringify(pairs));
+        }
+    }
+
+    // 设置所有币对列表
+    setAllCurrencyPairs(pairs: CurrencyPairType[]) {
+        this.allCurrencyPairs = pairs;
+        if (isBrowser()) {
+            localStorage.setItem(LOCAL_STORAGE_KEY.ALL_CURRENCY_PAIRS, JSON.stringify(pairs));
         }
     }
 

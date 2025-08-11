@@ -1,16 +1,18 @@
-import { getExchangeGroup, getExchangeCoinList, getUserExchangeCoinTypeList, getExchangeCoinAllPrice } from '@/services/spot';
+import { getExchangeGroup, getExchangeCoinList, getUserExchangeCoinTypeList, getExchangeCoinAllPrice, getAllExchangeCoinList } from '@/services/spot';
 import { getCoinAll } from '@/services/assets';
 import appStore from '@/store/index';
 import { LOCAL_STORAGE_KEY } from "@/config/apiConfig"
 import { getUsdtPriceWithStables } from "@/services/marketData"
 import { CurrencyPairType, CoinType } from "@/type/assets/spot/exchange"
 import { usdtRateType } from "@/type/userCenter/overview"
-// 获取所有币对数据
-export async function fetchAllCurrencyPairs() {
+// 定义类型
+type FetchType = 'all' | 'show'; // show 表示 show: 1 的币对
+// 获取所有币对数据 
+export async function fetchAllCurrencyPairs(type: FetchType = 'show') {
     const userToken = appStore.getUserToken();
     try {
         // 1. 获取币种列表
-        const coinListResponse = await getExchangeCoinList();
+        const coinListResponse =  type === 'all' ? await getAllExchangeCoinList() : await getExchangeCoinList();
         if (coinListResponse.code !== '0') {
             throw new Error('Failed to load coin list');
         }

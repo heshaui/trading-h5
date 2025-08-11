@@ -503,6 +503,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
           options={symbolSelect}
           placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
           title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+          activeType='icon'
           onChange={(value) => {
             selectParam.current.symbol = value as string
             getOrderListData();

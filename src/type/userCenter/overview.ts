@@ -91,7 +91,9 @@ export interface UserInfoType {
     securityIntensity: number,
     remark: string | null,
     googleCode: boolean,
-    merchantWithdrawalStatus: number
+    merchantWithdrawalStatus: number,
+    unverifiedWithdrawalStatus: number,
+    verifiedWithdrawalStatus: number
 }
 export interface inviteInfoType {
     inviteCode: string,

@@ -180,6 +180,8 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             store.getKvConfigAllFromApi();
                             store.loadCoinList();
                             store.loadGetUserInfo();
+                            store.loadGetRateList();
+                            store.loadGetLangList();
                         }
                     } else {
                         Toast.show({

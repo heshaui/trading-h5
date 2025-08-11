@@ -520,7 +520,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
               description: (
                 <div>
                   <div>
-                    {t("spot.label.pair")}: {currentPair?.coinSymbol}/
+                    {t("spot.toastModal.pair")}: {currentPair?.coinSymbol}/
                     {currentPair?.baseSymbol}
                   </div>
                   {values.amount && (

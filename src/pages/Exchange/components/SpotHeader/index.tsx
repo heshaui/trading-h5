@@ -6,11 +6,15 @@ import { Toast } from 'antd-mobile';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useQueryParams from '@/hooks/useQueryParams';
 import appStore from '@/store';
-import { addUserExchangeCoinType, canalUserExchangeCoinType } from '@/services/spot';
+import { addUserExchangeCoinType, canalUserExchangeCoinType, getAllCurrencyList } from '@/services/spot';
 import { getPairsRate } from "@/utils/getUseRate";
 import WebSocketService from "@/utils/websocket";
 import SelectPopup from './SelectPopup/index';
 import PrefrenceSettingPop from './PrefrenceSettingPop';
+
+import { ReactComponent as StarIcon } from '@/assets/images/exchange/icon_star.svg';
+import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings.svg';
+import { ReactComponent as StarHoverIcon } from '@/assets/images/exchange/icon_star_hover.svg';
 
 // 开发环境使用代理，生产环境使用完整URL
 const WS_URL = `${process.env.REACT_APP_WS_API_BASE}/ws/multi`; 
@@ -26,6 +30,7 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     const [settingPopOpen, setSettingPopOpen] = useState(false); // 侧边抽屉
     const [wsData, setWsData] = useState<Record<string, any>>({});
     const [wsConnected, setWsConnected] = useState(false); // WebSocket连接状态
+    const [currencyList, setCurrencyList] = useState([]);
     const websocketRef = useRef<WebSocketService | null>(null);
 
     // 解析K线数据
@@ -40,6 +45,25 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
     const currencyPairsArray = appStore.currencyPairs || [];
+
+    // 获取币种列表
+    const getSelectCurrencyList = async () => {
+        try {
+            const res = await getAllCurrencyList();
+            if (res.data && res.data.length) {
+                setCurrencyList(res.data);
+                console.log('获取下拉币种列表', res.data);
+            } else {
+                console.log('下拉币种列表为空', res?.message);
+            }
+        } catch (err) {
+            console.log('获取下拉币种列表失败', String(err));
+        }
+
+    }
+    useEffect(() => {
+        // getSelectCurrencyList()
+    }, []);
     
     // 处理路由参数变化，包括页面内跳转
     useEffect(() => {
@@ -212,16 +236,14 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
                         <span className="text-[16px] font-medium mr-1">{currentPair?.coinSymbol}/{currentPair?.baseSymbol}</span>
                         <Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e]" />
                     </button>
-                    <div>
+                    <div className="flex items-center">
                         <button type='button' onClick={handleToggleFavorite}>
-                            <Iconify
-                                icon={currentPair?.isFavorite ? "ic:round-star" : "ic:round-star-outline"}
-                                className="text-[24px]"
-                                color={currentPair?.isFavorite ? "#FFD700" : "var(--text-color6)"}
-                            />
+                            {currentPair?.isFavorite ? 
+                            <StarHoverIcon className="!h-[24px] !w-[24px]" /> :
+                            <StarIcon className="!h-[24px] !w-[24px]" />}
                         </button>
                         <button type='button' className="ml-4" onClick={() => setSettingPopOpen(true)}>
-                            <Iconify icon="mingcute:settings-5-line" className="text-[24px] tip-color" />
+                            <SettingIcon className="!h-[24px] !w-[24px]" />
                         </button>
                     </div>
                 </div>

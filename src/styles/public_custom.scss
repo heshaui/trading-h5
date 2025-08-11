@@ -42,6 +42,9 @@
     &.ant-steps .ant-steps-item-icon {
         background-color: transparent;
         border: 2px solid var(--theme-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .ant-steps-icon {
             color: var(--theme-color);
         }
@@ -57,9 +60,7 @@
     &.ant-steps .ant-steps-item-tail::after {
         background: none !important;
         border-left: 1px dashed #676867;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
+        border-radius: 0 !important;
     }
     .ant-steps-item-finish .ant-steps-item-tail::after {
         border-color: var(--theme-color) !important;
@@ -454,5 +455,19 @@
     }
     .adm-popover-arrow {
         color: var(--background5) !important;
+    }
+}
+// notification 全局设置背景色
+.ant-notification {
+    .ant-notification-notice-message,
+    .ant-notification-notice-description {
+        color: var(--text-color5) !important;
+    }
+    .ant-notification-notice-close {
+        color: var(--text-color9) !important;
+    }
+    .ant-notification-notice-wrapper {
+        background: var(--background5) !important;
+        box-shadow: var(--shadow-notification);
     }
 }

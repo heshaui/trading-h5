@@ -104,7 +104,21 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         // 自选/现货过滤
         const matchesType = type === 'favorites' ? pair.isFavorite : true;
 
-        return matchesSearch && matchesTab && matchesType;
+        // enable / show 逻辑, 交易开启，显示关闭时默认不显示，但是搜索时显示
+        let matchesEnableShow = true;
+        if (!searchValue) {
+            // 搜索框为空时，show=0 不显示
+            matchesEnableShow = pair.show === 1;
+        } else {
+            // 搜索时
+            if (pair.show === 0 && pair.enable === 0) {
+                matchesEnableShow = false; // show=0 且 enable=0 不显示
+            } else {
+                matchesEnableShow = true; // 其他情况显示
+            }
+        }
+
+        return matchesSearch && matchesTab && matchesType && matchesEnableShow;
     });
 
     const getPairsCount = () => {
@@ -117,10 +131,11 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             const matchesTab = activeTab === 'all' ? true : pair.classLabel === activeTab;
 
             if (matchesSearch && matchesTab) {
-            if (pair.isFavorite) favoritesCount++;
-            spotCount++; // 只要匹配了搜索和标签，就认为是现货数量
+                if (pair.isFavorite) favoritesCount++;
+                spotCount++; // 只要匹配了搜索和标签，就认为是现货数量
             }
         });
+        console.log('币对列表', sortedPairList)
         setSpotCount(spotCount);
         setFavoritesCount(favoritesCount);
     };
@@ -282,7 +297,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                                     <Iconify
                                         icon="ic:round-star"
                                         className="text-[20px]"
-                                        color={pair.isFavorite ? "#FFD700" : "var(--text-color6)"}
+                                        color={pair.isFavorite ? "#FFD700" : "#A4A5AC"}
                                     />
                                 </button>
                                 <span className="text-[16px] ml-1">{pair.icon}</span>

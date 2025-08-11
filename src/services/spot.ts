@@ -125,3 +125,10 @@ export function getOrderInfo(data:any): Promise<any> {
     });
 }
 
+// 查询商户币种——现货交易选择币种时的币种数据，交易开启，不显示的币种也返回
+export function getAllCurrencyList(): Promise<any> {
+    return request(`${fixUrl}/home-web/v1/exchange-coin/tenantCurrencyCoinList`, {
+        method: 'POST'
+    });
+}
+

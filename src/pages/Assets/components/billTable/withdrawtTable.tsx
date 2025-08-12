@@ -189,8 +189,8 @@ export default function WithdrawTable({coinSelect}: PropsType) {
             handlePopupClose={() => setDatePopVisible(false)}
             title={t('btnText.filter',{ns:'common'})}
             onChange={(value)=>{
-              pageParam.current.startTime = value[0]?.startOf('day').format('YYYY-MM-DD HH:mm:ss') || ''
-              pageParam.current.endTime = value[1]?.endOf('day').format('YYYY-MM-DD HH:mm:ss') || ''
+              pageParam.current.startTime = value[0]?.startOf('day').format('YYYY-MM-DD') || ''
+              pageParam.current.endTime = value[1]?.endOf('day').format('YYYY-MM-DD') || ''
               getRecordData()
             }}
             // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}

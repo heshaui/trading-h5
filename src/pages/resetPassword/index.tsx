@@ -28,7 +28,7 @@ function ResetPassword() {
         <div className={`relative flex h-max w-full flex-row ${styles.resetPage}`} >
             <div className=" flex-y-cc w-full flex-1 position-relative">
                 <div className={``}>
-                    <h2 className={`mb-6 font-w-500 font-36 `} >
+                    <h2 className={`mb-4 font-w-500 font-36 `} >
                         {/* 重置密码 */}
                         {t('reset')}
                     </h2>

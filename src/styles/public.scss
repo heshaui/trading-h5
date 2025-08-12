@@ -10,6 +10,10 @@
 .tip_color,.tip-color{
     color: var(--text-color6);
 }
+.disabled_color,.disabled-color{
+    color: var(--border-color4);
+    // --border-color4
+}
 .button-color-disable,
 .btn-disable {
     background: var(--cancel-btn);

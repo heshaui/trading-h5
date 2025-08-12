@@ -820,10 +820,10 @@ const WithdrawMoneyPage = observer(() => {
                         // >
                         <div className="flex-y">
                           <p className={`${styles.title_color} font-14 font-w-400 mb-1`}>{option.addressTitle}</p>
-                          <p className={`${styles.tip_color2} font-12 font-w-400 mb-1`}>
+                          <p className={`${styles.tip_color} font-12 font-w-400 mb-1`}>
                             {`${t('withdrawMoney.address')}：${option.addressName}`}
                           </p>
-                          <p className={`${styles.tip_color2} font-12 font-w-400`}>
+                          <p className={`${styles.tip_color} font-12 font-w-400`}>
                             {`${t('withdrawMoney.network')}：${option.protocolName || '--'}`}
                             {!isProtocolSupported && (
                               <span className="ml-2 text-red-500 font-12">

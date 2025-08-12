@@ -167,9 +167,9 @@
     background-color: var(--background12);
   }
 
-  // * {
-  //   background-color: transparent !important;
-  // }
+  * {
+    background-color: transparent !important;
+  }
   :global(.adm-picker-view) {
     background-color: none;
     color: var(--text-color5);

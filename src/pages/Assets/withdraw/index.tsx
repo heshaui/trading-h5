@@ -592,16 +592,17 @@ const WithdrawMoneyPage = observer(() => {
   }
   useEffect(() => {
     // 检查身份认证和安全设置
-    const needsKyc = userInfo?.merchantWithdrawalStatus !== 1 ;
-    const needsGoogleAuth = !userInfo?.isGoogleAuth;
-    if (!token || userInfo?.withdrawalStatus !== 1 || needsKyc || needsGoogleAuth) {
+    const needsKyc = userInfo?.verifiedWithdrawalStatus === 1&& userInfo?.realnessStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1
+    const needsGoogleAuth = !userInfo?.isGoogleAuth||!userInfo?.googleCode
+    const needsWithdraw = userInfo?.withdrawalStatus !== 1||(userInfo?.verifiedWithdrawalStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1)
+    if (!token || needsWithdraw|| needsKyc || needsGoogleAuth) {
       navigate('/assets')
       Toast.show({
         content: t('assetsAccount.button.withdrawError'),
         icon: 'fail'
       })
     }
-  }, [userInfo])
+  }, [userInfo,token])
   useEffect(() => {
     getCoinAllData()
     getAllProtocolTypeList()
@@ -819,10 +820,10 @@ const WithdrawMoneyPage = observer(() => {
                         // >
                         <div className="flex-y">
                           <p className={`${styles.title_color} font-14 font-w-400 mb-1`}>{option.addressTitle}</p>
-                          <p className={`${styles.tip_color2} font-12 font-w-400 mb-1`}>
+                          <p className={`${styles.tip_color} font-12 font-w-400 mb-1`}>
                             {`${t('withdrawMoney.address')}：${option.addressName}`}
                           </p>
-                          <p className={`${styles.tip_color2} font-12 font-w-400`}>
+                          <p className={`${styles.tip_color} font-12 font-w-400`}>
                             {`${t('withdrawMoney.network')}：${option.protocolName || '--'}`}
                             {!isProtocolSupported && (
                               <span className="ml-2 text-red-500 font-12">

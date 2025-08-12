@@ -60,7 +60,7 @@ export default function RegisterMail() {
     // 当注册状态不为 EMAIL 时不渲染组件
     const handleFinish = async () => {
         form
-            .validateFields(['email', 'password'])
+            .validateFields(['email', 'password','referee','agree'])
             .then(async (values: any) => {
                 // form.resetFields(); // 重置表单
                 // if (loading) return;

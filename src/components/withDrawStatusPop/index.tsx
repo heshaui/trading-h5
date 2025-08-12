@@ -47,21 +47,21 @@ const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
                         <span className={`${styles.tip_color} font-12 font-w-400`}>{t('withdrawMoney.tipText3')}</span>
                     </div>
                     <ul className={`${styles.pop_content_body} flex-y `}>
-                        {(userInfo?.realnessStatus !== 1 ) ? <li className='flex-x-cc mt-5'>
+                        {userInfo?.unverifiedWithdrawalStatus == 1 ? null : <>{(userInfo?.verifiedWithdrawalStatus === 1 && userInfo?.realnessStatus !== 1) ? <li className='flex-x-cc mt-5'>
                             <IdCard className="w-[20px] h-[20px] title-color mr-2_5" />
                             <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
                                 <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip2')}</span>
                                 <Iconify icon="clarity:error-standard-solid" size={22} className={` ${styles.error_color}`} />
                             </div>
                             <button className={`${styles.btn_style2} default_btn`}
-                            onClick={()=>{
-                                navigate('/userCenter/identity')
-                            }}>
+                                onClick={() => {
+                                    navigate('/userCenter/identity')
+                                }}>
                                 {t('assetsAccount.button.toAuthentication')}
                             </button>
 
                         </li> :
-                            <li className='flex-x-cc mt-5'>
+                            (userInfo?.verifiedWithdrawalStatus === 1 && userInfo?.realnessStatus === 1) ? <li className='flex-x-cc mt-5'>
                                 <IdCard className="w-[20px] h-[20px] title-color mr-2_5" />
                                 <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
                                     <span className={`${styles.status_title} flex-x algin-center justify-start`}>
@@ -69,30 +69,30 @@ const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
                                     <Iconify icon="mdi:success-circle" size={22} className={` ${styles.success_color}`} />
                                 </div>
 
-                            </li>}
-                       {userInfo?.isGoogleAuth===1?<li className='flex-x-cc mt-5'>
+                            </li> : null}</>}
+                        {userInfo?.isGoogleAuth === 1 ? <li className='flex-x-cc mt-5'>
                             <TwoFA className="w-[20px] h-[20px] title-color mr-2_5" />
                             <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
                                 <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip5')}</span>
 
                                 <Iconify icon="mdi:success-circle" size={22} className={` ${styles.success_color}`} />
                             </div>
-                        </li>:
-                        <li className='flex-x-cc mt-5'>
-                            <TwoFA className="w-[20px] h-[20px] title-color mr-2_5" />
-                            <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
-                                <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip4')}</span>
+                        </li> :
+                            <li className='flex-x-cc mt-5'>
+                                <TwoFA className="w-[20px] h-[20px] title-color mr-2_5" />
+                                <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
+                                    <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip4')}</span>
 
-                                <Iconify icon="clarity:error-standard-solid" size={22} className={` ${styles.error_color}`} />
+                                    <Iconify icon="clarity:error-standard-solid" size={22} className={` ${styles.error_color}`} />
 
-                            </div>
-                            <button className={`${styles.btn_style2} default_btn`}
-                            onClick={()=>{
-                                navigate('/userCenter/security')
-                            }}>
-                                {t('assetsAccount.button.toset')}
-                            </button>
-                        </li>}
+                                </div>
+                                <button className={`${styles.btn_style2} default_btn`}
+                                    onClick={() => {
+                                        navigate('/userCenter/security')
+                                    }}>
+                                    {t('assetsAccount.button.toset')}
+                                </button>
+                            </li>}
 
                     </ul>
                 </div>

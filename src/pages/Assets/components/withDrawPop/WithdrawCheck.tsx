@@ -167,10 +167,10 @@ function WithdrawMoneyCheck({ open, onCancel, withdrawInfo, onOk }: Props) {
                         </div>
 
                         <div className={`${styles.title_color}  flex-x align-center justify-between mb-4`}>
-                            <p className={`${styles.tip_color}`}>
+                            <p className={`${styles.tip_color} min-w-[60px]`}>
                                 {t('withdrawMoneyCheck.network')}
                             </p>
-                            <p>{` ${withdrawInfo?.protocol}(${withdrawInfo?.protocolName})`}</p>
+                            <p className="text-right flex-1 ">{` ${withdrawInfo?.protocol}(${withdrawInfo?.protocolName})`}</p>
                         </div>
 
                         <div className={`${styles.title_color}  flex-x align-start justify-between mb-4`}>

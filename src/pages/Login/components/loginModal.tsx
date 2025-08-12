@@ -138,7 +138,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             type: acountInfo.type,
                             email: acountInfo.email,
                             deviceType: fingerprint,
-                            platformType: "",
+                            platformType: "H5",
                             password: acountInfo.password,
 
                             authCodeMail: values.code || "",
@@ -151,7 +151,7 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             type: acountInfo.type,
                             phone: acountInfo.phone,
                             deviceType: fingerprint,
-                            platformType: "Web",
+                            platformType: "H5",
                             password: acountInfo.password,
                             countryCode: acountInfo.countryCode,
 
@@ -180,6 +180,8 @@ const LoginModal: React.FC<Props> = observer(({ open, onCancel, acountInfo, onOk
                             store.getKvConfigAllFromApi();
                             store.loadCoinList();
                             store.loadGetUserInfo();
+                            store.loadGetRateList();
+                            store.loadGetLangList();
                         }
                     } else {
                         Toast.show({

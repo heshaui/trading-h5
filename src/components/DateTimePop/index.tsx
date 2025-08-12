@@ -6,6 +6,9 @@ import { NoData } from "../noData";
 import { Form, Button, Popup, Checkbox, DatePickerView } from 'antd-mobile'
 import dayjs, { Dayjs } from "dayjs";
 import { Toast } from 'antd-mobile';
+import { ReactComponent as CheckSvg } from '@/assets/icons/public/icon_check.svg';
+import { ReactComponent as UnCheckSvg } from '@/assets/icons/public/icon_unCheck.svg';
+
 
 interface CustomContentItem {
   key: string;
@@ -450,6 +453,13 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--gap': '8px'
               }}
               className="quickSelect custom-checkbox"
+              icon={checked =>
+                checked ? (
+                  <CheckSvg  className="theme-color"/>
+                ) : (
+                  <UnCheckSvg className="disabled_color"/>
+                )
+              }
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last7Days', { ns: 'common' }) }
@@ -464,6 +474,13 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--gap': '8px'
               }}
               className="quickSelect custom-checkbox"
+              icon={checked =>
+                checked ? (
+                  <CheckSvg  className="theme-color"/>
+                ) : (
+                  <UnCheckSvg className="disabled_color"/>
+                )
+              }
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last30Days', { ns: 'common' }) }
@@ -478,6 +495,13 @@ const DateTimePop = forwardRef<any, DateTimePopProps>(({
                 '--gap': '8px'
               }}
               className="quickSelect custom-checkbox"
+              icon={checked =>
+                checked ? (
+                  <CheckSvg  className="theme-color"/>
+                ) : (
+                  <UnCheckSvg className="disabled_color"/>
+                )
+              }
             >
               <span className={`${styles.title_color} font-14`}>
                 {t('btnText.last90Days', { ns: 'common' }) }

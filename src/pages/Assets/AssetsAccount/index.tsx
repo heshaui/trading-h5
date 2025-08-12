@@ -889,7 +889,7 @@ const AssetsMainPage = observer(() => {
                                                 rateKeyName === "" ||
                                                 rateKeyName === "NaN"||rateKeyName?.includes("NaN")
                                                 ? "--"
-                                                : rateKeyName} {rateKeyName}
+                                                : rateKeyName}
                                         </span>
                                     </p>
                                 </div> : <p className={`${styles.tip_color} font-12 flex-x-cc`}>******</p>}

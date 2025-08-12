@@ -23,6 +23,9 @@
 .tip_color{
   color: var(--text-color6);
 }
+.text_color{
+  color: var(--text-color3);
+}
 .popContainer{
   background-color: var(--background9);
   padding: 20px 20px;
@@ -44,6 +47,7 @@
   height: 50px;
   border-radius: 8px;
   background-color: transparent;
+  border-color: var(--border-color8);
 }
 /* 输入框组件覆盖 */
 .input_box:focus,

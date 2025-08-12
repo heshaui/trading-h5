@@ -117,7 +117,7 @@ function ResetPassword() {
 
                 const dataInfo = {
                     number: acount.acount,
-                    deviceType: 'Web'
+                    deviceType: 'H5'
                 }
                 const dataEncrypt = await encryptData(dataInfo)
                 const res = await getResetMailCode(dataEncrypt)
@@ -135,7 +135,7 @@ function ResetPassword() {
                 const dataInfo = {
                     number: acount.acount,
                     code: acount.areaCode?.replace("+", ""),
-                    deviceType: 'Web'
+                    deviceType: 'H5'
                 }
                 const dataEncrypt = await encryptData(dataInfo)
                 const res = await getResetSmsCode(dataEncrypt)

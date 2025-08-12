@@ -9,6 +9,7 @@ import { encryptData } from "@/utils/encrypt";
 import { Toast, Form, Input, Checkbox } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { Iconify } from "@/components/icon";
+import { log } from "console";
 
 const fromStyle: CSSProperties = {
 	borderRadius: "5px",
@@ -64,7 +65,7 @@ function RegisterPhone() {
 
 	const onFinish = async () => {
 		form
-			.validateFields(['email', 'password'])
+			.validateFields(['phoneNumber','areaCode', 'password','referee','agree'])
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
 				// if (loading) return;
@@ -77,6 +78,7 @@ function RegisterPhone() {
 					parentInviteCode: isOpen ? values.referee : "",
 					countryCode: values.areaCode
 				}
+				
 				store.updateRegisterInfo(data)
 
 				goAuthCode()

@@ -286,7 +286,7 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                     </div>
                     {option.disabled && (
                       <span className="font-12 text-color6 ml-2 font-italic">
-                        <Iconify icon="lsicon:disable-outline" size={24}  />
+                        <Iconify icon="lsicon:disable-outline" size={20}  />
                       </span>
                     )}
                     {selectedValue === option.value && activeType === 'icon' && !option.disabled && (

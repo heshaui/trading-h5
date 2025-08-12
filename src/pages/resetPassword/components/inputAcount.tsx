@@ -166,7 +166,7 @@ return (<>
             value={tabsProps}
         />
 
-        <div className="flex-col mt-10 h-full" style={{ width: "100%" }}>
+        <div className="flex-col mt-6 h-full" style={{ width: "100%" }}>
             {/* <div className="mb-7  font-w-500" style={{ width: "300px" }}>手机号/邮箱</div> */}
             <Form
                 name="aount"

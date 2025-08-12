@@ -64,7 +64,7 @@ function RegisterPhone() {
 
 	const onFinish = async () => {
 		form
-			.validateFields(['email', 'password'])
+			.validateFields(['email', 'password','agree'])
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
 				// if (loading) return;

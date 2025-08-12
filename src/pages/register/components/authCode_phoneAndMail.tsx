@@ -93,6 +93,7 @@ function AuthCode() {
               code: values.code,
             };
           }
+          console.log(dataInfo, 111);
           const dataEncrypt = await encryptData(dataInfo);
           const res = await getRegister(dataEncrypt);
           if (res.code === "0") {

@@ -108,9 +108,9 @@ const getChartConfig = (isDayMode: boolean, viewMode: string) => {
     height: 300,
     overrides: {
       // 背景色
-      "paneProperties.background": isDayMode ? "#ffffff" : "#0C0D0C",  // 修复颜色代码
+      "paneProperties.background": isDayMode ? "#ffffff" : "#141414",  // 修复颜色代码
       "paneProperties.backgroundType": "solid",
-      "toolbarBg": isDayMode ? "#ffffff" : "#0C0D0C",  // 修复颜色代码
+      "toolbarBg": isDayMode ? "#ffffff" : "#141414",  // 修复颜色代码
       // 线条
       "paneProperties.vertGridProperties.color": isTabletFullscreen ? undefined : "transparent",
       "paneProperties.horzGridProperties.color": isTabletFullscreen ? undefined : "transparent",

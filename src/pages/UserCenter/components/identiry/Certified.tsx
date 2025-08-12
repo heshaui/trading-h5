@@ -96,7 +96,7 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
                 <div className="text-[18px] leading-5 mt-1 font-medium mb-3 flex items-center">
                     {/* 标准身份认证 */}
                     <div>{t('identity.standardAuth.title')}</div> 
-                    <div className="text-[14px] text-[var(--text-color6)] ml-[10px] flex items-center">
+                    <div className="text-[14px] ml-[10px] flex items-center">
                         <Iconify icon="mingcute:safety-certificate-line" className="text-[20px] success_icon mr-1" />
                         {/* 已认证 */}
                         {t('identity.status.verified')}

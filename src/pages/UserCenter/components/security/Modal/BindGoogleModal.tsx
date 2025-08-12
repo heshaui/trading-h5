@@ -287,7 +287,7 @@ function BindGoogleModal({ open, onCancel, type, onOk, acountInfo }: Props) {
         closeOnMaskClick
         position='bottom'
         bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-        bodyClassName="!h-auto !bg-[var(--background5)] !text-[var(--text-color5)]"
+        bodyClassName="!h-auto !bg-[var(--background17)] !text-[var(--text-color5)]"
       >
             <p className={`${styles.title}`}>
               {/* 输入验证码开启谷歌验证器 */}

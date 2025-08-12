@@ -365,6 +365,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
     }
 
     // 切换时重置所有表单字段
+    setPrice('');
     form.resetFields();
   };
   const geSegmentedChange = (value: string | number) => {

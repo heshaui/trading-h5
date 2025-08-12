@@ -516,6 +516,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               options={directionSelect}
               placeholder={t('spot.columns.direction')}
               title={t('spot.columns.direction')}
+              activeType='icon'
               onChange={(value) => {
                 selectParam.current.direction = value as string
                 getOrderListData()
@@ -526,6 +527,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               options={symbolSelect}
               placeholder={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
               title={isExchange ? t('spot.columns.coin') : t('spot.columns.symbol')}
+              activeType='icon'
               onChange={(value) => {
                 selectParam.current.symbol = value as string
                 getOrderListData()
@@ -545,6 +547,7 @@ const SpotMainPage = observer(({ pageType }: Props) => {
               options={statusSelect}
               placeholder={t('spot.columns.status')}
               title={t('spot.columns.status')}
+              activeType='icon'
               onChange={(value) => {
                 selectParam.current.notStatus = value !== '' ? statusArr.filter((item:number) => item !== value).join(',') : ''
                 getOrderListData()

@@ -13,6 +13,7 @@ export const LOCAL_STORAGE_KEY = {
     INVITE_INFO: "imbit_invite_info", // 邀请信息
     OUT_MONEY:"imbit_out_money", // 提现数据
     CURRENCY_PAIRS: 'currency_pairs', // 币对数据
+    ALL_CURRENCY_PAIRS: 'all_currency_pairs', // 所有币对数据
     CURRENT_PAIR: 'current_pair', // 当前币对
     CURRENT_COIN: 'current_coin', // 币种数据
     RATE_DATA: 'rate_data', //汇率数据

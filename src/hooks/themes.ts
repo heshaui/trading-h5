@@ -280,7 +280,7 @@ export const getThemeVariables = () => {
             '--background17': '#1C1E24',
             '--background18': '#272727',
             '--background19': '#37373A',
-            '--background20': '#0C0D0C',
+            '--background20': '#141414',
             '--background21': '#3B3B3B',
             '--foreground': '#ededed',
             '--homeground': '#000000',

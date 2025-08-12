@@ -50,7 +50,7 @@ const IdentifyStatus: FC<Props> = ({ realnessStatus = 2, textClassName, iconClas
   return (
     <div className={`${styles.otherRight} ml-[10px] flex items-center`}>
       <Iconify icon={icon} className={`${className} mr-1 text-[20px] ${iconClassName}`} />
-      <span className={`${textClassName} text-[14px]`}>{text}</span>
+      <span className={`${realnessStatus === 2 ? 'tip-color' : ''} ${textClassName} text-[14px]`}>{text}</span>
     </div>
   );
 };

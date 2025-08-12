@@ -105,7 +105,7 @@ const NoAuth: React.FC<NoAuthProps> = ({identityInfo, levelBenefit}) => {
                   icon="mingcute:safe-alert-line" className="w-[20px] h-[20px] mr-1" size={20} />
                   {t("identity.status.unverified")}
                </div> */}
-               <IdentifyStatus realnessStatus={identityInfo?.authStatus} textClassName={identityInfo?.authStatus === 2 ? 'tip-color' : 'text-[var(--text-color5)]' } />
+               <IdentifyStatus realnessStatus={identityInfo?.authStatus} />
             </div>
             {/* 认证状态-未认证 */}
             {identityInfo && identityInfo?.authStatus === 2 && (

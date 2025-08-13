@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "Order Book",
             "latestTrades": "Latest Trades",
+            "market": "Market",
             "price": "Price",
             "amount": "Amount",
             "total": "Total",
@@ -39,6 +40,7 @@
             "amount": "Amount",
             "cancel": "Cancel All",
             "averagePrice": "Average Price",
+            "averagePrice2": "Avg Price",
             "price2": "Trade Price",
             "count": "Trade Quantity",
             "amount2": "Trade Amount",
@@ -46,6 +48,8 @@
             "fee": "Fee",
             "role": "Role",
             "date": "Date",
+            "createTime": "Order Time",
+            "updateTime": "Update Time",
             "coin": "Coin",
             "balance": "Balance",
             "available": "Available",
@@ -66,7 +70,9 @@
             "tradeCount": "Trade Quantity",
             "tradeAmount": "Trade Amount",
             "tradeFee": "Fee",
-            "tradeRole": "Role"
+            "tradeRole": "Role",
+            "tradeDetail": "Trade Details",
+            "dealAmount": "Completed/Delegated"
         },
         "select": {
             "all": "All",
@@ -83,6 +89,8 @@
             "search": "Search",
             "limit": "Limit",
             "market": "Market",
+            "limit1": "Limit Order",
+            "market1": "Market Order",
             "stopLoss": "Stop Loss",
             "placeholder": "Please Select",
             "trading": "Trading",
@@ -91,7 +99,9 @@
             "canceled": "Canceled by User",
             "created": "Order Created",
             "partial": "Partially Filled",
-            "canceled2": "Order Canceled, Filled and Unfilled"
+            "canceled2": "Order Canceled, Filled and Unfilled",
+            "filter": "Filter",
+            "cancelOrder": "Cancel Order"
         },
         "trade": {
             "buy": "Buy",
@@ -131,6 +141,7 @@
             "feeCoin": "Fee Currency"
         },
         "header": {
+            "market": "Market",
             "favorites": "Favorites",
             "spot": "Spot",
             "search": "Search",
@@ -168,7 +179,10 @@
             "price": "Price",
             "amount": "Amount",
             "total": "Total",
-            "all": "All"
+            "all": "All",
+            "loginNow": "Login now",
+      "goToMarket": "Go to market",
+      "noData": "No data available"
         },
         "feeCoin": {
             "receivedCoin": "Received Currency",
@@ -200,6 +214,7 @@
         "cancelOrderModal": {
             "title": "Cancel Confirmation",
             "title2": "Are you sure you want to cancel all orders?",
+            "title3": "Are you sure you want to cancel the current order?",
             "cancel": "Cancel",
             "confirm": "Confirm"
         },
@@ -216,7 +231,8 @@
             "cancel": "Cancel",
             "edit": "Edit",
             "login": "Login",
-            "errmax": "Maximum buy {{max}}"
+            "errmax": "Maximum buy {{max}}",
+            "precision": "Precision"
         },
         "tooltip": {
             "buyAvailableLimit": "Available to buy depends on your available balance and the price at which you want to trade. When you enter your desired price, the available amount will be calculated automatically.",
@@ -250,7 +266,8 @@
             "fee": "Fee",
             "feeDetails": "Maker {{maker}}% / Taker {{taker}}%",
             "kline": "K-Line",
-            "depth": "Depth Chart"
+            "depth": "Depth Chart",
+            "basic": "Basic"
         }
     }
 }

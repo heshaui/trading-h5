@@ -40,6 +40,7 @@
             "amount": "체결 금액",
             "cancel": "전체 취소",
             "averagePrice": "평균 체결가",
+            "averagePrice2": "평균가",
             "price2": "체결 가격",
             "count": "체결 수량",
             "amount2": "체결 금액",
@@ -47,6 +48,8 @@
             "fee": "수수료",
             "role": "역할",
             "date": "날짜",
+            "createTime": "주문 시간",
+            "updateTime": "업데이트 시간",
             "coin": "코인",
             "balance": "보유 수량",
             "available": "사용 가능",
@@ -68,6 +71,7 @@
             "tradeAmount": "체결 금액",
             "tradeFee": "수수료",
             "tradeRole": "역할",
+            "tradeDetail": "체결 상세",
             "dealAmount": "체결 / 위임량"
         },
         "select": {
@@ -84,7 +88,9 @@
             "hideCancel": "취소된 주문 숨기기",
             "search": "검색",
             "limit": "지정가",
+            "limit1": "지정가 주문",
             "market": "시장가",
+            "market1": "시장가 주문",
             "stopLoss": "손절/익절",
             "placeholder": "선택하세요",
             "trading": "거래 중",
@@ -93,7 +99,9 @@
             "canceled": "사용자 취소",
             "created": "주문 생성됨",
             "partial": "부분 체결",
-            "canceled2": "주문이 취소됨 - 체결 및 미체결 포함"
+            "canceled2": "주문이 취소됨 - 체결 및 미체결 포함",
+            "filter": "필터",
+            "cancelOrder": "주문 취소"
         },
         "trade": {
             "buy": "매수",
@@ -171,7 +179,10 @@
             "price": "가격",
             "amount": "수량",
             "total": "체결 금액",
-            "all": "전체"
+            "all": "전체",
+            "loginNow": "지금 로그인",
+            "goToMarket": "마켓으로 이동",
+            "noData": "데이터가 없습니다"
         },
         "feeCoin": {
             "receivedCoin": "수령 코인",
@@ -203,6 +214,7 @@
         "cancelOrderModal": {
             "title": "주문 취소 확인",
             "title2": "정말로 모든 주문을 취소하시겠습니까?",
+            "title3": "현재 주문을 취소하시겠습니까?",
             "cancel": "취소",
             "confirm": "확인"
         },

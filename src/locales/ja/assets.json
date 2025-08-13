@@ -5,7 +5,9 @@
         "billDetails": "明細書",
         "withdraw": "出金",
         "deposit": "入金",
-        "address": "アドレス管理"
+        "address": "アドレス管理",
+        "rechargeDetail": "入金詳細",
+        "withdrawDetail": "出金詳細"
     },
     "assetsAccount": {
         "title": "スポット口座",
@@ -63,6 +65,9 @@
             "topuptip1": "入金機能は現在利用できません",
             "tip1": "出金を続行するには2FAを有効にしてください。資産の安全のため、早めの設定をお勧めします",
             "withdrawtip2": "本人確認が完了していません",
+            "withdrawtip3": "本人確認を完了",
+            "withdrawtip4": "2FAを連携",
+            "withdrawtip5": "2FA連携済み",
             "tip2": "本人確認を完了して、すべての機能をロック解除",
             "tip3": "取引所は出金を禁止しています。問題がある場合はカスタマーサービスにお問い合わせください！",
             "tip4": "取引所の入金機能は現在利用できません。問題がある場合はカスタマーサービスにお問い合わせください！",
@@ -71,6 +76,7 @@
         },
         "title2": "明細書",
         "assets": "スポット資産",
+        "assets2": "総資産評価額",
         "todayProfit": "本日の損益",
         "search": "検索",
         "hideZero": "0資産を非表示",
@@ -116,16 +122,19 @@
         "estimatedArrival": "予定到着",
         "fee": "手数料",
         "withdraw": "出金",
+        "wthdraw": "出金",
         "faq": "よくある質問",
         "address": "アドレス",
         "network": "ネットワーク",
+        "network2": "メインネットワーク",
+        "txHash": "トランザクションハッシュ",
         "faqList": {
             "item1": "IMBITでの入金と出金の方法",
             "item2": "入金手順ガイド",
             "item3": "入金に関するよくある質問",
             "item4": "入金が反映されない理由",
             "item5": "誤ったコインの入金を回収する方法",
-             "item6": "引き出し手順ガイド"
+            "item6": "引き出し手順ガイド"
         },
         "notice": "出金に関する注意事項",
         "noticeList": {
@@ -149,7 +158,9 @@
         "belowMin24h2": "24時間の限度より低いです",
         "belowMin24h3": "24時間の限度{{min}}より低いです",
         "withdrawAmountMin": "出金金額は{{min}}以上でなければなりません",
-        "tipText": "受取アドレスがMEMO/Tagの入力を要求しているか確認してください。入力しないか間違って入力すると資産が失われる可能性があります。他の取引所やウォレットでは、TagはMeno、数字ID、ラベル、メモなどと呼ばれることがあります。"
+        "tipText": "受取アドレスがMEMO/Tagの入力を要求しているか確認してください。入力しないか間違って入力すると資産が失われる可能性があります。他の取引所やウォレットでは、TagはMeno、数字ID、ラベル、メモなどと呼ばれることがあります。",
+        "tipText2": "ヒント",
+        "tipText3": "出金機能をロック解除するには、以下の操作を完了してください"
     },
     "withdrawTable": {
         "create": "作成",
@@ -163,7 +174,10 @@
         "title": "最近の出金記録",
         "more": "もっと見る",
         "onlyShow": "現在のコインのみ表示",
-        "onlyShowError": "コインが選択されていません"
+        "onlyShowError": "コインが選択されていません",
+        "userCancel": "ユーザーがキャンセルしました。再度出金してください",
+        "walletProcessing": "出金ウォレット処理中です。しばらくお待ちください",
+        "withdrawSuccess": "出金に成功しました。受取アドレスを確認してください"
     },
     "withdrawMoneyCheck": {
         "cancel": "キャンセル",
@@ -176,6 +190,7 @@
         "amountAfter": "数量",
         "toAccount": "受取額：",
         "withdrawFee": "手数料：",
+        "minWithdraw": "最小出金額：",
         "withdrawAccount": "出金口座",
         "spotAccount": "スポット口座",
         "warning": "正しい出金アドレスを入力し、選択した転送ネットワークがアドレスと一致していることを確認してください"

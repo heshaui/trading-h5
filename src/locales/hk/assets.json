@@ -5,7 +5,9 @@
         "billDetails": "账单明细",
         "withdraw": "提现",
         "deposit": "充值",
-        "address": "地址管理"
+        "address": "地址管理",
+        "rechargeDetail": "充值详情",
+        "withdrawDetail": "提现详情"
     },
     "assetsAccount": {
         "title": "现货账户",
@@ -63,14 +65,18 @@
             "topuptip1": "充值功能暂不可用",
             "tip1": "启用2FA以继续提现。为了您的资产安全起见，我们建议您尽快启用",
             "withdrawtip2": "未完成身份认证",
+            "withdrawtip3": "完成身份认证",
+            "withdrawtip4": "绑定2FA",
+            "withdrawtip5": "已绑定2FA",
             "tip2": "完成身份认证，解锁全部功能",
-            "tip3": "交易所禁止提现，如有问题请与客服联系！",
+            "tip3": "您被禁止提现，如有问题请与客服联系！",
             "tip4": "交易所充值功能暂不可用，如有问题请与客服联系！",
             "toAuthentication": "立即认证",
             "flash": "闪兑"
         },
         "title2": "账单明细",
         "assets": "现货资产",
+        "assets2": "总资产估值",
         "todayProfit": "今日盈亏",
         "search": "搜索",
         "hideZero": "隐藏0资产",
@@ -115,10 +121,13 @@
         "dayLimit": "24H限额",
         "estimatedArrival": "预估到账",
         "fee": "手续费",
+        "wthdraw": "提现",
         "withdraw": "提现",
         "faq": "常见问题",
         "address": "地址",
         "network": "网络",
+        "network2": "主网络",
+        "txHash": "交易哈希",
         "faqList": {
             "item1": "如何在IMBIT上充值和提现",
             "item2": "充值步骤指南",
@@ -149,7 +158,9 @@
         "belowMin24h2": "低于24h限额",
         "belowMin24h3": "低于24h限额{{min}}",
         "withdrawAmountMin": "提现金额不小于{{min}}",
-        "tipText": "请确认收币地址是否要求填写MEMO/Tag，不填或填错将导致资产丢失。其他交易所或钱包也把Tag叫做Meno、数字ID、标签、备注等名称。"
+        "tipText": "请确认收币地址是否要求填写MEMO/Tag，不填或填错将导致资产丢失。其他交易所或钱包也把Tag叫做Meno、数字ID、标签、备注等名称。",
+        "tipText2": "温馨提示",
+        "tipText3": "您需要完成以下操作后才能解锁提现功能"
     },
     "withdrawTable": {
         "create": "创建",
@@ -163,7 +174,10 @@
         "title": "最近提现记录",
         "more": "更多",
         "onlyShow": "仅显示当前币种",
-        "onlyShowError": "暂未选择币种"
+        "onlyShowError": "暂未选择币种",
+        "userCancel": "用户已撤销，请重新提现",
+        "walletProcessing": "提币钱包处理中，请耐心等待",
+        "withdrawSuccess": "提现成功,请查看至币地址"
     },
     "withdrawMoneyCheck": {
         "cancel": "取消",
@@ -176,6 +190,7 @@
         "amountAfter": "数量",
         "toAccount": "到账：",
         "withdrawFee": "手续费：",
+        "minWithdraw": "最小提现金额：",
         "withdrawAccount": "提现账户",
         "spotAccount": "现货账户",
         "warning": "请确保您输入了正确的提现地址并且您选择的转账网络与地址相匹配"
@@ -262,25 +277,25 @@
         "selectCoin": "筛选币种"
     },
     "recharge": {
-      "rechargeStatus0": "充值中",
-      "rechargeStatus1": "充值完成"
+        "rechargeStatus0": "充值中",
+        "rechargeStatus1": "充值完成"
     },
-    "select":{
-        "pending":"待发放",
-        "done":"已完成"
+    "select": {
+        "pending": "待发放",
+        "done": "已完成"
     },
     "flash": {
-        "flash": "Flash Swap"
+        "flash": "闪兑"
     },
     "withdrawSteps": {
-        "title": "How to Withdraw Cryptocurrency",
-        "stepTitle1": "Select Currency",
-        "stepTip1": "Choose the currency you want to withdraw.",
-        "stepTitle2": "Withdrawal Address",
-        "stepTip2": "External Address: Copy the deposit platform's address and Memo (if necessary) to this platform. Please ensure that the network you select matches the deposit platform's network, otherwise it will cause asset loss.",
-        "stepTitle3": "Enter Withdrawal Information",
-        "stepTip3": "Please confirm the withdrawal amount and fees.",
-        "stepTitle4": "Order Review",
-        "stepTip4": "After blockchain confirmation, your withdrawal information will be transferred to the deposit platform."
+        "title": "如何提现数字货币",
+        "stepTitle1": "选择币种",
+        "stepTip1": "选择需要提现的币种。",
+        "stepTitle2": "提现地址",
+        "stepTip2": "外部地址：复制充值平台的地址和Momo（如有必要）到此平台。请确保您选择的网络与充值平台的网络一致，否则将造成资产损失。",
+        "stepTitle3": "输入提币信息",
+        "stepTip3": "请确认提币数量和手续费。",
+        "stepTitle4": "订单查看",
+        "stepTip4": "区块确认后，您的提现信息将转移到充值平台。"
     }
 }

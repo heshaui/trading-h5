@@ -5,7 +5,9 @@
         "billDetails": "Bill Details",
         "withdraw": "Withdraw",
         "deposit": "Deposit",
-        "address": "Address Management"
+        "address": "Address Management",
+        "rechargeDetail": "Deposit Details",
+        "withdrawDetail": "Withdrawal Details"
     },
     "assetsAccount": {
         "title": "Spot Account",
@@ -63,6 +65,9 @@
             "topuptip1": "Deposit Function Unavailable",
             "tip1": "Enable 2FA to continue withdrawal. For your asset security, we recommend enabling it as soon as possible",
             "withdrawtip2": "Identity Verification Incomplete",
+            "withdrawtip3": "Complete Identity Verification",
+            "withdrawtip4": "Bind 2FA",
+            "withdrawtip5": "2FA Bound",
             "tip2": "Complete identity verification to unlock all features",
             "tip3": "Exchange withdrawal is prohibited, please contact customer service if you have any questions!",
             "tip4": "Exchange deposit function is currently unavailable, please contact customer service if you have any questions!",
@@ -71,6 +76,7 @@
         },
         "title2": "Bill Details",
         "assets": "Spot Assets",
+        "assets2": "Total Asset Valuation",
         "todayProfit": "Today's Profit/Loss",
         "search": "Search",
         "hideZero": "Hide Zero Assets",
@@ -116,16 +122,19 @@
         "estimatedArrival": "Estimated Arrival",
         "fee": "Fee",
         "withdraw": "Withdraw",
+        "wthdraw": "Withdraw",
         "faq": "FAQ",
         "address": "Address",
         "network": "Network",
+        "network2": "Main Network",
+        "txHash": "Transaction Hash",
         "faqList": {
             "item1": "How to Deposit and Withdraw on IMBIT",
             "item2": "Deposit Step Guide",
             "item3": "Deposit FAQ",
             "item4": "Why My Deposit Has Not Arrived",
             "item5": "How to Submit a Recovery Request for Incorrect Deposits",
-             "item6": "Withdrawal Steps Guide"
+            "item6": "Withdrawal Steps Guide"
         },
         "notice": "Withdrawal Notice",
         "noticeList": {
@@ -149,7 +158,9 @@
         "belowMin24h2": "Below 24h Limit",
         "belowMin24h3": "Below 24h Limit {{min}}",
         "withdrawAmountMin": "Withdrawal amount cannot be less than {{min}}",
-        "tipText": "Please confirm whether the receiving address requires MEMO/Tag. Missing or incorrect entries will result in asset loss. Other exchanges or wallets may also refer to Tag as Memo, Digital ID, Label, Remark, etc."
+        "tipText": "Please confirm whether the receiving address requires MEMO/Tag. Missing or incorrect entries will result in asset loss. Other exchanges or wallets may also refer to Tag as Memo, Digital ID, Label, Remark, etc.",
+        "tipText2": "Friendly Reminder",
+        "tipText3": "You need to complete the following actions to unlock the withdrawal feature"
     },
     "withdrawTable": {
         "create": "Created",
@@ -163,7 +174,10 @@
         "title": "Recent Withdrawal Records",
         "more": "More",
         "onlyShow": "Show Current Currency Only",
-        "onlyShowError": "No Currency Selected"
+        "onlyShowError": "No Currency Selected",
+        "userCancel": "User has canceled, please withdraw again",
+        "walletProcessing": "Withdrawal wallet is processing, please wait patiently",
+        "withdrawSuccess": "Withdrawal successful, please check the receiving address"
     },
     "withdrawMoneyCheck": {
         "cancel": "Cancel",
@@ -176,6 +190,7 @@
         "amountAfter": "Amount",
         "toAccount": "Receive: ",
         "withdrawFee": "Fee: ",
+        "minWithdraw": "Minimum Withdrawal Amount:",
         "withdrawAccount": "Withdrawal Account",
         "spotAccount": "Spot Account",
         "warning": "Please ensure you have entered the correct withdrawal address and that your selected transfer network matches the address"
@@ -268,7 +283,7 @@
     "select": {
         "pending": "Pending",
         "done": "Completed"
-    } ,
+    },
     "flash": {
         "flash": "Flash Swap"
     },

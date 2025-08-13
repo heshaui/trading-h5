@@ -26,8 +26,8 @@ export const useWithdraw = () => {
         // 如果没有传入 userInfo，从 store 获取
         const currentUserInfo = userInfo || appStore.getUserInfo();
         // const verified11 = currentUserInfo?.verifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 1 //已认证且实名-允许
-        const verified10 = currentUserInfo?.verifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0 //已认证且未实名-判断unverifiedWithdrawalStatus
-        // const unverifie10 = currentUserInfo?.unverifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0 //未认证且未实名-允许
+        const verified10 = currentUserInfo?.verifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus !== 1 //已认证且未实名-判断unverifiedWithdrawalStatus
+        // const unverifie10 = currentUserInfo?.unverifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus !== 1 //未认证且未实名-允许
         const unverifie11 = currentUserInfo?.unverifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 1 //未认证且实名-判断verifiedWithdrawalStatus
         // 检查提现状态
         if (currentUserInfo?.withdrawalStatus !== 1 || (currentUserInfo?.verifiedWithdrawalStatus !== 1 && currentUserInfo?.unverifiedWithdrawalStatus !== 1)||

@@ -139,7 +139,7 @@ const SpotChart: React.FC = () => {
     }, []);
 
     return (
-        <div ref={chartRef} className="bg-[var(--background9)] relative">
+        <div ref={chartRef} className="bg-[var(--background-primary)] relative">
             {/* {isFullscreen && <button className="absolute" style={{right: '10px', top: '10px'}} onClick={exitFullscreen}>
                 <Iconify icon="mingcute:close-line" className="text-[12px] text-[#676867]" />
             </button>} */}

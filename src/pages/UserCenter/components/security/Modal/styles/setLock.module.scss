@@ -10,7 +10,6 @@
     color: var(--text-color5);
     font-weight: 500;
     font-size: 16px;
-    background: var(--background5);
     border-bottom: 1px solid var(--border-color6);
     padding: 0 16px;
     height: 60px;
@@ -58,7 +57,7 @@
 }
 .input_box{
     height: 50px;
-    background: var(--background5);
+    background: transparent !important;
     border-color: var(--border-color4);
     color: var(--text-color5);
 }
@@ -71,7 +70,7 @@
 }
 /* 鼠标聚焦且移出样式 */
 .input_box:focus:not(:hover){
-    background-color: var(--homeground5);
+    background: transparent !important;
     color: #fff;
     box-shadow: none !important;
     color: var(--text-color5) !important;

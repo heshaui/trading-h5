@@ -32,7 +32,7 @@ const CustomTooltip: React.FC<any> = ({ active, payload }) => {
                 <span
                     className={`mr-1 ${styles.tooltip_circle}`}
                 />
-                {payload[0].payload.symbol}&nbsp;{payload[0].payload.balance}</p>
+                {payload[0].payload.symbol}&nbsp;{Number.isFinite(Number(payload[0].payload.balance)) ? payload[0].payload.balance : 0}</p>
         </div>
     );
 };

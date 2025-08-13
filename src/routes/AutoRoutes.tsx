@@ -48,8 +48,12 @@ const routes = pageModules.keys().map((key: string) => {
 
 const Loading = () => {
   return (
-    <div className="w-full h-[100vh] flex justify-center items-center">
-      <Iconify icon="eos-icons:bubble-loading" className="theme-color text-[48px]" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--background9)]">
+      <div className="relative w-[48px] h-[48px]">
+        <div className="absolute w-[48px] h-[48px] border-[3px] border-solid border-transparent border-t-[var(--theme-color)] rounded-full animate-spin"></div>
+        <div className="absolute w-[48px] h-[48px] border-[3px] border-solid border-transparent border-t-[var(--theme-color)] rounded-full animate-spin-delay" style={{ animationDelay: '-0.45s' }}></div>
+        <div className="absolute w-[48px] h-[48px] border-[3px] border-solid border-transparent border-t-[var(--theme-color)] rounded-full animate-spin-delay" style={{ animationDelay: '-0.3s' }}></div>
+      </div>
     </div>
   )
 }
@@ -59,7 +63,7 @@ const AutoRoutes = () => (
     <Routes>
       {routes.map(({ path, element, layout, requireAuth }) => {
         const Layout = layoutMap[layout] || MainLayout;
-        const wrapped = <AuthRoute requireAuth={requireAuth}>{element}</AuthRoute>
+        const wrapped = element
 
         return (
           <Route

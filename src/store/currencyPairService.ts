@@ -92,6 +92,7 @@ export async function fetchAllCurrencyPairs(type: FetchType = 'show') {
                 buyFee: coin?.buyFee,
                 classLabel: coin?.classLabel,
                 coinScale: coin?.coinScale,
+                depthFive: coin?.depthFive,
                 depthFour: coin?.depthFour,
                 depthOne: coin?.depthOne,
                 depthThree: coin?.depthThree,

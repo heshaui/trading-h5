@@ -127,13 +127,13 @@ const UserCenter: React.FC = () => {
 				userCenterData.map((item: SafeListItem) => {
 					return loadingSkeleton ?
 					(
-						<li className="px-5">
+						<li className="px-5" key={item.type}>
 							<Skeleton.Title />
 							<Skeleton.Paragraph animated />
 						</li>
 					) :
 					(
-						<li className="flex justify-between items-center mb-5">
+						<li className="flex justify-between items-center mb-5" key={item.type}>
 							<div className="flex items-center flex-1">
 								<img
 									src={item.icon}

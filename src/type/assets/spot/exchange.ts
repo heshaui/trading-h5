@@ -14,6 +14,7 @@ export interface CurrencyPairType {
     depthOne: number,
     depthThree: number,
     depthTwo: number,
+    depthFive: number,
     enable: number,
     enableBuy: number,
     enableSell: number,

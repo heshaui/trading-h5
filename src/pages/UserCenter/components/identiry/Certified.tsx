@@ -44,6 +44,7 @@ interface infoType {
     surname: string;
     firstName: string;
     countryId: number;
+    country: number;
     cardType: number;
     cardCode: string;
     cardName: string;
@@ -153,9 +154,10 @@ const Auth: React.FC<{ identityInfo: infoType, levelBenefit: levelBenefitType[] 
                         {t('identity.certified.info.country')}
                     </span> 
                     <span>
-                        {identityInfo?.countryId === 1 ?
+                        {identityInfo?.country || '--'}
+                        {/* {identityInfo?.countryId === 1 ?
                         t('identity.certified.info.countries.mainland') :
-                        t('identity.certified.info.countries.hongkong')}
+                        t('identity.certified.info.countries.hongkong')} */}
                     </span> 
                 </li>
                 <li className="text-[14px] font-medium leading-5 mb-[18px] flex justify-between ">

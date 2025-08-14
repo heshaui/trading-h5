@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Image } from 'antd-mobile';
 import { useLanguage } from "@/hooks";
 import appStore from "@/store";
 import { nul } from "@/utils/index";
+import { Iconify } from '@/components/icon'
 import { useExchange } from "@/context/exchange-providers/ExchangeProvider";
 import { getPairsRate } from "@/utils/getUseRate";
 import styles from './style/OrderBook.module.css'
 import { NoData } from "@/components/noData";
+import SelectPop from '@/components/SelectPop';
+import { getRound } from '@/utils/getUseRate';
 
 import OrderHoverIcon from '@/assets/images/exchange/icon_order_hover.png';
 import OrderIcon from '@/assets/images/exchange/icon_order.png';
@@ -24,9 +27,16 @@ interface Order {
   total: number;
 }
 
+// 修改精度列表的类型定义
+interface PrecisionItem {
+  label: number;
+  value: number;
+}
+
 const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   const { t } = useLanguage (["spot"]);
   const {depthData: bookData, orderData, klineData, updateTradePrice } = useExchange();
+  // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
   const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
   const [sellOrders, setSellOrders] = useState<Order[]>([]);
   const [buyOrders, setBuyOrders] = useState<Order[]>([]);
@@ -38,14 +48,99 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   const [priceDirection, setPriceDirection] = useState<"up" | "down" | "">("");
   const [priceSource, setPriceSource] = useState<"buy" | "sell" | "">("");
   const [lastPrice, setLastPrice] = useState(0);
-  // 假设已有displayType状态变量，控制显示类型：'both'|'buy'|'sell'
+  // 当前聚合区间
+  const [mergeDepth, setMergeDepth] = useState<number>(0.01);
 
-  // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
+  // 动态设置深度精度，即聚合区间 币对设置中的深度精度：1：0.1，2：0.01，3： 0.001 以此类推
+  const depthPrecisionList = useMemo(() => {
+    const precisionList = [
+      Number(currentPair.depthOne), 
+      Number(currentPair.depthTwo), 
+      Number(currentPair.depthThree), 
+      Number(currentPair.depthFour), 
+      Number(currentPair.depthFive)
+    ].filter(Boolean)
+    const result = precisionList.map(num => ({
+      label: num,
+      value: Number((1 / Math.pow(10, num)).toFixed(num))
+    }));
+    setMergeDepth(result[0].value)
+    return result
+  }, [currentPair])
+
+  // 反显深度精度的值
+	const getLabel = (value: number) => {
+		const currentData = depthPrecisionList.find((item: PrecisionItem) => item.value === value)
+		return currentData?.label
+	}
 
   // 添加最新成交数据状态
   const [trades, setTrades] = useState<
     { price: number; amount: number; time?: string; type: "buy" | "sell" }[]
   >([]);
+
+  // 处理价格和数量的精度
+  const formatPrice = (price: number) => {
+    const priceInfo = getRound(
+      `${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
+      price,
+      currentPair?.coinSymbol,
+      currentPair?.baseSymbol
+    );
+    return priceInfo.baseScaleResult as number;
+  };
+
+  const formatAmount = (amount: number) => {
+    const amountInfo = getRound(
+      `${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
+      amount,
+      currentPair?.coinSymbol,
+      currentPair?.baseSymbol
+    );
+    return amountInfo.scaleResult as number;
+  };
+
+  /**
+   * 根据合并深度计算价格区间的起始价格
+   * 例如：价格 50025，合并深度 50，则返回 50000
+   * @param price 起始价格
+   * @param mergeDepth 聚合区间
+   * @returns 起始价格
+   */
+  const aggregatePrice = (price: number, mergeDepth: number) => {
+    return Math.floor(price / mergeDepth) * mergeDepth;
+  };
+
+  // 添加订单聚合函数
+  const aggregateOrders = (orders: [number, number][], mergeDepth: number, isAsk: boolean) => {
+    // 使用 Map 来存储聚合后的数据，key 是区间起始价格
+    const aggregatedMap = new Map<number, { amount: number; total: number }>();
+
+    orders.forEach(([price, amount]) => {
+      // 获取价格所属的区间起始价格
+      const intervalStart = aggregatePrice(price, mergeDepth);
+      
+      if (!aggregatedMap.has(intervalStart)) {
+        aggregatedMap.set(intervalStart, { amount: 0, total: 0 });
+      }
+      
+      const current = aggregatedMap.get(intervalStart)!;
+      current.amount += amount;
+      // 使用区间起始价格计算总额，保证一致性
+      current.total = nul(intervalStart, current.amount);
+    });
+
+    // 转换回数组并排序
+    const aggregatedArray = Array.from(aggregatedMap.entries()).map(([price, { amount, total }]) => ({
+      price: formatPrice(price),  // 这里的价格是区间起始价格
+      amount: formatAmount(amount),
+      total
+    }));
+    // 卖单从高到低，买单从低到高, 目前都是从高到低
+    return aggregatedArray.sort((a, b) => 
+      isAsk ? b.price - a.price : b.price - a.price // a.price - b.price
+    );
+  };
 
   // 当币对变化时，重置所有订单数据
   // 当币对变化时，重置所有订单数据
@@ -60,41 +155,23 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 
   useEffect(() => {
     
-    // 直接使用WebSocket推送的完整30档位数据
+    // 直接使用WebSocket推送的完整档位数据
     if (bookData && (bookData.asks || bookData.bids)) {
-      // 处理卖单数据 - 直接使用完整的asks数据
+      console.log(bookData)
+      // 处理卖单数据
       if (bookData.asks && Array.isArray(bookData.asks)) {
-        const processedSellOrders: Order[] = bookData.asks
-          // .filter((item: [number, number]) => item && item.length >= 2 && Number(item[1]) > 0)
-          .map((item: [number, number]) => {
-            const price = Number(item[0]);
-            const amount = Number(item[1]);
-            const total = nul(price, amount);
-            return { price, amount, total };
-          })
-
-          // .sort((a: Order, b: Order) => b.price - a.price); // 卖单按价格降序排列
-
+        const aggregatedSells = aggregateOrders(bookData.asks, mergeDepth, true);
         // 根据显示模式限制显示数量
         const maxSellOrders = colorMode === 1 ? 10 : 20;
-        setSellOrders(processedSellOrders.slice(0, maxSellOrders).reverse());
+        setSellOrders(aggregatedSells.slice(0, maxSellOrders));
       }
 
-      // 处理买单数据 - 直接使用完整的bids数据
+      // 处理买单数据
       if (bookData.bids && Array.isArray(bookData.bids)) {
-        const processedBuyOrders: Order[] = bookData.bids
-          // .filter((item: [number, number]) => item && item.length >= 2 && Number(item[1]) > 0)
-          .map((item: [number, number]) => {
-            const price = Number(item[0]);
-            const amount = Number(item[1]);
-            const total = nul(price, amount);
-            return { price, amount, total };
-          })
-          // .sort((a: Order, b: Order) => b.price - a.price); // 买单按价格降序排列
-
+        const aggregatedBuys = aggregateOrders(bookData.bids, mergeDepth, false);
         // 根据显示模式限制显示数量
         const maxBuyOrders = colorMode === 1 ? 10 : 20;
-        setBuyOrders(processedBuyOrders.slice(0, maxBuyOrders).reverse());
+        setBuyOrders(aggregatedBuys.slice(0, maxBuyOrders));
       }
 
       // 计算当前价格和买卖比例
@@ -119,7 +196,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
         }
       } 
     }
-  }, [bookData, colorMode]); // 将sellOrders和buyOrders从依赖数组中排除，以避免潜在的循环更新
+  }, [bookData, mergeDepth, colorMode]); // 将sellOrders和buyOrders从依赖数组中排除，以避免潜在的循环更新
   // 注意：这里故意不将sellOrders和buyOrders添加到依赖数组中，因为每次更新这些状态会触发新的effect执行，造成无限循环
 
   // 添加处理交易数据的效果
@@ -220,33 +297,54 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
     }
   }, [klineData]);
 
+  // 移除之前的精度列表更新 useEffect，因为现在使用固定的合并区间
+
   const renderColorModeButtons = () => {
     return (
-      <div className="flex gap-x-[8px] px-4 h-[34px] items-center border-b border-color">
+      <div className="flex h-[34px] px-[16px] justify-between items-center border-b border-color">
         {/* 显示买卖盘 */}
-        <img
-          src={
-            colorMode === 1 ? OrderHoverIcon : OrderIcon
-          }
-          alt="color-mode"
-          className="!w-[20px] !h-[20px]"
-          onClick={() => setColorMode(1)}
-        />
-        <img
-          src={
-            colorMode === 2 ? GreenHoverIcon : GreenIcon
-          }
-          alt="color-mode"
-          className="!w-[20px] !h-[20px]"
-          onClick={() => setColorMode(2)}
-        />
-        <img
-          src={
-            colorMode === 3 ? RedHoverIcon : RedIcon
-          }
-          alt="color-mode"
-          className="!w-[20px] !h-[20px]"
-          onClick={() => setColorMode(3)}
+        <div className="flex gap-x-[8px] h-[34px] items-center">
+          <img
+            src={
+              colorMode === 1 ? OrderHoverIcon : OrderIcon
+            }
+            alt="color-mode"
+            className="!w-[20px] !h-[20px]"
+            onClick={() => setColorMode(1)}
+          />
+          <img
+            src={
+              colorMode === 2 ? GreenHoverIcon : GreenIcon
+            }
+            alt="color-mode"
+            className="!w-[20px] !h-[20px]"
+            onClick={() => setColorMode(2)}
+          />
+          <img
+            src={
+              colorMode === 3 ? RedHoverIcon : RedIcon
+            }
+            alt="color-mode"
+            className="!w-[20px] !h-[20px]"
+            onClick={() => setColorMode(3)}
+          />
+        </div>
+        <SelectPop 
+            value={mergeDepth}
+            options={depthPrecisionList}
+            title={t('spot.select.placeholder')} 
+            onChange={(value: any) => setMergeDepth(value)}
+            activeType="icon"
+            renderBtn={(open) => (
+                <button 
+                    type="button" 
+                    className={`text-[14px] leading-[20px] tip-color`}
+                    onClick={open}
+                >
+                    <span>{getLabel(mergeDepth)}</span>
+                    <Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e] ml-1" />
+                </button>
+            )}
         />
       </div>
     );
@@ -331,10 +429,10 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => updateTradePrice(order.price)}
                     >
-                      {order.price.toFixed(currentPair?.coinScale)}
+                      {order.price}
                     </span>
                     <span className={styles.amount}>
-                      {order.amount.toFixed(5)}
+                      {order.amount}
                     </span>
                     <div className={styles.totalColumn}>
                       <div
@@ -422,10 +520,10 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => updateTradePrice(order.price)}
                     >
-                      {order.price.toFixed(currentPair?.baseCoinScale)}
+                      {order.price}
                     </span>
                     <span className={styles.amount}>
-                      {order.amount.toFixed(5)}
+                      {order.amount}
                     </span>
                     <div className={styles.totalColumn}>
                       <div

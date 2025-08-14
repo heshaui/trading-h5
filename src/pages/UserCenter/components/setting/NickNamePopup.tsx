@@ -130,7 +130,7 @@ const kvConfig=appStore.getKvConfigAll()
                             <li className="flex align-base ">
                                 <Iconify icon="emojione-monotone:small-orange-diamond" className="theme_color mr-1"/>
                                 {/* 24h内仅可修改1次。 */}
-                                {t('usersetting.modifyNicknameOnceTip1', {time:kvConfig?.nickname_modify_time || 24})}
+                                {t('usersetting.modifyNicknameOnceTip1', {time:kvConfig?.nickname_modify_time || 1})}
                             </li>
                             <li className="flex align-base mt-1">
                                 <Iconify icon="emojione-monotone:small-orange-diamond" className="theme_color mr-1"/>

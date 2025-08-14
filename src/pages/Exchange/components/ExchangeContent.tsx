@@ -121,7 +121,7 @@ const ExchangeContent: React.FC = observer(() => {
                         };               
                         return newDepthData;
                     });
-                }, 1000)
+                }, 100)
                 depthDataDebounce();
             } catch (error) {
             }
@@ -180,7 +180,7 @@ const ExchangeContent: React.FC = observer(() => {
                         .sort((a: any, b: any) => a.timestamp - b.timestamp);
                     return { ...newDataCopy, data: combinedKlines };
                 });
-            }, 1000);
+            }, 100);
 
             websocket.connect((message: string) => {
                 try {
@@ -230,7 +230,7 @@ const ExchangeContent: React.FC = observer(() => {
 
     useEffect(() => {
         try {
-            appStore.loadCurrencyPairs(isLoggedIn ? 'all' : 'show')
+            appStore.loadCurrencyPairs()
                 .then((result) => {
                     const currentPairList = appStore.getCurrentPair() ||
                         (appStore.currencyPairs && appStore.currencyPairs.length > 0

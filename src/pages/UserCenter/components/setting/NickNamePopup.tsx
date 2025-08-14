@@ -41,7 +41,7 @@ const kvConfig=appStore.getKvConfigAll()
                 // console.log(values);
                 if(!nicknameInfo?.isNicknameUpdate) return Toast.show({
                   icon: 'fail',
-                  content: t('usersetting.modifyOnce'),
+                  content: t('usersetting.modifyNicknameOnceTip1', {time:kvConfig?.nickname_modify_time || 1}),
                 });
                 try {
                     const param={

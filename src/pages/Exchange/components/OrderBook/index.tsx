@@ -62,7 +62,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
     ].filter(Boolean)
     const result = precisionList.map(num => ({
       label: num,
-      value: Number((1 / Math.pow(10, num)).toFixed(num))
+      value: num < 10 ? Number((1 / Math.pow(10, num)).toFixed(num)) : num
     }));
     setMergeDepth(result[0].value)
     return result

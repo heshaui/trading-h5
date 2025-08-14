@@ -592,9 +592,13 @@ const WithdrawMoneyPage = observer(() => {
   }
   useEffect(() => {
     // 检查身份认证和安全设置
-    const needsKyc = userInfo?.verifiedWithdrawalStatus === 1&& userInfo?.realnessStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1
+    const verified10 = userInfo?.verifiedWithdrawalStatus === 1 && userInfo?.realnessStatus !== 1 //已认证且未实名-判断unverifiedWithdrawalStatus
+    const unverifie11 = userInfo?.unverifiedWithdrawalStatus === 1 && userInfo?.realnessStatus === 1 //未认证且实名-判断verifiedWithdrawalStatus
+
+    const needsKyc = verified10&&userInfo?.unverifiedWithdrawalStatus !== 1
     const needsGoogleAuth = !userInfo?.isGoogleAuth||!userInfo?.googleCode
-    const needsWithdraw = userInfo?.withdrawalStatus !== 1||(userInfo?.verifiedWithdrawalStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1)
+    const needsWithdraw = userInfo?.withdrawalStatus !== 1||(userInfo?.verifiedWithdrawalStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1)||
+    (unverifie11&&userInfo?.verifiedWithdrawalStatus !== 1)
     if (!token || needsWithdraw|| needsKyc || needsGoogleAuth) {
       navigate('/assets')
       Toast.show({

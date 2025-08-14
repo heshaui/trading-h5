@@ -40,6 +40,7 @@
             "amount": "Amount",
             "cancel": "Cancel All",
             "averagePrice": "Average Price",
+            "averagePrice2": "Avg Price",
             "price2": "Trade Price",
             "count": "Trade Quantity",
             "amount2": "Trade Amount",
@@ -47,6 +48,8 @@
             "fee": "Fee",
             "role": "Role",
             "date": "Date",
+            "createTime": "Order Time",
+            "updateTime": "Update Time",
             "coin": "Coin",
             "balance": "Balance",
             "available": "Available",
@@ -68,6 +71,7 @@
             "tradeAmount": "Trade Amount",
             "tradeFee": "Fee",
             "tradeRole": "Role",
+            "tradeDetail": "Trade Details",
             "dealAmount": "Completed/Delegated"
         },
         "select": {
@@ -85,6 +89,8 @@
             "search": "Search",
             "limit": "Limit",
             "market": "Market",
+            "limit1": "Limit Order",
+            "market1": "Market Order",
             "stopLoss": "Stop Loss",
             "placeholder": "Please Select",
             "trading": "Trading",
@@ -93,7 +99,9 @@
             "canceled": "Canceled by User",
             "created": "Order Created",
             "partial": "Partially Filled",
-            "canceled2": "Order Canceled, Filled and Unfilled"
+            "canceled2": "Order Canceled, Filled and Unfilled",
+            "filter": "Filter",
+            "cancelOrder": "Cancel Order"
         },
         "trade": {
             "buy": "Buy",
@@ -206,6 +214,7 @@
         "cancelOrderModal": {
             "title": "Cancel Confirmation",
             "title2": "Are you sure you want to cancel all orders?",
+            "title3": "Are you sure you want to cancel the current order?",
             "cancel": "Cancel",
             "confirm": "Confirm"
         },

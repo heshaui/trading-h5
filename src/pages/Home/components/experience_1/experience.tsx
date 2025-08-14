@@ -75,15 +75,12 @@ export default function Experience() {
         }
     }
     const bgUrl = useMemo(() => {
-        // let isDayMode = '';
-        let token = '';
-        if (typeof window !== 'undefined') {
-            // isDayMode = localStorage.getItem('isDayMode') || ''
-            token = localStorage.getItem(LOCAL_STORAGE_KEY.USER_TOKEN) || ''
-        }
-        const langCode = autoConvertLangCode(langKey, 'long')
+        // 使用响应式的 currentLanguage 而不是静态的 langKey
+        const activeLangKey = currentLanguage || langKey || 'en_US';
+        const langCode = autoConvertLangCode(activeLangKey, 'long')
 
         const langData = homeImage[langCode]
+        
         let homePic = {} as LoginPicType
         if (langData) {
             // setHomePic(homeImage[langCode])
@@ -105,7 +102,7 @@ export default function Experience() {
                 return homePic?.dark.before_login
             }
         }
-    }, [langKey, homeImage, isDayMode, token])
+    }, [currentLanguage, langKey, homeImage, isDayMode, token])
     const picClick = (url: string) => {
         if (url) {
             window.open(url, '_blank', 'noopener')

@@ -112,8 +112,8 @@ function NicknameModal({ open, onCancel, onOk }: Props) {
                         <p className={`${styles.title_color2} font-16 font-w-400 mr-9`}>
                             {/* 注册 14 天内累计充值不低于 100 USDT且完成实名认证，即可获得好友现货交易手续费 */}
                             {/* {t('invite.inviteModal.tip1')} */}
-                            {rewardInfo.isRealname?.toString() == '1' ? t('invite.inviteModal.tip11', { time: rewardInfo.validTime, count: rewardInfo.rechargeLimit, coinName: rewardInfo.coinName})
-                                : t('invite.inviteModal.tip12', { time: rewardInfo.validTime, count: rewardInfo.rechargeLimit, coinName: rewardInfo.coinName})}
+                            {rewardInfo.isRealname?.toString() == '1' ? t('invite.inviteModal.tip11', { time: rewardInfo.validTime, count: rewardInfo.rechargeLimit, coinName: 'USDT'})
+                                : t('invite.inviteModal.tip12', { time: rewardInfo.validTime, count: rewardInfo.rechargeLimit, coinName: 'USDT'})}
                             <span className={styles.strong_color}>{rewardInfo.rebateRatio}%</span>
                             {/* 返佣 */}
                             {t('invite.inviteModal.tip2')}

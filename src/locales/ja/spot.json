@@ -13,6 +13,7 @@
         "orderBook": {
             "title": "板情報",
             "latestTrades": "最新取引",
+            "market": "市場",
             "price": "価格",
             "amount": "数量",
             "total": "累計",
@@ -39,6 +40,7 @@
             "amount": "取引額",
             "cancel": "全取消",
             "averagePrice": "平均取引価格",
+            "averagePrice2": "平均価格",
             "price2": "取引価格",
             "count": "取引数量",
             "amount2": "取引金額",
@@ -46,6 +48,8 @@
             "fee": "手数料",
             "role": "役割",
             "date": "日付",
+            "createTime": "注文時刻",
+            "updateTime": "更新時刻",
             "coin": "通貨",
             "balance": "保有量",
             "available": "利用可能",
@@ -66,7 +70,9 @@
             "tradeCount": "取引数量",
             "tradeAmount": "取引金額",
             "tradeFee": "手数料",
-            "tradeRole": "役割"
+            "tradeRole": "役割",
+            "tradeDetail": "取引詳細",
+            "dealAmount": "約定済み/委託量"
         },
         "select": {
             "all": "全て",
@@ -82,7 +88,9 @@
             "hideCancel": "取消済みを非表示",
             "search": "検索",
             "limit": "指値",
+            "limit1": "指値注文",
             "market": "成行",
+            "market1": "成行注文",
             "stopLoss": "損切り/利益確定",
             "placeholder": "選択してください",
             "trading": "取引中",
@@ -91,7 +99,9 @@
             "canceled": "ユーザー取消",
             "created": "注文作成",
             "partial": "部分成交",
-            "canceled2": "注文は取消されました。クリックして未取消のものを確認"
+            "canceled2": "注文は取消されました。クリックして未取消のものを確認",
+            "filter": "フィルター",
+            "cancelOrder": "注文をキャンセル"
         },
         "trade": {
             "buy": "買入",
@@ -131,6 +141,7 @@
             "feeCoin": "手数料通貨"
         },
         "header": {
+            "market": "市場",
             "favorites": "お気に入り",
             "spot": "現物",
             "search": "検索",
@@ -168,7 +179,10 @@
             "price": "価格",
             "amount": "数量",
             "total": "取引額",
-            "all": "全て"
+            "all": "全て",
+            "loginNow": "今すぐログイン",
+            "goToMarket": "マーケットへ",
+            "noData": "データがありません"
         },
         "feeCoin": {
             "receivedCoin": "受領通貨",
@@ -200,6 +214,7 @@
         "cancelOrderModal": {
             "title": "注文取消確認",
             "title2": "全ての注文を取消する確定ですか？",
+            "title3": "現在の注文を取消しますか？",
             "cancel": "取消",
             "confirm": "確認"
         },
@@ -216,7 +231,8 @@
             "cancel": "取消",
             "edit": "編集",
             "login": "ログイン",
-            "errmax": "最大購入量{{max}}"
+            "errmax": "最大購入量{{max}}",
+            "precision": "精度"
         },
         "tooltip": {
             "buyAvailableLimit": "可買は、購入時の利用可能残高と希望取引価格によって決まります。希望価格を入力すると、自動的に計算されます",
@@ -250,7 +266,8 @@
             "fee": "手数料",
             "feeDetails": "メーカー{{maker}}% / テイカー{{taker}}%",
             "kline": "K線",
-            "depth": "板深度"
+            "depth": "板深度",
+            "basic": "基本版"
         }
     }
 }

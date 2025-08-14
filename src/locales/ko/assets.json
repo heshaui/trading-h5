@@ -5,7 +5,9 @@
         "billDetails": "거래 내역",
         "withdraw": "출금",
         "deposit": "입금",
-        "address": "주소 관리"
+        "address": "주소 관리",
+        "rechargeDetail": "입금 상세",
+        "withdrawDetail": "출금 상세"
     },
     "assetsAccount": {
         "title": "현물 계정",
@@ -63,6 +65,9 @@
             "topuptip1": "입금 기능을 사용할 수 없습니다",
             "tip1": "2단계 인증을 활성화해야 출금이 가능합니다 자산 보호를 위해 빠른 설정을 권장합니다",
             "withdrawtip2": "신원 인증 미완료",
+            "withdrawtip3": "신원 인증 완료",
+            "withdrawtip4": "2FA 연동",
+            "withdrawtip5": "2FA 연동 완료",
             "tip2": "모든 기능을 사용하려면 신원 인증을 완료하세요",
             "tip3": "출금이 금지되어 있습니다 고객센터에 문의하세요!",
             "tip4": "입금 기능이 비활성화되어 있습니다 고객센터에 문의하세요!",
@@ -71,6 +76,7 @@
         },
         "title2": "거래 내역",
         "assets": "현물 자산",
+        "assets2": "총자산 평가액",
         "todayProfit": "오늘의 손익",
         "search": "검색",
         "hideZero": "잔액 0 숨기기",
@@ -116,9 +122,12 @@
         "estimatedArrival": "예상 도착 시간",
         "fee": "수수료",
         "withdraw": "출금",
+        "wthdraw": "출금",
         "faq": "자주 묻는 질문",
         "address": "주소",
         "network": "네트워크",
+        "network2": "메인 네트워크",
+        "txHash": "트랜잭션 해시",
         "faqList": {
             "item1": "IMBIT에서 입출금하는 방법",
             "item2": "입금 단계별 가이드",
@@ -149,8 +158,9 @@
         "belowMin24h2": "24시간 최소 한도 미만",
         "belowMin24h3": "24시간 최소 한도 미만: {{min}}",
         "withdrawAmountMin": "출금 금액은 최소 {{min}} 이상이어야 합니다",
-        "tipText": "수신 주소에 메모/태그가 필요한지 확인하세요 누락하거나 잘못 입력하면 자산이 손실됩니다 일부 플랫폼에서는 Tag를 메모, ID, 라벨 등으로 부르기도 합니다"
-    
+        "tipText": "수신 주소에 메모/태그가 필요한지 확인하세요 누락하거나 잘못 입력하면 자산이 손실됩니다 일부 플랫폼에서는 Tag를 메모, ID, 라벨 등으로 부르기도 합니다",
+        "tipText2": "안내",
+        "tipText3": "출금 기능을 사용하려면 아래 항목을 완료하세요"
     },
     "withdrawTable": {
         "create": "생성됨",
@@ -164,20 +174,23 @@
         "title": "최근 출금 기록",
         "more": "더보기",
         "onlyShow": "현재 통화만 보기",
-        "onlyShowError": "선택된 통화가 없습니다"
+        "onlyShowError": "선택된 통화가 없습니다",
+        "userCancel": "사용자가 취소했습니다. 다시 출금해주세요",
+        "walletProcessing": "출금 지갑 처리 중입니다. 잠시만 기다려주세요",
+        "withdrawSuccess": "출금이 성공했습니다. 수신 주소를 확인하세요"
     },
     "withdrawMoneyCheck": {
         "cancel": "취소",
         "confirm": "확인",
         "operationFailed": "작업 실패",
         "withdrawConfirm": "출금 확인",
-
         "withdrawAmount": "출금 금액",
         "withdrawAddress": "출금 주소",
         "network": "네트워크",
         "amountAfter": "수령 금액",
         "toAccount": "수신: ",
         "withdrawFee": "수수료: ",
+        "minWithdraw": "최소 출금 금액:",
         "withdrawAccount": "출금 계정",
         "spotAccount": "현물 계정",
         "warning": "정확한 출금 주소를 입력했는지와 선택한 전송 네트워크가 주소와 일치하는지 반드시 확인하세요"
@@ -238,8 +251,6 @@
         "error2": "인증 코드 요청 실패:",
         "error3": "인증 코드를 받지 못하셨나요?",
         "error4": "잘못된 인증 코드입니다"
-
-
     },
     "futureAccount": {
         "title": "선물 계정"

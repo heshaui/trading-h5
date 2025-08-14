@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import WebSocketService from "@/utils/websocket";
 import appStore from '@/store';
 import { reaction } from "mobx";
-import { debounce } from "lodash";
+import { debounce, throttle } from "lodash";
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import type { KLineData, OrderData } from '@/context/exchange-providers/ExchangeProvider';
 import useAuth from '@/hooks/useAuth';
@@ -108,21 +108,17 @@ const ExchangeContent: React.FC = observer(() => {
                     return;
                 }
 
-
-                const depthDataDebounce = debounce(() => {
-                    updateDepthData(() => {
-                        // 处理买单(bids) - 按价格降序排列
-                        const processedBids = (data.bids || [])
-                        // 处理卖单(asks) - 按价格升序排列  
-                        const processedAsks = (data.asks || [])
-                        const newDepthData = {
-                            asks: processedAsks,
-                            bids: processedBids,
-                        };               
-                        return newDepthData;
-                    });
-                }, 100)
-                depthDataDebounce();
+                updateDepthData(() => {
+                    // 处理买单(bids) - 按价格降序排列
+                    const processedBids = (data.bids || [])
+                    // 处理卖单(asks) - 按价格升序排列  
+                    const processedAsks = (data.asks || [])
+                    const newDepthData = {
+                        asks: processedAsks,
+                        bids: processedBids,
+                    };               
+                    return newDepthData;
+                });
             } catch (error) {
             }
         });
@@ -166,7 +162,7 @@ const ExchangeContent: React.FC = observer(() => {
             const websocket = new WebSocketService(wsUrl);
             klineWsRef.current = websocket;
 
-            const updateKlineDataDebounce = debounce((newData: any) => {
+            const updateKlineDataDebounce = throttle((newData: any) => {
                 updateKlineData((prevData: KLineData | null) => {
                     const newDataCopy = JSON.parse(JSON.stringify(newData));
                     const combinedKlines = [
@@ -180,7 +176,7 @@ const ExchangeContent: React.FC = observer(() => {
                         .sort((a: any, b: any) => a.timestamp - b.timestamp);
                     return { ...newDataCopy, data: combinedKlines };
                 });
-            }, 100);
+            }, 1000);
 
             websocket.connect((message: string) => {
                 try {

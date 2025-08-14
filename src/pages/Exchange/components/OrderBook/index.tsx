@@ -17,8 +17,8 @@ import GreenHoverIcon from '@/assets/images/exchange/icon_green_hover.png';
 import GreenIcon from '@/assets/images/exchange/icon_green.png';
 import RedHoverIcon from '@/assets/images/exchange/icon_red_hover.png';
 import RedIcon from '@/assets/images/exchange/icon_red.png';
-import UpIcon from '@/assets/images/order_book/up.svg';
-import DownIcon from '@/assets/images/order_book/down.svg';
+import { ReactComponent as UpIcon } from '@/assets/images/order_book/up.svg';
+import { ReactComponent as DownIcon } from '@/assets/images/order_book/down.svg';
 
 // 定义订单类型
 interface Order {
@@ -481,17 +481,9 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                 }}
               >
                 {priceDirection === "up" ? (
-                  <Image
-                    src={UpIcon}
-                    alt="up"
-                    className="!w-[16px] h-[16px]"
-                  />
+                  <UpIcon className="!w-[16px] !h-[16px]" />
                 ) : priceDirection === "down" ? (
-                  <Image
-                    src={DownIcon}
-                    className="!w-[16px] h-[16px]"
-                    alt="down"
-                  />
+                  <DownIcon className="!w-[16px] !h-[16px]" />
                 ) : (
                   "-"
                 )}

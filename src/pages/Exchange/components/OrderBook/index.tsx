@@ -10,6 +10,7 @@ import styles from './style/OrderBook.module.css'
 import { NoData } from "@/components/noData";
 import SelectPop from '@/components/SelectPop';
 import { getRound } from '@/utils/getUseRate';
+import { roundDown } from '@/utils/index'
 
 import OrderHoverIcon from '@/assets/images/exchange/icon_order_hover.png';
 import OrderIcon from '@/assets/images/exchange/icon_order.png';
@@ -51,7 +52,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   // 当前聚合区间
   const [mergeDepth, setMergeDepth] = useState<number>(0.01);
 
-  // 动态设置深度精度，即聚合区间 币对设置中的深度精度：1：0.1，2：0.01，3： 0.001 以此类推
+  // 动态设置深度精度，即聚合区间 币对设置中的深度精度：1-9表示小数位数，10即以上表示具体区间
   const depthPrecisionList = useMemo(() => {
     const precisionList = [
       Number(currentPair.depthOne), 
@@ -87,7 +88,8 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
       currentPair?.coinSymbol,
       currentPair?.baseSymbol
     );
-    return priceInfo.baseScaleResult as number;
+    const currentPrecision = Number(getLabel(mergeDepth));
+    return currentPrecision >= 10 ? priceInfo.baseScaleResult as number : roundDown(price, currentPrecision);
   };
 
   const formatAmount = (amount: number) => {
@@ -132,7 +134,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 
     // 转换回数组并排序
     const aggregatedArray = Array.from(aggregatedMap.entries()).map(([price, { amount, total }]) => ({
-      price: formatPrice(price),  // 这里的价格是区间起始价格
+      price,  // 这里的价格是区间起始价格
       amount: formatAmount(amount),
       total
     }));
@@ -429,7 +431,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => updateTradePrice(order.price)}
                     >
-                      {order.price}
+                      {formatPrice(order.price)}
                     </span>
                     <span className={styles.amount}>
                       {order.amount}
@@ -512,7 +514,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => updateTradePrice(order.price)}
                     >
-                      {order.price}
+                      {formatPrice(order.price)}
                     </span>
                     <span className={styles.amount}>
                       {order.amount}

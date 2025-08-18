@@ -250,6 +250,7 @@
             "insufficientBalance": "Insufficient {{symbol}} balance",
             "minOrderAmount": "Minimum order quantity is {{amount}} {{symbol}}",
             "maxOrderAmount": "Maximum order quantity is {{amount}} {{symbol}}",
+            "maxCurrentPrice": "Maximum order quantity for limit order is {{amount}} {{symbol}}",
             "enterPrice": "Please enter a price",
             "enterAmount": "Please enter a trade quantity",
             "enterTotal": "Please enter a trade amount",

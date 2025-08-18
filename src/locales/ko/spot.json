@@ -250,6 +250,7 @@
             "insufficientBalance": "사용 가능한 {{symbol}} 잔액이 부족합니다.",
             "minOrderAmount": "최소 주문 수량은 {{amount}} {{symbol}}입니다.",
             "maxOrderAmount": "최대 주문 수량은 {{amount}} {{symbol}}입니다.",
+            "maxCurrentPrice": "지정가 주문 최대 체결량은 {{amount}} {{symbol}}.",
             "enterPrice": "가격을 입력하세요.",
             "enterAmount": "거래 수량을 입력하세요.",
             "enterTotal": "거래 금액을 입력하세요.",

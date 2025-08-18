@@ -249,6 +249,7 @@
             "insufficientBalance": "可用{{symbol}}余额不足",
             "minOrderAmount": "最小下单数量为 {{amount}} {{symbol}}",
             "maxOrderAmount": "最大下单数量为 {{amount}} {{symbol}}",
+            "maxCurrentPrice": "限价单最大委托量为 {{amount}} {{symbol}}",
             "enterPrice": "请输入价格",
             "enterAmount": "请输入交易数量",
             "enterTotal": "请输入交易金额",

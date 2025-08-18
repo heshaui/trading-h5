@@ -71,7 +71,7 @@ module.exports = {
     host: '0.0.0.0',
     proxy: {
       '/ambit-auth': {
-        target: 'https://ljx.imbit.work',
+        target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
       },
@@ -81,7 +81,7 @@ module.exports = {
         secure: false,
       },
       '/ambit-inform-web': {
-        target: 'https://ljx.imbit.work',
+        target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
       },
@@ -91,12 +91,12 @@ module.exports = {
         secure: false,
       },
       '/ambit-oss': {
-        target: 'https://ljx.imbit.work',
+        target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
       },
       '/ambit-assets-web': {
-        target: 'https://ljx.imbit.work',
+        target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
       }

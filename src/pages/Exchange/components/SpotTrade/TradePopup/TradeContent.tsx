@@ -31,39 +31,49 @@ import { add, lastD, roundDown } from "@/utils";
 import { useCoinList } from "@/hooks/use-coinList";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
+import { getOrderList } from '@/services/spot'
 
 import ConfirmOrder from "./ConfirmOrder";
 import SpotBuyPopup from "./SpotBuyPopup";
-
 interface DataType {
-  data: any;
-  id: number;
-  userId: number;
-  platformType: number;
-  deviceNo: string;
-  ip: string;
-  address: string;
-  token: number;
-  tokenTime: number;
-  createTime: number;
-  updateTime: number;
-  tenantId: string;
+  id: number,
+  orderId: string,
+  amount: number,
+  baseSymbol: string,
+  canceledTime: number,
+  coinSymbol: string,
+  completedTime: number,
+  direction: number,
+  userId: number,
+  price: number,
+  status: number,
+  symbol: string,
+  createTime: number,
+  updateTime: number,
+  tradedAmount: number,
+  turnover: number,
+  type: number,
+  useDiscount: number,
+  orderResource: number,
+  tenantId: string,
+  fee: number,
+  baseSymbolCount: number
 }
 type Props = {
   segmentedType?: string;
   onOrderSuccess?: () => void; // 添加回调函数属性
-  orderData?: DataType[];
+  //orderData?: DataType[];
   onOk: () => void;
   onCancel: () => void;
 };
-const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk, onCancel }: Props) => {
+const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel }: Props) => {
   const { t } = useLanguage(["spot"]);
   const { isLight } = useTheme();
   const [form] = Form.useForm();
   // 添加 price state
   const [price, setPrice] = useState<string | number>("");
   const navigate = useNavigate();
-  const { tradePrice } = useExchange();
+  const { tradePrice,  orderData} = useExchange();
   const containerRef = useRef<HTMLDivElement>(null);
   const updateOrder = appStore.getUpdateFlag();
   const { popType, setPopType } = usePopTypeContext();
@@ -89,11 +99,37 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
   // 滑块的值
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [loading, setLoading] = useState(false);
+  // 限价挂单总数
+  const [priceOrderTotal, setPriceOrderTotal] = useState(0);
+  // 如果订单变了就刷新数据
+  const { orderPlace } = appStore.updateFlag;
 
   // 根据类型更新
   useEffect(() => {
     setSegmentedValue(segmentedType);
   }, [segmentedType])
+
+  // 获取当前委托订单列表，计算限价挂单总数
+  const getOrderListData = async () => {
+    try {
+      const params = {
+        orderType: 0,
+        pageNo: 1,
+        pageSize: 1000000,
+        type: 1
+      }
+      const res = await getOrderList(params);
+      if (res.code === '0' && res.data?.list?.length) {
+        const total = res.data?.list?.reduce((sum: number, item:DataType) => sum + (Number(item.amount)?? 0), 0);
+        setPriceOrderTotal(total)
+      }
+    } catch (err) {
+
+    }
+  }
+  useEffect(() => {
+    getOrderListData()
+  }, [orderPlace])
 
   // console.log('currentPair', currentPair);
   //  输入金额校验
@@ -610,6 +646,20 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
       hasError = true;
     }
 
+    // 检查当前币对设置的限价最大挂挂单数
+    if (
+      currentPair.maxCurrentPrice !== undefined 
+      && currentPair.maxCurrentPrice !== null 
+      && !priceDisabled
+      && (values.amount + priceOrderTotal > currentPair.maxCurrentPrice)
+    ) {
+      message.error(t('spot.error.maxCurrentPrice', {
+        amount: currentPair.maxCurrentPrice,
+        symbol: currentPair?.coinSymbol,
+      }))
+      return
+    }
+
     // 验证金额字段 - 市价买单或限价单都需要验证
     if ((priceDisabled && segmentedvalue === "buy") || !priceDisabled) {
       if (!values.account || values.account === "") {
@@ -794,12 +844,11 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
 
     // 计算价格偏差百分比
     const deviation = Math.abs(((inputPrice - tradePrice) / tradePrice) * 100);
-
     if (deviation > maxDeviation) {
       return Promise.reject(
         // new Error(`价格偏差不能超过${maxDeviation}%，当前偏差${deviation.toFixed(2)}%`)
         new Error(
-          t("spot.error.priceDeviation", {
+          t("spot.tooltip.priceDeviation", {
             maxDeviation: maxDeviation,
             deviation: deviation.toFixed(2),
           })
@@ -1016,7 +1065,11 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                 }
               }}
             >
-              <Form.Item name="price" className="spot_number_box">
+              <Form.Item 
+                name="price" 
+                className="spot_number_box"
+                rules={[{ validator: checkPriceDeviation}]}
+              >
                 <div className={priceDisabled ? '' : 'custom-input-number'}>
                   <InputNumber
                     className={`${styles.mail_input} spot_number_input `}
@@ -1295,8 +1348,8 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                   {/* <p>{userBalance.find(item => item.coinName === currentPair?.baseSymbol)?.balance || '--'} {currentPair?.baseSymbol}</p> */}
                   {isLoggedIn ? (
                     <p className="flex items-center text-[var(--text-color5)]">
-                      <span>{roundNum(currentPair?.baseSymbol || "")}{" "}
-                      {currentPair?.baseSymbol}{" "}</span>
+                      <span>{segmentedvalue === "buy" ? roundNum(currentPair?.baseSymbol || "") : getAvailableToSell()}{" "}
+                      {segmentedvalue === "buy" ? currentPair?.baseSymbol : currentPair?.coinSymbol}{" "}</span>
 					            <Iconify icon="gg:add" className="text-[20px] ml-1" onClick={() => {
                           setSpotModal(true);
                       }}/>
@@ -1331,8 +1384,8 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, orderData, onOk
                     <p className="text-[var(--text-color5)]">
                       {segmentedvalue === "buy"
                         ? getAvailableToBuy()
-                        : getAvailableToSell()}
-                      {currentPair?.coinSymbol}
+                        : roundNum(currentPair?.baseSymbol || "")}{" "}
+                      {segmentedvalue === "buy" ? currentPair?.coinSymbol : currentPair?.baseSymbol}
                     </p>
                   ) : (
                     <p className="text-[var(--text-color5)]">--</p>

@@ -1,7 +1,6 @@
 import { request } from '@/request/index';
 import { API_MODULE_NAME } from '@/config/apiConfig';
 const fixUrl = `/${API_MODULE_NAME.AMBIT_USER_WEB}`
-const homeUrl = `/${API_MODULE_NAME.AMBIT_HOME_WEB}`
 
 interface createOrderType {
     amount:number,

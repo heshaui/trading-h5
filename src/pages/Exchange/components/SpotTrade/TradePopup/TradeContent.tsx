@@ -73,7 +73,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
   // 添加 price state
   const [price, setPrice] = useState<string | number>("");
   const navigate = useNavigate();
-  const { tradePrice,  orderData} = useExchange();
+  const { tradePrice,  orderData, depthData} = useExchange();
   const containerRef = useRef<HTMLDivElement>(null);
   const updateOrder = appStore.getUpdateFlag();
   const { popType, setPopType } = usePopTypeContext();
@@ -116,7 +116,9 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
         orderType: 0,
         pageNo: 1,
         pageSize: 1000000,
-        type: 1
+        type: 1,
+        coinSymbol: currentPair?.coinSymbol ?? null,
+        baseSymbol: currentPair?.baseSymbol ?? null,
       }
       const res = await getOrderList(params);
       if (res.code === '0' && res.data?.list?.length) {
@@ -738,6 +740,18 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
     const coin = coinList.find((item: any) => item.coinName === coinName);
     return roundDown(balance, coin?.unitScale);
   };
+
+  // 计算可卖金额，公式：可用 * 盘口买盘第一条的价格
+  const getSellBalance = () => {
+    const count = getAvailableToSell();
+    let price = 1;
+    if (depthData?.bids?.length && depthData?.bids[0]?.length) {
+      price = depthData?.bids[0][0]
+    }
+    const balance = Number(count) * Number(price)
+    console.log('可卖数量/价格', Number(count), Number(price), balance)
+    return roundDown(balance, currentPair.baseCoinScale)
+  }
 
   useEffect(() => {
     getUserBalanceData();
@@ -1384,7 +1398,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                     <p className="text-[var(--text-color5)]">
                       {segmentedvalue === "buy"
                         ? getAvailableToBuy()
-                        : roundNum(currentPair?.baseSymbol || "")}{" "}
+                        : getSellBalance()}{" "}
                       {segmentedvalue === "buy" ? currentPair?.coinSymbol : currentPair?.baseSymbol}
                     </p>
                   ) : (

@@ -226,7 +226,7 @@ const ExchangeContent: React.FC = observer(() => {
 
     useEffect(() => {
         try {
-            appStore.loadCurrencyPairs()
+            appStore.loadCurrencyPairs(isLoggedIn ? 'all' : 'show')
                 .then((result) => {
                     const currentPairList = appStore.getCurrentPair() ||
                         (appStore.currencyPairs && appStore.currencyPairs.length > 0

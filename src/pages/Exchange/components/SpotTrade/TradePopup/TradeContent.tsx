@@ -649,11 +649,12 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
     }
 
     // 检查当前币对设置的限价最大挂挂单数
+    console.log('限价最大挂单数', priceOrderTotal, Number(currentPair.maxCurrentPrice))
     if (
       currentPair.maxCurrentPrice !== undefined 
       && currentPair.maxCurrentPrice !== null 
       && !priceDisabled
-      && (values.amount + priceOrderTotal > currentPair.maxCurrentPrice)
+      && (values.amount + priceOrderTotal > Number(currentPair.maxCurrentPrice))
     ) {
       message.error(t('spot.error.maxCurrentPrice', {
         amount: currentPair.maxCurrentPrice,

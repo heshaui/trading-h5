@@ -37,6 +37,8 @@ export const KV_KEYS = [
     "account_configuration", //邀请开关
     "nickname_modify_time", //昵称修改时间
     "flash_img", //闪兑配置
+    "user_agreement", //用户协议
+    "privacy_policy", //隐私政策
     // 可以根据需要添加更多配置项
 ];
 

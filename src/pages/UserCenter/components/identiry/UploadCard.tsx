@@ -166,7 +166,7 @@ const UploadCard: React.FC<UploadCardProps> =observer(({ onNext, onPrev, userInf
                 }
 
                 const encrypt = await encryptData(params)
-                console.log(params,111,encrypt,222);
+                // console.log(params,111,encrypt,222);
                 
                 const res = await postSaveIdentity(encrypt)
                 setIsLoading(true)

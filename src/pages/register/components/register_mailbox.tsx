@@ -10,6 +10,7 @@ import { Toast, Form, Input, Checkbox } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import EmailAuto from "@/components/EmailAuto";
 import { Iconify } from "@/components/icon";
+import { windowOpen } from "@/utils/windowOpen";
 
 const fromStyle: CSSProperties = {
     borderRadius: "5px",
@@ -37,8 +38,9 @@ export default function RegisterMail() {
     const [showLengthCheck, setShowLengthCheck] = useState(false);
     const [showCharCheck, setShowCharCheck] = useState(false);
     const [showNumCheck, setShowNumCheck] = useState(false);
-    
+
     const [showRules, setShowRules] = useState(false);
+    const allConfig = store.getKvConfigAll();
 
     // 获取浏览器指纹
     const getFingerprint = async () => {
@@ -60,7 +62,7 @@ export default function RegisterMail() {
     // 当注册状态不为 EMAIL 时不渲染组件
     const handleFinish = async () => {
         form
-            .validateFields(['email', 'password','referee','agree'])
+            .validateFields(['email', 'password', 'referee', 'agree'])
             .then(async (values: any) => {
                 // form.resetFields(); // 重置表单
                 // if (loading) return;
@@ -110,7 +112,7 @@ export default function RegisterMail() {
         if (typeof value === 'string') {
             value = value.trim();
         }
-        
+
         // if (!value) {
         //     return Promise.reject(new Error(t('registerForm.passwordNull')));
         // }
@@ -137,14 +139,14 @@ export default function RegisterMail() {
         if (value.length > 0) {
             setShowRules(true);
         }
-        
+
         // 检查长度是否在 8 - 100 位之间
         if (value.length < 8 || value.length > 100) {
             setLengthValid(false);
         } else {
             setLengthValid(true);
         }
-        
+
         // 检查是否包含数字
         const hasNumber = /.*\d+.*/
         if (!hasNumber.test(value)) {
@@ -152,7 +154,7 @@ export default function RegisterMail() {
         } else {
             setNumValid(true);
         }
-        
+
         // 检查是否包含大写字母
         const hasUpperCase = /.*[A-Z].*/
         if (!hasUpperCase.test(value)) {
@@ -161,20 +163,26 @@ export default function RegisterMail() {
             setCharValid(true);
         }
     };
-    
+
     const showRule = () => {
         setShowLengthCheck(true);
         setShowCharCheck(true);
         setShowNumCheck(true);
     }
-    
+
     const hideRule = () => {
         setShowRules(false);
         setShowLengthCheck(false);
         setShowCharCheck(false);
         setShowNumCheck(false);
     }
-
+    const goLink = (type: 'user' | 'policy') => {
+        if (type === 'user') {
+            windowOpen(allConfig?.user_agreement_url || '');
+        } else {
+            windowOpen(allConfig?.privacy_policy_url || '');
+        }
+    }
     if (registerType !== RegisterTypeEnum.EMAIL) return null;
     return (
         <div className="flex-y-cc mt-7" >
@@ -207,7 +215,7 @@ export default function RegisterMail() {
                     {/* 密码 */}
                     {t('registerForm.passwordTitle')}
                 </div>
-                <Form.Item name="password" 
+                <Form.Item name="password"
                     rules={[
                         { required: true, message: t('registerForm.passwordNull') },
                         { validator: validatePassword }
@@ -285,11 +293,24 @@ export default function RegisterMail() {
                     </Form.Item>
                 )}
 
-                <Form.Item name="agree" valuePropName="checked" className={`${styles.login_form_item}`}>
-                    <Checkbox className={`${styles.custom_checkbox} text-color-default`}>
-                        <p className={`${styles.title_color} font-16`}>
+                <Form.Item noStyle name="agree" valuePropName="checked">
+                    <Checkbox className="custom-checkbox text-color-default " >
+                        <p className={`${styles.title_color}`}>
                             {/* 我已阅读并同意 */}
-                            {t('agree')} <span className="theme-color">{t('protocol')}</span> {t('and')} <span className="theme-color">{t('policy')}</span>
+                            {t('agree')}&nbsp;
+                            <button type="button" className="text-color" onClick={(event) => {
+                                event.stopPropagation();
+                                goLink('user')
+                            }}>
+                                {t('protocol')}
+                            </button>
+                            &nbsp;{t('and')}&nbsp;
+                            <button type="button" className="text-color" onClick={(event) => {
+                                event.stopPropagation();
+                                goLink('policy')
+                            }}>
+                                {t('policy')}
+                            </button>
                         </p>
                     </Checkbox>
                 </Form.Item>
@@ -299,7 +320,7 @@ export default function RegisterMail() {
                 onClick={handleFinish}>
                 {/* 注册 */}
                 {t('registerForm.registerButton')}
-            </button> 
+            </button>
 
             <div className="flex-cc mt-4">
                 <p>
@@ -320,4 +341,3 @@ export default function RegisterMail() {
 }
 
 
- 

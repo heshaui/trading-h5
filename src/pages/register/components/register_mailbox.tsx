@@ -178,11 +178,11 @@ export default function RegisterMail() {
     }
     const goLink = (type: 'user' | 'policy') => {
         if (type === 'user') {
-            windowOpen(allConfig?.user_agreement_url || '');
+          windowOpen(allConfig?.user_agreement || '');
         } else {
-            windowOpen(allConfig?.privacy_policy_url || '');
+          windowOpen(allConfig?.privacy_policy || '');
         }
-    }
+      }
     if (registerType !== RegisterTypeEnum.EMAIL) return null;
     return (
         <div className="flex-y-cc mt-7" >

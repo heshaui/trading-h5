@@ -471,3 +471,8 @@
         box-shadow: var(--shadow-notification);
     }
 }
+
+// modal 最大宽度
+.adm-center-popup-wrap {
+    max-width: 92vw !important;
+}

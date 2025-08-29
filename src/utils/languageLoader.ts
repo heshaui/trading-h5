@@ -19,6 +19,7 @@ export const loadLanguageResources = async (language: string) => {
       import(`../locales/${language}/userCenter.json`),
       // 可选的翻译文件（有些语言可能没有）
       import(`../locales/${language}/flash.json`).catch(() => ({ default: {} })),
+      import(`../locales/${language}/contract.json`),
     ]);
 
     // 返回组织好的语言包
@@ -38,6 +39,7 @@ export const loadLanguageResources = async (language: string) => {
       spot: modules[12].default,
       userCenter: modules[13].default,
       flash: modules[14].default,
+      contract: modules[15].default
     };
   } catch (error) {
     console.error(`Failed to load language resources for ${language}:`, error);
@@ -58,6 +60,7 @@ export const loadLanguageResources = async (language: string) => {
       spot: {},
       userCenter: {},
       flash: {},
+      contract: {}
     };
   }
 };

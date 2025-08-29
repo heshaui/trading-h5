@@ -23,10 +23,7 @@ const ExchangeContent: React.FC = observer(() => {
         updateKlineData, 
         updateOrderData,
     } = useExchange();
-    const [klineData, setKlineData] = useState<any>();
     const [currentPair, setCurrentPair] = useState<any>();
-    const [depthData, setDepthData] = useState<any>();
-    const [orderData, setOrderData] = useState<any[]>([]);
 
     // 修改WebSocket相关逻辑，使用useRef保存WebSocket实例
     const websocketRef = useRef<WebSocketService | null>(null);

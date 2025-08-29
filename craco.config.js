@@ -99,7 +99,12 @@ module.exports = {
         target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
-      }
+      },
+      '/fe-co-api': {
+        target: 'https://futures.imbit.work',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 };

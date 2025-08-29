@@ -149,7 +149,7 @@
   "riskDisclosure": {
     "title": "Risk Disclosure Statement",
     "cancel": "Cancel",
-    "confirm": "Confirm",
+    "confirm": "Confirm and open contract trading",
     "content": {
       "paragraph1": "1. When trading futures, if market movements are unfavorable and cause losses that deplete your position margin, this exchange will liquidate your positions according to system rules and disclose liquidation details. Please take note.",
       "paragraph2": "2. You must carefully read and adhere to this exchange's business rules. Understand the futures mechanism and principles, be aware of various market risks, and allocate funds appropriately for trading.",

@@ -5,6 +5,7 @@ export const API_MODULE_NAME = {
 	AMBIT_USER_WEB:"ambit-user-web",//用户接口
 	AMBIT_OSS:"ambit-oss",
 	AMBIT_ASSETS_WEB:"ambit-assets-web",//资产接口
+    AMBIT_CO_API: 'fe-co-api', //合约接口
 };
 // 本地存储key
 export const LOCAL_STORAGE_KEY = {
@@ -24,7 +25,12 @@ export const LOCAL_STORAGE_KEY = {
     LANGUAGE_LIST:'cachedLanguageList', //语言列表
     KV_CONFIG:'kv_config', // kv配置
     FLASH_CONFIG: 'flash_config', // 闪兑配置
-    USDT_RATE:'usdt_rate' // USDT汇率
+    USDT_RATE:'usdt_rate', // USDT汇率
+    PUBLIC_INFO: "public_info", // 公共信息
+    USER_CONFIG: "user_config", // 用户合约配置
+    CONTRACT_ASSETS: "contract_assets", // 合约资产
+    CURRENT_CONTRACT_INFO: "current_contract_info", // 当前合约信息
+    FINANCIAL_CONFIG: "financial_config", // 理财配置
 };
 
 export const KV_KEYS = [
@@ -37,6 +43,9 @@ export const KV_KEYS = [
     "account_configuration", //邀请开关
     "nickname_modify_time", //昵称修改时间
     "flash_img", //闪兑配置
+    "user_agreement", //用户协议
+    "privacy_policy", //隐私政策
+    "financial", //理财配置
     // 可以根据需要添加更多配置项
 ];
 

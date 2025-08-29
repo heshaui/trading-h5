@@ -19,6 +19,7 @@ import zhResetPassword from '../locales/zh/resetPassword.json';
 import zhSafe from '../locales/zh/safe.json';
 import zhSpot from '../locales/zh/spot.json';
 import zhUserCenter from '../locales/zh/userCenter.json';
+import zhContract from '../locales/zh/contract.json';
 
 // 初始资源，只包含默认语言
 const resources = {
@@ -38,6 +39,7 @@ const resources = {
     safe: zhSafe,
     spot: zhSpot,
     userCenter: zhUserCenter,
+    contract: zhContract
   },
 };
 

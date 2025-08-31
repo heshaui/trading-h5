@@ -36,6 +36,27 @@ const countNum = (amountNum: number, freeNum: number, minFee?: number) => {
     return  Number(estimatedAmount) < 0 ? 0 : estimatedAmount
 }
 
+// 根据precision精度格式数字显示
+const formatNumWithPrecision = (num: number | string | null | undefined, precision: number = 2): string => {
+    if (!num || num === '' || num === null || num === undefined) return '--';  
+    const numPrice = typeof num === 'string' ? parseFloat(num) : num;
+    if (isNaN(numPrice)) return '--';
+    precision = precision ?? 2;
+    const result = formatted(roundDown(num, precision));
+    return result.replace(/\.?0+$/, '');
+};
+
+// 辅助函数：格式化大额数字
+const formatAmount = (amount: number, t: Function) => {
+    if (amount >= 100000000) {
+        return formatted((amount / 100000000).toFixed(2)) + t('spot:spot.header.billion');
+    } else if (amount >= 10000) {
+        return formatted((amount / 10000).toFixed(2)) + t('spot:spot.header.tenThousand');
+    } else {
+        return amount.toFixed(2);
+    }
+};
+
 export {
     add, // 加法
     cut, // 减法
@@ -49,5 +70,7 @@ export {
     roundUp, //精度 向上取整/进一法
     countNum, // 预估金额
     withdrawFee, // 手续费
-    formatted
+    formatted,
+    formatNumWithPrecision,
+    formatAmount
 }

@@ -7,9 +7,9 @@
   "orderBook": "订单簿",
   "placeOrder": "下单",
   "24hChange": "24H涨跌",
-  "24hHigh": "24H最高",
-  "24hLow": "24H最低",
-  "24hVolume": "24H成交额",
+  "24hHigh": "24H 最高价",
+  "24hLow": "24H 最低价",
+  "24hVolume": "24H 成交额",
   "fundingRate": "资金费率",
   "info": "合约信息",
   "orderBookSettings": "订单簿设置",
@@ -437,6 +437,11 @@
     "marginCoin": "保证金币种",
     "contractValue": "合约面值",
     "minPriceChange": "最小价格变动单位",
-    "minMaintainMarginRate": "最低维持保证金率"
+    "minMaintainMarginRate": "最低维持保证金率",
+    "index": "指数",
+    "perpetual": "永续",
+    "futures": "交割",
+    "options": "期权",
+    "demo": "模拟"
   }
 }

@@ -105,7 +105,7 @@ const ContractContent: React.FC = observer(() => {
     const { isLoggedIn } = useAuth();
     const orderListRef = useRef<any>(null);
   const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
-  const [showRiskDisclosure, setShowRiskDisclosure] = useState(true); // 风险确认书模态框
+  const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
   const [orderBookData, setOrderBookData] = useState<any>(null); // 订单簿数据
   const [isClient, setIsClient] = useState(false); // 是否是客户端
   const [contractAssets, setContractAssets] = useState<ContractAsset[]>([]); // 合约账户数据
@@ -465,10 +465,6 @@ const ContractContent: React.FC = observer(() => {
   // 初始化数据和客户端状态
   useEffect(() => {
     const initializeClientData = async () => {
-      setIsClient(true);
-
-      // 只在客户端执行
-      if (typeof window !== "undefined") {
         // 获取公共数据
         const info = appStore.getPublicInfo();
         setPublicInfo(info);
@@ -480,6 +476,7 @@ const ContractContent: React.FC = observer(() => {
         // 获取当前合约信息
         const contractInfo = appStore.getCurrentContractInfo();
         setCurrentContractInfo(contractInfo);
+        console.log(contractInfo)
 
         // 获取账户余额
         getContractBalance();
@@ -498,11 +495,14 @@ const ContractContent: React.FC = observer(() => {
             console.error("获取用户合约配置失败:", error);
           }
         }
-      }
     };
-
     initializeClientData();
   }, [getContractBalance]);
+
+  // 获取币对列表
+  useEffect(() => {
+    appStore.loadPublicInfo();
+  }, [])
 
   // 监听store中currentContractInfo的变化
   useEffect(() => {
@@ -609,6 +609,7 @@ const ContractContent: React.FC = observer(() => {
           ) {
             const latestKline = data.data[data.data.length - 1];
             if (latestKline) {
+              console.log('价格数据')
               setPriceData((prevPriceData: any) => ({
                 ...prevPriceData,
                 price: latestKline.close.toString(),
@@ -718,7 +719,7 @@ const ContractContent: React.FC = observer(() => {
 
     return (
         <div className="pb-[76px]">
-            <ContractHeader />
+            <ContractHeader priceData={priceData}/>
             {/* 行情、盘口、最新成交 */}
             {/* <ContractTabs /> */}
             {/* 当前委托、历史委托、历史成交、资产 */}

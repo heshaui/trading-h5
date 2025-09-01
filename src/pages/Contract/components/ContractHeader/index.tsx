@@ -162,7 +162,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 					</div>
 					<div className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
 						<span className="tip-color w-fit mb-[2px] border-b border-dashed border-[#9e9e9e]">{t('contractHeader.fundingRate')}</span>
-						<span>{'0.0066%'}/{formatSeconds(689)}</span>
+						<span>{marketInfo?.currentFundRate}/{formatSeconds(689)}</span>
 					</div>
 				</div>
 			</div>

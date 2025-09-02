@@ -384,7 +384,9 @@
     "coinContract": "币本位合约",
     "usdtContract": "U本位合约",
     "mixContract": "混合合约",
-    "simContract": "模拟合约"
+    "simContract": "模拟合约",
+    "lastPrice": "最新价",
+    "changePercent": "涨跌幅"
   },
   "marginMode": {
     "title": "保证金模式",

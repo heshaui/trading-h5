@@ -115,6 +115,13 @@
         .adm-tabs-tab {
             padding: 12px 0 16px;
         }
+        .adm-tabs-header {
+            padding-left: 16px;
+        }
+        .adm-tabs-tab-wrapper {
+            padding: 0;
+            margin-right: 20px;
+        }
     }
     // 现货行情、盘口tabs
     &.spotTabs {

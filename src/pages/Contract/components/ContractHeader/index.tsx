@@ -7,6 +7,8 @@ import { formatNumWithPrecision, formatAmount } from '@/utils';
 import { getPairsRate } from '@/utils/getUseRate';
 import appStore from "@/store";
 
+import SelectPopup from './SelectPopup/index';
+
 import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings1.svg';
 import { ReactComponent as CalendarIcon } from '@/assets/images/exchange/icon_calendar.svg';
 
@@ -16,21 +18,12 @@ interface Props {
 
 const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 	const { t } = useLanguage(['contract', 'spot']);
+	const [selectPopupOpen, setSelectPopupOpen] = useState<boolean>(false);
 	const symbolList = appStore.getPublicInfo();
 	const currentContractInfo = appStore.getCurrentContractInfo();
 	const [currentSymbol, setCurrentSymbol] = useState<any>(currentContractInfo);
 	const [marketInfo, setMarketInfo] = useState<any>(null);
-	const [isPriceUp, setIsPriceUp] = useState<boolean>(false);
-	const handleSymbolSelect = (symbol: any) => {
-		
-		appStore.setCurrentContractInfo(symbol.id);
-		setCurrentSymbol(symbol);
-
-	};
-
-	const handleToggleFavorite = (symbol: any) => {
-		console.log("handleToggleFavorite", symbol);
-	};
+	const [isPriceUp, setIsPriceUp] = useState<boolean>(false)
 
 	const getMarketInfo = async (id: number) => {
 		const res = await getPublicMarketInfo({ contractId: id });
@@ -49,8 +42,8 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 	// 同步 store 中的 currentContractInfo 到本地状态
 	useEffect(() => {
 		if (currentContractInfo && Object.keys(currentContractInfo).length > 0) {
-		setCurrentSymbol(currentContractInfo);
-		console.log('当前合约信息', currentContractInfo)
+			setCurrentSymbol(currentContractInfo);
+			console.log('当前合约信息', currentContractInfo)
 		}
 	}, [currentContractInfo]);
 
@@ -112,7 +105,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 			</div>
 			<div className="flex">
 				<div className="shrink-0 mr-[30px]">
-					<div className="h-[22px] flex items-center mb-[6px]">
+					<div className="h-[22px] flex items-center mb-[6px]" onClick={() => setSelectPopupOpen(true)}>
 						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol.base}/{currentSymbol.quote}</span>
 						<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center mr-1">{getContractShowType()}</span>
 						<Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e]" />
@@ -166,6 +159,12 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 					</div>
 				</div>
 			</div>
+			{/* 币对选择弹窗 */}
+            <SelectPopup
+                open={selectPopupOpen}
+                onOk={() => setSelectPopupOpen(false)}
+                onCancel={() => setSelectPopupOpen(false)}
+            />
 		</div>
 	)
 });

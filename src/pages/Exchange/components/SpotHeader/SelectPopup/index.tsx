@@ -79,7 +79,7 @@ const SelectPopup: React.FC<Props> = observer(({
             activeKey={activeTab}
             onChange={setActiveTab}
             stretch={false}
-            activeLineMode='auto'
+            activeLineMode='fixed'
             className="spotSelectTabs safeTabs"
           />
           {/* 内容区域 */}

@@ -443,5 +443,8 @@
     "futures": "交割",
     "options": "期权",
     "demo": "模拟"
+  },
+  "chart": {
+    "title": "图表"
   }
 }

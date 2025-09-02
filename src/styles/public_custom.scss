@@ -142,6 +142,19 @@
             width: 28px;
         }
     }
+    // 计算器
+    &.calculatorTabs {
+        .adm-tabs-tab {
+            font-size: 14px;
+            padding: 21px 0 9px;
+        }
+        .adm-tabs-tab-line {
+            height: 2px;
+            border-radius: 2px;
+            width: 26px;
+        }
+    }
+
 }
 
 /* 头像tabs */

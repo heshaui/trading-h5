@@ -1,17 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Input, Button, Slider, Tabs, Select, ConfigProvider } from 'antd';
+import { Popup } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
-import styles from './calculator.module.css';
+import styles from './calculator.module.scss';
+
+import CustomTab from '@/components/CustomCom/CustomTab';
 
 interface CalculatorModeProps {
-  isShow: boolean;
-  close: () => void;
+  open: boolean;
+  onCancel: () => void;
   dataInfo?: any;
 }
-
 interface FormDataItem {
   title: string;
   units: string;
@@ -27,7 +29,7 @@ interface FormData {
   formData_3: FormDataItem;
 }
 
-const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProps) => {
+const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModeProps) => {
   const [form] = Form.useForm();
   const { t } = useLanguage(['contract']);
 
@@ -109,12 +111,12 @@ const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProp
   };
 
   useEffect(() => {
-    if (isShow) {
+    if (open) {
       setIsClosing(false);
       initForm();
       setLeverage(1);
     }
-  }, [isShow]);
+  }, [open]);
 
   // 当语言变化时，更新表单数据的标题
   useEffect(() => {
@@ -125,14 +127,14 @@ const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProp
     });
   }, [t]);
 
-  if (!isShow) {
+  if (!open) {
     return null;
   }
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
-      close();
+      onCancel();
     }, 300);
   };
 
@@ -293,41 +295,49 @@ const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProp
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Select: {
-            borderRadius: 8,
-            controlHeight: 48,
-            fontSize: 14,
-            colorBorder: '#d9d9d9',
-            optionSelectedBg: '#e6f4ff',
-            controlPaddingHorizontal: 16,
-            boxShadow: 'none',
-            boxShadowSecondary: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    <Popup
+        visible={open}
+        onClose={onCancel}
+        position='right'
+        closeOnMaskClick
+        bodyStyle={{ width: '86.666vw', height: '100vh' }}
+        bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
+    >   
+      <div className="flex h-[60px] px-4 text-[16px] font-medium justify-between items-center border-b border-color">
+        <span>{t('calculator.title')}</span>
+        <Iconify icon="eva:close-outline" className="text-[24px] tip-color" onClick={onCancel} />
+      </div>
+      {/* 收益/平仓价格/强平价格 切换 Tabs */}
+      <CustomTab
+        tabsItems={ tabItems }
+        activeKey={categoryType}
+        onChange={handleTabChange}
+        stretch={false}
+        activeLineMode='fixed'
+        className="calculatorTabs safeTabs"
+      />
+      {/* 内容区域 */}
+      <ConfigProvider
+        theme={{
+          components: {
+            Slider: {
+              controlSize: 16,
+              dotActiveBorderColor: "var(--theme-05)",
+              dotBorderColor: "var(--background5)",
+              dotSize: 16,
+              handleActiveColor: "var(--theme-color)",
+              handleActiveOutlineColor: "var(--theme-02)",
+              handleColor: "var(--theme-05)",
+              railBg: "var(--background16)", // 滑块轨道背景色
+              railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
+              trackBg: "var(--theme-05)",
+              trackBgDisabled: "var(--background16)",
+              trackHoverBg: "var(--theme-color)"
+            },
           },
-        },
-      }}
-    >
-      <div className={styles.calculatorMode}>
-        <div className={`${styles.calculatorOverlay} ${isClosing ? styles.fadeOut : ''}`} onClick={handleClose} />
-        <div className={`${styles.calculatorModeBox} ${isClosing ? styles.slideOut : ''}`}>
-          {/* 标题栏 */}
-          <div className={styles.calculatorHeader}>
-            <h4 className={styles.calculatorTitle}>{t('calculator.title')}</h4>
-            <Iconify icon="eva:close-outline" className="text-[24px] tip-color" onClick={handleClose} />
-          </div>
-
-          {/* 收益/平仓价格/强平价格 切换 - 使用 Ant Design Tabs */}
-          <div className={styles.tabBox}>
-            <Tabs
-              activeKey={categoryType}
-              onChange={handleTabChange}
-              items={tabItems}
-             
-            />
-          </div>
-
+        }}
+      >
+        <div className="p-4 pb-[30px] h-[calc(100%-112px)] hideScrollBar">
           {/* 强平价格保证金模式选择 */}
           {categoryType === '3' && (
             <div style={{ marginBottom: '20px' }}>
@@ -346,7 +356,7 @@ const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProp
 
           {/* 买入/卖出切换 */}
           <div className={styles.categorySelectBox}
-          style={{ borderColor: sideType === 1 ? '#00C788' : '#FF4D4F' }}
+            style={{ borderColor: sideType === 1 ? '#00C788' : '#FF4D4F' }}
           >
             <em
               className={styles.tabActiveBg}
@@ -534,8 +544,8 @@ const CalculatorMode = observer(({ isShow, close, dataInfo }: CalculatorModeProp
             </p>
           </div>
         </div>
-      </div>
-    </ConfigProvider>
+      </ConfigProvider>
+    </Popup>
   );
 });
 

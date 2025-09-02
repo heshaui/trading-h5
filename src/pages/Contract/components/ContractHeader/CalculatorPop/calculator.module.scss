@@ -1,0 +1,144 @@
+
+/* 买入/卖出切换 */
+.categorySelectBox {
+  position: relative;
+  display: flex;
+  border-radius: 25px;
+  padding: 3px;
+  height: 50px;
+  border: 1px solid #f5f5f5;
+}
+
+.tabActiveBg {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.tab {
+  flex: 1;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+/* 最大持仓提示 */
+.maxPosition {
+  font-size: 13px;
+  color: #666666;
+  text-align: center;
+}
+
+.maxNumber {
+  color:var(--text-color5);
+  font-weight: 600;
+}
+
+/* 表单样式 */
+.calculatorModeBox :global(.ant-form) {
+  padding: 0 24px;
+  /* margin-bottom: 24px; */
+}
+
+/* .calculatorModeBox :global(.ant-form-item) {
+  margin-bottom: 20px;
+} */
+
+/* .calculatorModeBox :global(.ant-form-item-label) {
+  padding: 0 0 8px 0;
+} */
+
+.calculatorInput :global(.ant-input) {
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color4);
+  background: transparent;
+  font-size: 14px;
+}
+
+.calculatorInput :global(.ant-input:hover) {
+  border-color: var(--theme-color);
+  background:  transparent;
+}
+
+.calculatorInput :global(.ant-input:focus) {
+  border-color: var(--theme-color);
+  background:  transparent;
+  box-shadow: none;
+}
+
+.calculatorInput :global(.ant-input-suffix) {
+  color: var(--text-color5);
+  font-size: 14px;
+}
+
+/* 计算按钮 */
+.calculateBtn {
+  height: 50px;
+  width: 360px;
+  margin: 0 auto;
+  display: flex;
+}
+
+/* 计算结果区域 */
+.resultSection {
+  border-radius: 12px;
+  padding: 20px;
+  margin: 0 24px 24px;
+  background:  var(--background10);
+
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-color5);
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.resultItem:last-of-type {
+  margin-bottom: 20px;
+}
+
+.resultLabel {
+  font-size: 14px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.resultValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color5);
+}
+
+.disclaimer {
+  font-size: 12px;
+  text-align: left;
+  margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+  color: #ff9500;
+  line-height: 1.5;
+}

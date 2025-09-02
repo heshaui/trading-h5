@@ -110,30 +110,30 @@ const TradeSettingPop:React.FC<Props> = ({
         onClose={onCancel}
         position='right'
         closeOnMaskClick
-        bodyStyle={{ width: '80vw', height: '100vh' }}
+        bodyStyle={{ width: '86.666vw', height: '100vh' }}
         bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
     >
       <div className="flex h-[60px] px-4 text-[16px] font-medium justify-between items-center border-b border-color">
         <span>{t('tradingSettings.title')}</span>
         <Iconify icon="eva:close-outline" className="text-[24px] tip-color" onClick={onCancel} />
       </div>
-      <div className="h-[calc(100%-60px)] overflow-y-auto px-[16px] py-[20px]">
+      <div className="h-[calc(100%-60px)] hideScrollBar px-[16px] py-[20px]">
         {/* 持仓类型 */}
         <p className="flex mb-5">
-          <span className="text-[16px] font-medium leading-[22px]">{t('tradingSettings.positionType')}：</span>
-          <span className="text-[12px] leading-[17px] tip-color">{t('tradingSettings.positionTypeNote')}</span>
+          <span className="shrink-0 text-[16px] font-medium leading-[22px]">{t('tradingSettings.positionType')}：</span>
+          <span className="text-[12px] mt-[2.5px] leading-[17px] tip-color">{t('tradingSettings.positionTypeNote')}</span>
         </p>
         {/* 单向持仓 */}
-        <div className="flex gap-x-[8px] p-[12px] bg-[var(--cancel-btn2] rounded-[4px] mb-5" onClick={() => setPositionMode('single')}>
-          {positionMode === 'single' ? <CheckIcon className="!w-[20px] !h-[20px] theme-color" /> : <UncheckIcon className="!w-[20px] !h-[20px]"/>}
+        <div className="flex gap-x-[8px] p-[12px] bg-[var(--cancel-btn2)] rounded-[4px] mb-5" onClick={() => setPositionMode('single')}>
+          <div className="flex h-[22px] items-center">{positionMode === 'single' ? <CheckIcon className="!w-[20px] !h-[20px] theme-color" /> : <UncheckIcon className="!w-[20px] !h-[20px]"/>}</div>
           <div className="font-medium tip-color">
             <p className="text-[16px] leading-[22px] mb-[8px]">{t('tradingSettings.singlePosition')}</p>
             <p className="text-[12px] leading-[17px]">{t('tradingSettings.singlePositionDesc')}</p>
           </div>
         </div>
         {/* 双向持仓 */}
-        <div className="flex gap-x-[8px] p-[12px] bg-[var(--cancel-btn2] rounded-[4px] mb-10" onClick={() => setPositionMode('hedge')}>
-          {positionMode === 'hedge' ? <CheckIcon className="!w-[20px] !h-[20px] theme-color" /> : <UncheckIcon className="!w-[20px] !h-[20px]"/>}
+        <div className="flex gap-x-[8px] p-[12px] bg-[var(--cancel-btn2)] rounded-[4px] mb-10" onClick={() => setPositionMode('hedge')}>
+          <div className="flex h-[22px] items-center">{positionMode === 'hedge' ? <CheckIcon className="!w-[20px] !h-[20px] theme-color" /> : <UncheckIcon className="!w-[20px] !h-[20px]"/>}</div>
           <div className="font-medium tip-color">
             <p className="text-[16px] leading-[22px] mb-[8px]">{t('tradingSettings.hedgePosition')}</p>
             <p className="text-[12px] leading-[17px]">{t('tradingSettings.hedgePositionDesc')}</p>
@@ -158,14 +158,14 @@ const TradeSettingPop:React.FC<Props> = ({
         </div>
 
         {/* 条件单/止盈止损有效期 */}
-        <div className="text-[16px] font-medium leading-[22px] mb-[13px]">
+        <div className="text-[16px] font-medium leading-[22px] mb-[12px]">
           {t('tradingSettings.orderValidity')}：
         </div>
-        <div className="grid grid-cols-2 gap-x-[40px] gap-y-[10px]">
+        <div className="grid grid-cols-2 [grid-template-columns:repeat(2,max-content)] gap-x-[40px] gap-y-[10px] mb-10">
           {['24H', '7天', '14天', '长期有效'].map(period => (
             <div
               key={period}
-              className="flex items-center h-[22px] gap-x-[4px]"
+              className="inline-flex items-center h-[22px] gap-x-[4px]"
               onClick={() => setOrderValidity(period as any)}
             >
               {orderValidity === period ? <CheckIcon className="!w-[20px] !h-[20px] theme-color" /> : <UncheckIcon className="!w-[20px] !h-[20px]"/>}
@@ -175,7 +175,7 @@ const TradeSettingPop:React.FC<Props> = ({
         </div>
 
         {/* 下单前弹窗确认 */}
-        <div className="text-[16px] font-medium leading-[22px] mb-[13px]">
+        <div className="text-[16px] font-medium leading-[22px] mb-[19px]">
           {t('tradingSettings.preOrderConfirm')}：
         </div>
         <div className="flex justify-between items-center text-[16px] font-medium h-[22px] mb-[23px]">
@@ -204,7 +204,7 @@ const TradeSettingPop:React.FC<Props> = ({
         </div>
 
         <button type="button"
-          className="h-[50px] bg-[var(--theme-color)] rounded-[25px] flex items-center justify-center text-[#fff] mt-[100px]"
+          className="h-[50px] w-full bg-[var(--theme-color)] rounded-[25px] flex items-center justify-center text-[#fff] mt-[100px]"
           onClick={handleConfirm}
         >
           {t('tradingSettings.confirm')}

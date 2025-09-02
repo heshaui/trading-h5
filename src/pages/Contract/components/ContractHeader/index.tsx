@@ -8,6 +8,8 @@ import { getPairsRate } from '@/utils/getUseRate';
 import appStore from "@/store";
 
 import SelectPopup from './SelectPopup/index';
+import TradeSettingPop from './TradeSettingPop';
+import CalculatorPop from './CalculatorPop';
 
 import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings1.svg';
 import { ReactComponent as CalendarIcon } from '@/assets/images/exchange/icon_calendar.svg';
@@ -19,6 +21,8 @@ interface Props {
 const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 	const { t } = useLanguage(['contract', 'spot']);
 	const [selectPopupOpen, setSelectPopupOpen] = useState<boolean>(false);
+	const [settingPopupOpen, setSettingPopupOpen] = useState<boolean>(false);
+	const [calculatorPopupOpen, setCalculatorPopupOpen] = useState<boolean>(false);
 	const symbolList = appStore.getPublicInfo();
 	const currentContractInfo = appStore.getCurrentContractInfo();
 	const [currentSymbol, setCurrentSymbol] = useState<any>(currentContractInfo);
@@ -100,8 +104,8 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 	return (
 		<div className="px-[16px] pb-[16px] border-b-[4px] border-[var(--background14)]">
 			<div className="h-[44px] flex justify-end items-center">
-				<CalendarIcon className="!h-[24px] !w-[24px] mr-[16px]" />
-				<SettingIcon className="!h-[24px] !w-[24px]" />
+				<CalendarIcon className="!h-[24px] !w-[24px] mr-[16px]" onClick={() => setCalculatorPopupOpen(true)}/>
+				<SettingIcon className="!h-[24px] !w-[24px]" onClick={() => setSettingPopupOpen(true)}/>
 			</div>
 			<div className="flex">
 				<div className="shrink-0 mr-[30px]">
@@ -165,6 +169,16 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
                 onOk={() => setSelectPopupOpen(false)}
                 onCancel={() => setSelectPopupOpen(false)}
             />
+			{/* 交易设置 */}
+			<TradeSettingPop 
+				open={settingPopupOpen}
+                onCancel={() => setSettingPopupOpen(false)}
+			/>
+			{/* 计算器 */}
+			<CalculatorPop
+				open={calculatorPopupOpen}
+                onCancel={() => setCalculatorPopupOpen(false)}
+			/>
 		</div>
 	)
 });

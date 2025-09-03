@@ -4,6 +4,7 @@ import { Iconify } from '@/components/icon'
 import { Image } from 'antd-mobile';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 import appStore from "@/store";
+import { getDepthMap } from "@/services/contract";
 
 import SelectPop from '@/components/SelectPop';
 import DepthChart from '@/components/DepthChart';
@@ -21,12 +22,12 @@ type ViewMode = 'phone' | 'phone-fullscreen' | 'tablet' | 'tablet-fullscreen';
 
 const SpotChart: React.FC = () => {
     const {t} = useLanguage('spot');
-    const { timeInterval, depthData, klineData, updateTimeInterval } = useContract();
-    const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
+    const { timeInterval, klineData, updateTimeInterval } = useContract();
+    const currentContractInfo = appStore.getCurrentContractInfo();
+    const [depthData, setDepthData] = useState<any>(null);
     // k线图视图模式
     const [viewMode, setViewMode] = useState<ViewMode>(window.innerWidth <= 480 ? 'phone' : 'tablet');
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const isPhone = window.innerWidth <= 480;
     // k线图ref
     const tradingviewRef = useRef<TradingviewRefHandle>(null);
     const chartRef = useRef<HTMLDivElement>(null);
@@ -73,14 +74,20 @@ const SpotChart: React.FC = () => {
         return chartType?.label
     }
 
-    /**
-     * 设置图表全屏后的样式
-     * 手机全屏，且未旋转屏幕：设置padding-top
-     * 手机全屏，旋转屏幕：设置padding-left
-     */
-    const setFullscreenStyle = () => {
-        return ``
+    // 获取depthData
+    const getDepthMapData = async () => {
+        if (!currentContractInfo.symbol) return;
+        const res = await getDepthMap({
+            symbol: currentContractInfo.symbol,
+            contractId: currentContractInfo.id,
+        });
+        console.log("res:", res);
+        setDepthData(res.data);
     }
+
+    useEffect(() => {
+        getDepthMapData();
+    }, [currentContractInfo.symbol, currentContractInfo.id])
 
     // 全屏
     const handleFullscreen = async () => {
@@ -253,16 +260,8 @@ const SpotChart: React.FC = () => {
                     chartType === 'depth' ? <DepthChart data={ depthData }/> :
                     <Tradingview
                         ref={tradingviewRef}
-                        key={`${currentPair?.coinSymbol || ""}_${
-                        currentPair?.baseSymbol || ""
-                        }_${currentPair?.groupStatus || ""}_${timeInterval}`}
-                        symbol={
-                        (currentPair?.coinSymbol || "") +
-                        "_" +
-                        (currentPair?.baseSymbol || "") +
-                        "_" +
-                        (currentPair?.groupStatus || "")
-                        }
+                        key={`${currentContractInfo?.symbol || ""}_${timeInterval}`}
+                        symbol={currentContractInfo?.symbol}
                         chartType={chartDisplayType}
                         klineData={klineData}
                         timeInterval={timeInterval}

@@ -20,6 +20,7 @@ interface KLineData {
 }
 
 interface DepthData {
+  tick: any,
   bids: [number, number][];
 	asks: [number, number][];
 	spot_log_last_seq?: number;

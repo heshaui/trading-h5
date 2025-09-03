@@ -368,7 +368,7 @@
     "title": "委托列表",
     "price": "价格",
     "amount": "数量",
-    "total": "总计",
+    "total": "总额",
     "noSellOrders": "暂无卖单数据",
     "noBuyOrders": "暂无买单数据"
   },

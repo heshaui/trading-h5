@@ -103,6 +103,13 @@ interface SymbolData {
 const ContractContent: React.FC = observer(() => {
     const {t} = useLanguage(["contract", "spot", "common"])
     const { isLoggedIn } = useAuth();
+    // 获取时间间隔
+    const { 
+        timeInterval: currentTimeInterval, 
+        updateDepthData, 
+        updateKlineData, 
+        updateOrderData,
+    } = useContract();
     const orderListRef = useRef<any>(null);
   const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
@@ -113,8 +120,6 @@ const ContractContent: React.FC = observer(() => {
   const [symbolList, setSymbolList] = useState<SymbolData[]>([]); // 币种列表
   const [priceData, setPriceData] = useState<any>(null); // 价格数据
   const [klineData, setKlineData] = useState<any>(null); // K线数据
-  const [currentTimeInterval, setCurrentTimeInterval] =
-    useState<string>("1day"); // 当前时间间隔
   const [wsInstance, setWsInstance] = useState<WebSocketService | null>(null); // WebSocket实例
   const [depthPrecision, setDepthPrecision] = useState<number>(0); // 深度精度
 
@@ -219,10 +224,17 @@ const ContractContent: React.FC = observer(() => {
       "15m": "15min",
       "30m": "30min",
       "1h": "60min",
+      "2h": "120min",
+      "4h": "240min",
+      "6h": "360min",
+      "8h": "480min",
+      "12h": "720min",
       "1day": "1day",
       "1D": "1day",
+      "3D": "3day",
       "1W": "1week",
       "1M": "1month",
+      "1Y": "1year"
     };
     return intervalMap[interval] || "1day";
   };
@@ -433,15 +445,12 @@ const ContractContent: React.FC = observer(() => {
   }, [sendUnsubscriptions, sendNewSubscriptions, depthPrecision]);
 
   // 处理时间间隔变化
-  const handleTimeIntervalChange = (interval: string) => {
-
-    setCurrentTimeInterval(interval);
-
+  useEffect(() => {
     // 如果WebSocket已连接且合约信息完整，重新发送K线订阅
     if (wsInstance && currentContractInfo.id) {
-      sendSubscriptions(wsInstance, currentContractInfo, interval, true); // 时间间隔变化时也先取消旧订阅
+      sendSubscriptions(wsInstance, currentContractInfo, currentTimeInterval, true); // 时间间隔变化时也先取消旧订阅
     }
-  };
+  }, [currentTimeInterval])
 
   // 处理深度精度变化
   const handleDepthPrecisionChange = (precision: number) => {
@@ -528,9 +537,9 @@ const ContractContent: React.FC = observer(() => {
         
         // 清理旧的数据状态
         console.log("🧹 清理旧数据状态");
-        setOrderBookData(null);
+        updateDepthData(null);
         setPriceData(null);
-        setKlineData(null);
+        updateKlineData(null);
 
         // 更新合约信息
         console.log("📝 更新合约信息");
@@ -598,7 +607,7 @@ const ContractContent: React.FC = observer(() => {
           console.log("📈 ========================================");
           
           // 直接传递原始WebSocket数据给TradingView组件处理
-          setKlineData(data);
+          updateKlineData(data);
 
           // 更新价格数据
           if (
@@ -636,14 +645,14 @@ const ContractContent: React.FC = observer(() => {
             console.log("买单数据:", data.tick.buys);
             console.log("卖单数据:", data.tick.asks);
           }
-          setOrderBookData(data);
+          updateDepthData(data);
         } else if (data.channel && data.channel.includes("_trade_ticker")) {
           // 处理实时成交数据
           console.log("收到实时交易数据:", data);
           if (data.data && Array.isArray(data.data)) {
             // 对数据按时间戳排序，最新的在前
             const sortedData = data.data.sort((a: any, b: any) => b.ts - a.ts);
-            setRealtimeTradeData(sortedData);
+            updateOrderData(sortedData);
 
             // 更新最新价格
             if (sortedData.length > 0) {

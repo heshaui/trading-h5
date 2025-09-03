@@ -35,10 +35,10 @@ interface PrecisionItem {
 }
 
 const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
-  const { t } = useLanguage (["spot"]);
+  const { t } = useLanguage (["spot", "contract"]);
   const {depthData: bookData, orderData, klineData, updateTradePrice } = useContract();
   // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
-  const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
+  const currentContractInfo = appStore.getCurrentContractInfo();
   const [sellOrders, setSellOrders] = useState<Order[]>([]);
   const [buyOrders, setBuyOrders] = useState<Order[]>([]);
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -51,23 +51,22 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   const [lastPrice, setLastPrice] = useState(0);
   // 当前聚合区间
   const [mergeDepth, setMergeDepth] = useState<number>(0.01);
+  // 合约精度
+  const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision ?? 2;
+
+  console.log('精度', symbolPricePrecision)
 
   // 动态设置深度精度，即聚合区间 币对设置中的深度精度：1-9表示小数位数，10即以上表示具体区间
   const depthPrecisionList = useMemo(() => {
-    const precisionList = [
-      Number(currentPair.depthOne), 
-      Number(currentPair.depthTwo), 
-      Number(currentPair.depthThree), 
-      Number(currentPair.depthFour), 
-      Number(currentPair.depthFive)
-    ].filter(Boolean)
-    const result = precisionList.map(num => ({
+    const precisionList = currentContractInfo?.coinResultVo?.depth.filter(Boolean).map((item:string) => Number(item));
+    console.log('精度列表', precisionList)
+    const result = precisionList.map((num: number) => ({
       label: num,
       value: num < 10 ? Number((1 / Math.pow(10, num)).toFixed(num)) : num
     }));
     setMergeDepth(result[0].value)
     return result
-  }, [currentPair])
+  }, [currentContractInfo.symbol, currentContractInfo.id])
 
   // 反显深度精度的值
 	const getLabel = (value: number) => {
@@ -82,24 +81,15 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 
   // 处理价格和数量的精度
   const formatPrice = (price: number) => {
-    const priceInfo = getRound(
-      `${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
-      price,
-      currentPair?.coinSymbol,
-      currentPair?.baseSymbol
-    );
+    // 使用合约当前的精度
+    const priceResult = roundDown(price, symbolPricePrecision);
+    // 聚合精度
     const currentPrecision = Number(getLabel(mergeDepth));
-    return currentPrecision >= 10 ? priceInfo.baseScaleResult as number : roundDown(price, currentPrecision);
+    return currentPrecision >= 10 ? priceResult : roundDown(price, currentPrecision);
   };
 
   const formatAmount = (amount: number) => {
-    const amountInfo = getRound(
-      `${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
-      amount,
-      currentPair?.coinSymbol,
-      currentPair?.baseSymbol
-    );
-    return amountInfo.scaleResult as number;
+    return roundDown(amount, 2) as unknown as number;
   };
 
   /**
@@ -153,13 +143,13 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
     setTrades([]);
     setPriceDirection("");
     setPriceSource("");
-  }, [currentPair]);
+  }, [currentContractInfo.symbol, currentContractInfo.id]);
 
   useEffect(() => {
     
     // 直接使用WebSocket推送的完整档位数据
-    if (bookData && (bookData.asks || bookData.bids)) {
-      console.log(bookData)
+    if (bookData && bookData.tick) {
+      console.log('委托列表', bookData)
       // 处理卖单数据
       if (bookData.asks && Array.isArray(bookData.asks)) {
         const aggregatedSells = aggregateOrders(bookData.asks, mergeDepth, true);
@@ -204,6 +194,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   // 添加处理交易数据的效果
   useEffect(() => {
     if (orderData && Array.isArray(orderData)) {
+      console.log("实时成交", orderData)
       const processedTrades = orderData
         .map((item) => {
           // 解析JSON字符串
@@ -357,10 +348,10 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
       <div className="px-4 py-[10px]">
         <div className={styles.labels}>
           <span className="text-left">
-            {t("spot.orderBook.price")}({currentPair?.baseSymbol})
+            {t("spot.orderBook.price")}({currentContractInfo?.quote})
           </span>
           <span className="text-right">
-            {t("spot.orderBook.amount")}({currentPair?.coinSymbol})
+            {t("spot.orderBook.amount")}({currentContractInfo?.base})
           </span>
           <span className="text-right">{t("spot.orderBook.time")}</span>
         </div>
@@ -374,10 +365,10 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                   trade.type === "buy" ? styles.buyPrice : styles.sellPrice
                 }`}
               >
-                {trade.price.toFixed(currentPair?.baseCoinScale || 1)}
+                {trade.price.toFixed(symbolPricePrecision ?? 1)}
               </span>
               <span className="flex-1 text-right">
-                {trade.amount.toFixed(currentPair?.coinScale || 8)}
+                {trade.amount.toFixed(8)}
               </span>
               <span className="flex-1 text-right">{trade.time}</span>
             </li>
@@ -402,13 +393,13 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
       <div className="px-4 py-[10px]">
           <div className={styles.labels}>
             <span className="text-left">
-              {t("spot.orderBook.price")}({currentPair?.baseSymbol})
+              {t("spot.orderBook.price")}({currentContractInfo?.quote})
             </span>
             <span className="text-right">
-              {t("spot.orderBook.amount")}({currentPair?.coinSymbol})
+              {t("spot.orderBook.amount")}({currentContractInfo?.base})
             </span>
             <span className="text-right">
-              {t("spot.orderBook.total")}({currentPair?.baseSymbol})
+              {t("contract:orderBookList.total")}({currentContractInfo?.quote})
             </span>
           </div>
 
@@ -458,7 +449,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 
           {/* 当前价格 */}
           <div className="h-[24px] flex items-center my-[10px]">
-            <span
+              <span
                 className="text-[20px] font-medium mr-1"
                 style={{
                   color:
@@ -469,7 +460,7 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                       : "inherit",
                 }}
               >
-                {currentPrice.toFixed(currentPair?.baseCoinScale || 1)}
+                {currentPrice.toFixed(symbolPricePrecision || 1)}
               </span>
               <span
                 className={styles.priceChange}

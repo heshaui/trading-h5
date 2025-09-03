@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Input, Button, Slider, Tabs, Select, ConfigProvider } from 'antd';
+import { Form, InputNumber, Slider, ConfigProvider } from 'antd';
 import { Popup } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { observer } from 'mobx-react-lite';
+import { getLabel } from '@/utils'
 import appStore from '@/store';
 import styles from './calculator.module.scss';
+import SelectPop from '@/components/SelectPop';
 
 import CustomTab from '@/components/CustomCom/CustomTab';
 
@@ -76,6 +78,12 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
     100: '100x',
     125: '125x'
   };
+
+  // modeOptions强平价格保证金模式: 平仓、逐仓
+  const modeOptions = [
+    { value: 1, label: t('calculator.crossMargin') },
+    { value: 2, label: t('calculator.isolatedMargin') }
+  ]
 
   // Tabs 配置
   const tabItems = [
@@ -300,7 +308,7 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
         onClose={onCancel}
         position='right'
         closeOnMaskClick
-        bodyStyle={{ width: '86.666vw', height: '100vh' }}
+        bodyStyle={{ width: '86.666vw', height: '100dvh' }}
         bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
     >   
       <div className="flex h-[60px] px-4 text-[16px] font-medium justify-between items-center border-b border-color">
@@ -320,17 +328,31 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
       <ConfigProvider
         theme={{
           components: {
+            Form: {
+              itemMarginBottom: 16,
+            },
+            InputNumber: {
+              controlHeightLG: 50,
+              activeBorderColor: "var(--theme-color)",
+              hoverBorderColor: "var(--theme-color)",
+              activeBg: "var(--background7)",
+              hoverBg: "var(--background7)",
+              handleBg: "transparent", //操作按钮背景色
+            },
             Slider: {
-              controlSize: 16,
-              dotActiveBorderColor: "var(--theme-05)",
-              dotBorderColor: "var(--background5)",
-              dotSize: 16,
-              handleActiveColor: "var(--theme-color)",
-              handleActiveOutlineColor: "var(--theme-02)",
-              handleColor: "var(--theme-05)",
+              controlSize: 18,
+              dotActiveBorderColor: "var(--background17)",
+              dotBorderColor: "var(--background17)",
+              dotSize: 18,
+              handleActiveColor: "none",
+              handleActiveOutlineColor: "none",
+              handleColor: "var(--background17)",
+              handleLineWidthHover: 2,
+              handleSize: 16,
+              handleSizeHover: 16,
               railBg: "var(--background16)", // 滑块轨道背景色
               railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
-              trackBg: "var(--theme-05)",
+              trackBg: "var(--theme-color)",
               trackBgDisabled: "var(--background16)",
               trackHoverBg: "var(--theme-color)"
             },
@@ -340,18 +362,35 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
         <div className="p-4 pb-[30px] h-[calc(100%-112px)] hideScrollBar">
           {/* 强平价格保证金模式选择 */}
           {categoryType === '3' && (
-            <div style={{ marginBottom: '20px' }}>
-              <Select
-                value={marginMode}
-                onChange={(value) => setMarginMode(value)}
-                style={{ width: '100px', height: '44px', marginLeft: '20px' }}
-                options={[
-                  { value: 1, label: t('calculator.crossMargin') },
-                  { value: 2, label: t('calculator.isolatedMargin') }
-                ]}
-                placeholder={t('calculator.selectMarginMode')}
-              />
-            </div>
+            <SelectPop 
+              value={marginMode}
+              onChange={(value:any) => setMarginMode(value)}
+              options={modeOptions}
+              title={t('calculator.selectMarginMode')}
+              activeType="icon"
+              showSearch={false}
+              renderBtn={(open) => (
+                <button 
+                  className="border border-solid input-border rounded-lg w-[177px] h-[44px] px-[10px] text-[14px] flex justify-between items-center mb-[16px]"
+                  onClick={open}
+                >
+                  <span>{getLabel(marginMode, modeOptions)}</span>
+                  <Iconify icon="icon-park-outline:down" className="text-[24px] text-[#373949]"/>
+                </button>
+              )}
+            />
+            // <div style={{ marginBottom: '20px' }}>
+            //   <Select
+            //     value={marginMode}
+            //     onChange={(value) => setMarginMode(value)}
+            //     style={{ width: '100px', height: '44px', marginLeft: '20px' }}
+            //     options={[
+            //       { value: 1, label: t('calculator.crossMargin') },
+            //       { value: 2, label: t('calculator.isolatedMargin') }
+            //     ]}
+            //     placeholder={t('calculator.selectMarginMode')}
+            //   />
+            // </div>
           )}
 
           {/* 买入/卖出切换 */}
@@ -386,17 +425,30 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
           </div>
 
           {/* 杠杆滑块 */}
-          <div className={styles.leverageSection}>
+          <div className="mb-[32px]">
             <Slider
               min={1}
               max={125}
               value={leverage}
               onChange={(value) => setLeverage(value)}
               marks={leverageMarks}
+              tooltip={{
+                open: true,
+                zIndex: 1000,
+                placement: "top",
+                arrow: false,
+                className: "sliderTooltip",
+                destroyOnHidden: true,
+                getPopupContainer: (trigger) => trigger.parentNode as HTMLElement,
+                color: "var(--theme-color)", // 设置悬浮框背景颜色为橙色
+                autoAdjustOverflow: false,
+              }}
+              className="spotSlider"
             />
-            {/* <div className={styles.maxPosition}>
-              {t('calculator.maxPosition')} <span className={styles.maxNumber}>0 {coUnit}</span>
-            </div> */}
+          </div>
+
+          <div className={styles.maxPosition}>
+            {t('calculator.maxPosition')} <span className={styles.maxNumber}>0 {coUnit}</span>
           </div>
 
           {/* 表单输入 */}
@@ -415,19 +467,21 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
                   validateStatus={formData.formData_1.errorText ? 'error' : ''}
                   help={formData.formData_1.errorText}
                 >
-                  <Input
+                  <InputNumber
                     suffix={priceUnit}
                     placeholder={t('calculator.openPrice')}
-                    className={styles.calculatorInput}
+                    className="spot_number_input"
+                    controls={false}
                   />
                 </Form.Item>
                 <Form.Item name="returnRate">
-                  <Input
+                  <InputNumber
                     suffix="%"
                     placeholder={t('calculator.targetReturnRate')}
-                    className={styles.calculatorInput}
+                    className="spot_number_input"
                     value={targetReturnRate}
-                    onChange={(e) => setTargetReturnRate(e.target.value)}
+                    controls={false}
+                    onChange={(value: any) => setTargetReturnRate(value)}
                   />
                 </Form.Item>
               </>
@@ -439,29 +493,31 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
                   validateStatus={formData.formData_1.errorText ? 'error' : ''}
                   help={formData.formData_1.errorText}
                 >
-                  <Input
+                  <InputNumber
                     suffix={priceUnit}
                     placeholder={t('calculator.openPrice')}
-                    className={styles.calculatorInput}
+                    className="spot_number_input"
                   />
                 </Form.Item>
                 <Form.Item name="positionSize">
-                  <Input
+                  <InputNumber
                     suffix={coUnit}
                     placeholder={t('calculator.positionSize')}
-                    className={styles.calculatorInput}
+                    className="spot_number_input"
                     value={positionSize}
-                    onChange={(e) => setPositionSize(e.target.value)}
+                    controls={false}
+                    onChange={(value:any) => setPositionSize(value)}
                   />
                 </Form.Item>
                 {marginMode === 1 && (
                   <Form.Item name="availableBalance">
-                    <Input
+                    <InputNumber
                       suffix={contractInfo?.marginCoin}
                       placeholder={t('calculator.availableBalance')}
-                      className={styles.calculatorInput}
+                      className="spot_number_input"
                       value={availableBalance}
-                      onChange={(e) => setAvailableBalance(e.target.value)}
+                      controls={false}
+                      onChange={(value: any) => setAvailableBalance(value)}
                     />
                   </Form.Item>
                 )}
@@ -476,10 +532,11 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
                     validateStatus={formData[key].errorText ? 'error' : ''}
                     help={formData[key].errorText}
                   >
-                    <Input
+                    <InputNumber
                       suffix={formData[key].units}
                       placeholder={formData[key].title}
-                      className={styles.calculatorInput}
+                      className="spot_number_input"
+                      controls={false}
                     />
                   </Form.Item>
                 ) : null
@@ -488,18 +545,15 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
           </Form>
 
           {/* 计算按钮 */}
-          <Button
-            type="primary"
-            shape="round"
-            disabled={!formVerify()}
+          <button 
+            type="button"
+            className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mb-[40px] mt-[30px] rounded-[25px]
+              ${formVerify() ? 'bg-[var(--theme-color)] text-[var(--text-color5)]' : 'bg-[var(--btncolor10)] tip-color'}
+            `}
             onClick={submit}
-            className={styles.calculateBtn}
-            style={{
-              marginBottom:'20px'
-            }}
           >
             {t('calculator.calculate')}
-          </Button>
+          </button>
 
           {/* 计算结果 */}
           <div className={styles.resultSection}>

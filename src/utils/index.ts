@@ -57,6 +57,12 @@ const formatAmount = (amount: number, t: Function) => {
     }
 };
 
+// 根据value获取label
+const getLabel = (value: string | number, data: any[]) => {
+    const currentData = data.find((item: any) => item.value === value)
+    return currentData?.label
+}
+
 export {
     add, // 加法
     cut, // 减法
@@ -72,5 +78,6 @@ export {
     withdrawFee, // 手续费
     formatted,
     formatNumWithPrecision,
-    formatAmount
+    formatAmount,
+    getLabel
 }

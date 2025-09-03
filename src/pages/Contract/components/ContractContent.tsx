@@ -19,7 +19,7 @@ import { getUserBalanceAll } from "@/services/assets";
 import RiskDisclosureModal from './RiskDisclosureModal';
 import ContractHeader from './ContractHeader';
 import { useLanguage } from '@/hooks';
-// import ContractTabs from './ContractTabs';
+import ContractTabs from './ContractTabs';
 // import ContractOrder from './ContractOrder';
 // import ContractTrade from './ContractTrade';
 
@@ -107,7 +107,6 @@ const ContractContent: React.FC = observer(() => {
   const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
   const [orderBookData, setOrderBookData] = useState<any>(null); // 订单簿数据
-  const [isClient, setIsClient] = useState(false); // 是否是客户端
   const [contractAssets, setContractAssets] = useState<ContractAsset[]>([]); // 合约账户数据
   const [currentContractInfo, setCurrentContractInfo] = useState<any>({}); // 当前合约信息
   const [publicInfo, setPublicInfo] = useState<any>({}); // 公共数据
@@ -720,8 +719,8 @@ const ContractContent: React.FC = observer(() => {
     return (
         <div className="pb-[76px]">
             <ContractHeader priceData={priceData}/>
-            {/* 行情、盘口、最新成交 */}
-            {/* <ContractTabs /> */}
+            {/* 图表、最新成交 */}
+            <ContractTabs />
             {/* 当前委托、历史委托、历史成交、资产 */}
             {/* <ContractOrder /> */}
             {/* 买卖 */}

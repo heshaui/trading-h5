@@ -4,7 +4,7 @@ import { useLanguage } from "@/hooks";
 import appStore from "@/store";
 import { nul } from "@/utils/index";
 import { Iconify } from '@/components/icon'
-import { useExchange } from "@/context/exchange-providers/ExchangeProvider";
+import { useContract } from "@/context/exchange-providers/ContractProvider";
 import { getPairsRate } from "@/utils/getUseRate";
 import styles from './style/OrderBook.module.css'
 import { NoData } from "@/components/noData";
@@ -36,7 +36,7 @@ interface PrecisionItem {
 
 const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   const { t } = useLanguage (["spot"]);
-  const {depthData: bookData, orderData, klineData, updateTradePrice } = useExchange();
+  const {depthData: bookData, orderData, klineData, updateTradePrice } = useContract();
   // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
   const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
   const [sellOrders, setSellOrders] = useState<Order[]>([]);

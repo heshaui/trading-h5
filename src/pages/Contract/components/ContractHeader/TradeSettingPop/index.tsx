@@ -110,7 +110,7 @@ const TradeSettingPop:React.FC<Props> = ({
         onClose={onCancel}
         position='right'
         closeOnMaskClick
-        bodyStyle={{ width: '86.666vw', height: '100vh' }}
+        bodyStyle={{ width: '86.666vw', height: '100dvh' }}
         bodyClassName="!bg-[var(--background17)] !text-[var(--text-color5)]"
     >
       <div className="flex h-[60px] px-4 text-[16px] font-medium justify-between items-center border-b border-color">

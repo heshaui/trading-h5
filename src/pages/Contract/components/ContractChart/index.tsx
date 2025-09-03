@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon'
 import { Image } from 'antd-mobile';
-import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
+import { useContract } from '@/context/exchange-providers/ContractProvider';
 import appStore from "@/store";
 
 import SelectPop from '@/components/SelectPop';
@@ -21,7 +21,7 @@ type ViewMode = 'phone' | 'phone-fullscreen' | 'tablet' | 'tablet-fullscreen';
 
 const SpotChart: React.FC = () => {
     const {t} = useLanguage('spot');
-    const { timeInterval, depthData, klineData, updateTimeInterval } = useExchange();
+    const { timeInterval, depthData, klineData, updateTimeInterval } = useContract();
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
     // k线图视图模式
     const [viewMode, setViewMode] = useState<ViewMode>(window.innerWidth <= 480 ? 'phone' : 'tablet');

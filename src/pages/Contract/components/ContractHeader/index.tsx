@@ -63,7 +63,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 	// 显示合约类型
 	const getContractShowType = () => {
 		const type = currentSymbol.contractShowType?.toLowerCase();
-		return t(`contractInfo.${type}`)
+		return t(`contractInfo.${type ?? 'demo'}`)
 	}
 
 	/**
@@ -110,7 +110,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 			<div className="flex">
 				<div className="shrink-0 mr-[30px]">
 					<div className="h-[22px] flex items-center mb-[6px]" onClick={() => setSelectPopupOpen(true)}>
-						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol.base}/{currentSymbol.quote}</span>
+						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol ? `${currentSymbol.base}/${currentSymbol.quote}` : '--'}</span>
 						<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center mr-1">{getContractShowType()}</span>
 						<Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e]" />
 					</div>
@@ -159,7 +159,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 					</div>
 					<div className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
 						<span className="tip-color w-fit mb-[2px] border-b border-dashed border-[#9e9e9e]">{t('contractHeader.fundingRate')}</span>
-						<span>{marketInfo?.currentFundRate}/{formatSeconds(689)}</span>
+						<span>{marketInfo?.currentFundRate ?? '--'}/{formatSeconds(689)}</span>
 					</div>
 				</div>
 			</div>

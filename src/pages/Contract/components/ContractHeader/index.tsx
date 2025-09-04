@@ -143,7 +143,7 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 							<span>{formatPriceWithPrecision(priceData?.high24h || 4079.098)}</span>
 						</p>
 						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}</span>
+							<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({currentSymbol.multiplierCoin})</span>
 							<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : formatAmount(89876539.9809, t)}</span>
 						</p>
 					</div>

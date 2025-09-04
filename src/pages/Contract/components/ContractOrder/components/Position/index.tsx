@@ -7,6 +7,7 @@ import { usePosition, Position as PositionType } from "../../hooks";
 import { NoData } from '@/components/noData';
 import { Iconify } from '@/components/icon';
 import { Side, SideMap, PositionTypeMap } from '../../configs/columns';
+import BigNumber from "bignumber.js";
 
 import { ReactComponent as FrameIcon } from '@/assets/images/exchange/Frame.svg';
 import { ReactComponent as PositionIcon } from '@/assets/images/exchange/PositionIcon.svg';
@@ -51,7 +52,7 @@ const Position: React.FC = () => {
 				holdAmount: 0,
 				marginRate: 0,
 				realizedAmount: 0,
-				returnRate: 0,
+				returnRate: 12334.23,
 				orderSide: Side.BUY,
 				positionType: 1,
 				canUseAmount: 0,
@@ -59,7 +60,57 @@ const Position: React.FC = () => {
 				openRealizedAmount: 0,
 				keepRate: 0,
 				maxFeeRate: 0,
-				unRealizedAmount: 0,
+				unRealizedAmount: 98712.498,
+				leverageLevel: 20,
+				positionBalance: 0
+			},
+			{
+				id: 0,
+				contractId: 0,
+				contractName: '',
+				symbol: 'BTC-USDT',
+				positionVolume: 0,
+				canCloseVolume: 0,
+				openAvgPrice: 0,
+				indexPrice: 0,
+				reducePrice: 0,
+				holdAmount: 0,
+				marginRate: 0,
+				realizedAmount: 0,
+				returnRate: 12334.23,
+				orderSide: Side.SELL,
+				positionType: 2,
+				canUseAmount: 0,
+				canSubMarginAmount: 0,
+				openRealizedAmount: 0,
+				keepRate: 0,
+				maxFeeRate: 0,
+				unRealizedAmount: 98712.498,
+				leverageLevel: 20,
+				positionBalance: 0
+			},
+			{
+				id: 0,
+				contractId: 0,
+				contractName: '',
+				symbol: 'BTC-USDT',
+				positionVolume: 0,
+				canCloseVolume: 0,
+				openAvgPrice: 0,
+				indexPrice: 0,
+				reducePrice: 0,
+				holdAmount: 0,
+				marginRate: 0,
+				realizedAmount: 0,
+				returnRate: 12334.23,
+				orderSide: Side.BUY,
+				positionType: 1,
+				canUseAmount: 0,
+				canSubMarginAmount: 0,
+				openRealizedAmount: 0,
+				keepRate: 0,
+				maxFeeRate: 0,
+				unRealizedAmount: 98712.498,
 				leverageLevel: 20,
 				positionBalance: 0
 			}
@@ -120,8 +171,89 @@ const Position: React.FC = () => {
 								</span>
 								<PositionIcon className="w-[18px] h-[8px]" />
 							</div>
-							<div>
-								
+							<div className="flex justify-between my-4 pb-4 border-b border-color">
+								<p className="flex flex-col gap-y-[4px]">
+									<span 
+										className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]"
+									>
+										{t('order.positionColumn.unRealizedAmount')}/{t('order.positionColumn.returnRate')}({currentContractInfo?.marginCoin})
+									</span>
+									<span
+										className={`text-[16px] font-medium
+											${item.unRealizedAmount > 0 ? 'success_icon' : item.unRealizedAmount < 0 ? 'error_icon' : ''}
+										`}
+									>{item.unRealizedAmount > 0 ? '+' : item.unRealizedAmount < 0 ? '-' : ''}{new BigNumber(item.unRealizedAmount).toFormat(symbolPricePrecision)}</span>
+								</p>
+								<p>
+									<p className="flex flex-col gap-y-[4px]">
+									<span className="text-[12px] text-[#9e9e9e] text-right">{t('order.positionColumn.returnRate')}</span>
+									<span
+										className={`text-[16px] font-medium text-right
+											${item.returnRate > 0 ? 'success_icon' : item.returnRate < 0 ? 'error_icon' : ''}
+										`}
+									>{item.returnRate > 0 ? '+' : item.returnRate < 0 ? '-' : ''}{new BigNumber(item.returnRate).toFormat(symbolPricePrecision)}%</span>
+								</p>		
+								</p>
+							</div>
+							<div className="flex justify-between">
+								<div className="flex gap-x-[30px]">
+									<div className="flex flex-col gap-y-[12px]">
+										<p className="flex flex-col gap-y-[4px]">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.positionVolume')}/{t('order.positionColumn.canCloseVolume')}({currentContractInfo?.marginCoin})</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.positionVolume).toFormat(symbolPricePrecision)}</span>
+										</p>
+										<p className="flex flex-col gap-y-[4px]">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.costPrice')}</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.indexPrice).toFormat(symbolPricePrecision)}</span>
+										</p>
+									</div>
+									<div className="flex flex-col gap-y-[12px]">
+										<p className="flex flex-col gap-y-[4px]">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('margin')}({currentContractInfo?.marginCoin})</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.holdAmount).toFormat(symbolPricePrecision)}</span>
+										</p>
+										<p className="flex flex-col gap-y-[4px]">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('contractHeader.markPrice')}</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.openAvgPrice).toFormat(symbolPricePrecision)}</span>
+										</p>	
+									</div>
+								</div>
+								<div className="flex flex-col gap-y-[12px]">
+									<p className="flex flex-col gap-y-[4px]">
+										<div className="flex justify-end">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('marginRatio')}</span>
+										</div>
+										<span className="text-[14px] font-medium text-right">{new BigNumber(item.marginRate).toFormat(symbolPricePrecision)}%</span>
+									</p>
+									<p className="flex flex-col gap-y-[4px]">
+										<div className="flex justify-end">
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.strongParity')}</span>
+										</div>
+										<span className="text-[14px] font-medium text-right">{new BigNumber(item.reducePrice).toFormat(symbolPricePrecision)}</span>
+									</p>
+								</div>
+							</div>
+							<div className="flex gap-x-[5px] mt-4">
+								<button 
+									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+								>
+									{t('tpsl')}
+								</button>
+								<button 
+									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+								>
+									{t('close')}
+								</button>
+								<button 
+									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+								>
+									{t('order.positionColumn.quickClose')}
+								</button>
+								<button 
+									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+								>
+									{t('reverseOpen')}
+								</button>
 							</div>
 						</li>)
 					}) :

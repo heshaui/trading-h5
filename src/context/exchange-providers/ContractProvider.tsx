@@ -19,11 +19,15 @@ interface KLineData {
   [key: string]: any;  // 允许顶层有额外属性
 }
 
+interface OrderBookTick {
+  asks: [number, number][]; // [价格, 数量]
+  buys: [number, number][];
+  lastPrice?: number; // 最新成交价
+  priceChange?: number; // 24h涨跌幅
+}
+
 interface DepthData {
-  tick: any,
-  bids: [number, number][];
-	asks: [number, number][];
-	spot_log_last_seq?: number;
+  tick: OrderBookTick;
 }
 
 interface RecentTrade {
@@ -76,13 +80,13 @@ interface ContractContextValue {
   spotCount: number;
   setSpotCount: (count: number) => void;
 
-  // 当前委托、历史委托、历史成交、资产数量
-  nowOrderCount: number;
-  setNowOrderCount: (count: number) => void;
-  historyOrderCount: number;
-  setHistoryOrderCount: (count: number) => void;
-  historyDealCount: number;
-  setHistoryDealCount: (count: number) => void;
+  // 仓位数量、普通委托数量、条件委托数量、资产数量
+  positionCount: number;
+  setPositionCount: (count: number) => void;
+  defaultOrderCount: number;
+  setDefaultOrderCount: (count: number) => void;
+  conditionOrderCount: number;
+  setConditionOrderCount: (count: number) => void;
   assetsCount: number;
   setAssetsCount: (count: number) => void;
 }
@@ -102,9 +106,9 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isLoading, setIsLoading] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState<number>(0);
   const [spotCount, setSpotCount] = useState<number>(0);
-  const [nowOrderCount, setNowOrderCount] = useState<number>(0);
-  const [historyOrderCount, setHistoryOrderCount] = useState<number>(0);
-  const [historyDealCount, setHistoryDealCount] = useState<number>(0);
+  const [positionCount, setPositionCount] = useState<number>(0);
+  const [defaultOrderCount, setDefaultOrderCount] = useState<number>(0);
+  const [conditionOrderCount, setConditionOrderCount] = useState<number>(0);
   const [assetsCount, setAssetsCount] = useState<number>(0);
 
   // 更新方法
@@ -178,12 +182,12 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	spotCount,
 	setSpotCount,
 
-	nowOrderCount,
-	setNowOrderCount,
-	historyOrderCount,
-	setHistoryOrderCount,
-	historyDealCount,
-	setHistoryDealCount,
+	positionCount,
+	setPositionCount,
+	defaultOrderCount,
+	setDefaultOrderCount,
+	conditionOrderCount,
+	setConditionOrderCount,
 	assetsCount,
 	setAssetsCount
   };

@@ -81,8 +81,16 @@
   color: #00C788;
 }
 
+.success_bg {
+  background: rgba(0, 199, 136, 0.3);
+}
+
 .error_icon {
   color: #F73710;
+}
+
+.error_bg {
+  background-color: rgba(247, 55, 16, 0.3);
 }
 
 .warning_color {

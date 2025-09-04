@@ -4,6 +4,7 @@ import { CustomTab } from '@/components/CustomCom';
 
 import ContractChart from '../ContractChart';
 import OrderBook from '../OrderBook';
+import ContractInfo from '../ContractInfo';
 
 const SpotTabs: React.FC = () => {
     const {t} = useLanguage('contract');
@@ -40,6 +41,7 @@ const SpotTabs: React.FC = () => {
             {activeTab === '1' && <ContractChart />}
             {activeTab === '2' && <OrderBook type="orderbook" />}
             {activeTab === '3' && <OrderBook type="trades" />}
+            {activeTab === '4' && <ContractInfo />}
         </div>
     )
 }

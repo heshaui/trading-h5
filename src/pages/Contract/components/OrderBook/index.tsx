@@ -20,6 +20,7 @@ import RedHoverIcon from '@/assets/images/exchange/icon_red_hover.png';
 import RedIcon from '@/assets/images/exchange/icon_red.png';
 import { ReactComponent as UpIcon } from '@/assets/images/order_book/up.svg';
 import { ReactComponent as DownIcon } from '@/assets/images/order_book/down.svg';
+import { ReactComponent as TagIcon } from '@/assets/images/exchange/icon_tag.svg';
 
 // 定义订单类型
 interface Order {
@@ -150,33 +151,34 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
     // 直接使用WebSocket推送的完整档位数据
     if (bookData && bookData.tick) {
       console.log('委托列表', bookData)
+      const {asks, buys: bids} = bookData.tick;
       // 处理卖单数据
-      if (bookData.asks && Array.isArray(bookData.asks)) {
-        const aggregatedSells = aggregateOrders(bookData.asks, mergeDepth, true);
+      if (asks && Array.isArray(asks)) {
+        const aggregatedSells = aggregateOrders(asks, mergeDepth, true);
         // 根据显示模式限制显示数量
         const maxSellOrders = colorMode === 1 ? 10 : 20;
         setSellOrders(aggregatedSells.slice(0, maxSellOrders));
       }
 
       // 处理买单数据
-      if (bookData.bids && Array.isArray(bookData.bids)) {
-        const aggregatedBuys = aggregateOrders(bookData.bids, mergeDepth, false);
+      if (bids && Array.isArray(bids)) {
+        const aggregatedBuys = aggregateOrders(bids, mergeDepth, false);
         // 根据显示模式限制显示数量
         const maxBuyOrders = colorMode === 1 ? 10 : 20;
         setBuyOrders(aggregatedBuys.slice(0, maxBuyOrders));
       }
 
       // 计算当前价格和买卖比例
-      if (bookData.asks?.length > 0 && bookData.bids?.length > 0) {
-        const topAskPrice = Number(bookData.asks[0][0]);
-        const topBidPrice = Number(bookData.bids[0][0]);
+      if (asks?.length > 0 && bids?.length > 0) {
+        const topAskPrice = Number(asks[0][0]);
+        const topBidPrice = Number(bids[0][0]);
         
         // 计算买卖比例
-        const totalSellAmount = bookData.asks.reduce(
+        const totalSellAmount = asks.reduce(
           (sum: number, item: [number, number]) => sum + Number(item[1]),
           0
         );
-        const totalBuyAmount = bookData.bids.reduce(
+        const totalBuyAmount = bids.reduce(
           (sum: number, item: [number, number]) => sum + Number(item[1]),
           0
         );
@@ -448,7 +450,8 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
           )}
 
           {/* 当前价格 */}
-          <div className="h-[24px] flex items-center my-[10px]">
+          <div className="h-[24px] flex items-center justify-between my-[10px]">
+            <div className="flex items-center">
               <span
                 className="text-[20px] font-medium mr-1"
                 style={{
@@ -481,9 +484,11 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
                   "-"
                 )}
               </span>
-              <span className="text-[12px] tip-color ml-2">
-                ¥ {getPairsRate(currentPrice, 'CNY').rate.toFixed(2)}
-              </span>
+            </div>
+            <div className="flex items-center">
+                <TagIcon className="!w-[12px] !h-[12px] theme-color mr-1" />
+                <span className="text-[12px] theme-color">{currentPrice}</span>
+            </div>
           </div>
 
           {/* 买单 */}

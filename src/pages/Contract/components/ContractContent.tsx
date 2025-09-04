@@ -20,7 +20,7 @@ import RiskDisclosureModal from './RiskDisclosureModal';
 import ContractHeader from './ContractHeader';
 import { useLanguage } from '@/hooks';
 import ContractTabs from './ContractTabs';
-// import ContractOrder from './ContractOrder';
+import ContractOrder from './ContractOrder';
 // import ContractTrade from './ContractTrade';
 
 
@@ -730,8 +730,8 @@ const ContractContent: React.FC = observer(() => {
             <ContractHeader priceData={priceData}/>
             {/* 图表、最新成交 */}
             <ContractTabs />
-            {/* 当前委托、历史委托、历史成交、资产 */}
-            {/* <ContractOrder /> */}
+            {/* 仓位、普通委托、条件委托、资产 */}
+            <ContractOrder />
             {/* 买卖 */}
             {/* <ContractTrade /> */}
             {/* 风险确认书模态框 */}

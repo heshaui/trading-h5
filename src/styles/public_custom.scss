@@ -142,6 +142,12 @@
             width: 28px;
         }
     }
+    // 不需要底部边框
+    &.noBoder {
+        .adm-tabs-header {
+            border-bottom: none;
+        }
+    }
     // 计算器
     &.calculatorTabs {
         .adm-tabs-tab {

@@ -5,7 +5,6 @@ import { useLanguage } from '@/hooks';
 import { PopTypeProvider, usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 
 import TradeContent from './TradeContent';
-import { use } from 'echarts';
 
 type Props = {
   open: boolean;

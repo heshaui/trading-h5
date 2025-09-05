@@ -9,14 +9,17 @@ import Position from './components/Position';
 import SpotOrderHistory from '@/pages/SpotOrder/components/SpotOrderTable/HistoryOrder';
 import SpotOrderDeal from '@/pages/SpotOrder/components/SpotOrderTable/HistoryDeal';
 import Assets from '@/pages/Exchange/components/SpotOrder/Assets';
+import ReducePositionModal from './components/Popup/ReducePositionModal';
 
 import noLoginLightIcon from '@/assets/images/public/icon_nologin_day.png';
 import noLoginDarkIcon from '@/assets/images/public/icon_nologin_dark.png';
+import { ReactComponent as OrderIcon } from '@/assets/images/exchange/order_icon.svg';
 
 
 const SpotTabs: React.FC = () => {
     const {t, currentLanguage} = useLanguage(['contract', 'common']);
     const [activeTab, setActiveTab] = useState('1');
+    const [reducePositionOpen, setReducePositionOpen] = useState(false);
     const { isLoggedIn } = useAuth();
     const { isLight } = useTheme();
     const navigate = useNavigate();
@@ -66,15 +69,19 @@ const SpotTabs: React.FC = () => {
     return (
         <div>
             {/* 标签页 */}
-            <CustomTab
-                tabsItems={ tabItems }
-                activeKey={activeTab}
-                onChange={setActiveTab}
-                stretch={false}
-                activeLineMode='fixed'
-                className="spotTabs safeTabs"
-            />
+            <div className="flex justify-between items-center pr-4 border-b border-color">
+                <CustomTab
+                    tabsItems={ tabItems }
+                    activeKey={activeTab}
+                    onChange={setActiveTab}
+                    stretch={false}
+                    activeLineMode='fixed'
+                    className="spotTabs noBoder safeTabs flex-1"
+                />
+                <OrderIcon className="w-[24px] h-[24px] text-[var(--text-color5)]" onClick={() => setReducePositionOpen(true)} />
+            </div>
             {!isLoggedIn ? <NoLogin /> : TabContent()}
+            <ReducePositionModal open={reducePositionOpen} onCancel={() => setReducePositionOpen(false)} />
         </div>
     )
 }

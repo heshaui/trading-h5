@@ -4,11 +4,13 @@ import { Modal } from "antd-mobile";
 import { useLanguage } from '@/hooks';
 
 type Props = {
+	title: string;
+	content: string;
     open: boolean;
     onCancel: () => void;
 };
 
-const ReducePositionModal: React.FC<Props> = ({open, onCancel}) => {
+const TipModal: React.FC<Props> = ({open, onCancel, title, content}) => {
 	const { t } = useLanguage('contract');
 	const handleCancel = () => {
 		onCancel();
@@ -21,7 +23,7 @@ const ReducePositionModal: React.FC<Props> = ({open, onCancel}) => {
 			return (
 				<p className="bg-[var(--background17)] border-b border-b-[var(--border-color4)] font-medium text-[16px] h-[60px] flex items-center px-[16px] justify-between">
 					{/* title */}
-					<span>{t("reducePosition.title")}</span>
+					<span>{title}</span>
 					<Iconify icon="mingcute:close-line" className="text-[24px] text-[#9e9e9e]" onClick={handleCancel} />
 				</p>
 			)
@@ -31,7 +33,7 @@ const ReducePositionModal: React.FC<Props> = ({open, onCancel}) => {
 				<div className="h-[100%] bg-[var(--background17)] px-[4px] pt-[20px] pb-[16px]">
 					{/* 内容 */}
 					<p className="mb-[40px] tip-color text-[16px] leading-[22px] text-justify">
-						{t('reducePosition.content')}
+						{content}
 					</p>
 					<button
 						type="button"
@@ -56,4 +58,4 @@ const ReducePositionModal: React.FC<Props> = ({open, onCancel}) => {
 		)
 }
 
-export default ReducePositionModal;
+export default TipModal;

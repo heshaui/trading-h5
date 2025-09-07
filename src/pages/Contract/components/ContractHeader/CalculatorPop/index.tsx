@@ -548,7 +548,7 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
           <button 
             type="button"
             className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mb-[40px] mt-[30px] rounded-[25px]
-              ${formVerify() ? 'bg-[var(--theme-color)] text-[var(--text-color5)]' : 'bg-[var(--btncolor10)] tip-color'}
+              ${formVerify() ? 'bg-[var(--theme-color)] text-[var(--text-color5)]' : 'bg-[var(--btncolor10)] text-[var(--text-color10)]'}
             `}
             onClick={submit}
           >

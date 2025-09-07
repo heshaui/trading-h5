@@ -9,6 +9,12 @@ import { Iconify } from '@/components/icon';
 import { Side, SideMap, PositionTypeMap } from '../../configs/columns';
 import BigNumber from "bignumber.js";
 
+import TipModal from '../Popup/TipModal'
+import AdjustPopup from '../Popup/AdjustPopup';
+import ReservePopup from '../Popup/ReservePopup';
+import TakePriofitPopup from '../Popup/TakeProfitPopup'
+import ClosePopup from '../Popup/ClosePopup'
+
 import { ReactComponent as FrameIcon } from '@/assets/images/exchange/Frame.svg';
 import { ReactComponent as PositionIcon } from '@/assets/images/exchange/PositionIcon.svg';
 
@@ -32,9 +38,22 @@ const Position: React.FC = () => {
 
 	const [onlyCurrentSymbol, setOnlyCurrentSymbol] = useState(false);
 	const [positionList, setPositionList] = useState<PositionType[]>([]);
+	// 提示弹窗
+	const [tipModalVisible, setTipModalVisible] = useState(false);
+	const [tipTitle, setTipTitle] = useState('');
+	const [tipContent, setTipContent] = useState('');
+	// 保证金弹窗
+	const [adjustVisible, setAdjustVisible] = useState(false);
+	// 反向开仓
+	const [reserveVisible, setReserveVisible] = useState(false);
+	const [currentData, setCuurentData] = useState<PositionType | null | undefined>();
+	// 止盈止损
+	const [tpslVisible, setTpslVisible] = useState(false);
+	// 平仓
+	const [closeVisible, setCloseVisible] = useState(false);
 
 	useEffect(() => {
-		getPosition();
+		// getPosition();
 	}, [getPosition, currentSymbol, currentContractInfo?.id])
 
 	useEffect(() => {
@@ -126,6 +145,25 @@ const Position: React.FC = () => {
 		return t(`contractInfo.${type ?? 'demo'}`)
 	}
 
+	// 显示提示
+	const handleTip = (type: string) => {
+		setTipModalVisible(true);
+		switch (type) {
+			case 'position':
+				setTipTitle(t("reducePosition.title"));
+				setTipContent(t('reducePosition.content'));
+				break;
+		}
+	}
+	// 反向开仓、平仓
+	const handleOpen = (type: 'close' | 'reserve', data: PositionType) => {
+		switch (type) {
+			case 'close': setCloseVisible(true); break;
+			case 'reserve': setReserveVisible(true); break;
+		}
+		setCuurentData(data);
+	}
+
 	return (
 		<>
 			<div className="h-[48px] px-4 flex justify-between items-center text-[14px] border-b border-color">
@@ -150,7 +188,7 @@ const Position: React.FC = () => {
 						<Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color" />
 					</li> :
 					positionList.length ? positionList.map((item) => {
-						return (<li key={item.id} className="border-b border-color last:border-b-0 p-4">
+						return (<li key={item.id} className="border-b border-color p-4">
 							<div className="flex justify-between items-center mb-[6px]">
 								<div className="h-[20px] flex items-center">
 									<span className="text-[14px] font-medium mr-[4px]">{item.symbol ?? '--'}</span>
@@ -169,7 +207,7 @@ const Position: React.FC = () => {
 								<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center mr-1">
 									{t(PositionTypeMap[item.positionType])} {item.leverageLevel ?? 1}x
 								</span>
-								<PositionIcon className="w-[18px] h-[8px]" />
+								<PositionIcon className="w-[18px] h-[8px]" onClick={() => handleTip('position')} />
 							</div>
 							<div className="flex justify-between my-4 pb-4 border-b border-color">
 								<p className="flex flex-col gap-y-[4px]">
@@ -209,7 +247,7 @@ const Position: React.FC = () => {
 									</div>
 									<div className="flex flex-col gap-y-[12px]">
 										<p className="flex flex-col gap-y-[4px]">
-											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('margin')}({currentContractInfo?.marginCoin})</span>
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]" onClick={() => setAdjustVisible(true)}>{t('margin')}({currentContractInfo?.marginCoin})</span>
 											<span className="text-[14px] font-medium">{new BigNumber(item.holdAmount).toFormat(symbolPricePrecision)}</span>
 										</p>
 										<p className="flex flex-col gap-y-[4px]">
@@ -236,11 +274,13 @@ const Position: React.FC = () => {
 							<div className="flex gap-x-[5px] mt-4">
 								<button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+									onClick={() => setTpslVisible(true)}
 								>
 									{t('tpsl')}
 								</button>
 								<button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+									onClick={() => handleOpen('close', item)}
 								>
 									{t('close')}
 								</button>
@@ -251,6 +291,7 @@ const Position: React.FC = () => {
 								</button>
 								<button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+									onClick={() => handleOpen('reserve', item)}
 								>
 									{t('reverseOpen')}
 								</button>
@@ -262,6 +303,40 @@ const Position: React.FC = () => {
 					</li>
 				}
 			</ul>
+			{/* 提示弹窗 */}
+			<TipModal
+				open={tipModalVisible}
+				title={tipTitle}
+				content={tipContent}
+				onCancel={() => setTipModalVisible(false)}
+			/>
+			{/* 保证金 */}
+			<AdjustPopup
+				open={adjustVisible}
+				onCancel={() => setAdjustVisible(false)}
+				onConfirm={() => setAdjustVisible(false)}
+			/>
+			{/* 反向开仓 */}
+			<ReservePopup
+				open={reserveVisible}
+				currentData={currentData!}
+				onCancel={() => setReserveVisible(false)}
+				onConfirm={() => setReserveVisible(false)}
+			/>
+			{/* 止盈止损 */}
+			<TakePriofitPopup
+				open={tpslVisible}
+				onCancel={() => setTpslVisible(false)}
+				onConfirm={() => setTpslVisible(false)}
+			/>
+			{/* 平仓 */}
+			{/* 反向开仓 */}
+			<ClosePopup
+				open={closeVisible}
+				currentData={currentData!}
+				onCancel={() => setCloseVisible(false)}
+				onConfirm={() => setCloseVisible(false)}
+			/>
 		</>
 	)
 }

@@ -6,10 +6,10 @@ import useAuth from '@/hooks/useAuth';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 
 import Position from './components/Position';
+import DefaultCommission from './components/Commission/DefaultCommission';
 import SpotOrderHistory from '@/pages/SpotOrder/components/SpotOrderTable/HistoryOrder';
 import SpotOrderDeal from '@/pages/SpotOrder/components/SpotOrderTable/HistoryDeal';
 import Assets from '@/pages/Exchange/components/SpotOrder/Assets';
-import ReducePositionModal from './components/Popup/ReducePositionModal';
 
 import noLoginLightIcon from '@/assets/images/public/icon_nologin_day.png';
 import noLoginDarkIcon from '@/assets/images/public/icon_nologin_dark.png';
@@ -62,7 +62,8 @@ const SpotTabs: React.FC = () => {
     // tab 内容
     const TabContent = () => {
         switch (activeTab) {
-            case '1': return <Position />;
+            case '1': return <Position />; break;
+            case '2': return <DefaultCommission/>; break;
         }
     }
 
@@ -81,7 +82,6 @@ const SpotTabs: React.FC = () => {
                 <OrderIcon className="w-[24px] h-[24px] text-[var(--text-color5)]" onClick={() => setReducePositionOpen(true)} />
             </div>
             {!isLoggedIn ? <NoLogin /> : TabContent()}
-            <ReducePositionModal open={reducePositionOpen} onCancel={() => setReducePositionOpen(false)} />
         </div>
     )
 }

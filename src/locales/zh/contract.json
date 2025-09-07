@@ -95,6 +95,8 @@
   "submitTime": "提交委托时间",
   "triggerTime": "触发时间",
   "expirationTime": "过期时间",
+  "more": "多",
+  "empty": "空",
   "calculator": {
     "title": "计算器",
     "profitTab": "收益",
@@ -232,7 +234,8 @@
       "open": "开仓状态",
       "status": "状态",
       "cancelAll": "全撤",
-      "cancel": "取消"
+      "cancel": "取消",
+      "finally": "完成度"
     },
     "historyColumn": {
       "symbol": "合约",
@@ -459,5 +462,38 @@
     "title": "自动减仓",
     "content": "该指标代表你在自动减仓序列的排序。若指示灯全部亮起，发生平仓事件后，您的持仓可能会被减少。",
     "confirm": "我知道了"
+  },
+  "adjustModal": {
+    "title": "调节{{positionType}}仓位保证金",
+    "add": "增加保证金",
+    "reduce": "减少保证金",
+    "placeholder": "增加保证金数量",
+    "holdAmount": "仓位保证金",
+    "liquidationPrice": "强平价",
+    "current": "当前",
+    "afterChange": "变更后"
+  },
+  "reserveModal": {
+    "lastPrice": "最新价格",
+    "marketPriceAverage": "市价平多",
+    "marketPriceEmpty": "市价开空",
+    "closeAmount": "平仓数量",
+    "openAmount": "开仓数量",
+    "reserveEmpty": "反向开空",
+    "reserveAverage": "反向平多",
+    "tip1": "如果账户余额不足以开立相同规模的反向仓位，则以可用保证金开设方向相反的仓位。",
+    "tip2": "反向仓位的规模上限为每个合约的市价最大下单数量。",
+    "tip3": "请注意，反向开仓受市场状况、保证金要求和风险管理等多种因素影响，因此我们无法保证此操作100%成功。",
+    "tip4": "不再提醒。可在交易设置中，开启或关闭提示。"
+  },
+  "takeProfitModal": {
+  },
+  "closeModal": {
+    "confirm": "确认平仓",
+    "price": "价格",
+    "ourBest": "我方最优",
+    "otherBest": "对方最优",
+    "canCloseVolume": "可平数量",
+    "estimatedReturn": "预计收益"
   }
 }

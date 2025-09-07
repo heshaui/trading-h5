@@ -403,6 +403,9 @@
     .ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
         border-color: var(--theme-color) !important;
     }
+    .ant-checkbox-wrapper {
+        color: var(--text-color6);
+    }
     
 }
 // input-number

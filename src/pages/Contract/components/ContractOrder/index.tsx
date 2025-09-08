@@ -7,8 +7,7 @@ import { useContract } from '@/context/exchange-providers/ContractProvider';
 
 import Position from './components/Position';
 import DefaultCommission from './components/Commission/DefaultCommission';
-import SpotOrderHistory from '@/pages/SpotOrder/components/SpotOrderTable/HistoryOrder';
-import SpotOrderDeal from '@/pages/SpotOrder/components/SpotOrderTable/HistoryDeal';
+import ConditionCommission from './components/Commission/ConditionCommission';
 import Assets from '@/pages/Exchange/components/SpotOrder/Assets';
 
 import noLoginLightIcon from '@/assets/images/public/icon_nologin_day.png';
@@ -62,8 +61,9 @@ const SpotTabs: React.FC = () => {
     // tab 内容
     const TabContent = () => {
         switch (activeTab) {
-            case '1': return <Position />; break;
-            case '2': return <DefaultCommission/>; break;
+            case '1': return <Position />;
+            case '2': return <DefaultCommission />;
+            case '3': return <ConditionCommission />
         }
     }
 
@@ -79,7 +79,7 @@ const SpotTabs: React.FC = () => {
                     activeLineMode='fixed'
                     className="spotTabs noBoder safeTabs flex-1"
                 />
-                <OrderIcon className="w-[24px] h-[24px] text-[var(--text-color5)]" onClick={() => setReducePositionOpen(true)} />
+                <OrderIcon className="!w-[24px] !h-[24px] text-[var(--text-color5)]" onClick={() => setReducePositionOpen(true)} />
             </div>
             {!isLoggedIn ? <NoLogin /> : TabContent()}
         </div>

@@ -2,14 +2,15 @@ import { useState, useCallback } from "react";
 import { message } from "antd";
 import dayjs from "dayjs";
 import { getPlanOrderList, cancelOrder } from "@/services/contract";
+import { Side, PositionType, Type, Open, Status } from "../configs/columns";
 
 // 条件委托接口
 interface ConditionalCommission {
   id: string;
   contractId: number;
   symbol: string;
-  type: "LIMIT" | "MARKET" | "CONDITIONAL";
-  side: "BUY" | "SELL";
+  type: Type;
+  side: Side;
   triggerPrice: number;
   price: number;
   size: number;

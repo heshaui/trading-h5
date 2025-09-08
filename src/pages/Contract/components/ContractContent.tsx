@@ -21,7 +21,7 @@ import ContractHeader from './ContractHeader';
 import { useLanguage } from '@/hooks';
 import ContractTabs from './ContractTabs';
 import ContractOrder from './ContractOrder';
-// import ContractTrade from './ContractTrade';
+import ContractTrade from './ContractTrade';
 
 
 interface ContractAsset {
@@ -733,7 +733,7 @@ const ContractContent: React.FC = observer(() => {
             {/* 仓位、普通委托、条件委托、资产 */}
             <ContractOrder />
             {/* 买卖 */}
-            {/* <ContractTrade /> */}
+            <ContractTrade />
             {/* 风险确认书模态框 */}
             <RiskDisclosureModal
                 open={showRiskDisclosure}

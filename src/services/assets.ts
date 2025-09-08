@@ -172,3 +172,36 @@ export function getOrderList(data: paramsType3): Promise<any> {
     body: JSON.stringify(data)
   });
 }
+
+// 合约账户转现货账户
+export function transferAll(data:any): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/transfer/all`, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+}
+
+// 获取充值支持的币种列表
+export function getTopUpChainsAll(): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/supported-chains`, {
+    method: 'GET',
+  });
+}
+// 根据链类型获取支持的代币列表
+export function getChainType(chainType: string): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/token/supported-chain/${chainType}`, {
+    method: 'GET',
+  });
+}
+// 查询钱包地址
+export function getWalletAddress(blockchain: string): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/address/query?blockchain=${blockchain}`, {
+    method: 'GET',
+  });
+}
+// /assets-web/v1/wallet-feign/address/create
+export function createWalletAddress(data: { blockchain: string, label: string }): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/address/create?blockchain=${data.blockchain}&label=${data.label}`, {
+    method: 'POST',
+  });
+}

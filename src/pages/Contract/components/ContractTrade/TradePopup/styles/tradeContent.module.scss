@@ -1,0 +1,508 @@
+/* 顶部工具栏 */
+.topToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.marginLeverageGroup {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 20px;
+  padding: 2px;
+}
+
+.marginBtn,
+.leverageBtn {
+  height: 28px;
+  width: 72px;
+  padding: 5px 16px !important;
+  border-radius: 18px;
+  font-size: 12px;
+  color: #333;
+  background: #f5f5f5 !important;
+  margin-right: 10px;
+  border: none !important;
+  font-size: 12px !important;
+}
+.marginBtn:hover,
+.leverageBtn:hover {
+  background-color: var(--theme-color) !important;
+  color: #ffffff !important;
+}
+
+.toolbarIcons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.iconBtn:hover {
+  color: #666;
+  background-color: #f5f5f5;
+}
+
+.iconBtn span {
+  font-size: 20px;
+}
+
+/* 开仓/平仓切换 */
+.positionToggle {
+  margin-bottom: 16px;
+}
+
+.toggleWrapper {
+  position: relative;
+  display: flex;
+  border-radius: 25px;
+  border: 1px solid var(--theme-color);
+  padding: 4px;
+}
+
+.toggleSlider {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: 40px;
+  background-color: var(--theme-color);
+  border-radius: 21px;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.toggleSliderRight {
+  transform: translateX(100%);
+}
+
+.toggleBtn {
+  flex: 1;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: rgba(103, 104, 103, 1);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 21px;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.toggleBtnActive {
+  color: #ffffff;
+}
+
+.tabsWrapper {
+  display: flex;
+  gap: 24px;
+  padding-bottom: 12px;
+}
+
+.tabItem {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tabItem:hover {
+  color: #666;
+}
+
+.tabItemActive {
+  color: #333;
+  font-weight: 500;
+}
+
+/* 可用余额 */
+.balanceSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.balanceLabel {
+  color: #666;
+}
+
+.balanceValue {
+  color: var(--theme-color);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.swapIcon {
+  font-size: 16px;
+  color: var(--theme-color);
+  cursor: pointer;
+}
+
+/* 表单样式 */
+.orderForm {
+  margin: 0;
+}
+
+.formItem {
+  /* margin-bottom: 16px; */
+}
+
+.formItem .ant-form-item {
+  margin-bottom: 0;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-size: 13px;
+  color: #666;
+}
+
+.inputGroup {
+  position: relative;
+}
+
+.priceInput,
+.quantityInput {
+  width: 100%;
+  height: 50px;
+  padding: 0 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.priceInput:hover,
+.quantityInput:hover {
+  border-color: #ddd;
+}
+
+.priceInput:focus,
+.quantityInput:focus {
+  background-color: #fff;
+  outline: none;
+}
+
+.priceInput .ant-input-suffix,
+.quantityInput .ant-input-suffix {
+  font-size: 13px;
+}
+
+.inputSuffixGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.dropdownIcon {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 百分比滑块 */
+.percentageSection {
+  padding: 0 4px;
+}
+
+.percentageSlider {
+  width: 100%;
+}
+
+.percentageSlider .ant-slider-rail {
+  height: 4px;
+}
+
+.percentageSlider .ant-slider-track {
+  background-color: var(--theme-color);
+  height: 4px;
+}
+
+.percentageSlider .ant-slider-handle {
+  border: 2px solid var(--theme-color);
+  background-color: #ffffff;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.percentageSlider .ant-slider-handle:focus {
+  box-shadow: 0 0 0 5px rgba(255, 87, 34, 0.12);
+}
+
+.percentageSlider .ant-slider-dot {
+  width: 8px;
+  height: 8px;
+  border: 2px solid #e0e0e0;
+  background-color: #ffffff;
+  margin-top: -2px;
+}
+
+.percentageSlider .ant-slider-dot-active {
+  border-color: var(--theme-color);
+}
+
+.percentageMarks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 2px;
+}
+
+.percentageMarks span {
+  font-size: 11px;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.percentageMarks .activeMark {
+  color: var(--theme-color);
+  font-weight: 500;
+}
+
+/* 可买/可卖数量 */
+.quantityInfo {
+  margin-bottom: 16px;
+}
+
+.quantityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.buyLabel,
+.sellLabel {
+  color: #666;
+}
+
+.buyLabel {
+  color: #4caf50;
+}
+
+.sellLabel {
+  color: #f44336;
+}
+
+.buyValue,
+.sellValue {
+  font-weight: 500;
+  color: #333;
+}
+
+/* 止盈止损 */
+.tpslSection {
+  margin-bottom: 16px;
+  border-radius: 6px;
+}
+
+.tpslHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tpslLabel {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+
+.tpslInputs {
+  margin-top: 12px;
+}
+
+.tpslInputRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tpslInputRow:last-child {
+  margin-bottom: 0;
+}
+
+.tpslInputLabel {
+  font-size: 12px;
+  color: #666;
+  width: 80px;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.tpslInput {
+  flex: 1;
+  height: 50px;
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+  font-size: 14px;
+}
+
+.tpslInput .ant-input-suffix {
+  color: #999;
+  font-size: 12px;
+}
+
+/* 高级设置 */
+.advancedSettings {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+.advancedLabel {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.advancedRight {
+  display: flex;
+  align-items: center;
+}
+
+.advancedSelect {
+  width: 80px;
+}
+
+.advancedSelect .ant-select-selector {
+  border: 1px solid #e9ecef;
+  background-color: #fff;
+  height: 32px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+.advancedSelect .ant-select-arrow {
+  color: #999;
+}
+
+/* 提交按钮 */
+.submitSection {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.submitBtn {
+  height: 48px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.buyBtn {
+  background: #00c788 !important;
+  color: #ffffff;
+}
+
+.sellBtn {
+  background: #ff4d4f !important;
+  color: #ffffff;
+}
+
+/* 成本显示 */
+.costSection {
+  font-size: 12px;
+}
+
+.costRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.costLabel {
+  color: #999;
+}
+
+.costValue {
+  color: #333;
+  font-weight: 500;
+  margin-right: 16px;
+}
+
+.costRow .costLabel:nth-child(3) {
+  margin-left: auto;
+}
+
+/* 验证错误提示样式 */
+.validationError {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+}
+
+.validationErrorTitle {
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.validationErrorList {
+  margin-top: 4px;
+  color: #ef4444;
+  font-size: 11px;
+}
+
+.validationErrorList li {
+  margin-bottom: 2px;
+}
+
+/* 输入框错误状态 */
+.inputError {
+  border-color: #f87171 !important;
+}
+
+.inputError:focus {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* 错误提示文本 */
+.errorText {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  line-height: 1.2;
+}

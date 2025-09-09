@@ -2,14 +2,22 @@
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled),
 .ant-input-outlined:hover,
 .ant-input-outlined:focus,
+.ant-input-outlined:focus-within,
 .ant-input-number-outlined.ant-input-number-status-error:not(.ant-input-number-disabled),
 .ant-input-number-outlined:hover, 
 .ant-input-number-outlined:focus
 {
     background: transparent !important;
     background-color: transparent !important;
+    border: 1px solid var(--theme-color);
+    box-shadow: none;
 }
-
+.ant-input-outlined {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 1px solid var(--border-color4);
+}
+.ant-input,
 .ant-input:focus {
     background: transparent !important;
 }
@@ -17,6 +25,7 @@
 .ant-input::placeholder {
     color: var(--text-color4);
     font-size: 14px;
+    text-align: left;
 }
 .ant-input-affix-wrapper .anticon.ant-input-password-icon:hover,
 .ant-input-affix-wrapper .anticon.ant-input-password-icon {
@@ -26,6 +35,20 @@
 .ant-input-suffix {
     .ant-input-clear-icon {
         color: #a4a5ac !important;
+    }
+}
+
+// 交易input
+.trade-input {
+    height: 50px;
+    color: var(--text-color5);
+    border-radius: 8px;
+    .ant-input{
+        text-align: right !important;
+        color: var(--text-color5) !important;
+    }
+    .ant-input:focus {
+        text-align: left !important;
     }
 }
 
@@ -361,8 +384,8 @@
 .spotSlider,
 .spotSlider:hover,
 .spotSlider:focus {
-    height: 18px;
-    margin: 0 10px 16px !important;
+    height: 16px;
+    margin: 0 10px 10px !important;
     .ant-slider-dot {
         background: var(--background16);
         border-color: var(--background17);

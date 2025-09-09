@@ -3,6 +3,7 @@
   "openOrders": "当前委托",
   "orderHistory": "历史委托",
   "tradeHistory": "成交历史",
+  "placeholder": "请选择",
   "assets": "资产",
   "orderBook": "订单簿",
   "placeOrder": "下单",

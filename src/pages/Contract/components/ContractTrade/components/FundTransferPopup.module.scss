@@ -1,0 +1,306 @@
+.transferModal {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.transferModal :global(.ant-modal-content) {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.transferModal :global(.ant-modal-body) {
+  padding: 16px;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.modalTitle {
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.closeButton {
+  color: #999;
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.closeButton:hover {
+  color: #666;
+}
+
+.modalContent {
+  padding: 0;
+}
+
+/* 账户选择区域 */
+.accountSection {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.accountItem {
+  flex: 1;
+}
+
+.accountLabel {
+  display: block;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.accountSelect {
+  width: 100%;
+}
+
+.accountSelect :global(.ant-select-selector) {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 0 12px !important;
+}
+
+/* 无边框变体样式 */
+.accountSelect :global(.ant-select-borderless) :global(.ant-select-selector) {
+  border: none !important;
+}
+
+.accountSelect :global(.ant-select-selection-item) {
+  color: #1a1a1a !important;
+  font-size: 15px !important;
+  line-height: 46px !important;
+}
+
+.accountSelect :global(.ant-select-arrow) {
+  color: #999 !important;
+}
+
+/* 交换按钮 */
+.swapButtonWrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.swapButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ff6b35 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0;
+}
+
+.swapButton:hover {
+  transform: scale(1.05);
+  background: #ff5722 !important;
+}
+
+.swapButton :global(.anticon) {
+  color: white !important;
+  font-size: 18px;
+}
+
+/* 表单项 */
+.formItem {
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: block;
+  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* 币种选择 */
+.coinSelect {
+  width: 100%;
+}
+
+.coinSelect :global(.ant-select-selector) {
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 4px 12px !important;
+}
+
+.coinSelect :global(.ant-select-selection-item) {
+  padding: 0 !important;
+}
+
+.coinSelect :global(.ant-select-arrow) {
+  color: #999 !important;
+}
+
+.coinOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.coinIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.coinIcon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.coinInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.coinSymbol {
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.coinName {
+  color: #999;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* 数量输入 */
+.amountInputWrapper {
+  position: relative;
+}
+
+.amountInput {
+  width: 100%;
+}
+
+.inputSuffix {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.coinUnit {
+  color: #666;
+  font-size: 14px;
+  padding-right: 8px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.maxButton {
+  color: #ff6b35 !important;
+  font-size: 14px;
+  padding: 4px 8px;
+  height: auto;
+  border: none;
+  background: none;
+  font-weight: 500;
+}
+
+.maxButton:hover {
+  color: #ff5722 !important;
+  background: rgba(255, 107, 53, 0.08) !important;
+}
+
+.availableBalance {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.balanceAmount {
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* 确认按钮 */
+.confirmButton {
+  width: 100%;
+  height: 48px;
+  background: #ff6b35 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  margin-top: 24px;
+  transition: all 0.3s ease;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background: #ff5722 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.confirmButton:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+}
+
+/* 转账提示信息 */
+.transferInfo {
+  margin: 16px 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.infoItem:last-child {
+  margin-bottom: 0;
+}
+
+.infoLabel {
+  color: #666;
+  font-weight: 400;
+}
+
+.infoValue {
+  color: #1a1a1a;
+  font-weight: 500;
+}

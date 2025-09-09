@@ -2,8 +2,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {Popup} from 'antd-mobile';
 import { Iconify } from '@/components/icon';
 import { useLanguage } from '@/hooks';
-import { Modal, Button, message } from 'antd';
-import styles from './styles.module.css';
+import { Modal, Button, message, Segmented, ConfigProvider } from 'antd';
 import { marginModelEdit } from '@/services/contract';
 import appStore from '@/store';
 
@@ -24,7 +23,7 @@ const MarginModePopup:React.FC<Props> = ({
 }) => {
 	const {t} = useLanguage('contract');
 
-	const [selectedMode, setSelectedMode] = React.useState<1 | 2>(2); // 默认选择逐仓
+  const [selectedMode, setSelectedMode] = React.useState<1 | 2>(2); // 默认选择逐仓
   const { currentContractInfo } = appStore;
   const handleConfirm = async () => {
 
@@ -45,48 +44,64 @@ const MarginModePopup:React.FC<Props> = ({
 
 	const PopupContent = () => {
 		return (
-			<div>
-				<div className={styles.modeSelector}>
-          <div className={`${styles.slideIndicator} ${selectedMode === 2 ? styles.slideRight : styles.slideLeft}`}></div>
-          <div
-            className={`${styles.modeTab} ${selectedMode === 1 ? styles.activeTab : ''}`}
-            onClick={() => setSelectedMode(1)}
-          >
-            {t('crossMargin')}
-          </div>
-          <div
-            className={`${styles.modeTab} ${selectedMode === 2 ? styles.activeTab : ''}`}
-            onClick={() => setSelectedMode(2)}
-          >
-            {t('isolatedMargin')}
-          </div>
-        </div>
-
-        {selectedMode === 2 && (
-          <div className={styles.modeDescription}>
-            {t('marginMode.isolatedDescription')}
-          </div>
-        )}
-        {
-          selectedMode === 1 && (
-            <div className={styles.modeDescription}>
-              {t('marginMode.crossDescription')}
-            </div>
-          )
-        }
-
-        <div className={styles.confirmButton}>
-          <Button
-            type='primary'
-            size='large'
-            shape='round'
-            onClick={handleConfirm}
-            className={styles.confirmBtn}
-          >
-            {t('marginMode.setTo', { mode: selectedMode === 1 ? t('crossMargin') : t('isolatedMargin') })}
-          </Button>
-        </div>
-			</div>
+			<ConfigProvider
+				theme={{
+					components: {
+						Segmented: {
+							itemSelectedBg: "var(--theme-color)",
+							itemHoverBg: "transparent",
+							itemActiveBg: "transparent",
+							itemColor: "var(--text-color6)",
+							trackPadding: 3,
+							borderRadius: 50,
+							borderRadiusSM: 50,
+							trackBg: "transparent"
+						}
+					},
+				}}
+			>
+				<div className="px-4 pt-[28px] pb-[20px]">
+					<Segmented
+						shape="round"
+						className="h-[50px] mb-[20px]  w-[100%] border border-[var(--theme-color)] bg-[transparent]"
+						options={[
+							{
+								label: (
+								<div className={`h-[44px] flex items-center justify-center ${selectedMode === 1 ? 'font-medium' : ''}`}>
+									{t("crossMargin")}
+								</div>
+								),
+								value: 1,
+							},
+							{
+								label: (
+								<div className={`h-[44px] flex items-center justify-center ${selectedMode === 2 ? 'font-medium' : ''}`}>
+									{t("isolatedMargin")}
+								</div>
+								),
+								value: 2,
+							},
+						]}
+						value={selectedMode}
+						block
+						onChange={(value) => {
+							setSelectedMode(value as 1 | 2)
+						}}
+					/>
+					<div className="text-[16px] text-justify leading-[23px] tip-color mb-[42px]">
+						{selectedMode === 2 ? t('marginMode.isolatedDescription') : t('marginMode.crossDescription')}
+					</div>
+					<button
+						type="button"
+						className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium rounded-[25px]
+							bg-[var(--theme-color)] text-[var(--text-color5)]
+						`}
+						onClick={handleConfirm}
+					>
+						{t('marginMode.setTo', { mode: selectedMode === 1 ? t('crossMargin') : t('isolatedMargin') })}
+					</button>
+				</div>
+			</ConfigProvider>
 		)
 	}
 

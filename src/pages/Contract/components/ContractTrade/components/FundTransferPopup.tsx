@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Popup} from 'antd-mobile';
 import { Modal, ConfigProvider, Input, Button, Select, Image } from 'antd';
-
+import SelectPop from '@/components/SelectPop';
 import { Iconify } from '@/components/icon';
+import { getLabel } from '@/utils';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
-import styles from './styles.module.css';
+import styles from './FundTransferPopup.module.scss';
 const { Option } = Select;
 type Props = {
   visible: boolean;
@@ -40,7 +41,11 @@ const FundTransferPopup:React.FC<Props> = ({
 
 	}, [selectedCoin, fromAccount, spotBalance, contractBalance]);
 
-
+	// 账户选项
+	const accountOptions = [
+		{label: t('fundTransfer.spotAccount'), value: 'spot'},
+		{label: t('fundTransfer.contractAccount'), value: 'contract'},
+	]
 	// 币种选项
 	// const coinOptions = [
 	//   { value: 'USDT', label: 'USDT', subLabel: 'tetherUSD' },
@@ -158,23 +163,29 @@ const FundTransferPopup:React.FC<Props> = ({
 				<div className={styles.accountSection}>
 				<div className={styles.accountItem}>
 					<label className={styles.accountLabel}>{t('fundTransfer.from')}</label>
-					<Select
-					value={fromAccount}
-					onChange={(value) => {
-						setFromAccount(value);
-						setToAccount(value === 'spot' ? 'contract' : 'spot');
-						// 清空转账数量，因为切换账户后余额可能不同
-						setTransferAmount('');
-						// 强制刷新余额显示
-						setRefreshKey(prev => prev + 1);
-					}}
-					className={styles.accountSelect}
-					size="large"
-					suffixIcon={<Iconify icon="mdi:chevron-down" />}
-					>
-					<Option value="spot">{t('fundTransfer.spotAccount')}</Option>
-					<Option value="contract">{t('fundTransfer.contractAccount')}</Option>
-					</Select>
+					<SelectPop 
+						value={fromAccount}
+						options={accountOptions}
+						title={t('placeholder')} 
+						activeType="icon"
+						onChange={(value:any) => {
+							setFromAccount(value);
+							setToAccount(value === 'spot' ? 'contract' : 'spot');
+							// 清空转账数量，因为切换账户后余额可能不同
+							setTransferAmount('');
+							// 强制刷新余额显示
+							setRefreshKey(prev => prev + 1);
+						}}
+						renderBtn={(open) => (
+							<button 
+								className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
+								onClick={open}
+							>
+								<span>{getLabel(fromAccount, accountOptions)}</span>
+								<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+							</button>
+						)}
+					/>
 				</div>
 
 
@@ -189,21 +200,27 @@ const FundTransferPopup:React.FC<Props> = ({
 
 				<div className={styles.accountItem}>
 					<label className={styles.accountLabel}>{t('fundTransfer.to')}</label>
-					<Select
-					value={toAccount}
-					onChange={(value) => {
-						setToAccount(value);
-						setFromAccount(value === 'spot' ? 'contract' : 'spot');
-						// 强制刷新余额显示
-						setRefreshKey(prev => prev + 1);
-					}}
-					className={styles.accountSelect}
-					size="large"
-					suffixIcon={<Iconify icon="mdi:chevron-down" />}
-					>
-					<Option value="spot">{t('fundTransfer.spotAccount')}</Option>
-					<Option value="contract">{t('fundTransfer.contractAccount')}</Option>
-					</Select>
+					<SelectPop 
+						value={toAccount}
+						options={accountOptions}
+						title={t('placeholder')} 
+						activeType="icon"
+						onChange={(value: any) => {
+							setToAccount(value);
+							setFromAccount(value === 'spot' ? 'contract' : 'spot');
+							// 强制刷新余额显示
+							setRefreshKey(prev => prev + 1);
+						}}
+						renderBtn={(open) => (
+							<button 
+								className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
+								onClick={open}
+							>
+								<span>{getLabel(toAccount, accountOptions)}</span>
+								<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+							</button>
+						)}
+					/>
 				</div>
 				</div>
 				<div className={styles.availableBalance} key={`balance-${refreshKey}`}>
@@ -224,31 +241,41 @@ const FundTransferPopup:React.FC<Props> = ({
 				{/* 币种选择 */}
 				<div className={styles.formItem}>
 				<label className={styles.formLabel}>{t('fundTransfer.coin')}</label>
-				<Select
+				<SelectPop 
 					value={selectedCoin}
-					onChange={(value) => {
-					setSelectedCoin(value);
-					// 清空转账数量，因为切换币种后余额可能不同
-					setTransferAmount('');
-					// 强制刷新余额显示
-					setRefreshKey(prev => prev + 1);
+					options={
+						coinOptions.map(coin => (
+							{
+								label: (
+									<div className="flex items-center">
+										<Image src={coin.icon} alt={coin.label} width={20} height={20} preview={false} />
+										<span className={styles.coinSymbol}>{coin.label}</span>
+									</div>
+								),
+								value: coin.value
+							}
+						))
+					}
+					title={t('placeholder')} 
+					activeType="icon"
+					onChange={(value: any) => {
+						setSelectedCoin(value);
+						// 清空转账数量，因为切换币种后余额可能不同
+						setTransferAmount('');
+						// 强制刷新余额显示
+						setRefreshKey(prev => prev + 1);
 					}}
-					className={styles.coinSelect}
-					size="large"
-					suffixIcon={<Iconify icon="mdi:chevron-down" />}
-				>
-					{coinOptions.map(coin => (
-					<Option key={coin.value} value={coin.value}>
-						<div className={styles.coinOption}>
-						<div className={styles.coinIcon}>
-							<Image src={coin.icon} alt={coin.label} width={20} height={20} preview={false} />
-						</div>
-						<div className={styles.coinInfo}>
-							<span className={styles.coinSymbol}>{coin.label}</span>                    </div>
-						</div>
-					</Option>
-					))}
-				</Select>
+					renderBtn={(open) => (
+						<button 
+							className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
+							onClick={open}
+						>
+							<span>{getLabel(selectedCoin, coinOptions)}</span>
+							<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+						</button>
+					)}
+				/>
+				
 				</div>
 
 				{/* 数量输入 */}
@@ -256,24 +283,24 @@ const FundTransferPopup:React.FC<Props> = ({
 				<label className={styles.formLabel}>{t('fundTransfer.amount')}</label>
 				<div className={styles.amountInputWrapper}>
 					<Input
-					value={transferAmount}
-					onChange={(e) => setTransferAmount(e.target.value)}
-					placeholder={t('fundTransfer.minAmount')}
-					className={styles.amountInput}
-					size="large"
-					suffix={
-						<div className={styles.inputSuffix}>
-						<span className={styles.coinUnit}>{selectedCoin}</span>
-						<Button
-							type="text"
-							size="small"
-							onClick={handleMaxAmount}
-							className={styles.maxButton}
-						>
-							{t('fundTransfer.max')}
-						</Button>
-						</div>
-					}
+						value={transferAmount}
+						onChange={(e) => setTransferAmount(e.target.value)}
+						placeholder={t('fundTransfer.minAmount')}
+						className={styles.amountInput}
+						size="large"
+						suffix={
+							<div className={styles.inputSuffix}>
+							<span className={styles.coinUnit}>{selectedCoin}</span>
+							<Button
+								type="text"
+								size="small"
+								onClick={handleMaxAmount}
+								className={styles.maxButton}
+							>
+								{t('fundTransfer.max')}
+							</Button>
+							</div>
+						}
 					/>
 
 				</div>

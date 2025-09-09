@@ -2,8 +2,7 @@ import React, {useState, useEffect, useMemo} from 'react';
 import {Popup} from 'antd-mobile';
 import { Iconify } from '@/components/icon';
 import { useLanguage } from '@/hooks';
-import { Modal, Button, Slider, InputNumber, message } from 'antd';
-import styles from './styles.module.css';
+import { Modal, Button, Slider, InputNumber, message, ConfigProvider } from 'antd';
 import appStore from '@/store';
 import { levelEdit } from '@/services/contract';
 import { useUserConfig } from "@/hooks/useUserConfig";
@@ -117,61 +116,113 @@ const LeveragePopup:React.FC<Props> = ({
 
 	const PopupContent = () => {
 		return (
-			<div>
-				{/* 当前持仓支持杠杆范围 */}
-        <div className={styles.supportRange}>
-          {t('leverageModal.supportRange', { min: 1, max: maxLeverage })}
-        </div>
+			<ConfigProvider
+				theme={{
+					components: {
+						Slider: {
+							controlSize: 18,
+							dotActiveBorderColor: "var(--background17)",
+							dotBorderColor: "var(--background17)",
+							dotSize: 18,
+							handleActiveColor: "none",
+							handleActiveOutlineColor: "none",
+							handleColor: "var(--background17)",
+							handleLineWidthHover: 2,
+							handleSize: 16,
+							handleSizeHover: 16,
+							railBg: "var(--background16)", // 滑块轨道背景色
+							railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
+							trackBg: "var(--theme-color)",
+							trackBgDisabled: "var(--background16)",
+							trackHoverBg: "var(--theme-color)"
+						},
+					},
+				}}
+			>
+				<div className="px-4 pt-[28px] pb-[20px]">
+					{/* 当前持仓支持杠杆范围 */}
+					<div className="leading-[20px] text-[14px] tip-color mb-[12px]">
+						{t('leverageModal.supportRange', { min: 1, max: maxLeverage })}
+					</div>
 
-        {/* 杠杆输入区域 */}
-        <div className={styles.leverageInputSection}>
+					{/* 杠杆输入区域 */}
+					{/* <div className={styles.leverageInputSection}>
+						<InputNumber
+							value={tempLeverage}
+							onChange={handleInputChange}
+							min={1}
+							max={maxLeverage}
+							className="spot-number-inpit"
+							controls={false}
+						/>
+					</div> */}
+					<div className="custom-input-number mb-[24px]">
+						<InputNumber
+							className={`spot_number_input`}
+							style={{
+							width: "100%",
+							boxSizing: "border-box",
+							}}
+							min={1}
+							max={100}
+							value={tempLeverage} 
+							onChange={handleInputChange}
+							suffix='x'
+							controls={false}
+						/>
+						<div className="controls">
+							<button type="button" className="border-bottom" onClick={() => setTempLeverage(prev => prev++)}>
+								<Iconify
+									icon="mdi:chevron-up"
+									size={20}
+									className={`text-[var(--text-color5)] hover:text-[var(--theme-color)]`}
+								/>
+							</button>
+							<button type="button" onClick={() => setTempLeverage(prev => prev--)}>
+								<Iconify
+									icon="mdi:chevron-down"
+									size={20}
+									className={`text-[var(--text-color5)] hover:text-[var(--theme-color)]`}
+								/>
+							</button>
+						</div>
+					</div>
 
-          <InputNumber
-            value={tempLeverage}
-            onChange={handleInputChange}
-            min={1}
-            max={maxLeverage}
-            className={styles.leverageInputNumber}
-          />
-        </div>
+					{/* 杠杆滑块 */}
+					<Slider
+						min={1}
+						max={maxLeverage}
+						marks={marks}
+						step={1}
+						value={tempLeverage}
+						onChange={handleSliderChange}
+						className="spotSlider"
+						tooltip={{ open: false }}
+					/>
 
-        {/* 杠杆滑块 */}
-        <div className={styles.sliderSection}>
-          <Slider
-            min={1}
-            max={maxLeverage}
-            marks={marks}
-            step={1}
-            value={tempLeverage}
-            onChange={handleSliderChange}
-            className={styles.leverageSlider}
-            tooltip={{ open: false }}
-          />
-        </div>
+					{/* 风险提示 */}
+					<div className="text-[14px] leading-[20px] text-[#ff8a26] mb-[20px]">
+						{t('leverageModal.riskWarning')}
+					</div>
 
-        {/* 风险提示 */}
-        <div className={styles.riskWarning}>
-          {t('leverageModal.riskWarning')}
-        </div>
+					{/* 持仓上限 */}
+					<div className="w-full h-[50px] border input-border flex justify-between rounded-[8px] items-center px-[10px] text-[14px]">
+						<span className="text-[#9e9e9e]">{t('leverageModal.positionLimit')}</span>
+						<span className="text-[var(--text-color5)]">{getDisplayLimitValue()}USDT</span>
+					</div>
 
-        {/* 持仓上限 */}
-        <div className={styles.positionLimit}>
-          <span className={styles.limitLabel}>{t('leverageModal.positionLimit')}</span>
-          <span className={styles.limitValue}>{getDisplayLimitValue()}USDT</span>
-        </div>
-
-        {/* 确认按钮 */}
-        <Button
-          type="primary"
-          size="large"
-          shape='round'
-          onClick={handleConfirm}
-          className={styles.confirmButton}
-          block
-        >
-          {t('leverageModal.confirm')}
-        </Button>
-			</div>
+					{/* 确认按钮 */}
+					<button
+						type="button"
+						className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[40px] rounded-[25px]
+							bg-[var(--theme-color)] text-[var(--text-color5)]
+						`}
+						onClick={handleConfirm}
+					>
+						{t('leverageModal.confirm')}
+					</button>
+				</div>
+			</ConfigProvider>
 		)
 	}
 

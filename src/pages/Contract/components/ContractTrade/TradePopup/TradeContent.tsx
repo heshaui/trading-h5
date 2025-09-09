@@ -103,15 +103,15 @@ const SpotTradePage = observer(({
   // 在所有Hooks声明之后获取store数据
   const currentContractInfo = appStore.getCurrentContractInfo();
   const { userConfig } = useUserConfig();
-  const symbolPricePrecision=currentContractInfo.coinResultVo.symbolPricePrecision
+  const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision
   //限价最大成交金额
-  const maxLimitMoney=currentContractInfo.coinResultVo.maxLimitMoney
+  const maxLimitMoney=currentContractInfo?.coinResultVo?.maxLimitMoney
   //限价最大成交量
-  const maxLimitVolume=currentContractInfo.coinResultVo.maxLimitVolume
+  const maxLimitVolume=currentContractInfo?.coinResultVo?.maxLimitVolume
   //市价最大成交金额
-  const maxMarketMoney=currentContractInfo.coinResultVo.maxMarketMoney
+  const maxMarketMoney=currentContractInfo?.coinResultVo?.maxMarketMoney
   //市价最大成交量
-  const maxMarketVolume=currentContractInfo.coinResultVo.maxMarketVolume
+  const maxMarketVolume=currentContractInfo?.coinResultVo?.maxMarketVolume
   
   // 获取当前订单类型
   const getOrderType = useCallback(() => {

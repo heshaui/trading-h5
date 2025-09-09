@@ -13,7 +13,7 @@ import AssetsList from "./components/AssetsList";
 import { ReactComponent as CloseeyeSvg } from '@/assets/icons/userCenter/close-eye.svg';
 import { ReactComponent as OpeneyeSvg } from '@/assets/icons/userCenter/open-eye.svg';
 
-interface AccountBalance {
+export interface AccountBalance {
   canUseAmount: string; // 可用余额
   isolateMargin: string; // 逐仓保证金
   lockAmount: string; // 锁定金额
@@ -29,14 +29,17 @@ const ContractAssets:React.FC = observer(() => {
 	const navigate = useNavigate();
 	const [contractAssets, setContractAssets] = useState<AccountBalance[]>([]); // 合约账户数据
 	const [showFundTransferModal, setShowFundTransferModal] = useState(false);
-	const [banlanceShow, setBanlanceShow] = useState(false);
+	const [banlanceShow, setBanlanceShow] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	// 获取合约账户余额
 	const getContractBalance = async () => {
+		setLoading(true);
 		try {
 			const accountList = await appStore.loadContractAssets();
 			setContractAssets(accountList);
 		} catch (error) { }
+		setLoading(false);
 	}
 	// 账户余额
 	const accountBalance = useMemo(() => {
@@ -55,13 +58,13 @@ const ContractAssets:React.FC = observer(() => {
 		<div className="p-4">
 			<h3 className="text-[20px] leading-[28px] font-medium mb-4">{t('assets.futureAccount')}</h3>
 			{/* 资产 */}
-			<div className={`line-17 flex-row align-center text-[12px]`} >
+			<div className={`line-17 flex-row align-center text-[12px] font-medium`} >
 				{/* 总资产折合 */}
 				{t('userCenter:overview.assets.totalAssets')}
 				<button type='button' className='ml-1'
 					onClick={() => setBanlanceShow(!banlanceShow)}
 				>
-					{banlanceShow ? <OpeneyeSvg className="!w-[20px] !h-[20px]" /> : <CloseeyeSvg className="!w-[20px] !h-[20px]" />}
+					{banlanceShow ? <OpeneyeSvg className="!w-[20px] !h-[20px] text-[var(--text-color5)]" /> : <CloseeyeSvg className="!w-[20px] !h-[20px] text-[var(--text-color5)]" />}
 				</button>
 			</div>
 			<div>
@@ -76,13 +79,13 @@ const ContractAssets:React.FC = observer(() => {
 					{accountBalance?.symbol}	
 				</span>
 			</div>
-			<div className="mt-[2px]">
-				{banlanceShow ? `≈&nbsp;9807.08&nbsp;USD` : '******'}
+			<div className="mt-[2px] leading-[17px] text-[12px] tip-color font-medium mb-[10px]">
+				{banlanceShow ? `≈ 9807.08 USD` : '******'}
 			</div>
-			<div className='font-14 mt-4 flex-x align-center line-20'>
+			<div className='font-14 flex-x align-center line-20 mb-[20px]'>
 				{/* 今日盈亏 */}
-				{t('userCenter:overview.assets.todayProfitLoss')}
-				{banlanceShow ? <span className={`ltr-text ${Number(todayProfit) > 0 ? 'success_icon' : Number(todayProfit) < 0 ? 'error_icon' : 'error_icon'} font-12`}>
+				<span className="mr-1">{t('userCenter:overview.assets.todayProfitLoss')}</span>
+				{banlanceShow ? <span className={`ltr-text font-medium ${Number(todayProfit) > 0 ? 'success_icon' : Number(todayProfit) < 0 ? 'error_icon' : 'error_icon'} font-12`}>
 					{Number(todayProfit) < 0 ? "-" : "+"}
 					&nbsp;{accountBalance?.symbol||'--'}&nbsp;
 					{Number(todayProfit) ? Math.abs(Number(todayProfit)).toFixed(2) : 0}
@@ -90,22 +93,25 @@ const ContractAssets:React.FC = observer(() => {
 					<span className={`tip-color font-12 flex-x-cc`}>******</span>
 				}
 			</div>	
-			<div className="flex gap-x-[10px]">
+			<div className="flex gap-x-[22px] mb-[30px]">
 				<button
-					className={`cancel_btn6 flex-1`}
+					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
 				>
 					{/* 划转 */}
-					{t("assetsAccount.button.withdraw")}
+					{t("futureAccount.transfer")}
 				</button>
 				<button
-					className={`cancel_btn6 flex-1`}
+					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
 					onClick={() => navigate('/contractAsets/account')}
 				>
 					{/* 流水  */}
-					{t("assetsAccount.button.bill")}
+					{t("futureAccount.fundFlow")}
 				</button>
 			</div>
-			<AssetsList />			
+			<AssetsList 
+				contractAssets={contractAssets}
+				loading={loading}
+			/>			
 		</div>
 	)
 });

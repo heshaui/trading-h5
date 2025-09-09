@@ -7,6 +7,7 @@ import {
   Input,
   Slider,
   InputNumber,
+  Checkbox,
   Button,
   message,
   notification,
@@ -51,7 +52,7 @@ const SpotTradePage = observer(({
   symbol, availableBalance = 1, spotBalance, onOrderSubmit, onBalanceUpdate,
   priceSetterRef, priceData, contractBalance=1
 }: Props) => {
-  const { t } = useLanguage(["spot"]);
+  const { t } = useLanguage('contract');
   const { isLight } = useTheme();
   const { popType, setPopType } = usePopTypeContext();
   const [form] = Form.useForm();
@@ -703,6 +704,7 @@ const SpotTradePage = observer(({
               itemHoverBg: "transparent",
               itemActiveBg: "transparent",
               itemColor: "var(--text-color6)",
+              itemSelectedColor: "var(--text-color5)",
               trackPadding: 3,
               borderRadius: 50,
               borderRadiusSM: 50,
@@ -734,14 +736,14 @@ const SpotTradePage = observer(({
         <div className="flex gap-x-[10px] mb-[16px]">
           <button
             type="button"
-            className="m-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
+            className="min-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
             onClick={() => setShowMarginModeModal(true)}
           >
             {marginModel === 1 ? t("tradingPanel.crossMargin") : t("tradingPanel.isolatedMargin")}
           </button>
           <button
             type="button"
-            className="m-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
+            className="min-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
             onClick={() => setShowLeverageModal(true)}
           >
             {userConfig.nowLevel}x
@@ -753,8 +755,7 @@ const SpotTradePage = observer(({
           options={[
             {
               label: (
-                <div className="h-[44px] flex items-center justify-center">
-                  {" "}
+                <div className="h-[44px] flex items-center font-medium justify-center">
                   {t("tradingPanel.openPosition")}
                 </div>
               ),
@@ -762,8 +763,7 @@ const SpotTradePage = observer(({
             },
             {
               label: (
-                <div className="h-[44px] flex items-center justify-center">
-                  {" "}
+                <div className="h-[44px] flex items-center font-medium justify-center">
                   {t("tradingPanel.closePosition")}
                 </div>
               ),
@@ -800,7 +800,7 @@ const SpotTradePage = observer(({
          {/* 可用余额 */}
             <div className="flex items-center mb-[10px] text-[14px] text-[var(--text-color5)] gap-[4px]">
               <div className="flex items-center gap-[8px]">
-                <span>{t("tradingPanel.available")}:</span>
+                <span className="border-b border-dashed border-[var(--text-color5)]">{t("tradingPanel.available")}:</span>
                 {/* {JSON.stringify(currentContractInfo)} */}
                 <span>{availableBalance.toFixed(2)} {currentContractInfo.marginCoin}</span>
               </div>
@@ -821,7 +821,7 @@ const SpotTradePage = observer(({
                         value={triggerPrice}
                         onChange={handleTriggerPriceChange}
                         placeholder={t("tradingPanel.triggerPrice")}
-                        className={`w-[100%] h-[32px] p-[0_12px] border-none text-[var(--text-color5)] font-[12px] rounded-[6px] bg-[#F5F5F5] ${validationErrors.triggerPrice ? styles.inputError : ''}`}
+                        className={`trade-input ${validationErrors.triggerPrice ? styles.inputError : ''}`}
                         suffix="USDT"
                       />
                     </div>
@@ -839,7 +839,7 @@ const SpotTradePage = observer(({
                     value={price}
                     onChange={handlePriceChange}
                     placeholder={t("tradingPanel.orderPrice")}
-                    className={`w-[100%] h-[50px] text-[var(--text-color5)] text-[14px] rounded-[6px] ${validationErrors.price ? styles.inputError : ''}`}
+                    className={`trade-input ${validationErrors.price ? styles.inputError : ''}`}
                     suffix="USDT"
                     style={{ width: currentCategory === 3 ? "80%" : "100%" }}
                   />
@@ -851,12 +851,12 @@ const SpotTradePage = observer(({
               )}
 
               {/* 委托数量 */}
-              <Form.Item style={{ marginBottom: "16px" }}>
+              <Form.Item className="mb-[16px]">
                 <Input
                   value={quantity}
                   onChange={handleQuantityChange}
                   placeholder={t("tradingPanel.orderQuantity")}
-                  className={`w-[100%] h-[50px] text-[var(--text-color5)] text-[14px] rounded-[6px] ${validationErrors.quantity ? styles.inputError : ''}`}
+                  className={`trade-input ${validationErrors.quantity ? styles.inputError : ''}`}
                   suffix={t("tradingPanel.unit")}
                 />
                 {validationErrors.quantity && (
@@ -866,16 +866,11 @@ const SpotTradePage = observer(({
 
               {/* 百分比滑块 */}
               <Slider
-                style={{
-                  marginTop: " 16px",
-                  marginBottom: "10px",
-                }}
                 value={percentage}
                 onChange={handlePercentageChange}
                 min={0}
                 max={100}
                 step={1}
-                className="!my-[16px]"
                 marks={{
                   0: " ",
                   25: " ",
@@ -883,17 +878,29 @@ const SpotTradePage = observer(({
                   75: " ",
                   100: " ",
                 }}
-                tooltip={{ formatter: (value) => `${value}%` }}
+                tooltip={{
+                  open: true,
+                  zIndex: 1000,
+                  placement: "top",
+                  arrow: false,
+                  className: "sliderTooltip",
+                  destroyOnHidden: true,
+                  getPopupContainer: (trigger) => trigger.parentNode as HTMLElement,
+                  color: "var(--theme-color)", // 设置悬浮框背景颜色为橙色
+                  formatter: (value) =>  `${value ? value.toFixed(2) : 0}%`,
+                  autoAdjustOverflow: false,
+                }}
+                className="spotSlider"
               />
 
               {/* 可买/可卖数量显示 */}
-              <div className="mb-[16px]">
-                <div className="flex items-center justify-between text-[14px] text-[var(--text-color6)] font-[400]">
-                  <div className="flex items-center gap-[4px]">
+              <div className="mb-[5px]">
+                <div className="flex items-center justify-between text-[14px] text-[var(--text-color5)] font-[400]">
+                  <div className="flex leading-[20px] items-center gap-[4px]">
                     <span style={{color:'#00C788'}}>{t("tradingPanel.canBuy")}</span>
                     <span>{formatNumber(calculateMaxQuantity("BUY"), symbolPricePrecision || 4)} {currentContractInfo.coUnit}</span>
                   </div>
-                  <div className="flex items-center gap-[4px]">
+                  <div className="flex leading-[20px] items-center gap-[4px]">
                     <span  style={{color:'#FF4D4F'}}>{t("tradingPanel.canSell")}</span>
                     <span>{formatNumber(calculateMaxQuantity("SELL"), symbolPricePrecision || 4)} {currentContractInfo.coUnit}</span>
                   </div>
@@ -901,15 +908,14 @@ const SpotTradePage = observer(({
               </div>
 
               {/* 止盈止损 */}
-              {/* <div className={styles.tpslSection}>
-          <div className={styles.tpslHeader}>
-            <Checkbox
-              checked={enableTPSL}
-              onChange={(e) => setEnableTPSL(e.target.checked)}
-              className={styles.tpslSwitch}
-            />
-            <span className={styles.tpslLabel}>止盈止损</span> 
-          </div> 2027-07-29 zyj暂时注释 */}
+              {/* <div className={styles.tpslHeader}>
+                <Checkbox
+                  checked={enableTPSL}
+                  onChange={(e) => setEnableTPSL(e.target.checked)}
+                  className="custom-checkbox"
+                />
+                <span className="text-[var(--text-color5)]">止盈止损</span> 
+              </div>  */}
 
               {/* 止盈止损输入框 */}
               {/* {enableTPSL && (
@@ -966,7 +972,7 @@ const SpotTradePage = observer(({
                   onClick={() => handleSubmit("BUY")}
                   block
                   shape="round"
-                  className=" text-[16px] font-[400] text-[#FFF] w-[144px]"
+                  className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
                   style={{
                     background: "#00C788",
                   }}
@@ -979,7 +985,7 @@ const SpotTradePage = observer(({
                   type="primary"
                   size="large"
                   onClick={() => handleSubmit("SELL")}
-                  className=" text-[16px] font-[400] text-[#FFF] w-[144px]"
+                  className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
                   style={{
                     background: "#FF4D4F",
                   }}
@@ -1010,11 +1016,11 @@ const SpotTradePage = observer(({
               <div className="flex items-center justify-between  font-[400] text-[14px] text-[var(--text-color6)]">
                 <div className="flex gap-[4px]">
                   <span>{t("tradingPanel.cost")}</span>
-                  <span>{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
+                  <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
                 </div>
                 <div className="flex gap-[4px]">
                   <span>{t("tradingPanel.cost")}</span>
-                  <span>{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
+                  <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
                 </div>
               </div>
             </Form>

@@ -48,16 +48,21 @@ const Assets: React.FC<Props> = ({contractAssets, loading}) => {
 	}
 
 	const hideChange = () => {
-		setHideSmall(!hideSmall);
-        if (hideSmall && allAssetsList.length > 0) {
-            const newData = allAssetsList.filter(
-                (item) => Number(getTotalBalance(item)) < 1
-            );
-            setAssetsList(newData);
-        } else {
-            setAssetsList(allAssetsList);
-        }
-    };
+		setHideSmall(prev => {
+			const newHideSmall = !prev;
+
+			if (newHideSmall && allAssetsList.length > 0) {
+				const newData = allAssetsList.filter(
+					(item) => Number(item.totalAmount) < 1
+				);
+				setAssetsList(newData);
+			} else {
+				setAssetsList(allAssetsList);
+			}
+
+			return newHideSmall;
+		});
+	};
 
 	useEffect(() => {
 		const data: AccountBalance[] = [

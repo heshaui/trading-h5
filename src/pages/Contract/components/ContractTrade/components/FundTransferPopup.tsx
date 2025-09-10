@@ -33,15 +33,33 @@ const FundTransferPopup:React.FC<Props> = ({
 	const [transferAmount, setTransferAmount] = useState('');
 	const [refreshKey, setRefreshKey] = useState(0); // 强制刷新key
 	const [availableBalance] = useState(11111555503.012312338123); // 可用余额
+	const [openContract, setOpenContract] = useState(false);
 	const coinList = appStore.getCoinList();
+
+	// 获取合约账户状态
+	const getContractStatus = async () => {
+		// 获取当前合约信息 
+		const contractInfo = appStore.getCurrentContractInfo();
+		const userConfig = await appStore.loadUserConfig({
+			contractId: contractInfo.id,
+		});
+		if (userConfig && userConfig.openContract === 1) {
+			setOpenContract(true)
+		}
+	}
+
+	useEffect(() => {
+		getContractStatus();
+	}, [])
 
 
 	// 监听币种和账户变化，更新可用余额
 	useEffect(() => {
 		// 当币种或账户变化时，重新计算可用余额
-		const currentBalance = fromAccount === 'spot' ? getSpotBalance() : getContractBalance();
-
+		fromAccount === 'spot' ? getSpotBalance() : getContractBalance();
 	}, [selectedCoin, fromAccount, spotBalance, contractBalance]);
+
+
 
 	// 账户选项
 	const accountOptions = [
@@ -54,6 +72,7 @@ const FundTransferPopup:React.FC<Props> = ({
 	//   { value: 'BTC', label: 'BTC', subLabel: 'Bitcoin' },
 	//   { value: 'ETH', label: 'ETH', subLabel: 'Ethereum' }
 	// ];
+	console.log(coinList);
 	const coinOptions = coinList.map(coin => ({
 		value: coin.coinName,
 		label: (
@@ -122,14 +141,17 @@ const FundTransferPopup:React.FC<Props> = ({
 		setToAccount('contract'); // 重置为默认目标账户
 		onClose();
 	};
-
+	const isValid = () => {
+		return transferAmount && Number(transferAmount) >= 0 && hasEnoughBalance()
+	}
 	// 处理确认转账
 	const handleConfirm = async () => {
+		if (!isValid()) return
 
 		const transferData = {
-		transferType: fromAccount === 'spot' ? 'wallet_to_contract' : 'contract_to_wallet',
-		coinSymbol: selectedCoin,
-		amount: transferAmount
+			transferType: fromAccount === 'spot' ? 'wallet_to_contract' : 'contract_to_wallet',
+			coinSymbol: selectedCoin,
+			amount: transferAmount
 		};
 
 		onConfirm?.(transferData);
@@ -157,73 +179,90 @@ const FundTransferPopup:React.FC<Props> = ({
 		setRefreshKey(prev => prev + 1);
 	};
 
-	// 获取账户显示名称
-	const getAccountName = (accountType: 'spot' | 'contract') => {
-		return accountType === 'spot' ? t('fundTransfer.spotAccount') : t('fundTransfer.contractAccount');
-	};
+	const noOpenContract = (value: string) => {
+		return value === 'contract' && !openContract ? (
+			<div className="flex items-center">
+				<span className="w-[6px] h-[6px] bg-[#ff4d4f] rounded-full mr-1"></span>
+				<span className="text-[12px] tip-color">{t('fundTransfer.noOpen')}</span>
+			</div>
+		) : <></>									
+	}
 
 	const PopupContent = () => {
 		return (
 			<div className="p-[16px]">
 				{/* 账户选择区域 */}
-				<div className="px-[10px] py-[15px] rounded-[8px] border border-color flex">
+				<div className="px-[10px] py-[15px] rounded-[8px] border border-color flex mb-[20px]">
 					<div className="flex-1 mr-[20px]">
 						<div className="flex items-center justify-between h-[24px] text-[14px] mb-[30px]">
-							<label className="tip-color mr-[20px] shrink-0">{t('fundTransfer.from')}</label>
-							<SelectPop 
-								value={fromAccount}
-								options={accountOptions}
-								title={t('placeholder')} 
-								activeType="icon"
-								onChange={(value:any) => {
-									setFromAccount(value);
-									setToAccount(value === 'spot' ? 'contract' : 'spot');
-									// 清空转账数量，因为切换账户后余额可能不同
-									setTransferAmount('');
-									// 强制刷新余额显示
-									setRefreshKey(prev => prev + 1);
-								}}
-								renderBtn={(open) => (
-									<button 
-										className="flex-1 h-[24px] flex justify-between items-center"
-										onClick={open}
-									>
-										<span>{getLabel(fromAccount, accountOptions)}</span>
-										<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
-									</button>
-								)}
-							/>
+							<label className="text-[#9e9e9e] mr-[20px] shrink-0">{t('fundTransfer.from')}</label>
+							<div className="flex-1">
+								<SelectPop 
+									value={fromAccount}
+									options={accountOptions}
+									title={t('placeholder')} 
+									activeType="icon"
+									showSearch={false}
+									onChange={(value:any) => {
+										setFromAccount(value);
+										setToAccount(value === 'spot' ? 'contract' : 'spot');
+										// 清空转账数量，因为切换账户后余额可能不同
+										setTransferAmount('');
+										// 强制刷新余额显示
+										setRefreshKey(prev => prev + 1);
+									}}
+									renderBtn={(open) => (
+										<button 
+											className="w-full h-[24px] flex justify-between items-center"
+											onClick={open}
+										>
+											<div className="flex items-center gap-x-[10px]">
+												<span className="text-[14px]">{getLabel(fromAccount, accountOptions)}</span>
+												{noOpenContract(fromAccount)}
+											</div>
+											<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+										</button>
+									)}
+								/>
+							</div>
 						</div>
 						<div className="flex items-center justify-between h-[24px] text-[14px]">
-							<label className="tip-color mr-[20px] shrink-0">{t('fundTransfer.to')}</label>
-							<SelectPop 
-								value={toAccount}
-								options={accountOptions}
-								title={t('placeholder')} 
-								activeType="icon"
-								onChange={(value: any) => {
-									setToAccount(value);
-									setFromAccount(value === 'spot' ? 'contract' : 'spot');
-									// 强制刷新余额显示
-									setRefreshKey(prev => prev + 1);
-								}}
-								renderBtn={(open) => (
-									<button 
-										className="flex-1 h-[24px] flex justify-between items-center"
-										onClick={open}
-									>
-										<span>{getLabel(toAccount, accountOptions)}</span>
-										<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
-									</button>
-								)}
-							/>
+							<label className="text-[#9e9e9e] mr-[20px] shrink-0">{t('fundTransfer.to')}</label>
+							<div className="flex-1">
+								<SelectPop 
+									value={toAccount}
+									options={accountOptions}
+									title={t('placeholder')} 
+									activeType="icon"
+									onChange={(value: any) => {
+										setToAccount(value);
+										setFromAccount(value === 'spot' ? 'contract' : 'spot');
+										// 强制刷新余额显示
+										setRefreshKey(prev => prev + 1);
+									}}
+									className="flex-1"
+									showSearch={false}
+									renderBtn={(open) => (
+										<button 
+											className="w-full h-[24px] flex justify-between items-center"
+											onClick={open}
+										>
+											<div className="flex items-center gap-x-[10px]">
+												<span className="text-[14px]">{getLabel(toAccount, accountOptions)}</span>
+												{noOpenContract(toAccount)}
+											</div>
+											<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+										</button>
+									)}
+								/>
+							</div>	
 						</div>
 					</div>
-					<div className="shrink-0" onClick={handleAccountSwitch}>
+					<div className="shrink-0 flex items-center" onClick={handleAccountSwitch}>
 						<TransferIcon className="!w-[20px] !h-[20px]" />
 					</div>
 				</div>
-				<div className={styles.availableBalance} key={`balance-${refreshKey}`}>
+				{/* <div className={styles.availableBalance} key={`balance-${refreshKey}`}>
 					<div>
 						<span>{t('fundTransfer.available')}: </span>
 						<span className={styles.balanceAmount}>
@@ -236,77 +275,69 @@ const FundTransferPopup:React.FC<Props> = ({
 						{toAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
 						</span>
 					</div>
-				</div>
+				</div> */}
 
 				{/* 币种选择 */}
-				<div className={styles.formItem}>
-				<label className={styles.formLabel}>{t('fundTransfer.coin')}</label>
-				<SelectPop 
-					value={selectedCoin}
-					options={coinOptions}
-					title={t('placeholder')} 
-					activeType="icon"
-					onChange={(value: any) => {
-						setSelectedCoin(value);
-						// 清空转账数量，因为切换币种后余额可能不同
-						setTransferAmount('');
-						// 强制刷新余额显示
-						setRefreshKey(prev => prev + 1);
-					}}
-					renderBtn={(open) => (
-						<button 
-							className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
-							onClick={open}
-						>
-							<span>{getLabel(selectedCoin, coinOptions)}</span>
-							<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
-						</button>
-					)}
-				/>
-				
+				<div className="mb-[20px]">
+					<div className="text-[14px] leading-[20px] mb-[10px]">{t('fundTransfer.coin')}</div>
+					<SelectPop 
+						value={selectedCoin}
+						options={coinOptions}
+						title={t('placeholder')} 
+						activeType="icon"
+						onChange={(value: any) => {
+							setSelectedCoin(value);
+							// 清空转账数量，因为切换币种后余额可能不同
+							setTransferAmount('');
+							// 强制刷新余额显示
+							setRefreshKey(prev => prev + 1);
+						}}
+						renderBtn={(open) => (
+							<button 
+								className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
+								onClick={open}
+							>
+								<span>{getLabel(selectedCoin, coinOptions)}</span>
+								<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+							</button>
+						)}
+					/>
 				</div>
 
 				{/* 数量输入 */}
-				<div className={styles.formItem}>
-				<label className={styles.formLabel}>{t('fundTransfer.amount')}</label>
-				<div className={styles.amountInputWrapper}>
+				<div className="mb-[10px]">
+					<div className="text-[14px] leading-[20px] mb-[10px]">{t('fundTransfer.amount')}</div>
 					<Input
 						value={transferAmount}
 						onChange={(e) => setTransferAmount(e.target.value)}
 						placeholder={t('fundTransfer.minAmount')}
-						className={styles.amountInput}
+						className="trade-input left"
 						size="large"
 						suffix={
-							<div className={styles.inputSuffix}>
-							<span className={styles.coinUnit}>{selectedCoin}</span>
-							<Button
-								type="text"
-								size="small"
-								onClick={handleMaxAmount}
-								className={styles.maxButton}
-							>
-								{t('fundTransfer.max')}
-							</Button>
+							<div className="flex items-center h-[20px]">
+								<span className="text-[14px] text-[#9e9e9e]">{selectedCoin}</span>
+								<span className="h-[14px] border-l input-border mx-2"></span>
+								<span className="text-[14px] text-[var(--theme-color)]" onClick={handleMaxAmount}>{t('fundTransfer.max')}</span>
 							</div>
 						}
 					/>
-
-				</div>
 				</div>
 
+				<div className="leading-[17px] text-[12px]">
+					<span className="tip-color mr-[10px]">{t('fundTransfer.available')}: </span>
+					<span className="font-medium">
+						{fromAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
+					</span>
+				</div>
 
 				{/* 确认按钮 */}
-				<Button
-				type="primary"
-				size="large"
-				onClick={handleConfirm}
-				disabled={!transferAmount || Number(transferAmount) <= 0 || !hasEnoughBalance()}
-				className={styles.confirmButton}
-				block
-				title={!transferAmount || Number(transferAmount) <= 0 ? t('fundTransfer.enterValidAmount') : !hasEnoughBalance() ? t('fundTransfer.insufficientBalance') : ""}
-				>
-				{t('fundTransfer.confirm')}
-				</Button>
+				<button
+					type="button"
+					className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[40px] rounded-[25px]
+						${isValid() ? 'bg-[var(--theme-color)] text-[var(--text-color5)]' : 'bg-[var(--btncolor10)] text-[var(--text-color10)]'}
+					`}
+					onClick={handleConfirm}
+				>{t('fundTransfer.confirm')}</button>
 			</div>
 		)
 	}
@@ -319,7 +350,7 @@ const FundTransferPopup:React.FC<Props> = ({
 			destroyOnClose
 			position="bottom"
 			bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-			bodyClassName={`!h-auto !bg-[var(--background17)] !text-[var(--text-color5)]`}
+			bodyClassName={`h-[99.9vh] !bg-[var(--background17)] !text-[var(--text-color5)]`}
 		>
 			<p className="flex justify-between items-center h-[50px] text-[16px] font-medium px-4 border-b border-[var(--border-color6)]">
 				<span>{t('fundTransfer.title')}</span>

@@ -43,8 +43,8 @@ const Account:React.FC = () => {
 	const selectParam = useRef<SelectParamType>({
 		startTime: dayjs().subtract(6, 'day').startOf('day').valueOf(),
 		endTime: dayjs().endOf('day').valueOf(),
-		symbol: '',
-		type: ''
+		symbol: 'all',
+		type: 'all'
 	});
 	const [datePopVisible, setDatePopVisible] = useState(false);
 	const [accountList, setAccountList] = useState<AccountBalance[]>([]);
@@ -53,7 +53,7 @@ const Account:React.FC = () => {
 	const coinOptions:OptionItem[] = [
 		{
 			label: t('futureAccount.all'),
-			value: ''
+			value: 'all'
 		},
 		...coinList.map(coin => ({
 			label: coin.coinName,
@@ -65,7 +65,7 @@ const Account:React.FC = () => {
 	const typeOptions = [
 		{
 			label: t('futureAccount.allType'),
-			value: ''
+			value: 'all'
 		},
 		{
 			label: t('futureAccount.in'),
@@ -141,46 +141,58 @@ const Account:React.FC = () => {
 	}, [])
 
 	return (
-		<>
-			<h3 className="pl-4 text-[20px] h-[60px] flex items-center font-medium" onClick={() => navigate(-1)}>
+		<div className="h-full flex-col">
+			<h3 className="pl-4 text-[16px] h-[44px] flex items-center font-medium" onClick={() => navigate(-1)}>
 				<Iconify icon="icon-park-outline:left" className="text-[24px]"/>
 				<span className="ml-1">{ t('futureAccount.fundFlow') }</span>
 			</h3>
-			<div className="h-[50px] flex items-center border-b border-color">
-				<SelectPop
-					options={coinOptions}
-					title={t('contract:placeholder')} 
-					activeType='icon'
-					onChange={(value) => {
-						selectParam.current.symbol = value as string
-						getData();
-					}}
-					value={selectParam.current.symbol}
-				/>
-				<SelectPop
-					options={typeOptions}
-					title={t('contract:placeholder')} 
-					activeType='icon'
-					onChange={(value) => {
-						selectParam.current.type = value as string
-						getData();
-					}}
-					value={selectParam.current.type}
-				/>
-				<button type="button">
-					<Iconify icon="mingcute:filter-line" className="text-[20px]" />
+			<div className="h-[50px] px-4 pt-4 pb-[10px] flex justify-between items-center border-b border-color">
+				<div className="flex gap-x-[20px]">
+					<SelectPop
+						options={
+							coinOptions.map(coin => ({
+								value: coin.value,
+								label: (
+									<div className="flex items-center gap-x-[10px]">
+										{coin.value !== 'all' && <Image src={coin.url} alt={coin.value} className="!w-[20px] !-[20px] rounded-full" />}
+										<span className="leading-[20px] text-[14px]">{coin.label}</span>
+									</div>
+								),
+							}))
+						}
+						title={t('contract:placeholder')} 
+						activeType='icon'
+						onChange={(value) => {
+							selectParam.current.symbol = value as string
+							getData();
+						}}
+						value={selectParam.current.symbol}
+					/>
+					<SelectPop
+						options={typeOptions}
+						title={t('contract:placeholder')} 
+						activeType='icon'
+						onChange={(value) => {
+							selectParam.current.type = value as string
+							getData();
+						}}
+						value={selectParam.current.type}
+					/>
+				</div>
+				<button type="button" onClick={() => setDatePopVisible(true)}>
+					<Iconify icon="mingcute:filter-line" className="text-[20px] tip-color" />
 				</button>
 			</div>
-			<ul className="max-h-[350px] hideScrollBar mt-[29px]">
+			<ul className="flex-1 min-h-0 hideScrollBar">
 				{
 				loading ? 
 				<li className="h-[200px] flex justify-center items-center">
 					<Iconify icon="eos-icons:bubble-loading" size={48} className="theme-color" />
 				</li> :
 				accountList.length ? accountList.map((item) => {
-					return (<li key={item.symbol} className="mb-[30px] last:mb-0">
-						<div className="flex items-center mb-[12px]">
-							<div>
+					return (<li key={item.symbol} className="mb-[30px] last:mb-0 p-4 border-b border-color">
+						<div className="flex items-center justify-between mb-[12px]">
+							<div className="flex items-center">
 								<Image
 									src='/404'
 									alt={item.symbol}
@@ -188,16 +200,16 @@ const Account:React.FC = () => {
 								/>
 								<span className="leading-[20px] text-[14px] font-medium">{item.symbol}</span>
 							</div>
-							<span>平仓盈亏</span>
+							<span className="text-[14px] text-[#9e9e9e]">平仓盈亏</span>
 						</div>
-						<div>{dayjs().format("YYYY-MM-DD HH:mm:ss")}</div>
-						<div className="pl-[34px]">
-							<p>
-								<span>{t('contract:symbol')}</span>
+						<div className="mt-[4px] mb-[16px] leading-[17px] text-[12px] text-[#9e9e9e]">{dayjs().format("YYYY-MM-DD HH:mm:ss")}</div>
+						<div>
+							<p className="flex justify-between items-center text-[14px] h-[20px] mb-4">
+								<span className="text-[#9e9e9e]">{t('contract:symbol')}</span>
 								<span>{item.symbol}</span>
 							</p>
-							<p>
-								<span>{t('contract:total')}</span>
+							<p className="flex justify-between items-center text-[14px] h-[20px] mb-4">
+								<span className="text-[#9e9e9e]">{t('contract:total')}</span>
 								<span>{item.totalAmount}</span>
 							</p>
 						</div>
@@ -224,8 +236,11 @@ const Account:React.FC = () => {
 				placeholder={[t('spot.select.startTime'), t('spot.select.endTime')]}
 				disabledDate={disabled7DaysDate}
 			/>
-		</>
+		</div>
 	)
 }
-
+export const meta = {
+  requireAuth: true,
+  layout: 'header-only'
+}
 export default Account;

@@ -6,9 +6,12 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { NoData } from "@/components/noData";
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
+import { encryptData } from "@/utils/encrypt";
 import BigNumber from "bignumber.js";
+import { getUserBalanceAll, transferAll } from "@/services/assets";
 
 import AssetsList from "./components/AssetsList";
+import FundTransferPopup from "../Contract/components/ContractTrade/components/FundTransferPopup";
 
 import { ReactComponent as CloseeyeSvg } from '@/assets/icons/userCenter/close-eye.svg';
 import { ReactComponent as OpeneyeSvg } from '@/assets/icons/userCenter/open-eye.svg';
@@ -25,12 +28,13 @@ export interface AccountBalance {
   unRealizedAmount: string; // 未实现盈亏
 }
 const ContractAssets:React.FC = observer(() => {
-	const {t} = useLanguage(['assets', 'userCenter']);
+	const {t} = useLanguage(['assets', 'userCenter', 'contract']);
 	const navigate = useNavigate();
 	const [contractAssets, setContractAssets] = useState<AccountBalance[]>([]); // 合约账户数据
 	const [showFundTransferModal, setShowFundTransferModal] = useState(false);
 	const [banlanceShow, setBanlanceShow] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [spotBalance, setSpotBalance] = useState<any[]>([]); // 现货账户余额数组
 
 	// 获取合约账户余额
 	const getContractBalance = async () => {
@@ -41,12 +45,51 @@ const ContractAssets:React.FC = observer(() => {
 		} catch (error) { }
 		setLoading(false);
 	}
+
+	// 获取现货账户余额
+	const getSpotBalance = async () => {
+		try {
+		const res = await getUserBalanceAll();
+		console.log("getUserBalanceAll response:", res);
+		console.log("getUserBalanceAll res.data:", res.data);
+		console.log("getUserBalanceAll res.data type:", typeof res.data);
+
+		if (res.code === "0" && Array.isArray(res.data)) {
+			setSpotBalance(res.data);
+		} else {
+			console.error("获取现货余额失败:", res);
+			setSpotBalance([]);
+		}
+		} catch (error) {
+			console.error("获取现货余额异常:", error);
+			setSpotBalance([]);
+		}
+	};
 	// 账户余额
 	const accountBalance = useMemo(() => {
 		if (!contractAssets?.length) return null
 		const balance = contractAssets.find((item: any) => item.symbol === "USDT");
 		return balance ?? contractAssets[1]
 	}, [contractAssets])
+
+	const onBalanceUpdate = () => {
+		getContractBalance();
+		getSpotBalance();
+	};
+
+	// 处理资金划转确认
+	const handleFundTransferConfirm = async (transferData: any) => {
+		const dataEncrypt = await encryptData(transferData);
+		const res = await transferAll(dataEncrypt);
+		console.log("res:", res);
+		if (res.code === "0" && res.data) {
+			Toast.show({icon: 'success', content: t('contract:tradingPanel.transferSuccess')});
+			// 通知父组件更新余额
+		} else {
+			Toast.show({icon: 'fail', content: t('contract:tradingPanel.transferFailed')});
+		}
+		onBalanceUpdate();
+	};
 
 	useEffect(() => {
 		getContractBalance()
@@ -96,13 +139,14 @@ const ContractAssets:React.FC = observer(() => {
 			<div className="flex gap-x-[22px] mb-[30px]">
 				<button
 					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
+					onClick={() => setShowFundTransferModal(true)}
 				>
 					{/* 划转 */}
 					{t("futureAccount.transfer")}
 				</button>
 				<button
 					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
-					onClick={() => navigate('/contractAsets/account')}
+					onClick={() => navigate('/contractAssets/account')}
 				>
 					{/* 流水  */}
 					{t("futureAccount.fundFlow")}
@@ -111,6 +155,14 @@ const ContractAssets:React.FC = observer(() => {
 			<AssetsList 
 				contractAssets={contractAssets}
 				loading={loading}
+			/>
+			{/* 资金划转弹框 */}
+			<FundTransferPopup
+				visible={showFundTransferModal}
+				spotBalance={spotBalance}
+				contractBalance={contractAssets}
+				onClose={() => setShowFundTransferModal(false)}
+				onConfirm={handleFundTransferConfirm}
 			/>			
 		</div>
 	)

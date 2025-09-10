@@ -50,6 +50,9 @@
     .ant-input:focus {
         text-align: left !important;
     }
+    &.left .ant-input {
+        text-align: left !important;
+    }
 }
 
 // switch
@@ -474,6 +477,9 @@
     .ant-input-number-input{
         text-align: right !important;
         color: var(--text-color5) !important;
+    }
+    &.left .ant-input-number-input{
+        text-align: left !important;
     }
     .ant-input-number-input:focus {
         text-align: left !important;

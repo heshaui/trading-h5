@@ -418,7 +418,7 @@
   "fundTransfer": {
     "title": "资金划转",
     "from": "从",
-    "to": "划转到",
+    "to": "到",
     "spotAccount": "现货账户",
     "contractAccount": "合约账户",
     "coin": "币种",
@@ -430,7 +430,8 @@
     "transferSuccess": "转账成功",
     "transferFailed": "转账失败",
     "insufficientBalance": "余额不足",
-    "enterValidAmount": "请输入有效的转账数量"
+    "enterValidAmount": "请输入有效的转账数量",
+    "noOpen": "未激活"
   },
   "contractAsset": {
     "title": "资产",

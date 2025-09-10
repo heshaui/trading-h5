@@ -1,13 +1,15 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Popup} from 'antd-mobile';
-import { Modal, ConfigProvider, Input, Button, Select, Image } from 'antd';
+import { Modal, ConfigProvider, Input, Button, Image } from 'antd';
 import SelectPop from '@/components/SelectPop';
 import { Iconify } from '@/components/icon';
 import { getLabel } from '@/utils';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
 import styles from './FundTransferPopup.module.scss';
-const { Option } = Select;
+
+import { ReactComponent as TransferIcon } from '@/assets/images/exchange/icon-convert.svg';
+
 type Props = {
   visible: boolean;
   onClose: () => void;
@@ -53,11 +55,15 @@ const FundTransferPopup:React.FC<Props> = ({
 	//   { value: 'ETH', label: 'ETH', subLabel: 'Ethereum' }
 	// ];
 	const coinOptions = coinList.map(coin => ({
-		id: coin.id,
 		value: coin.coinName,
-		label: coin.coinName,
-		icon: coin.iconUrl,
-	}));
+		label: (
+			<div className="flex items-center">
+				<Image src={coin.iconUrl} alt={coin.coinName} className="!w-[20px] !-[20px] rounded-full" preview={false} />
+				<span className="leading-[20px] text-[14px] ml-[10px]">{coin.coinName}</span>
+			</div>
+		),
+	}));	
+	
 
 	// 获取指定币种的余额
 	const getBalance = (balanceList: any[], coinName: string) => {
@@ -158,84 +164,78 @@ const FundTransferPopup:React.FC<Props> = ({
 
 	const PopupContent = () => {
 		return (
-			<div className={styles.modalContent}>
+			<div className="p-[16px]">
 				{/* 账户选择区域 */}
-				<div className={styles.accountSection}>
-				<div className={styles.accountItem}>
-					<label className={styles.accountLabel}>{t('fundTransfer.from')}</label>
-					<SelectPop 
-						value={fromAccount}
-						options={accountOptions}
-						title={t('placeholder')} 
-						activeType="icon"
-						onChange={(value:any) => {
-							setFromAccount(value);
-							setToAccount(value === 'spot' ? 'contract' : 'spot');
-							// 清空转账数量，因为切换账户后余额可能不同
-							setTransferAmount('');
-							// 强制刷新余额显示
-							setRefreshKey(prev => prev + 1);
-						}}
-						renderBtn={(open) => (
-							<button 
-								className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
-								onClick={open}
-							>
-								<span>{getLabel(fromAccount, accountOptions)}</span>
-								<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
-							</button>
-						)}
-					/>
-				</div>
-
-
-				<div className={styles.swapButtonWrapper}>
-					<Button
-					type="text"
-					icon={<Iconify icon="mdi:swap-horizontal" />}
-					onClick={handleAccountSwitch}
-					className={styles.swapButton}
-					/>
-				</div>
-
-				<div className={styles.accountItem}>
-					<label className={styles.accountLabel}>{t('fundTransfer.to')}</label>
-					<SelectPop 
-						value={toAccount}
-						options={accountOptions}
-						title={t('placeholder')} 
-						activeType="icon"
-						onChange={(value: any) => {
-							setToAccount(value);
-							setFromAccount(value === 'spot' ? 'contract' : 'spot');
-							// 强制刷新余额显示
-							setRefreshKey(prev => prev + 1);
-						}}
-						renderBtn={(open) => (
-							<button 
-								className="border border-solid input-border rounded-lg w-full h-[50px] px-[13px] text-[14px] flex justify-between items-center"
-								onClick={open}
-							>
-								<span>{getLabel(toAccount, accountOptions)}</span>
-								<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
-							</button>
-						)}
-					/>
-				</div>
+				<div className="px-[10px] py-[15px] rounded-[8px] border border-color flex">
+					<div className="flex-1 mr-[20px]">
+						<div className="flex items-center justify-between h-[24px] text-[14px] mb-[30px]">
+							<label className="tip-color mr-[20px] shrink-0">{t('fundTransfer.from')}</label>
+							<SelectPop 
+								value={fromAccount}
+								options={accountOptions}
+								title={t('placeholder')} 
+								activeType="icon"
+								onChange={(value:any) => {
+									setFromAccount(value);
+									setToAccount(value === 'spot' ? 'contract' : 'spot');
+									// 清空转账数量，因为切换账户后余额可能不同
+									setTransferAmount('');
+									// 强制刷新余额显示
+									setRefreshKey(prev => prev + 1);
+								}}
+								renderBtn={(open) => (
+									<button 
+										className="flex-1 h-[24px] flex justify-between items-center"
+										onClick={open}
+									>
+										<span>{getLabel(fromAccount, accountOptions)}</span>
+										<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+									</button>
+								)}
+							/>
+						</div>
+						<div className="flex items-center justify-between h-[24px] text-[14px]">
+							<label className="tip-color mr-[20px] shrink-0">{t('fundTransfer.to')}</label>
+							<SelectPop 
+								value={toAccount}
+								options={accountOptions}
+								title={t('placeholder')} 
+								activeType="icon"
+								onChange={(value: any) => {
+									setToAccount(value);
+									setFromAccount(value === 'spot' ? 'contract' : 'spot');
+									// 强制刷新余额显示
+									setRefreshKey(prev => prev + 1);
+								}}
+								renderBtn={(open) => (
+									<button 
+										className="flex-1 h-[24px] flex justify-between items-center"
+										onClick={open}
+									>
+										<span>{getLabel(toAccount, accountOptions)}</span>
+										<Iconify icon="icon-park-outline:down" className="text-[24px]"/>
+									</button>
+								)}
+							/>
+						</div>
+					</div>
+					<div className="shrink-0" onClick={handleAccountSwitch}>
+						<TransferIcon className="!w-[20px] !h-[20px]" />
+					</div>
 				</div>
 				<div className={styles.availableBalance} key={`balance-${refreshKey}`}>
-				<div>
-					<span>{t('fundTransfer.available')}: </span>
-					<span className={styles.balanceAmount}>
-					{fromAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
-					</span>
-				</div>
-				<div>
-					<span>{t('fundTransfer.available')}: </span>
-					<span className={styles.balanceAmount}>
-					{toAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
-					</span>
-				</div>
+					<div>
+						<span>{t('fundTransfer.available')}: </span>
+						<span className={styles.balanceAmount}>
+						{fromAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
+						</span>
+					</div>
+					<div>
+						<span>{t('fundTransfer.available')}: </span>
+						<span className={styles.balanceAmount}>
+						{toAccount === 'spot' ? getSpotBalance() : getContractBalance()} {selectedCoin}
+						</span>
+					</div>
 				</div>
 
 				{/* 币种选择 */}
@@ -243,19 +243,7 @@ const FundTransferPopup:React.FC<Props> = ({
 				<label className={styles.formLabel}>{t('fundTransfer.coin')}</label>
 				<SelectPop 
 					value={selectedCoin}
-					options={
-						coinOptions.map(coin => (
-							{
-								label: (
-									<div className="flex items-center">
-										<Image src={coin.icon} alt={coin.label} width={20} height={20} preview={false} />
-										<span className={styles.coinSymbol}>{coin.label}</span>
-									</div>
-								),
-								value: coin.value
-							}
-						))
-					}
+					options={coinOptions}
 					title={t('placeholder')} 
 					activeType="icon"
 					onChange={(value: any) => {

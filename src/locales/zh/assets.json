@@ -260,7 +260,13 @@
         "total": "总权益",
         "balance": "钱包余额",
         "useBalance": "可用",
-        "unRealizedAmount": "未实现盈亏"
+        "unRealizedAmount": "未实现盈亏",
+        "all": "全部",
+        "allType": "全部类型",
+        "in": "转入",
+        "out": "转出",
+        "cost": "资金费用",
+        "handlingFee": "开仓手续费"
     },
     "orderBook": {
         "title": "盘口",

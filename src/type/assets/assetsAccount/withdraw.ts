@@ -20,6 +20,7 @@ export interface coinExtAllListType {
     chainId: number,
     value: string,
     label: string,
+    memoTag: number,
 }
 export interface coinExtSelectType {
     coinId: number,
@@ -99,7 +100,8 @@ export interface coinInfoType {
     minWithdraw: number, // 最小提币量-协议
     maxWithdraw: number, // 最大提币量-协议
     minRecharge: number,
-    confirms: number
+    confirms: number,
+    memoTag: number,
 }
 export interface limitType {
     max: string,

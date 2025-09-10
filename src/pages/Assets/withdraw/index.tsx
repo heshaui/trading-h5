@@ -10,7 +10,7 @@ import { NoData, NoAddress } from '@/components/noData';
 // import WithdrawMoneyCheck from '@/components/assetsModal/withdrawMoneyCheck'
 import { getuserAddressList, getWithdrawCoinAll, getcoinExtList, getUserBalance, getProtocolTypeAll, getUserALlLimit, getUserBalanceAll } from '@/services/assets'
 import { Toast } from 'antd-mobile';
-import { cut, nul, division, countNum, withdrawFee } from '@/utils'
+import { cut, nul, division, countNum, withdrawFee, roundDown } from '@/utils'
 import { useLanguage } from '@/hooks/useLanguage';
 import { getLoginUserInfo } from "@/services/userCenter"
 import { ResetStateProvider, useResetStateContext } from '@/context/reset-providers/ResetStateProvider';
@@ -63,7 +63,7 @@ const WithdrawMoneyPage = observer(() => {
 
 
   // 添加状态来跟踪是否显示 MEMO
-  const [showMemo, setShowMemo] = useState(false);
+  // const [showMemo, setShowMemo] = useState(false);
 
   const [allowWithdraw, setAllowWithdraw] = useState(false)
   const [addressInput, setAddressInput] = useState('');
@@ -150,7 +150,7 @@ const WithdrawMoneyPage = observer(() => {
       // 清空相关状态
       setAmountNum(null);
       setAddressInput('');
-      setShowMemo(false);
+      // setShowMemo(false);
       setAllowWithdraw(false);
       setCoinExtSelect([]);
       setConinInfo({} as coinInfoType);
@@ -162,9 +162,6 @@ const WithdrawMoneyPage = observer(() => {
     if (!value) {
       return;
     }
-
-    // 设置MEMO显示状态（基于新选中的币种）
-    setShowMemo(option.memoTag === 1);
 
     // 获取币种余额
     const balance = await getUserBalanceData();
@@ -258,7 +255,7 @@ const WithdrawMoneyPage = observer(() => {
           return {
             ...item,
             ...protocol,
-            label: `${protocol?.protocol || '--'}(${protocol?.protocolName || '--'})`,
+            label: `${protocol?.protocolName || '--'}(${protocol?.protocol || '--'})`,
             value: item.protocolId,
           }
         })
@@ -314,7 +311,7 @@ const WithdrawMoneyPage = observer(() => {
   }
   const filteredAddressOptions = useMemo(() => {
     return addressSelect.map((item: any) => {
-      const coinInfo=coinSelect.find(coinItem=>coinItem.value===form.getFieldValue('tenantId'))
+      const coinInfo = coinSelect.find(coinItem => coinItem.value === form.getFieldValue('tenantId'))
       const isProtocolSupported = coinExtSelect.some(
         (coinExt) =>
           (coinExt.protocolName === item.protocolName ||
@@ -359,6 +356,8 @@ const WithdrawMoneyPage = observer(() => {
       if (matchingProtocol) {
         // 自动设置匹配的网络协议
         form.setFieldValue('protocolId', matchingProtocol.value);
+        // 设置MEMO显示状态（基于新选中的币种）
+        // setShowMemo(option.memoTag === 1);
         // 更新币种信息
         setConinInfo(Object.assign(coninInfo, matchingProtocol));
         // 设置最小提现金额
@@ -378,7 +377,7 @@ const WithdrawMoneyPage = observer(() => {
         form.setFieldValue('protocolId', null);
         form.setFieldValue('amount', null);
         setAmountNum(null)
-        setShowMemo(false);
+        // setShowMemo(false);
         // 检查是否允许提现
         checkAllowWithdraw(null as any)
         Toast.show(
@@ -394,6 +393,8 @@ const WithdrawMoneyPage = observer(() => {
     if (value === undefined) return;
     // 更新币种信息
     setConinInfo(Object.assign(coninInfo, option));
+    // 设置MEMO显示状态（基于新选中的币种）
+    // setShowMemo(option.memoTag === 1);
     // 设置最小提现金额
     form.setFieldValue('amount', getMinWithdraw('min'));
     // 设置金额
@@ -402,29 +403,41 @@ const WithdrawMoneyPage = observer(() => {
     checkAllowWithdraw(getMinWithdraw('min'))
   }
 
+  // memo币
+  const protocolIdWatch = Form.useWatch("protocolId", form);
+  const isMemo = useMemo(() => {
+    const opt = coinExtSelect.find((item: any) => {
+      const v = item?.value ?? item?.protocolId;
+      return String(v) === String(protocolIdWatch);
+    });
+    return Boolean(opt?.memoTag) || (Boolean(protocolIdWatch) && Boolean(coninInfo?.memoTag));
+  }, [protocolIdWatch, coinExtSelect, coninInfo?.memoTag]);
 
 
 
-  // 获取提现手续费显示
-  const getWithdrawFee = (number: number, baseCoinName?: string) => {
-    let coinName = ''
+  // 手续费汇率-可用余额汇率（传baseCoinName）
+  const getWithdrawFee = (number: number, baseCoinName?: string, scaale: number | false = false) => {
+    let coinName = "";
     if (baseCoinName) {
-      coinName = baseCoinName || ''
+      coinName = baseCoinName || "";
     } else {
-      coinName = coninInfo.coinName ||
-        coinSelect.find((item: any) => item.coinId === form.getFieldValue('tenantId'))?.coinName || ''
+      coinName =
+        coninInfo.coinName ||
+        coinSelect.find(
+          (item: any) => item.coinId === form.getFieldValue("tenantId")
+        )?.coinName ||
+        "";
     }
-    const rateKeyName = rateKey.split('-')[0]; // 获取汇率key
+    const rateKeyName = rateKey.split("-")[0]; // 获取汇率key
     const { shortName, rate, symbol } = getRate(coinName, number, rateKeyName);
     return {
-      coinName: coinName || '--',
+      coinName: coinName || "--",
       shortName,
       rate,
       symbol,
-      text: `${rate} ${shortName}`
-    }
-
-  }
+      text: !scaale ? `${rate} ${shortName}` : `${roundDown(rate, scaale)} ${shortName}`,
+    };
+  };
 
   // 验证地址
   const validateAddress = async (rule: any, value: any) => {
@@ -491,13 +504,12 @@ const WithdrawMoneyPage = observer(() => {
 
   // 提现最小值获取，提现最大值获取
   const getMinWithdraw = (type: 'min' | 'max') => {
-    // const max = getCoinRateData(coninInfo.coinName, userAllLimit.max||0)
-    // const min = getCoinRateData(coninInfo.coinName, userAllLimit.mix||0)
-    // const limit_24h = cut(max, min) //24h限额
     // 获取24h限额相关数据
-    const dailyMaxUsdt = getCoinRateData(coninInfo.coinName, userAllLimit.max || 0) // 24h最大限额（USDT值转换为当前币种）
-    const dailyUsedUsdt = getCoinRateData(coninInfo.coinName, userAllLimit.mix || 0) // 24h已使用额度（USDT值转换为当前币种）
-    const dailyRemainingLimit = Number(cut(dailyMaxUsdt, dailyUsedUsdt)) // 24h剩余额度
+    // const dailyMaxUsdt = getCoinRateData(coninInfo.coinName, userAllLimit.max || 0) // 24h最大限额（USDT值转换为当前币种）
+    // const dailyUsedUsdt = getCoinRateData(coninInfo.coinName, userAllLimit.mix || 0) // 24h已使用额度（USDT值转换为当前币种）
+    // const dailyRemainingLimit = Number(cut(dailyMaxUsdt, dailyUsedUsdt)) // 24h剩余额度
+    const remainingLimit = Number(cut(Number(userAllLimit?.max || 0), Number(userAllLimit.mix || 0))) //24h剩余额度=24h最大限额-4h已使用额度
+    const dailyRemainingLimit = getCoinRateData(coninInfo.coinName, remainingLimit) // 24h剩余额度（USDT值转换为当前币种）
 
     // 获取基础数据
     const balance = Number(coninInfo.balance || 0) // 用户余额
@@ -540,11 +552,11 @@ const WithdrawMoneyPage = observer(() => {
     }
   }, [amountNum, allowWithdraw])
   const maxWithdrawAmountBtn = useCallback(() => {
-    if (allowWithdraw||checkMaxWithdraw) {
+    if (allowWithdraw || checkMaxWithdraw) {
       form.setFieldValue('amount', getMinWithdraw('max'))
       setAmountNum(getMinWithdraw('max'))
     }
-  }, [allowWithdraw,checkMaxWithdraw])
+  }, [allowWithdraw, checkMaxWithdraw])
 
   // 提交表单
   const onFinish = (values: any) => {
@@ -595,18 +607,18 @@ const WithdrawMoneyPage = observer(() => {
     const verified10 = userInfo?.verifiedWithdrawalStatus === 1 && userInfo?.realnessStatus !== 1 //已认证且未实名-判断unverifiedWithdrawalStatus
     const unverifie11 = userInfo?.unverifiedWithdrawalStatus === 1 && userInfo?.realnessStatus === 1 //未认证且实名-判断verifiedWithdrawalStatus
 
-    const needsKyc = verified10&&userInfo?.unverifiedWithdrawalStatus !== 1
-    const needsGoogleAuth = !userInfo?.isGoogleAuth||!userInfo?.googleCode
-    const needsWithdraw = userInfo?.withdrawalStatus !== 1||(userInfo?.verifiedWithdrawalStatus !== 1&&userInfo?.unverifiedWithdrawalStatus !== 1)||
-    (unverifie11&&userInfo?.verifiedWithdrawalStatus !== 1)
-    if (!token || needsWithdraw|| needsKyc || needsGoogleAuth) {
+    const needsKyc = verified10 && userInfo?.unverifiedWithdrawalStatus !== 1
+    const needsGoogleAuth = !userInfo?.isGoogleAuth || !userInfo?.googleCode
+    const needsWithdraw = userInfo?.withdrawalStatus !== 1 || (userInfo?.verifiedWithdrawalStatus !== 1 && userInfo?.unverifiedWithdrawalStatus !== 1) ||
+      (unverifie11 && userInfo?.verifiedWithdrawalStatus !== 1)
+    if (!token || needsWithdraw || needsKyc || needsGoogleAuth) {
       navigate('/assets')
       Toast.show({
         content: t('assetsAccount.button.withdrawError'),
         icon: 'fail'
       })
     }
-  }, [userInfo,token])
+  }, [userInfo, token])
   useEffect(() => {
     getCoinAllData()
     getAllProtocolTypeList()
@@ -718,7 +730,7 @@ const WithdrawMoneyPage = observer(() => {
                     <div className='flex-y align-end font-14 font-w-500'>
                       <span>{option.balance}</span>
                       <span className={`${styles.tip_color} font-w-400 font-12`}>
-                        {`≈${getWithdrawFee(option.balance, option.coinName).text}`}
+                        {`≈${getWithdrawFee(option.balance, option.coinName, 2).text}`}
                       </span>
                     </div>
                   </div>
@@ -916,7 +928,7 @@ const WithdrawMoneyPage = observer(() => {
           </Form.Item>
 
           {/* MEMO标签 - 移到Form.Item外面 */}
-          {showMemo && (
+          {isMemo && (
             <p className={`${styles.warning_box} font-12 font-w-400 flex align-start mb-2 `}>
               <Iconify icon="ep:warning-filled" className="warning_color mr-1" size={16} />
               <span>
@@ -926,7 +938,7 @@ const WithdrawMoneyPage = observer(() => {
             </p>
           )}
 
-          {showMemo && (
+          {isMemo && (
             <Form.Item name='momo' >
               <Input className={`${styles.input_box} `}
                 placeholder={t('withdrawMoney.memoPlaceholder')}
@@ -990,7 +1002,7 @@ const WithdrawMoneyPage = observer(() => {
             <li className={`flex-x justify-between mb-5`}>
               <p>{t('withdrawMoney.dayLimit')}</p>
               {/* 24h限额 */}
-              <p><span className={`${styles.title_color}`}>{userAllLimit.mix ? getCoinRateData(coninInfo.coinName, userAllLimit.mix) : '0'}</span>
+              <p><span className={`${styles.title_color}`}>{userAllLimit.mix ? getCoinRateData(coninInfo.coinName, cut(Number(userAllLimit.mix || 0), Number(userAllLimit.mix || 0))) : '0'}</span>
                 / {userAllLimit.max ? getCoinRateData(coninInfo.coinName, userAllLimit.max) : '0'}&nbsp;{coninInfo.coinName || ''}</p>
             </li>
           </ul>

@@ -180,6 +180,12 @@
     "historyPlanDeal": "历史计划成交",
     "profitLoss": "盈亏记录",
     "tradeHistory": "成交记录",
+    "select": {
+      "allContract": "全部合约",
+      "postOnly": "限价单",
+      "ioc": "市价单",
+      "allType": "全部类型"
+    },
     "positionColumn": {
       "positionId": "仓位ID",
       "contractId": "合约ID",

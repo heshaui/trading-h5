@@ -5,6 +5,7 @@ import { Iconify } from '@/components/icon';
 import SelectPop from '@/components/SelectPop';
 import DateTimePop from '@/components/DateTimePop';
 import {Toast, Image} from 'antd-mobile';
+import { getLabel } from '@/utils';
 import appStore from '@/store';
 import dayjs, { Dayjs } from 'dayjs';
 import NoData from '@/components/noData/noAddress';
@@ -43,8 +44,8 @@ const Account:React.FC = () => {
 	const selectParam = useRef<SelectParamType>({
 		startTime: dayjs().subtract(6, 'day').startOf('day').valueOf(),
 		endTime: dayjs().endOf('day').valueOf(),
-		symbol: 'all',
-		type: 'all'
+		symbol: '',
+		type: ''
 	});
 	const [datePopVisible, setDatePopVisible] = useState(false);
 	const [accountList, setAccountList] = useState<AccountBalance[]>([]);
@@ -53,7 +54,7 @@ const Account:React.FC = () => {
 	const coinOptions:OptionItem[] = [
 		{
 			label: t('futureAccount.all'),
-			value: 'all'
+			value: ''
 		},
 		...coinList.map(coin => ({
 			label: coin.coinName,
@@ -65,7 +66,7 @@ const Account:React.FC = () => {
 	const typeOptions = [
 		{
 			label: t('futureAccount.allType'),
-			value: 'all'
+			value: ''
 		},
 		{
 			label: t('futureAccount.in'),
@@ -154,7 +155,7 @@ const Account:React.FC = () => {
 								value: coin.value,
 								label: (
 									<div className="flex items-center gap-x-[10px]">
-										{coin.value !== 'all' && <Image src={coin.url} alt={coin.value} className="!w-[20px] !-[20px] rounded-full" />}
+										{coin.value !== '' && <Image src={coin.url} alt={coin.value} className="!w-[20px] !-[20px] rounded-full" />}
 										<span className="leading-[20px] text-[14px]">{coin.label}</span>
 									</div>
 								),
@@ -166,6 +167,7 @@ const Account:React.FC = () => {
 							selectParam.current.symbol = value as string
 							getData();
 						}}
+						renderValue={() => getLabel(selectParam.current.symbol, coinOptions)}
 						value={selectParam.current.symbol}
 					/>
 					<SelectPop
@@ -176,6 +178,7 @@ const Account:React.FC = () => {
 							selectParam.current.type = value as string
 							getData();
 						}}
+						renderValue={() => getLabel(selectParam.current.type as string, typeOptions)}
 						value={selectParam.current.type}
 					/>
 				</div>

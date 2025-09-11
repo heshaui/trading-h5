@@ -149,6 +149,11 @@
             margin-right: 20px;
         }
     }
+    &.orderTabs {
+        .adm-tabs-tab {
+            padding: 20px 0 29px;
+        }
+    }
     // 现货行情、盘口tabs
     &.spotTabs {
         .adm-tabs-tab {

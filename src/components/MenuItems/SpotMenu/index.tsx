@@ -1,10 +1,12 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/layout.module.scss'
-import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import { MenuType, IconType } from '@/type/public/menu';
+
+import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
+import { ReactComponent as OrderSvg } from '@/assets/icons/userCenter/order.svg';
 
 // 定义高阶组件的配置选项
 interface WithSpotLayoutOptions {
@@ -18,7 +20,7 @@ const withSpotLayout = <P extends object>(
     options: WithSpotLayoutOptions = {}
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
-        const { t } = useLanguage('spot');
+        const { t } = useLanguage(['spot', 'contract']);
         const navigate = useNavigate();
         const location = useLocation();
         const currentPath = location.pathname;
@@ -29,7 +31,12 @@ const withSpotLayout = <P extends object>(
                 path: '/spotOrder', //'/spot/assets',
                 icon: <SpotSvg className="w-[24px] h-[24px] " />,
                 title: t('spot.spotOrder', { ns: 'spot' }), //'现货订单',
-            }
+            },
+            {
+                path: '/contractOrder', //'/spot/assets',
+                icon: <OrderSvg className="w-[24px] h-[24px] " />,
+                title: t('contract:order.title', { ns: 'spot' }), //'现货订单',
+            },
         ];
 
         // 使用传入的菜单列表或默认菜单列表

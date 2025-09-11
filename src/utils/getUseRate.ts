@@ -108,6 +108,7 @@ export const getCoinRate = (symbolName: string, priceNum: string | number, baseS
         return {
             coinRate: 0,
             price: 0,
+
         };
 
     } catch (error) {
@@ -123,7 +124,7 @@ export const getCoinRate = (symbolName: string, priceNum: string | number, baseS
 * @param symbolName 币种符号
 * @param num 数量
 * @param rateName 汇率名称
-* @returns ratetext 汇率返回内容1,rate 换算后汇率,symbol 汇率符号,shortName 汇率名称
+* @returns ratetext 汇率返回内容1,rate 换算后汇率,symbol 汇率符号,shortName 汇率名称 accuracy 汇率精度
 */
 // 单个币种数量-法币汇率换算
 export const getRate = (symbolName: string, priceNum: string | number, rateName: string = 'USD', baseSymbolName: string = 'USDT') => {
@@ -141,7 +142,8 @@ export const getRate = (symbolName: string, priceNum: string | number, rateName:
                 ...rate,
                 exchangeRate: Number(rate?.exchangeRate),
                 symbol: rate?.symbol || '',
-                shortName: rate?.shortName || ''
+                shortName: rate?.shortName || '',
+                
             }
         };
 
@@ -184,7 +186,8 @@ export const getRate = (symbolName: string, priceNum: string | number, rateName:
             ratetext: `${symbol || ''} ${calculateRate() || 0}`, // 汇率返回内容
             rate: calculateRate() || 0, // 汇率结果
             symbol: symbol || '', // 汇率符号
-            shortName: shortName || '' // 汇率名称
+            shortName: shortName || '' ,// 汇率名称
+            accuracy: accuracy || 2 // 汇率精度
         };
 
     } catch (error) {
@@ -194,7 +197,8 @@ export const getRate = (symbolName: string, priceNum: string | number, rateName:
             ratetext: '--',
             rate: '0',
             symbol: '--',
-            shortName: '--'
+            shortName: '--',
+            accuracy: 2
         };
     }
 };
@@ -283,3 +287,63 @@ export const getCoinRound = (coinName: string, num: string | number) => {
         return 0;
     }
 }
+
+// 币种余额-汇率换算
+// balance:币种余额
+// rateValue:币种汇率
+// 返回值:rate:换算后余额,rateSymbol:汇率符号,shortName:汇率名称
+export const nulCoinRate=(balance:number,rateValue:number)=>{
+    const rateData = appStore.getRateData() || [];
+    const rateName = appStore.getRateKey()?.replace(/\s+/g, ""); // 汇率key
+  
+      // 获取汇率
+    const getExchangeRate = () => {
+      const rate = rateData.find(
+        (item: any) => item.shortName === rateName.trim()
+      );
+  
+      return {
+        ...rate,
+        exchangeRate: Number(rate?.exchangeRate),
+        rateSymbol: rate?.symbol || "",
+        shortName: rate?.shortName || "",
+      };
+    };
+  
+    const { exchangeRate, rateSymbol, shortName } = getExchangeRate();
+    const result =nul(nul(balance,rateValue),exchangeRate);
+    return {
+      rate:result,
+      rateSymbol: rateSymbol,
+      shortName: shortName,
+    }
+  }
+  // balance:总资产
+  // 返回值:rate:换算后余额,rateSymbol:汇率符号,shortName:汇率名称
+  export const nulRate=(coinBalance:number)=>{
+    const rateData = appStore.getRateData() || [];
+    const rateName = appStore.getRateKey()?.replace(/\s+/g, ""); // 汇率key
+  
+      // 获取汇率
+    const getExchangeRate = () => {
+      const rate = rateData.find(
+        (item: any) => item.shortName === rateName.trim()
+      );
+  
+      return {
+        ...rate,
+        exchangeRate: Number(rate?.exchangeRate),
+        rateSymbol: rate?.symbol || "",
+        shortName: rate?.shortName || "",
+      };
+    };
+  
+    const { exchangeRate, rateSymbol, shortName } = getExchangeRate();
+    const result =nul(coinBalance,exchangeRate);
+    return {
+      rate:result,
+      rateSymbol: rateSymbol,
+      shortName: shortName,
+    }
+  }
+  

@@ -50,16 +50,16 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
   placeholder = "Please select",
   title,
   showSearch = true,
-  searchPlaceholder,
+  searchPlaceholder, // 搜索框占位符
   searchKeys = ['label', 'value'],
   disabled = false,
   showAll = false,
-  renderOption,
-  renderValue,
+  renderOption, // 自定义选项渲染
+  renderValue, // 自定义值显示
   optionRender, // 新增参数
   displayMode = 'label', // 新增参数，默认显示label
-  bodyClassName,
-  renderBtn = 'buttom',
+  bodyClassName, // 弹窗body的className
+  renderBtn = 'buttom', // 自定义触发按钮
   bodyStyle = {
     height: '60vh',
   },

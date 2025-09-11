@@ -87,7 +87,7 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
       </div>
 
       {/* 内容区域 */}
-      <div className={styles.content_box}>
+      <div className={`${styles.content_box} max-h-[calc(100vh-40px)] overflow-y-auto`}>
         {children}
       </div>
 

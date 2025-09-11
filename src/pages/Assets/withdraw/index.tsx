@@ -75,7 +75,12 @@ const WithdrawMoneyPage = observer(() => {
   const addressSelectRef = useRef<any>(null);
 
   const [userAllLimit, setUserAllLimit] = useState<limitType>({} as limitType)
-
+  const rateData = appStore.getRateData()
+    // 获取法币精度
+    const accuracy = useMemo(() => {
+      const accuracyNum = rateData.find((item: any) => item.shortName === rateKey)?.accuracy;
+      return accuracyNum || 2
+  }, [rateKey, rateData])
   // 获取用户24小时限额
   const getUserALlLimitData = async () => {
     try {
@@ -256,9 +261,9 @@ const WithdrawMoneyPage = observer(() => {
             ...item,
             ...protocol,
             label: `${protocol?.protocolName || '--'}(${protocol?.protocol || '--'})`,
-            value: item.protocolId,
+            value: protocol?.id,
           }
-        })
+        }).filter((item: any) => item.value)
 
         setCoinExtSelect(coinExtList)
       } else {
@@ -661,7 +666,7 @@ const WithdrawMoneyPage = observer(() => {
 
     }
   >
-    <div className='px-4 mt-5'>
+    <div className='px-4 mt-5 pb-[100px] '>
       <ConfigProvider
         theme={{
           components: {
@@ -735,7 +740,8 @@ const WithdrawMoneyPage = observer(() => {
                     </div>
                   </div>
                 );
-              }}
+              }
+            }
               notFoundContent={<NoData title={t('withdrawMoney.noRecord')} />}
               onFocus={getCoinAllList}
               onChange={(value, option) => {
@@ -782,7 +788,57 @@ const WithdrawMoneyPage = observer(() => {
                   // </div>
                   <SelectPop
                     ref={addressSelectRef}
-                    options={filteredAddressOptions}
+                    options={
+                      filteredAddressOptions.map((item) => {
+
+                        const coinInfo = coinSelect.find(coinItem => coinItem.value === form.getFieldValue('tenantId'))
+                        // 检查当前地址的protocolName是否在coinExtSelect中存在
+                        const isProtocolSupported = coinExtSelect.some(
+                          (coinExt) =>
+                            (coinExt.protocolName === item.protocolName ||
+                              coinExt.protocol === item.protocolName ||
+                              coinExt.protocolId === item.protocolId)
+                            && (coinInfo?.coinId === item.coinId || coinInfo?.coinName === item.coinName)
+                        );
+    
+                        return {
+                          ...item,
+                          key: item.id,
+                          disabled: !isProtocolSupported, // 如果协议不支持则禁用
+                          label: (
+                            <div
+                              className={`flex-y py-1 ${!isProtocolSupported ? "opacity-50" : ""
+                                }`}
+                              key={item.id}
+                            >
+                              <p
+                                className={`${styles.title_color} font-14 font-w-400`}
+                              >
+                                {item.addressTitle}
+                              </p>
+                              <p
+                                className={`${styles.tip_color2} font-14 font-w-400`}
+                              >
+                                {`${t("withdrawMoney.address")}：${item.addressName
+                                  }`}
+                              </p>
+                              <p
+                                className={`${styles.tip_color2} font-14 font-w-400`}
+                              >
+                                {`${t("withdrawMoney.network")}：${item.protocolName || "--"
+                                  }`}
+                                {!isProtocolSupported && (
+                                  <span className="ml-2 text-red-500 font-12">
+                                    ({t("withdrawMoney.selectNetwork3Error")})
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          ),
+                          value: item.addressName,
+                        }
+                      }).filter(item => item.disabled !== true)
+                    }
                     placeholder={t('withdrawMoney.selectAddress')}
                     bodyStyle={{
                       height: '80vh',
@@ -812,44 +868,44 @@ const WithdrawMoneyPage = observer(() => {
                       )
                     }}
                     emptyRender={<NoAddress />}
-                    optionRender={(option) => {
-                      const coinInfo = coinSelect.find(item => item.value === form.getFieldValue('tenantId'))
-                      // 检查当前地址的protocolName是否在coinExtSelect中存在,且与当前币种的coinId或coinName一致
-                      const isProtocolSupported = coinExtSelect.some(
-                        (coinExt) =>
-                          (coinExt.protocolName === option.protocolName ||
-                            coinExt.protocol === option.protocolName ||
-                            coinExt.protocolId === option.protocolId)
-                          && (coinInfo?.coinId === option.coinId || coinInfo?.coinName === option.coinName)
-                      );
-                      return (
-                        //   <div
-                        //   key={option.id}
-                        //   className={`px-3 py-2 cursor-pointer hover:bg-gray-50 border-b border-gray-100 `}
-                        //   onClick={() => {
-                        //     if (isProtocolSupported) {
-                        //       setAddressInput(option.addressName);
-                        //       // setDropdownOpen(false);
-                        //       addressChange(option.addressName, option);
-                        //     }
-                        //   }}
-                        // >
-                        <div className="flex-y">
-                          <p className={`${styles.title_color} font-14 font-w-400 mb-1`}>{option.addressTitle}</p>
-                          <p className={`${styles.tip_color} font-12 font-w-400 mb-1`}>
-                            {`${t('withdrawMoney.address')}：${option.addressName}`}
-                          </p>
-                          <p className={`${styles.tip_color} font-12 font-w-400`}>
-                            {`${t('withdrawMoney.network')}：${option.protocolName || '--'}`}
-                            {!isProtocolSupported && (
-                              <span className="ml-2 text-red-500 font-12">
-                                ({t('withdrawMoney.selectNetwork3Error')})
-                              </span>
-                            )}
-                          </p>
-                        </div>
-                      )
-                    }}
+                    // optionRender={(option) => {
+                    //   const coinInfo = coinSelect.find(item => item.value === form.getFieldValue('tenantId'))
+                    //   // 检查当前地址的protocolName是否在coinExtSelect中存在,且与当前币种的coinId或coinName一致
+                    //   const isProtocolSupported = coinExtSelect.some(
+                    //     (coinExt) =>
+                    //       (coinExt.protocolName === option.protocolName ||
+                    //         coinExt.protocol === option.protocolName ||
+                    //         coinExt.protocolId === option.protocolId)
+                    //       && (coinInfo?.coinId === option.coinId || coinInfo?.coinName === option.coinName)
+                    //   );
+                    //   return (
+                    //     //   <div
+                    //     //   key={option.id}
+                    //     //   className={`px-3 py-2 cursor-pointer hover:bg-gray-50 border-b border-gray-100 `}
+                    //     //   onClick={() => {
+                    //     //     if (isProtocolSupported) {
+                    //     //       setAddressInput(option.addressName);
+                    //     //       // setDropdownOpen(false);
+                    //     //       addressChange(option.addressName, option);
+                    //     //     }
+                    //     //   }}
+                    //     // >
+                    //     <div className="flex-y">
+                    //       <p className={`${styles.title_color} font-14 font-w-400 mb-1`}>{option.addressTitle}</p>
+                    //       <p className={`${styles.tip_color} font-12 font-w-400 mb-1`}>
+                    //         {`${t('withdrawMoney.address')}：${option.addressName}`}
+                    //       </p>
+                    //       <p className={`${styles.tip_color} font-12 font-w-400`}>
+                    //         {`${t('withdrawMoney.network')}：${option.protocolName || '--'}`}
+                    //         {!isProtocolSupported && (
+                    //           <span className="ml-2 text-red-500 font-12">
+                    //             ({t('withdrawMoney.selectNetwork3Error')})
+                    //           </span>
+                    //         )}
+                    //       </p>
+                    //     </div>
+                    //   )
+                    // }}
                   // contentFooter={
                   //   <button
                   //     type='button'
@@ -900,19 +956,21 @@ const WithdrawMoneyPage = observer(() => {
               }}
               activeType='icon'
               optionRender={(option) => {
-                const { rate, symbol } = getRate(option.coinName, option.minWithdraw);
+                const { rate, symbol } = getRate(option.coinName, option.minWithdrawFee);
                 return (<ul className={`${styles.select_option}  py-1 font-14 font-w-400`}>
                   <li className={`${styles.title_color} font-w-500`}>{option?.label}</li>
                   <li className={`${styles.tip_color} font-12 mt-1`}>
-                    {/* 最小提现金额： */}
-                    {t('withdrawMoneyCheck.minWithdraw')}
-                    {option.minWithdraw || 0} {option.coinName}
-                    {`(≈${symbol}${rate})`}
+                    {/* 手续费： */}
+                    {t('withdrawMoneyCheck.withdrawFee')}
+                     {roundDown(option.minWithdrawFee || 0,coninInfo?.unitScale||8)}{option.coinName}{`(≈${symbol}${roundDown(rate,accuracy)})`}
                   </li>
                   <li className={`${styles.tip_color} font-12 mt-1`}>
-                    {/* 手续费： */}
-                    {t('withdrawMoneyCheck.withdrawFee')} {option.minWithdrawFee || 0}
+                    {/* 最小提现金额： */}
+                    {t('withdrawMoneyCheck.minWithdraw')}
+                    {roundDown(option.minWithdraw || 0,coninInfo?.unitScale||8)} {option.coinName}
+                    
                   </li>
+                 
                 </ul>);
               }}
               contentFooter={

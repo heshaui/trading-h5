@@ -8,6 +8,9 @@ export interface DataType {
     iconUrl: string,
     nameDefault: string,
     isTradeConvert:number
+    unitScale:number
+    accuracy:number
+    rateValue:number
 }
 export interface BalanceAllType {
     usdBalance?: number | string,

@@ -182,8 +182,9 @@
     "tradeHistory": "成交记录",
     "select": {
       "allContract": "全部合约",
-      "postOnly": "限价单",
-      "ioc": "市价单",
+      "postOnly": "PostOnly",
+      "limitOrder": "限价单",
+      "marketOrder": "市价单",
       "allType": "全部类型"
     },
     "positionColumn": {

@@ -215,7 +215,7 @@
             "title2": "确定取消全部订单？",
             "title3": "确定取消当前订单？",
             "cancel": "取消",
-            "confirm": "确认"
+            "confirm": "继续"
         },
         "modal": {
             "title": "下单确认",

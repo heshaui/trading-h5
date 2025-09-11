@@ -26,17 +26,14 @@ const OrderPage = () => {
 		{
 			key: '1',
 			label: t('order.currentCommission'), //"当前委托",
-			children: <OrderNow contractList={contractList}/>,
 		},
 		{
 			key: '2',
 			label: t('order.historyCommission'), //'历史委托',
-			children: <OrderHistory contractList={contractList}/>,
 		},
 		{
 			key: '3',
 			label: t('order.profitLoss'), //'历史成交',
-			children: <PnlLog contractList={contractList}/>,
 		},
 	];
 
@@ -79,6 +76,9 @@ const OrderPage = () => {
 				activeKey={activeTab}
 				onChange={handleTabChange}
 			/>
+			{activeTab === '1' && <OrderNow contractList={contractList}/>}
+            {activeTab === '2' && <OrderHistory contractList={contractList}/>}
+            {activeTab === '3' && <PnlLog contractList={contractList}/>}
 		</div>
 	);
 };

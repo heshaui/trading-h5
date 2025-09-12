@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpotLayout } from '@/components/MenuItems';
+import { SpotLayout, UserCenterLayout } from '@/components/MenuItems';
 import styles from './styles/spotOrder.module.scss'
 // import { Input, Radio, ConfigProvider, Table, Select, Form, Tabs } from 'antd';
 import { CustomTab } from '@/components/CustomCom';
@@ -118,4 +118,4 @@ const SpotOrderPage = () => {
 	);
 };
 
-export default SpotLayout(SpotOrderPage);
+export default UserCenterLayout(SpotOrderPage);

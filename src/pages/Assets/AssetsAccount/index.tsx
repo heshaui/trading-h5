@@ -1,5 +1,5 @@
 import React from "react";
-import { AssetsLayout } from "@/components/MenuItems";
+import { AssetsLayout, UserCenterLayout } from "@/components/MenuItems";
 import styles from "../styles/spotAccount.module.scss";
 import {
     Input,
@@ -990,4 +990,4 @@ const AssetsMainPage = observer(() => {
     );
 });
 
-export default AssetsLayout(AssetsMainPage);
+export default UserCenterLayout(AssetsMainPage);

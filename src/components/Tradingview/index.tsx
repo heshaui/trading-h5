@@ -538,7 +538,11 @@ const Tradingview: React.ForwardRefRenderFunction<
       if (!data) return;
 
       try {
-
+        console.log('收到新数据:', {
+          时间: new Date().toISOString(),
+          数据类型: data.type || typeof data,
+          数据内容: data
+        });
 
         // 处理不同的数据格式
         if (
@@ -546,39 +550,40 @@ const Tradingview: React.ForwardRefRenderFunction<
           Array.isArray(data.data) &&
           data.data.length > 0
         ) {
-
-
           // 处理每个数据点
           data.data.forEach((klineItem: any, index: number) => {
             const bar = convertKlineToBar(klineItem);
             if (bar) {
-
-
-              // 检查时间顺序，防止时间倒序
+              // 只检查时间倒序，允许相同时间戳的更新
               if (timeTracker.lastBarTime > 0 && bar.time < timeTracker.lastBarTime) {
-   
-                return; // 跳过这个数据点
+                console.warn("时间倒序，跳过数据:", {
+                  当前时间: new Date(bar.time).toISOString(),
+                  上次时间: new Date(timeTracker.lastBarTime).toISOString()
+                });
+                return;
               }
-              
-              // 检查是否是重复的时间戳
-              if (timeTracker.lastBarTime > 0 && bar.time === timeTracker.lastBarTime) {
 
-                return; // 跳过重复数据
+              // 如果是相同时间戳，仍然更新最新价格
+              if (timeTracker.lastBarTime > 0 && bar.time === timeTracker.lastBarTime) {
+                // 更新最新价格
+                bar.close = Number(klineItem[4] || 0);
+                console.log('更新相同时间戳的价格:', {
+                  时间: new Date(bar.time).toISOString(),
+                  新价格: bar.close
+                });
               }
-              
+
               timeTracker.lastBarTime = bar.time;
 
-              
               // 将每个数据点传给所有订阅者
               Object.keys(subscribers).forEach((key) => {
                 const callback = subscribers[key];
                 if (typeof callback === "function") {
-                  // 添加一个小延迟确保图表更新
-                  setTimeout(() => callback(bar), 0);
+                  callback(bar); // 移除延迟，立即更新
                 }
               });
             } else {
-
+              console.warn('数据转换失败:', klineItem);
             }
           });
         } else if (Array.isArray(data)) {
@@ -591,49 +596,74 @@ const Tradingview: React.ForwardRefRenderFunction<
             data.forEach((item: any, index: number) => {
               const bar = convertKlineToBar(item);
               if (bar) {
-              
-
-                // 检查时间顺序
+                // 只检查时间倒序，允许相同时间戳的更新
                 if (timeTracker.lastBarTime > 0 && bar.time < timeTracker.lastBarTime) {
+                  console.warn("时间倒序，跳过数据:", {
+                    当前时间: new Date(bar.time).toISOString(),
+                    上次时间: new Date(timeTracker.lastBarTime).toISOString()
+                  });
                   return;
                 }
-                
+
+                // 如果是相同时间戳，仍然更新最新价格
+                if (timeTracker.lastBarTime > 0 && bar.time === timeTracker.lastBarTime) {
+                  // 更新最新价格
+                  bar.close = Number(item[4] || 0);
+                  console.log('更新相同时间戳的价格:', {
+                    时间: new Date(bar.time).toISOString(),
+                    新价格: bar.close
+                  });
+                }
+
                 timeTracker.lastBarTime = bar.time;
 
                 Object.keys(subscribers).forEach((key) => {
                   const callback = subscribers[key];
                   if (typeof callback === "function") {
-                    // 使用setTimeout确保每个回调独立执行
-                    setTimeout(() => callback(bar), 0);
+                    callback(bar); // 移除延迟，立即更新
                   }
                 });
+              } else {
+                console.warn('数据转换失败:', item);
               }
             });
           } else if (data.length >= 7) {
             // 这是单个数据点数组
             const bar = convertKlineToBar(data);
             if (bar) {
-             
-
-              // 检查时间顺序
+              // 只检查时间倒序，允许相同时间戳的更新
               if (timeTracker.lastBarTime > 0 && bar.time < timeTracker.lastBarTime) {
-
+                console.warn("时间倒序，跳过数据:", {
+                  当前时间: new Date(bar.time).toISOString(),
+                  上次时间: new Date(timeTracker.lastBarTime).toISOString()
+                });
                 return;
               }
-              
+
+              // 如果是相同时间戳，仍然更新最新价格
+              if (timeTracker.lastBarTime > 0 && bar.time === timeTracker.lastBarTime) {
+                // 更新最新价格
+                bar.close = Number(data[4] || 0);
+                console.log('更新相同时间戳的价格:', {
+                  时间: new Date(bar.time).toISOString(),
+                  新价格: bar.close
+                });
+              }
+
               timeTracker.lastBarTime = bar.time;
 
               Object.keys(subscribers).forEach((key) => {
                 const callback = subscribers[key];
                 if (typeof callback === "function") {
-                  setTimeout(() => callback(bar), 0);
+                  callback(bar); // 移除延迟，立即更新
                 }
               });
+            } else {
+              console.warn('数据转换失败:', data);
             }
           }
         } else {
           // 处理对象格式
-
           const bar = {
             time: formatTimeValue(data.timestamp || data.time),
             open: Number(data.open || 0),
@@ -643,20 +673,31 @@ const Tradingview: React.ForwardRefRenderFunction<
             volume: Number(data.volume || 0),
           };
 
-
-
-          // 检查时间顺序
+          // 只检查时间倒序，允许相同时间戳的更新
           if (timeTracker.lastBarTime > 0 && bar.time < timeTracker.lastBarTime) {
-
+            console.warn("时间倒序，跳过数据:", {
+              当前时间: new Date(bar.time).toISOString(),
+              上次时间: new Date(timeTracker.lastBarTime).toISOString()
+            });
             return;
           }
-          
+
+          // 如果是相同时间戳，仍然更新最新价格
+          if (timeTracker.lastBarTime > 0 && bar.time === timeTracker.lastBarTime) {
+            // 更新最新价格
+            bar.close = Number(data.close || 0);
+            console.log('更新相同时间戳的价格:', {
+              时间: new Date(bar.time).toISOString(),
+              新价格: bar.close
+            });
+          }
+
           timeTracker.lastBarTime = bar.time;
 
           Object.keys(subscribers).forEach((key) => {
             const callback = subscribers[key];
             if (typeof callback === "function") {
-              setTimeout(() => callback(bar), 0);
+              callback(bar); // 移除延迟，立即更新
             }
           });
         }

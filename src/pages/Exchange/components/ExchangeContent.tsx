@@ -176,7 +176,7 @@ const ExchangeContent: React.FC = observer(() => {
                         .sort((a: any, b: any) => a.timestamp - b.timestamp);
                     return { ...newDataCopy, data: combinedKlines };
                 });
-            }, 1000);
+            }, 0);
 
             websocket.connect((message: string) => {
                 try {

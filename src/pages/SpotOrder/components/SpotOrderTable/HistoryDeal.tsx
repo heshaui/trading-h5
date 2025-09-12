@@ -20,6 +20,7 @@ import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import SelectPop from '@/components/SelectPop'
 import DateTimePop from '@/components/DateTimePop'
+import { BigNumber } from 'bignumber.js';
 const { RangePicker } = DatePicker;
 interface DataType {
   id: number,
@@ -252,13 +253,15 @@ const SpotMainPage = observer(({ pageType }: Props) => {
       align: "center",
       render: (_status, record) => {
         // const coin = coinList.find((item: any) => item.symbol === record.symbol);
+        const buyFee = new BigNumber(record.buyFee).toFormat(8);
+        const sellFee = new BigNumber(record.sellFee).toFormat(8);
         const buyRes = getRound(record.symbol, record.buyFee || 0)
         const sellRes = getRound(record.symbol, record.sellFee || 0)
         const flag = orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
         if (flag === 0) {
-          return <span >{`${buyRes.baseScaleResult} ${buyRes.coinSymbol || '--'}`}</span>;
+          return <span >{`${buyFee} ${buyRes.coinSymbol || '--'}`}</span>;
         } else if (flag === 1) {
-          return <span >{`${sellRes.baseScaleResult} ${sellRes.baseSymbol || '--'}`}</span>;
+          return <span >{`${sellFee} ${sellRes.baseSymbol || '--'}`}</span>;
         } else {
           return <span >{'--'}</span>;
         }

@@ -32,6 +32,7 @@ import { useCoinList } from "@/hooks/use-coinList";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 import { useExchange } from '@/context/exchange-providers/ExchangeProvider';
 import { getOrderList } from '@/services/spot'
+import { BigNumber } from "bignumber.js";
 
 import ConfirmOrder from "./ConfirmOrder";
 import SpotBuyPopup from "./SpotBuyPopup";
@@ -246,6 +247,16 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
     return Number(value)
       .toFixed(precision)
       .replace(/\.?0+$/, "");
+  //   if (value === null || value === undefined || value === "") return "";
+
+  //   // 包装成 BigNumber
+  //   const bn = new BigNumber(value);
+
+  //   // 设置精度并用 toFixed 返回字符串
+  //   const fixed = bn.toFixed(precision);
+
+  //   // 去掉末尾多余的 0 和小数点
+  //   return fixed.replace(/\.?0+$/, "");
   };
 
   // 添加滑块变化时的处理函数
@@ -264,19 +275,21 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
       if (price && !priceDisabled) {
         // 限价单
         const availableAmount = (baseBalance * percentage) / price;
+        const accountResult = new BigNumber(availableAmount.toString()).times(price.toString());
         form.setFieldsValue({
           amount: formatWithPrecision(
             availableAmount,
             currentPair?.coinScale || 8
           ),
           account: formatWithPrecision(
-            availableAmount * price,
+            //availableAmount * price,
+            accountResult as unknown as string,
             currentPair?.baseCoinScale || 8
           ),
         });
       } else if (priceDisabled) {
         // 市价单
-        const availableFunds = baseBalance * percentage;
+        const availableFunds = new BigNumber(baseBalance.toString()).times(percentage.toString()) as unknown as string;// baseBalance * percentage;
         form.setFieldsValue({
           account: formatWithPrecision(
             availableFunds,
@@ -301,9 +314,11 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
       // 只有在限价单时才设置成交额
       const price = form.getFieldValue("price");
       if (price && !priceDisabled) {
+        const accountResult = new BigNumber(availableAmount.toString()).times(price.toString());
         form.setFieldsValue({
           account: formatWithPrecision(
-            availableAmount * price,
+            // availableAmount * price,
+            accountResult as unknown as string,
             currentPair?.baseCoinScale || 8
           ),
         });
@@ -418,7 +433,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
     const amount = form.getFieldValue("amount");
 
     if (price && amount) {
-      const total = price * amount;
+      const total = new BigNumber(amount.toString()).times(price.toString()) as unknown as string; //price * amount;
       form.setFieldsValue({
         account: formatWithPrecision(total, currentPair?.baseCoinScale || 8),
       });
@@ -646,6 +661,32 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
         },
       ]);
       hasError = true;
+    }
+
+    // 检查最小下单数量
+    const minVolume = currentPair?.minVolume || 0;
+    if (values.amount < minVolume) {
+      // message.error(`最小下单数量为 ${minVolume} ${currentPair?.coinSymbol}`);
+      message.error(
+        t("spot.tooltip.minOrderAmount", {
+          amount: minVolume,
+          symbol: currentPair?.coinSymbol,
+        })
+      );
+      return
+    }
+
+    // 检查最大下单数量
+    const maxVolume = currentPair?.maxVolume || 0;
+    if (maxVolume > 0 && values.amount > maxVolume) {
+      // message.error(`最大下单数量为 ${maxVolume} ${currentPair?.coinSymbol}`);
+      message.error(
+        t("spot.tooltip.maxOrderAmount", {
+          amount: maxVolume,
+          symbol: currentPair?.coinSymbol,
+        })
+      );
+      return
     }
 
     // 检查当前币对设置的限价最大挂挂单数
@@ -910,7 +951,6 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
       disabled={!isLoggedIn}
       value={sliderValue}
       tooltip={{
-        open: true,
         zIndex: 1000,
         placement: "top",
         arrow: false,
@@ -1219,9 +1259,10 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         if (!priceDisabled) {
                           const price = form.getFieldValue("price");
                           if (price) {
+                            const result = new BigNumber(correctedValue.toString()).times(price.toString());
                             form.setFieldsValue({
                               account: formatWithPrecision(
-                                correctedValue * price,
+                                result as unknown as string | number,
                                 currentPair?.baseCoinScale || 8
                               ),
                             });
@@ -1237,6 +1278,11 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                           updateSliderFromAmount();
                         }, 0);
                       }
+                    }
+                    if (!value && value !== 0) {
+                      form.setFieldsValue ({
+                        account: ''
+                      })
                     }
                   }}
                   formatter={(value) => {
@@ -1334,6 +1380,11 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                           updateSliderFromAmount();
                         }, 0);
                       }
+                    }
+                    if (!value && value !== 0) {
+                      form.setFieldsValue ({
+                        amount: ''
+                      })
                     }
                   }}
                   formatter={(value) => {

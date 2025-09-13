@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import styles from './styles/Popup.module.scss';
 import { useThemeMode } from '@/hooks/useThemeMode';
@@ -18,15 +18,22 @@ import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard';
 // import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
 import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
 
-interface ListItem {
+interface ChildrenItem {
     key: string;
     title: string;
     value: string;
     onClick?: () => void;
 }
+interface ListItem {
+    key: string;
+    title: string;
+    value: string;
+    children?: ChildrenItem [];
+    onClick?: () => void;
+}
 
 const UserIcon: React.FC = observer(() => {
-    const { t } = useLanguage();
+    const { t } = useLanguage(['common', 'assets', 'spot']);
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const { isDayMode } = useThemeMode();
@@ -40,12 +47,52 @@ const UserIcon: React.FC = observer(() => {
         // 处理用户图标点击事件
         setVisible(true)
     };
+    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+    
+    // 切换展开状态
+    const toggleExpand = (key: string) => {
+        setExpandedItems(prev => ({
+            ...prev,
+            [key]: !prev[key]
+        }));
+    };
     const UserCenterList = [
         {
             key: '/overView',
             title: t('common.router.overview'),//'总览',
             value: '/userCenter', // 跳转路径
             
+        },
+        {
+            title: t('header.notice.assets'),
+            key: '/assets',
+            value: '/assets',
+            isShow: false,
+            children: [
+                {
+                    title: t('assets:assets.assetsAccount'), // 现货账单
+                    key: '/assets',
+                    value: '/assets',
+                },
+                {
+                    title: t('assets:assets.billDetails'), // 账户明细
+                    key: '/assets/bill',
+                    value: '/assets/bill',
+                },
+            ]
+        },
+        {
+            title: t('trade.orders'),
+            key: '/spotOrder',
+            value: '/spotOrder',
+            isShow: false,
+            children: [
+                {
+                    title: t('spot:spot.spotOrder'), // 现货账单
+                    key: '/spotOrder',
+                    value: '/spotOrder',
+                }
+            ]
         },
         {
             key: '/security',
@@ -80,6 +127,14 @@ const UserIcon: React.FC = observer(() => {
             return true
         });
     }, [kvConfig?.account_configuration, currentPath,token]);
+
+    useEffect(() => {
+        UserCenterList.forEach(item => {
+            if (item.children?.some(child => child.value === currentPath)) {
+            setExpandedItems(prev => ({ ...prev, [item.key]: true }));
+            }
+        });
+    }, [currentPath]);
     const ListComponent = (list: ListItem[], currentValue?: string) => {
         if (list.length === 0) {
             return <NoData className={`mt-5`} />
@@ -87,21 +142,44 @@ const UserIcon: React.FC = observer(() => {
 
         return list.map((item) => {
             // 简化活跃状态判断：只进行直接比较
-            const isActive = currentValue === item.value;
-
+            let isActive = currentValue === item.value;
+            const isShow = expandedItems[item.key];
             return (
                 <li key={item.value || item.key}
-                    className={`${styles.listItem}  ${isActive ? styles.active : ''}`}>
-                    <button
-                        className={`${styles.listButton} ${styles.title_color} ${isActive ? 'font-w-500' : 'font-w-400'} font-16  w-full text-left`}
-                        onClick={()=>{
-                            item?.onClick&&item?.onClick?.()
-                            navigate(item.value)
-                            setVisible(false)
-                        }} >
+                    className="">
+                    {
+                        item.children ? <div className="flex pl-[12px] h-[44px] items-center text-[16px] text-[var(--text-color5)] justify-between" onClick={() => toggleExpand(item.key)}>
+                            <span>{item.title}</span>
+                            <Iconify icon={isShow ? 'icon-park-outline:up' : 'icon-park-outline:down'} className="text-[24px] text-[var(--text-color5)]"/>
+                        </div> :
+                        <button
+                            className={`flex h-[44px] pl-[12px] items-center text-[16px] text-[var(--text-color5)] ${isActive ? styles.active : ''} ${styles.title_color} ${isActive ? 'font-w-500' : 'font-w-400'} w-full`}
+                            onClick={()=>{
+                                item?.onClick&&item?.onClick?.()
+                                navigate(item.value)
+                                setVisible(false)
+                            }} >
 
-                        {item.title}
-                    </button>
+                            {item.title}
+                        </button>
+                    }
+                    {
+                        item.children && isShow && <ul className="pl-[14px]">
+                            {
+                                item.children.map(child => {
+                                    const isChildActive = currentValue === child.value
+                                    return (
+                                        <li className={`tip-color h-[44px] pl-[12px] text-[14px] flex items-center ${isChildActive ? styles.active : ''}`}
+                                        onClick={() => {
+                                            navigate(child.value)
+                                            setVisible(false)
+                                        }}
+                                        >{child.title}</li>
+                                    )
+                                })
+                            }
+                        </ul>
+                    }
                 </li>
             )
         })

@@ -9,7 +9,7 @@ import { encryptData } from "@/utils/encrypt";
 import { Toast, Form, Input, Checkbox } from 'antd-mobile'
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import { Iconify } from "@/components/icon";
-import { log } from "console";
+import { windowOpen } from "@/utils/windowOpen";
 
 const fromStyle: CSSProperties = {
 	borderRadius: "5px",
@@ -39,6 +39,7 @@ function RegisterPhone() {
 	const { registerType } = useRegisterTypeContext();
 	// const signIn = useSignIn();
 	const [form] = Form.useForm();
+	const allConfig = store.getKvConfigAll();
 
 	// 获取浏览器指纹
 	const getFingerprint = async () => {
@@ -65,7 +66,7 @@ function RegisterPhone() {
 
 	const onFinish = async () => {
 		form
-			.validateFields(['phoneNumber','areaCode', 'password','referee','agree'])
+			.validateFields(['phoneNumber', 'areaCode', 'password', 'referee', 'agree'])
 			.then(async (values: any) => {
 				// form.resetFields(); // 重置表单
 				// if (loading) return;
@@ -78,7 +79,7 @@ function RegisterPhone() {
 					parentInviteCode: isOpen ? values.referee : "",
 					countryCode: values.areaCode
 				}
-				
+
 				store.updateRegisterInfo(data)
 
 				goAuthCode()
@@ -172,7 +173,13 @@ function RegisterPhone() {
 		setPhoneCodeInputValue(filteredValue);
 		form.setFieldsValue({ phoneNumber: filteredValue });
 	};
-
+	const goLink = (type: 'user' | 'policy') => {
+		if (type === 'user') {
+		  windowOpen(allConfig?.user_agreement || '');
+		} else {
+		  windowOpen(allConfig?.privacy_policy || '');
+		}
+	  }
 	if (registerType !== RegisterTypeEnum.PHONE) return null;
 
 	return (
@@ -314,11 +321,24 @@ function RegisterPhone() {
 					</Form.Item>
 				)}
 
-				<Form.Item name="agree" valuePropName="checked" className={`${styles.login_form_item}`}>
-					<Checkbox className="custom-checkbox text-color-default">
-						<p className={`${styles.title_color} font-16`}>
+				<Form.Item noStyle name="agree" valuePropName="checked">
+					<Checkbox className="custom-checkbox text-color-default " >
+						<p className={`${styles.title_color}`}>
 							{/* 我已阅读并同意 */}
-							{t('agree')} <span className="theme-color">{t('protocol')}</span> {t('and')} <span className="theme-color">{t('policy')}</span>
+							{t('agree')}&nbsp;
+							<button type="button" className="text-color" onClick={(event) => {
+								event.stopPropagation();
+								goLink('user')
+							}}>
+								{t('protocol')}
+							</button>
+							&nbsp;{t('and')}&nbsp;
+							<button type="button" className="text-color" onClick={(event) => {
+								event.stopPropagation();
+								goLink('policy')
+							}}>
+								{t('policy')}
+							</button>
 						</p>
 					</Checkbox>
 				</Form.Item>

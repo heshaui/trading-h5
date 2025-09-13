@@ -74,8 +74,8 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 						{t('spot.modal.price')}
 					</p>
 					<p>
-						{/* 市价 */}
-						{orderData.type===0 ? t('spot.modal.market') : formatPrice(orderData.price)} {currentPair?.baseSymbol}
+						{/* 市价{currentPair?.baseSymbol} */}
+						{orderData.type===0 ? t('spot.modal.market') : formatPrice(orderData.price)} 
 					</p>
 				</li>
 				{/* 市价买单不显示数量 */}

@@ -26,6 +26,7 @@ import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import type { DataType, DataLogsType } from '@/type/spot/table';
 import { getRound } from '@/utils/getUseRate'
 import { division, nul, roundDown } from '@/utils';
+import { BigNumber } from 'bignumber.js';
 import appStore from '@/store';
 import { getOrderInfo } from '@/services/spot'
 
@@ -284,27 +285,27 @@ const SpotOrderPage = () => {
 		},
 	];
 	const mainColumns2: ColumnType<DataType>[] = [
-		{
-			title: t('spot.columns.fee'), //"手续费",
-			key: "buyFee",
-			dataIndex: "buyFee",
-			// width: 158,
-			align: "center",
-			render: (_status, record) => {
-				const symbol = record.symbol.split('/')
-				let fee
-				if (record.direction === 0) {
-					// directionText = t('spot.trade.buy')
-					fee = nul(record.takerFee, record.turnover)
-				} else if (record.direction === 1) {
-					fee = nul(record.makerFee, record.turnover)
-				} else {
-					fee = '--'
-				}
+		// {
+		// 	title: t('spot.columns.fee'), //"手续费",
+		// 	key: "buyFee",
+		// 	dataIndex: "buyFee",
+		// 	// width: 158,
+		// 	align: "center",
+		// 	render: (_status, record) => {
+		// 		const symbol = record.symbol.split('/')
+		// 		let fee
+		// 		if (record.direction === 0) {
+		// 			// directionText = t('spot.trade.buy')
+		// 			fee = nul(record.takerFee, record.turnover)
+		// 		} else if (record.direction === 1) {
+		// 			fee = nul(record.makerFee, record.turnover)
+		// 		} else {
+		// 			fee = '--'
+		// 		}
 
-				return <span>{fee}{symbol?.[0] || '--'}</span>;
-			},
-		},
+		// 		return <span>{fee}{symbol?.[0] || '--'}</span>;
+		// 	},
+		// },
 		{
 			title: t('spot.columns.amount2'), //"成交金额",
 			key: "turnover",
@@ -385,11 +386,13 @@ const SpotOrderPage = () => {
 				const flag = orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
 				// const price=nul(record.tradePrice,record.quantity)
 				if (flag === 0) {
+					const buyFee = new BigNumber(_buyFee).toFormat(8)
 					const { baseScaleResult, baseSymbol, coinSymbol } = getRound(symbolName, _buyFee || 0)
-					return <span>{`${baseScaleResult} ${coinSymbol || '--'}`}</span>
+					return <span>{`${buyFee} ${coinSymbol || '--'}`}</span>
 				} else if (flag === 1) {
+					const sellFee = new BigNumber(record.sellFee).toFormat(8)
 					const { baseScaleResult, baseSymbol } = getRound(symbolName, record.sellFee || 0)
-					return <span>{`${baseScaleResult} ${baseSymbol || '--'}`}</span>
+					return <span>{`${sellFee} ${baseSymbol || '--'}`}</span>
 				} else {
 					return '--'
 				}

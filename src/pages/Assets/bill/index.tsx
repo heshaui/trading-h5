@@ -2,7 +2,7 @@ import React, { useState ,useEffect} from 'react';
 import { observer } from 'mobx-react-lite';
 import styles from '../styles/bill.module.scss'
 import { useLanguage } from '@/hooks/useLanguage';
-import {AssetsLayout} from '@/components/MenuItems';
+import {UserCenterLayout} from '@/components/MenuItems';
 import { CustomTab } from '@/components/CustomCom';
 import { getCoinAll } from "@/services/assets";
 import RechargeTable from '../components/billTable/rechargeTable';
@@ -109,5 +109,5 @@ const Deposit:React.FC = observer(() => {
   )
 })
 
-export default AssetsLayout(Deposit);
+export default UserCenterLayout(Deposit);
 

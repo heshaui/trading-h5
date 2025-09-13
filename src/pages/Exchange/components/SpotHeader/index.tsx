@@ -32,18 +32,29 @@ const SpotHeader = observer(({ coinData }: { coinData: any }) => {
     const [wsConnected, setWsConnected] = useState(false); // WebSocket连接状态
     const websocketRef = useRef<WebSocketService | null>(null);
 
-    // 解析K线数据
-    const klineData = coinData?.data?.[0] || [];
-    const [timestamp, open_price, high_price, low_price, close_price, volume] = klineData;
-
-    // 计算涨跌幅
-    const priceChange = close_price && open_price ? close_price - open_price : 0;
-    const priceChangePercent = open_price && open_price !== 0 ? (priceChange / open_price * 100).toFixed(2) : '0.00';
-    const isPriceUp = priceChange >= 0;
-
     // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
     const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
     const currencyPairsArray = appStore.allCurrencyPairs?.length ? appStore.allCurrencyPairs : appStore.currencyPairs || [];
+    
+    // 解析K线数据
+    // const klineData = coinData?.data?.[0] || [];
+    // const [timestamp, open_price, high_price, low_price, close_price, volume] = klineData;
+    // 解析K线数据 - 优先使用WebSocket实时数据
+    const currentSymbol = currentPair ? `${currentPair.coinSymbol}_${currentPair.baseSymbol}_${currentPair.groupStatus}` : null;
+    const realtimeKlineData = currentSymbol ? wsData[currentSymbol] : null;
+    // 如果有实时数据就用实时数据，否则用props传入的数据
+    const actualKlineData = realtimeKlineData || coinData?.data?.[0] || [];
+    // 验证数据格式并安全解构
+    const isValidKlineData = Array.isArray(actualKlineData) && actualKlineData.length >= 8;
+    const [timestamp, open_price, high_price, low_price, close_price, volume, changePercent, amount] = isValidKlineData ? actualKlineData : [null, null, null, null, null, null, null, null];
+
+    // 计算涨跌幅 - 优先使用WebSocket返回的涨跌幅
+    const priceChange = close_price && open_price ? close_price - open_price : 0;
+    const priceChangePercent = changePercent !== null ? changePercent.toFixed(2) : 
+                              (open_price && open_price !== 0 ? (priceChange / open_price * 100).toFixed(2) : '0.00');
+    const isPriceUp = changePercent !== null ? changePercent >= 0 : priceChange >= 0;
+
+    
     // 处理路由参数变化，包括页面内跳转
     useEffect(() => {
         const { symbol } = query;

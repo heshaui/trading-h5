@@ -5,6 +5,8 @@ import { ReactComponent as IdentitySvg } from '@/assets/icons/userCenter/idcard-
 import { ReactComponent as InviteSvg } from '@/assets/icons/userCenter/invite.svg';
 import { ReactComponent as OrderSvg } from '@/assets/icons/userCenter/order.svg';
 import { ReactComponent as OverviewSvg } from '@/assets/icons/userCenter/overview.svg';
+import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.svg';
+import { ReactComponent as BillingSvg } from '@/assets/icons/assets/icon_Billing.svg';
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import styles from '../styles/layout.module.scss'
@@ -23,7 +25,7 @@ const withUserCenterLayout = <P extends object>(
     options: WithUserCenterLayoutOptions = {noMinHeight: false}
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
-        const { t, currentLanguage } = useLanguage('common');
+        const { t, currentLanguage } = useLanguage(['common', 'assets', 'spot']);
         const navigate = useNavigate();
         const location = useLocation();
         const currentPath = location.pathname;
@@ -38,12 +40,31 @@ const withUserCenterLayout = <P extends object>(
             {
                 title: t('header.notice.assets'),
                 icon: <AssetsSvg className="w-[24px] h-[24px]" />,
-                path: '/assets'
+                path: '/assets',
+                children: [
+                    {
+                        title: t('assets:assets.assetsAccount'), // 现货账单
+                        icon: <SpotSvg className="w-[24px] h-[24px] " />,
+                        path: '/assets'
+                    },
+                    {
+                        title: t('assets:assets.billDetails'), // 账户明细
+                        icon: <BillingSvg className="w-[24px] h-[24px] " />,
+                        path: '/assets/bill'
+                    },
+                ]
             },
             {
                 title: t('trade.orders'),
                 icon: <OrderSvg className="w-[24px] h-[24px]" />,
-                path: '/spotOrder'
+                path: '/spotOrder',
+                children: [
+                    {
+                        title: t('spot:spot.spotOrder'), // 现货账单
+                        icon: <SpotSvg className="w-[24px] h-[24px] " />,
+                        path: '/spotOrder',
+                    }
+                ]
             },
             {
                 title: t('router.safetyCenter'),
@@ -60,11 +81,11 @@ const withUserCenterLayout = <P extends object>(
                 icon: <InviteSvg className="w-[24px] h-[24px]" />,
                 path: '/invite'
             },
-            {
-                title: t('router.setting'),
-                icon: 'icon-park-outline:setting-two',
-                path: '/userCenter/setting'
-            }
+            // {
+            //     title: t('router.setting'),
+            //     icon: 'icon-park-outline:setting-two',
+            //     path: '/userCenter/setting'
+            // }
         ];
 
         const userCenterList = useMemo(() => {

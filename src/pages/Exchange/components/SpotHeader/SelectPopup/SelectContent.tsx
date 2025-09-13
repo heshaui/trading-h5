@@ -74,14 +74,27 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
             }
             if (sortField === 'change') {
                 if (showVolume) {
-                    const volumeA = parseFloat(a.volume) || 0;
-                    const volumeB = parseFloat(b.volume) || 0;
+                    // 成交量排序：realTimeAmount > realTimeVolume > quantity
+                    const getVolumeValue = (pair: any) => {
+                        if (pair.realTimeAmount) return parseFloat(pair.realTimeAmount) || 0;
+                        if (pair.realTimeVolume) return parseFloat(pair.realTimeVolume) || 0;
+                        return Number(pair.quantity || 0);
+                    };
+                    
+                    const volumeA = getVolumeValue(a);
+                    const volumeB = getVolumeValue(b);
                     return sortDirection === 'asc'
                         ? volumeA - volumeB
                         : volumeB - volumeA;
                 } else {
-                    const changeA = parseFloat(a.priceChangePercent) || 0;
-                    const changeB = parseFloat(b.priceChangePercent) || 0;
+                    // 涨跌幅排序：realTimeChange > priceChangePercent
+                    const getChangeValue = (pair: any) => {
+                        if (pair.realTimeChange) return parseFloat(pair.realTimeChange) || 0;
+                        return parseFloat(pair.priceChangePercent) || 0;
+                    };
+                    
+                    const changeA = getChangeValue(a);
+                    const changeB = getChangeValue(b);
                     return sortDirection === 'asc'
                         ? changeA - changeB
                         : changeB - changeA;
@@ -130,7 +143,9 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                                 pair.baseSymbol.toLowerCase().includes(searchValue.toLowerCase());
             const matchesTab = activeTab === 'all' ? true : pair.classLabel === activeTab;
 
-            if (matchesSearch && matchesTab) {
+            const matchesEnableShow = pair.show === 0 && pair.enable === 0;
+
+            if (matchesSearch && matchesTab && !matchesEnableShow) {
                 if (pair.isFavorite) favoritesCount++;
                 spotCount++; // 只要匹配了搜索和标签，就认为是现货数量
             }
@@ -180,16 +195,28 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         try {
             const res = await apiCall;
             if (res.code === '0') {
-                const updatedPairs = [...appStore.currencyPairs];
-                const pairIndex = updatedPairs.findIndex(item => item.id === pair.id);
-                if (pairIndex !== -1) {
-                    updatedPairs[pairIndex] = {
-                        ...updatedPairs[pairIndex],
-                        isFavorite: isFavorite
-                    };
-                    appStore.setCurrencyPairs(updatedPairs);
-                }
+                // 同时更新两个数据源
+                const updatePairs = (pairs: any[]) => {
+                    const updatedPairs = [...pairs];
+                    const pairIndex = updatedPairs.findIndex(item => item.id === pair.id);
+                    if (pairIndex !== -1) {
+                        updatedPairs[pairIndex] = {
+                            ...updatedPairs[pairIndex],
+                            isFavorite: isFavorite
+                        };
+                    }
+                    return updatedPairs;
+                };
 
+                // 更新 currencyPairs
+                const updatedCurrencyPairs = updatePairs(appStore.currencyPairs);
+                appStore.setCurrencyPairs(updatedCurrencyPairs);
+
+                // 更新 allCurrencyPairs
+                const updatedAllCurrencyPairs = updatePairs(appStore.allCurrencyPairs);
+                appStore.setAllCurrencyPairs(updatedAllCurrencyPairs);
+
+                // 更新当前选中的币对
                 if (appStore.currentPair && appStore.currentPair.id === pair.id) {
                     const updatedCurrentPair = { ...appStore.currentPair };
                     updatedCurrentPair.isFavorite = isFavorite;

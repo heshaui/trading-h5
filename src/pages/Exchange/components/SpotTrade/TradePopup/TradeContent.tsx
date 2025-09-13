@@ -1125,9 +1125,8 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                 className="spot_number_box"
                 rules={[{ validator: checkPriceDeviation}]}
               >
-                <div className={priceDisabled ? '' : 'custom-input-number'}>
-                  <InputNumber
-                    className={`${styles.mail_input} spot_number_input `}
+                <InputNumber
+                    className={`${styles.mail_input} spot_number_input spot_controls`}
                     style={{
                       width: "100%",
                       boxSizing: "border-box",
@@ -1141,7 +1140,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         precision
                       )}`.replace(/\.?0+$/, "");
                     }}
-                    parser={(value: any): string => {
+                    parser={(value: any) => {
                       if (value === "" || value === null || value === undefined)
                         return "";
                       // 只保留数字和第一个小数点
@@ -1151,7 +1150,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         .replace(/\.(?=.*\.)/g, "");
                     }}
                     value={price} 
-                    onChange={(value) => { 
+                    onChange={(value) => {
                       setPrice(value ?? "");
                       form.setFieldsValue({ price: value });
                       if (form.getFieldValue('amount')) {
@@ -1189,7 +1188,71 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       />
                     </button>
                   </div>}
-                </div>
+                {/* <div className={priceDisabled ? '' : 'custom-input-number'}>
+                  <InputNumber
+                    className={`${styles.mail_input} spot_number_input `}
+                    style={{
+                      width: "100%",
+                      boxSizing: "border-box",
+                    }}
+                    min={0}
+                    formatter={(value: any) => {
+                      if (value === "" || value === null || value === undefined)
+                        return "";
+                      const precision = currentPair?.baseCoinScale || 8;
+                      return `${parseFloat(value.toString()).toFixed(
+                        precision
+                      )}`.replace(/\.?0+$/, "");
+                    }}
+                    parser={(value: any) => {
+                      if (value === "" || value === null || value === undefined)
+                        return "";
+                      // 只保留数字和第一个小数点
+                      return value
+                        .toString()
+                        .replace(/[^\d.]/g, "")
+                        .replace(/\.(?=.*\.)/g, "");
+                    }}
+                    value={price} 
+                    onChange={(value) => {
+                      setPrice(value ?? "");
+                      form.setFieldsValue({ price: value });
+                      if (form.getFieldValue('amount')) {
+                        calculateTotal();
+                      }
+                    }}
+                    suffix={
+                      !priceDisabled ? (
+                        <div>{currentPair?.baseSymbol}</div>
+                      ) : (
+                        t("spot.select.market")
+                      )
+                    }
+                    prefix={
+                      <span className={`${styles.tip_color2}`}>
+                        {t("spot.trade.price")}
+                      </span>
+                    }
+                    controls={false}
+                    disabled={priceDisabled}
+                  />
+                  {!priceDisabled && <div className="controls">
+                    <button type="button" className="border-bottom" onClick={() => handlePrice(1)}>
+                      <Iconify
+                        icon="mdi:chevron-up"
+                        size={20}
+                        className={`${styles.title_color} ${styles.hover_color}`}
+                      />
+                    </button>
+                    <button type="button" onClick={() => handlePrice(0)}>
+                      <Iconify
+                        icon="mdi:chevron-down"
+                        size={20}
+                        className={`${styles.title_color} ${styles.hover_color}`}
+                      />
+                    </button>
+                  </div>}
+                </div> */}
               </Form.Item>
               <Form.Item
                 name="amount"

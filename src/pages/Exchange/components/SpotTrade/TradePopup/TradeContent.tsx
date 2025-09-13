@@ -1132,14 +1132,14 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       boxSizing: "border-box",
                     }}
                     min={0}
-                    formatter={(value: any) => {
-                      if (value === "" || value === null || value === undefined)
-                        return "";
-                      const precision = currentPair?.baseCoinScale || 8;
-                      return `${parseFloat(value.toString()).toFixed(
-                        precision
-                      )}`.replace(/\.?0+$/, "");
-                    }}
+                    // formatter={(value: any) => {
+                    //   if (value === "" || value === null || value === undefined)
+                    //     return "";
+                    //   const precision = currentPair?.baseCoinScale || 8;
+                    //   return `${parseFloat(value.toString()).toFixed(
+                    //     precision
+                    //   )}`.replace(/\.?0+$/, "");
+                    // }}
                     // parser={(value: any) => {
                     //   if (value === "" || value === null || value === undefined)
                     //     return "";
@@ -1149,69 +1149,17 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                     //     .replace(/[^\d.]/g, "")
                     //     .replace(/\.(?=.*\.)/g, "");
                     // }}
-                    value={price} 
-                    onChange={(value) => {
-                      setPrice(value ?? "");
-                      form.setFieldsValue({ price: value });
-                      if (form.getFieldValue('amount')) {
-                        calculateTotal();
+                    onBlur={e => {
+                      // 解决输入小数点后被清空问题
+                      const value = form.getFieldValue('price');
+                      if (value) {
+                        const precision = currentPair?.baseCoinScale || 8;
+                        const result = `${parseFloat(value.toString()).toFixed(
+                          precision
+                        )}`.replace(/\.?0+$/, "");
+                        setPrice(result ?? "");
+                        form.setFieldsValue({ price: result });
                       }
-                    }}
-                    suffix={
-                      !priceDisabled ? (
-                        <div>{currentPair?.baseSymbol}</div>
-                      ) : (
-                        t("spot.select.market")
-                      )
-                    }
-                    prefix={
-                      <span className={`${styles.tip_color2}`}>
-                        {t("spot.trade.price")}
-                      </span>
-                    }
-                    controls={false}
-                    disabled={priceDisabled}
-                  />
-                  {!priceDisabled && <div className="controls">
-                    <button type="button" className="border-bottom" onClick={() => handlePrice(1)}>
-                      <Iconify
-                        icon="mdi:chevron-up"
-                        size={20}
-                        className={`${styles.title_color} ${styles.hover_color}`}
-                      />
-                    </button>
-                    <button type="button" onClick={() => handlePrice(0)}>
-                      <Iconify
-                        icon="mdi:chevron-down"
-                        size={20}
-                        className={`${styles.title_color} ${styles.hover_color}`}
-                      />
-                    </button>
-                  </div>}
-                {/* <div className={priceDisabled ? '' : 'custom-input-number'}>
-                  <InputNumber
-                    className={`${styles.mail_input} spot_number_input `}
-                    style={{
-                      width: "100%",
-                      boxSizing: "border-box",
-                    }}
-                    min={0}
-                    formatter={(value: any) => {
-                      if (value === "" || value === null || value === undefined)
-                        return "";
-                      const precision = currentPair?.baseCoinScale || 8;
-                      return `${parseFloat(value.toString()).toFixed(
-                        precision
-                      )}`.replace(/\.?0+$/, "");
-                    }}
-                    parser={(value: any) => {
-                      if (value === "" || value === null || value === undefined)
-                        return "";
-                      // 只保留数字和第一个小数点
-                      return value
-                        .toString()
-                        .replace(/[^\d.]/g, "")
-                        .replace(/\.(?=.*\.)/g, "");
                     }}
                     value={price} 
                     onChange={(value) => {
@@ -1252,7 +1200,6 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       />
                     </button>
                   </div>}
-                </div> */}
               </Form.Item>
               <Form.Item
                 name="amount"
@@ -1340,6 +1287,12 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         setTimeout(() => {
                           updateSliderFromAmount();
                         }, 0);
+                        // 解决输入小数点后被清空问题
+                        const precision = currentPair?.coinScale || 8;
+                        const result =  `${parseFloat(value.toString()).toFixed(
+                          precision
+                        )}`.replace(/\.?0+$/, "");
+                        form.setFieldsValue({amount: result})
                       }
                     }
                     if (!value && value !== 0) {
@@ -1348,14 +1301,14 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       })
                     }
                   }}
-                  formatter={(value) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    const precision = currentPair?.coinScale || 8;
-                    return `${parseFloat(value.toString()).toFixed(
-                      precision
-                    )}`.replace(/\.?0+$/, "");
-                  }}
+                  // formatter={(value) => {
+                  //   if (value === "" || value === null || value === undefined)
+                  //     return "";
+                  //   const precision = currentPair?.coinScale || 8;
+                  //   return `${parseFloat(value.toString()).toFixed(
+                  //     precision
+                  //   )}`.replace(/\.?0+$/, "");
+                  // }}
                   // parser={(value) => {
                   //   if (value === "" || value === null || value === undefined)
                   //     return "";
@@ -1442,6 +1395,12 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         setTimeout(() => {
                           updateSliderFromAmount();
                         }, 0);
+                        // 解决输入小数点后被清空问题
+                        const precision = currentPair?.baseCoinScale || 8;
+                        const result = `${parseFloat(value.toString()).toFixed(
+                          precision
+                        )}`.replace(/\.?0+$/, "");
+                        form.setFieldsValue({ account: result });
                       }
                     }
                     if (!value && value !== 0) {
@@ -1450,14 +1409,14 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       })
                     }
                   }}
-                  formatter={(value) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    const precision = currentPair?.baseCoinScale || 8;
-                    return `${parseFloat(value.toString()).toFixed(
-                      precision
-                    )}`.replace(/\.?0+$/, "");
-                  }}
+                  // formatter={(value) => {
+                  //   if (value === "" || value === null || value === undefined)
+                  //     return "";
+                  //   const precision = currentPair?.baseCoinScale || 8;
+                  //   return `${parseFloat(value.toString()).toFixed(
+                  //     precision
+                  //   )}`.replace(/\.?0+$/, "");
+                  // }}
                   // parser={(value) => {
                   //   if (value === "" || value === null || value === undefined)
                   //     return "";

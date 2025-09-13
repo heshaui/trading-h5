@@ -401,8 +401,8 @@
     position: relative;
     .controls {
         position: absolute;
-        right: 0;
-        top: 0;
+        right: 2px;
+        top: 1px;
         z-index: 10;
         flex-shrink: 0;
         width: 20px;
@@ -412,7 +412,7 @@
         border-left: 1px solid var(--border-color4);
         button {
             width: 20px;
-            height: 25px;
+            height: 24px;
             display: flex;
             align-items: center;
         }

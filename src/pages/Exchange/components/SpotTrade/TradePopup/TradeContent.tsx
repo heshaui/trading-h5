@@ -1140,15 +1140,15 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                         precision
                       )}`.replace(/\.?0+$/, "");
                     }}
-                    parser={(value: any) => {
-                      if (value === "" || value === null || value === undefined)
-                        return "";
-                      // 只保留数字和第一个小数点
-                      return value
-                        .toString()
-                        .replace(/[^\d.]/g, "")
-                        .replace(/\.(?=.*\.)/g, "");
-                    }}
+                    // parser={(value: any) => {
+                    //   if (value === "" || value === null || value === undefined)
+                    //     return "";
+                    //   // 只保留数字和第一个小数点
+                    //   return value
+                    //     .toString()
+                    //     .replace(/[^\d.]/g, "")
+                    //     .replace(/\.(?=.*\.)/g, "");
+                    // }}
                     value={price} 
                     onChange={(value) => {
                       setPrice(value ?? "");
@@ -1356,16 +1356,16 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       precision
                     )}`.replace(/\.?0+$/, "");
                   }}
-                  parser={(value) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    // 只保留数字和第一个小数点
-                    const parsed = value
-                      .toString()
-                      .replace(/[^\d.]/g, "")
-                      .replace(/\.(?=.*\.)/g, "");
-                    return parsed as unknown as number;
-                  }}
+                  // parser={(value) => {
+                  //   if (value === "" || value === null || value === undefined)
+                  //     return "";
+                  //   // 只保留数字和第一个小数点
+                  //   const parsed = value
+                  //     .toString()
+                  //     .replace(/[^\d.]/g, "")
+                  //     .replace(/\.(?=.*\.)/g, "");
+                  //   return parsed as unknown as number;
+                  // }}
                 />
               </Form.Item>
               {/* slider */}
@@ -1458,16 +1458,16 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
                       precision
                     )}`.replace(/\.?0+$/, "");
                   }}
-                  parser={(value) => {
-                    if (value === "" || value === null || value === undefined)
-                      return "";
-                    // 只保留数字和第一个小数点
-                    const parsed = value
-                      .toString()
-                      .replace(/[^\d.]/g, "")
-                      .replace(/\.(?=.*\.)/g, "");
-                    return parsed as unknown as number;
-                  }}
+                  // parser={(value) => {
+                  //   if (value === "" || value === null || value === undefined)
+                  //     return "";
+                  //   // 只保留数字和第一个小数点
+                  //   const parsed = value
+                  //     .toString()
+                  //     .replace(/[^\d.]/g, "")
+                  //     .replace(/\.(?=.*\.)/g, "");
+                  //   return parsed as unknown as number;
+                  // }}
                 />
               </Form.Item>
               {priceDisabled && SliderRender()}

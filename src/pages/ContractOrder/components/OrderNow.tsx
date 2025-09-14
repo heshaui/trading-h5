@@ -9,6 +9,7 @@ import SelectPop from '@/components/SelectPop';
 import dayjs from 'dayjs';
 import { NoData } from '@/components/noData';
 import appStore from '@/store';
+import { BigNumber } from 'bignumber.js';
 
 import DelectModal from '@/pages/SpotOrder/components/TipPop/Delect_modal';
 
@@ -101,10 +102,11 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 		console.log('条件变了')
 		try {
 			const res = paramdataRef.current.orderType === '1' ? await getCurrentOrderList(params) : await getPlanOrderList(params)
+			const resData = paramdataRef.current.orderType === '1' ? res.data.orderList : res.data.trigOrderList;
 			if (res.code === '0') {
-				setOrderList(prev => paramdataRef.current.page === 1 ? res.data.list : [...prev, ...res.data.orderList]);
+				setOrderList(prev => paramdataRef.current.page === 1 ? resData : [...prev, ...resData]);
 				setTotal(res.data.count);
-				setHasMore(orderList.length + res.data.list.length < res.data.count)
+				setHasMore(orderList.length + resData.length < res.data.count)
 			} else {
 				Toast.show(res.message);
 			}
@@ -127,13 +129,33 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 	const initData = () => {
 		paramdataRef.current.page = 1
 		setTotal(0)
-		setOrderList([])
+		setOrderList([
+			{
+				symbol: 'BTCUSDT',
+				pricePrecision: 0,
+				side: Side.BUY,
+				positionType: PositionType.CROSS_MARGIN,
+				avgPrice: 0,
+				tradeFee: 0,
+				type: Type.LIMIT,
+				mtime: 0,
+				volume: 0,
+				dealVolume: 0,
+				price: 0,
+				contractId: 0,
+				ctime: 0,
+				contractName: '',
+				id: '',
+				open: Open.OPEN,
+				status: Status.PENDING
+			}
+		])
 	}
 
 	// 条件变化时需要初始化页数
 	useEffect(() => {
 		initData();
-		getOrderListData();
+		//getOrderListData();
 	}, [currentLanguage])
 
 	// 撤销订单
@@ -168,8 +190,8 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 
 	return (
 		<div>
-			<div className="flex h-[44px] px-[16px] items-center justify-between border border-color">
-				<div className="flex gap-x-[14px]">
+			<div className="flex h-[44px] px-[16px] items-center justify-between gap-x-[10px] border border-color">
+				<div className="flex flex-1 gap-x-[14px]">
 					<SelectPop
 						value={paramdataRef.current.contractId}
 						options={contractOptions}
@@ -177,15 +199,14 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 						title={t('placeholder')}
 						activeType='icon'
 						onChange={(value:any) => handleSelect(value, 'contractId')}
-						showSearch={false}
 						renderBtn={(open) => (
 							<button 
 								type="button" 
-								className={`text-[14px] leading-[20px] flex items-center`}
+								className={`max-w-[78.34px] text-[14px] leading-[20px] flex items-center`}
 								onClick={open}
 							>
-								<span>{getLabel(paramdataRef.current.contractId, contractOptions)}</span>
-								<Iconify icon="eva:arrow-down-fill" className="text-[12px] ml-1" />
+								<span className="min-w-0 truncate">{getLabel(paramdataRef.current.contractId, contractOptions)}</span>
+								<Iconify icon="eva:arrow-down-fill" className="text-[12px] ml-1 shrink-0" />
 							</button>
 						)}
 					/>
@@ -200,11 +221,11 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 						renderBtn={(open) => (
 							<button 
 								type="button" 
-								className={`text-[14px] leading-[20px] flex items-center`}
+								className={`max-w-[78.34px] text-[14px] leading-[20px] flex items-center`}
 								onClick={open}
 							>
-								<span>{getLabel(paramdataRef.current.orderType, orderTypeOptions)}</span>
-								<Iconify icon="eva:arrow-down-fill" className="text-[12px] ml-1" />
+								<span className="min-w-0 truncate">{getLabel(paramdataRef.current.orderType, orderTypeOptions)}</span>
+								<Iconify icon="eva:arrow-down-fill" className="text-[12px] shrink-0 ml-1" />
 							</button>
 						)}
 					/>
@@ -219,21 +240,18 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 						renderBtn={(open) => (
 							<button 
 								type="button" 
-								className={`text-[14px] leading-[20px] flex items-center`}
+								className={`max-w-[78.34px] text-[14px] leading-[20px] flex items-center`}
 								onClick={open}
 							>
-								<span>{getLabel(paramdataRef.current.type, typeOptions)}</span>
-								<Iconify icon="eva:arrow-down-fill" className="text-[12px] ml-1" />
+								<span className="min-w-0 truncate">{getLabel(paramdataRef.current.type, typeOptions)}</span>
+								<Iconify icon="eva:arrow-down-fill" className="text-[12px] shrink-0 ml-1" />
 							</button>
 						)}
 					/>
 				</div>
-				{/* <button type="button" onClick={() => setDatePopVisible(true)}>
-					<Iconify icon="mingcute:filter-line" className="text-[20px] tip-color" />
-				</button> */}
 				<button 
                     type="button" 
-                    className="m-w-[68px] h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
+                    className="m-w-[68px] shrink-0 h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
 					onClick={() => {
 						setDelType(0)
 						setDelVisible(true)
@@ -261,7 +279,7 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 										<span className={`${item.side === Side.BUY ? 'success_icon' : 'error_icon'}`}>
 											{t(TypeMap[item.type])}/{t(SideMap[item.side])}
 										</span>
-										<span className="ml-[10px]">{dayjs(item.mtime).format("YYYY-MM-DD HH:mm:ss")}</span>
+										<span className="ml-[10px] tip-color">{dayjs(item.mtime).format("YYYY-MM-DD HH:mm:ss")}</span>
 									</div>
 								</div>
 								<button 
@@ -282,7 +300,7 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 									<span>{setFinally(item.dealVolume, item.volume)}</span>
 								</p>
 								<p className="flex items-center justify-between h-[20px] text-[14px]">
-									<span className="text-[#9e9e9e]">{t('order.ordinaryColumn.volume')}USDT</span>
+									<span className="text-[#9e9e9e]">{t('orderAmount')}(USDT)</span>
 									<span>{item.dealVolume.toFixed(2)}/{item.volume.toFixed(2)}</span>
 								</p>
 								<p className="flex items-center justify-between h-[20px] text-[14px]">

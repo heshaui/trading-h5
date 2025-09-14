@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpotLayout } from '@/components/MenuItems';
+import { UserCenterLayout } from '@/components/MenuItems';
 import { CustomTab } from '@/components/CustomCom';
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from '@/hooks/useLanguage';
@@ -7,20 +7,22 @@ import { useLocation } from 'react-router-dom';
 import OrderNow from './components/OrderNow'
 import OrderHistory from './components/OrderHistory'
 import PnlLog from './components/PnlLog'
+import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
 import useQueryParams from '@/hooks/useQueryParams';
 
-const OrderPage = () => {
+const OrderPage = observer(() => {
 	const { t } = useLanguage(['contract']);
 	const location = useLocation();
 	const { tab } = useQueryParams();
 	const [activeTab, setActiveTab] = useState<string>('1');
-	const [contractList, setContractList] = useState([]);
-	const info = appStore.getPublicInfo();
+	// const [contractList, setContractList] = useState([]);
+	const contractList = appStore.getPublicInfo().contractList ?? [];
 
-	useEffect(() => {
-		if (info && info.contractList) setContractList(info.contractList);
-	}, [info])
+	// useEffect(() => {
+	// 	if (info && info.contractList) setContractList(info.contractList);
+	// 	console.log('获取合约', info.contractList)
+	// }, [info])
 
 	const items = [
 		{
@@ -65,6 +67,11 @@ const OrderPage = () => {
 		}
 	}, [location.state, tab]);
 
+	// 获取币对列表
+	useEffect(() => {
+		appStore.loadPublicInfo();
+	}, [])
+
 	return (
 		<div>
 			<CustomTab
@@ -81,6 +88,11 @@ const OrderPage = () => {
             {activeTab === '3' && <PnlLog contractList={contractList}/>}
 		</div>
 	);
-};
+});
 
-export default SpotLayout(OrderPage);
+export const meta = {
+  requireAuth: true,
+  layout: 'header-only'
+}
+
+export default UserCenterLayout(OrderPage);

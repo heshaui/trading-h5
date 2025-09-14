@@ -25,7 +25,7 @@ const withUserCenterLayout = <P extends object>(
     options: WithUserCenterLayoutOptions = {noMinHeight: false}
 ) => {
     const LayoutWrapper: React.FC<P> = (props) => {
-        const { t, currentLanguage } = useLanguage(['common', 'assets', 'spot']);
+        const { t, currentLanguage } = useLanguage(['common', 'assets', 'spot', 'contract']);
         const navigate = useNavigate();
         const location = useLocation();
         const currentPath = location.pathname;
@@ -48,6 +48,11 @@ const withUserCenterLayout = <P extends object>(
                         path: '/assets'
                     },
                     {
+                        path: '/contractAssets', 
+                        icon: <OrderSvg className="w-[24px] h-[24px] " />,
+                        title: t('assets:assets.futureAccount'), //'合约账户',
+                    },
+                    {
                         title: t('assets:assets.billDetails'), // 账户明细
                         icon: <BillingSvg className="w-[24px] h-[24px] " />,
                         path: '/assets/bill'
@@ -60,10 +65,15 @@ const withUserCenterLayout = <P extends object>(
                 path: '/spotOrder',
                 children: [
                     {
-                        title: t('spot:spot.spotOrder'), // 现货账单
+                        title: t('spot:spot.spotOrder'), // 现货订单
                         icon: <SpotSvg className="w-[24px] h-[24px] " />,
                         path: '/spotOrder',
-                    }
+                    },
+                    {
+                        path: '/contractOrder', //'/spot/assets',
+                        icon: <OrderSvg className="w-[24px] h-[24px] " />,
+                        title: t('contract:order.title'), //'合约订单',
+                    },
                 ]
             },
             {

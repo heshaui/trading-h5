@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Toast, Image, Checkbox, Modal } from "antd-mobile";
-import { AssetsLayout } from "@/components/MenuItems";
+import { UserCenterLayout } from "@/components/MenuItems";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from '@/hooks/useLanguage';
 import { NoData } from "@/components/noData";
@@ -171,4 +171,4 @@ export const meta = {
   requireAuth: true,
   layout: 'header-only'
 }
-export default AssetsLayout(ContractAssets);
+export default UserCenterLayout(ContractAssets);

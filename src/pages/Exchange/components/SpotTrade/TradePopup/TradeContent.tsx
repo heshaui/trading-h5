@@ -242,21 +242,21 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
 
   // 修改处理精度的辅助函数，移除多余的0
   const formatWithPrecision = (value: number | string, precision: number): any => {
-    if (!value && value !== 0) return "";
-    // 先格式化到指定精度，然后移除末尾多余的0和可能的小数点
-    return Number(value)
-      .toFixed(precision)
-      .replace(/\.?0+$/, "");
-  //   if (value === null || value === undefined || value === "") return "";
+    // if (!value && value !== 0) return "";
+    // // 先格式化到指定精度，然后移除末尾多余的0和可能的小数点
+    // return Number(value)
+    //   .toFixed(precision)
+    //   .replace(/\.?0+$/, "");
+    if (value === null || value === undefined || value === "") return "";
 
-  //   // 包装成 BigNumber
-  //   const bn = new BigNumber(value);
+    // 包装成 BigNumber
+    const bn = new BigNumber(value);
 
-  //   // 设置精度并用 toFixed 返回字符串
-  //   const fixed = bn.toFixed(precision);
+    // 设置精度并用 toFixed 返回字符串
+    const fixed = bn.toFormat(precision, BigNumber.ROUND_DOWN);
 
-  //   // 去掉末尾多余的 0 和小数点
-  //   return fixed.replace(/\.?0+$/, "");
+    // 去掉末尾多余的 0 和小数点
+    return fixed.replace(/\.?0+$/, "");
   };
 
   // 添加滑块变化时的处理函数

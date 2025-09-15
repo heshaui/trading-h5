@@ -187,6 +187,13 @@
       "marketOrder": "市价单",
       "allType": "全部类型"
     },
+    "shareModal": {
+      "tip": "这点亏损小爷我还承受的起",
+      "inviteCode": "邀请码",
+      "save": "保存",
+      "cancel": "取消",
+      "showAccount": "显示收益金额"
+    },
     "positionColumn": {
       "positionId": "仓位ID",
       "contractId": "合约ID",

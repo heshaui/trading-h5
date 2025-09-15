@@ -285,27 +285,27 @@ const SpotOrderPage = () => {
 		},
 	];
 	const mainColumns2: ColumnType<DataType>[] = [
-		// {
-		// 	title: t('spot.columns.fee'), //"手续费",
-		// 	key: "buyFee",
-		// 	dataIndex: "buyFee",
-		// 	// width: 158,
-		// 	align: "center",
-		// 	render: (_status, record) => {
-		// 		const symbol = record.symbol.split('/')
-		// 		let fee
-		// 		if (record.direction === 0) {
-		// 			// directionText = t('spot.trade.buy')
-		// 			fee = nul(record.takerFee, record.turnover)
-		// 		} else if (record.direction === 1) {
-		// 			fee = nul(record.makerFee, record.turnover)
-		// 		} else {
-		// 			fee = '--'
-		// 		}
+		{
+			title: t('spot.columns.fee'), //"手续费",
+			key: "buyFee",
+			dataIndex: "buyFee",
+			// width: 158,
+			align: "center",
+			render: (_status, record) => {
+				const symbol = record.symbol.split('/')
+				let fee
+				if (record.direction === 0) {
+					// directionText = t('spot.trade.buy')
+					fee = nul(record.takerFee, record.turnover)
+				} else if (record.direction === 1) {
+					fee = nul(record.makerFee, record.turnover)
+				} else {
+					fee = '--'
+				}
 
-		// 		return <span>{fee}{symbol?.[0] || '--'}</span>;
-		// 	},
-		// },
+				return <span>{fee}{symbol?.[0] || '--'}</span>;
+			},
+		},
 		{
 			title: t('spot.columns.amount2'), //"成交金额",
 			key: "turnover",

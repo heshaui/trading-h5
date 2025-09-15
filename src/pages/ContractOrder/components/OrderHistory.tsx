@@ -32,6 +32,7 @@ type ParamData = {
 
 const OrderHistory:React.FC<Props> = ({contractList}) => {
 	const { t, currentLanguage } = useLanguage(['contract', 'spot']);
+	const navigate = useNavigate();
 	// 获取当前合约信息
 	const currentContractInfo = appStore.getCurrentContractInfo();
 	const currentSymbol = currentContractInfo?.symbol || "";
@@ -179,12 +180,23 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 				contractId: 0,
 				ctime: Date.now(),
 				contractName: '',
-				id: '',
+				id: '123',
 				open: Open.OPEN,
 				status: Status.PENDING,
 				realizedAmount: 0
 			}
 		])
+	}
+
+	const toDetail = (record: DataType) => {
+		navigate(`/contractOrder/detail`, {
+              state: {
+                recordData: record,
+                orderId: record.id,
+                symbol: record.symbol,
+                fromTab: '2' // 标识来源是历史委托tab
+              }
+        });
 	}
 
 	// 条件变化时需要初始化页数
@@ -272,7 +284,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 										<span className="text-[14px] font-medium mr-[4px]">{item.symbol ?? '--'}</span>
 										<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center">{getContractShowType()}</span>
 									</div>
-									<div className="flex items-center h-[17px]">
+									<div className="flex items-center h-[17px]" onClick={() => toDetail(item)}>
 										<span className="text-[12px] tip-color">{dayjs(item.ctime).format("YYYY-MM-DD HH:mm:ss")}</span>
 										<Iconify icon="mingcute:right-line" className={`tip-color text-[16px]`} />
 									</div> 

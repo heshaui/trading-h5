@@ -14,6 +14,7 @@ import AdjustPopup from '../Popup/AdjustPopup';
 import ReservePopup from '../Popup/ReservePopup';
 import TakePriofitPopup from '../Popup/TakeProfitPopup'
 import ClosePopup from '../Popup/ClosePopup'
+import SharePopup from '../Popup/SharePopup';
 
 import { ReactComponent as FrameIcon } from '@/assets/images/exchange/Frame.svg';
 import { ReactComponent as PositionIcon } from '@/assets/images/exchange/PositionIcon.svg';
@@ -42,11 +43,12 @@ const Position: React.FC = () => {
 	const [tipModalVisible, setTipModalVisible] = useState(false);
 	const [tipTitle, setTipTitle] = useState('');
 	const [tipContent, setTipContent] = useState('');
+	const [shareVisible, setShareVisible] = useState(false);
 	// 保证金弹窗
 	const [adjustVisible, setAdjustVisible] = useState(false);
 	// 反向开仓
 	const [reserveVisible, setReserveVisible] = useState(false);
-	const [currentData, setCuurentData] = useState<PositionType | null | undefined>();
+	const [currentData, setCurrentData] = useState<PositionType | null | undefined>();
 	// 止盈止损
 	const [tpslVisible, setTpslVisible] = useState(false);
 	// 平仓
@@ -71,7 +73,7 @@ const Position: React.FC = () => {
 				holdAmount: 0,
 				marginRate: 0,
 				realizedAmount: 0,
-				returnRate: 12334.23,
+				returnRate: 7.08,
 				orderSide: Side.BUY,
 				positionType: 1,
 				canUseAmount: 0,
@@ -161,7 +163,7 @@ const Position: React.FC = () => {
 			case 'close': setCloseVisible(true); break;
 			case 'reserve': setReserveVisible(true); break;
 		}
-		setCuurentData(data);
+		setCurrentData(data);
 	}
 
 	return (
@@ -194,7 +196,10 @@ const Position: React.FC = () => {
 									<span className="text-[14px] font-medium mr-[4px]">{item.symbol ?? '--'}</span>
 									<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center">{getContractShowType()}</span>
 								</div>
-								<FrameIcon className="W-[20px] h-[20px]" />
+								<FrameIcon className="W-[20px] h-[20px]" onClick={() => {
+									setShareVisible(true)
+									setCurrentData(item)
+								}} />
 							</div>
 							<div className="flex items-center">
 								<span
@@ -337,6 +342,13 @@ const Position: React.FC = () => {
 				onCancel={() => setCloseVisible(false)}
 				onConfirm={() => setCloseVisible(false)}
 			/>
+			{/* 分享 */}
+			{currentData && <SharePopup
+				open={shareVisible}
+				data={currentData!}
+				onCancel={() => setShareVisible(false)}
+				onConfirm={() => setShareVisible(false)}
+			/>}
 		</>
 	)
 }

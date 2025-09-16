@@ -11,7 +11,7 @@ import { NoData } from '@/components/noData';
 import appStore from '@/store';
 import { BigNumber } from 'bignumber.js';
 
-import DelectModal from '@/pages/SpotOrder/components/TipPop/Delect_modal';
+import SharePopup from '@/pages/Contract/components/ContractOrder/components/Popup/SharePopup';
 import { ReactComponent as FrameIcon } from '@/assets/images/exchange/Frame.svg';
 
 import { Position as DataType } from "@/pages/Contract/components/ContractOrder/hooks";
@@ -35,9 +35,8 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	const currentSymbol = currentContractInfo?.symbol || "";
 	const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
 
-	const [delVisible, setDelVisible] = useState(false);
-	const [orderIds, setOrderIds] = useState<string[]>([]);
-	const [delType, setDelType] = useState(0); // 0:全部 1: 单个
+	const [shareVisible, setShareVisible] = useState(false);
+	const [currentData, setCurrentData] = useState<DataType>();
 	const [orderList, setOrderList] = useState<DataType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [total, setTotal] = useState(0);
@@ -208,7 +207,10 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 										<span className="tip-color">{dayjs().format("YYYY-MM-DD HH:mm:ss")}</span>
 									</div>
 								</div>
-								<FrameIcon className="W-[20px] h-[20px]" />
+								<FrameIcon className="W-[20px] h-[20px]" onClick={() => {
+									setShareVisible(true)
+									setCurrentData(item)
+								}} />
 							</div>
 							<div className="flex-col gap-y-[16px]">
 								<p className="flex items-center justify-between h-[20px] text-[14px]">
@@ -232,6 +234,12 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 				}
 			</ul>
 			{orderList.length > 0 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+			{currentData && <SharePopup 
+				open={shareVisible}
+				data={currentData}
+				onCancel={() => setShareVisible(false)}
+				onConfirm={() => setShareVisible(false)}
+			/>}
 		</div>
 	)
 }

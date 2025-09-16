@@ -25,13 +25,13 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
     const { isDark } = useTheme();
     // 获取当前合约信息
 	const currentContractInfo = appStore.getCurrentContractInfo();
-	const currentSymbol = currentContractInfo?.symbol || "";
 	const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
     const userInfo = appStore.getUserInfo();
     const [inviteInfo, setInviteInfo] = useState({
         inviteCode: '',
         inviteLink: ''
     });
+    const [showAccount, setShowAccount] = useState(false);
 
     const getLoginInfoData = async () => {
         const getBaseUrl = () => {
@@ -72,10 +72,10 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
                     <span>{t(PositionTypeMap[data.positionType])}</span>
                 </div>
                 <div className="leading-[17px] text-[12px] theme-color mb-1">{t('order.shareModal.tip')}</div>
-                <div className="flex mb-[20px]">
+                <div className="flex mb-[20px] justify-between">
                     <div className="flex-1 mr-[9px] pt-4">
                         <div className="flex-col gap-y-[4px] mb-[30px]">
-                            <span className="text-[14px] tip-color leading-[20px]">{t('returnRate')}</span>
+                            <span className="text-[14px] tip-color leading-[20px]">{t('order.positionColumn.returnRate')}</span>
                             <span
                                 className={`text-[32px] font-[700] leading-[39px]
                                     ${data.returnRate > 0 ? 'success_icon' : data.returnRate < 0 ? 'error_icon' : ''}
@@ -84,11 +84,11 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
                         </div>
                         <div className="flex justify-between mb-[20px]">
                             <p className="flex flex-col gap-y-[4px] text-[14px]">
-                                <span className="tip-color">{t('openAvgPrice')}</span>
+                                <span className="tip-color">{t('order.positionColumn.openAvgPrice')}</span>
                                 <span className="font-medium">{new BigNumber(data.openAvgPrice).toFormat(symbolPricePrecision)}</span>
                             </p>
                             <p className="flex flex-col gap-y-[4px] text-[14px]">
-                                <span className="tip-color">{t('reducePrice')}</span>
+                                <span className="tip-color">{t('order.positionColumn.reducePrice')}</span>
                                 <span className="font-medium">{new BigNumber(data.reducePrice).toFormat(symbolPricePrecision)}</span>
                             </p>
                         </div>
@@ -120,8 +120,8 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
                 </div>
                 <Checkbox 
                     className="mb-[30px] custom-checkbox" 
-                    checked={noRemind}
-                    onChange={handleCheckboxChange}
+                    checked={showAccount}
+                    onChange={e => setShowAccount(e.target.checked)}
                 >
                     <p className="text-[14px] text-[var(--text-color5)]">
                         {/* 不再提醒,可在交易设置中，开启或关闭提示。 */}
@@ -131,14 +131,16 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
                 <button
                     type="button"
                     className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[30px] rounded-[25px]
-                        'bg-[var(--theme-color)]
+                        bg-[var(--theme-color)]
                     `}
+                    onClick={onConfirm}
                 >{t('order.shareModal.save')}</button>
                 <button
                     type="button"
                     className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[10px] rounded-[25px]
-                        'bg-[var(--btncolor14)]
+                        bg-[var(--background14)]
                     `}
+                    onClick={onCancel}
                 >{t('order.shareModal.cancel')}</button>
             </div>
         </Popup>

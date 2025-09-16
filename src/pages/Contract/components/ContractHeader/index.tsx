@@ -6,6 +6,7 @@ import { Iconify } from '@/components/icon';
 import { formatNumWithPrecision, formatAmount } from '@/utils';
 import { getPairsRate } from '@/utils/getUseRate';
 import appStore from "@/store";
+import { useMarketInfo } from "@/hooks/useMarketInfo";
 
 import SelectPopup from './SelectPopup/index';
 import TradeSettingPop from './TradeSettingPop';
@@ -14,28 +15,19 @@ import CalculatorPop from './CalculatorPop';
 import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings1.svg';
 import { ReactComponent as CalendarIcon } from '@/assets/images/exchange/icon_calendar.svg';
 
-interface Props {
-	priceData: any
-}
-
-const ContractHeader: React.FC<Props>= observer(({priceData}) => {
+const ContractHeader: React.FC= observer(() => {
 	const { t } = useLanguage(['contract', 'spot']);
+	const symbolList = appStore.getPublicInfo();
+	const currentContractInfo = appStore.getCurrentContractInfo();
+	const { marketInfo, loadMarketInfo } = useMarketInfo();
+	const priceData = appStore.getActiveNewPrice();
+
 	const [selectPopupOpen, setSelectPopupOpen] = useState<boolean>(false);
 	const [settingPopupOpen, setSettingPopupOpen] = useState<boolean>(false);
 	const [calculatorPopupOpen, setCalculatorPopupOpen] = useState<boolean>(false);
-	const symbolList = appStore.getPublicInfo();
-	const currentContractInfo = appStore.getCurrentContractInfo();
 	const [currentSymbol, setCurrentSymbol] = useState<any>(currentContractInfo);
-	const [marketInfo, setMarketInfo] = useState<any>(null);
 	const [isPriceUp, setIsPriceUp] = useState<boolean>(false)
 
-	const getMarketInfo = async (id: number) => {
-		const res = await getPublicMarketInfo({ contractId: id });
-		if (res.code === '0') {
-			setMarketInfo(res.data);
-			if (res.data?.currentFundRate > 0) setIsPriceUp(true);
-		}
-	};
 	const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision
 	
 	// 格式化价格显示，确保不超过symbolPricePrecision精度
@@ -53,12 +45,12 @@ const ContractHeader: React.FC<Props>= observer(({priceData}) => {
 
 	useEffect(() => {
 		if (currentContractInfo?.id) {
-		const interval = setInterval(() => {
-			getMarketInfo(currentContractInfo.id);
-		}, 5000);
-		return () => clearInterval(interval);
+			const interval = setInterval(() => {
+				loadMarketInfo(currentContractInfo.id);
+			}, 5000);
+			return () => clearInterval(interval);
 		}
-	}, [currentContractInfo]);
+	}, [currentContractInfo, loadMarketInfo]);
 
 	// 显示合约类型
 	const getContractShowType = () => {

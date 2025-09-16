@@ -6,6 +6,7 @@ import appStore from '@/store';
 import { NoData } from '@/components/noData';
 import type { SymbolData } from '.';
 import { getContractCategory } from '.';
+import { useUserConfig } from "@/hooks/useUserConfig";
 
 interface SelectContentProps {
     searchValue: string;
@@ -19,6 +20,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     onSelect
 }) => {
     const { t } = useLanguage(['contract']);
+    const { loadUserConfig } = useUserConfig();
     const symbolList = appStore.getPublicInfo()?.contractList ?? [];
     // 处理排序
     const [sortField, setSortField] = useState<string>('');
@@ -77,7 +79,10 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
 
     const handlePairClick = async (symbol: any) => {
         await appStore.setCurrentContractInfo(symbol.id);
-        onSelect?.();
+        // 重新加载用户配置，传递新的合约ID
+        loadUserConfig({
+            contractId: symbol.id,
+        });
     };
 
     return (

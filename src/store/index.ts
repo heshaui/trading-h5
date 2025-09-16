@@ -23,6 +23,7 @@ import {
   getPublicInfo,
   getUserConfig,
   getAssetsList,
+  getPublicMarketInfo
 } from "@/services/contract";
 import { UserConfigType } from "@/type/contract/userConfig";
 
@@ -78,6 +79,13 @@ class AppStore {
     publicInfo: any = {};
     currentContractInfo: any = {};
     isLoadingPublicInfo: boolean = false;
+
+    // 添加最新价格数据状态
+    activeNewPrice: any = null;
+
+    // 添加市场信息状态
+    marketInfo: any = {};
+    isLoadingMarketInfo: boolean = false;
 
     // 添加用户合约配置状态
     userConfig: UserConfigType = {};
@@ -1174,6 +1182,78 @@ class AppStore {
         );
         }
     }
+
+    // 市场信息相关方法
+  async loadMarketInfo(contractId: number) {
+    try {
+      this.isLoadingMarketInfo = true;
+      const result = await getPublicMarketInfo({ contractId });
+      if (result.code === "0") {
+        runInAction(() => {
+          this.marketInfo = result.data;
+          // 持久化到本地存储
+          if (isBrowser()) {
+            localStorage.setItem(
+              LOCAL_STORAGE_KEY.MARKET_INFO,
+              JSON.stringify(this.marketInfo)
+            );
+          }
+        });
+        return result.data;
+      } else {
+        console.log(result.message || "Failed to load market info");
+      }
+    } catch (error) {
+      console.error("Error loading market info:", error);
+    } finally {
+      runInAction(() => {
+        this.isLoadingMarketInfo = false;
+      });
+    }
+  }
+
+  getMarketInfo() {
+    return this.marketInfo;
+  }
+
+  setMarketInfo(info: any) {
+    this.marketInfo = info;
+    if (isBrowser()) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY.MARKET_INFO,
+        JSON.stringify(info)
+      );
+    }
+  }
+
+  initMarketInfoFromStorage() {
+    if (!isBrowser()) return;
+    try {
+      const marketInfoJson = localStorage.getItem(LOCAL_STORAGE_KEY.MARKET_INFO);
+      if (marketInfoJson) {
+        this.marketInfo = JSON.parse(marketInfoJson);
+      }
+    } catch (error) {
+      console.error("Failed to load market info from storage:", error);
+    }
+  }
+
+   // 最新价格数据相关方法
+  setActiveNewPrice(priceData: any) {
+    runInAction(() => {
+      this.activeNewPrice = priceData;
+    });
+  }
+
+  getActiveNewPrice() {
+    return this.activeNewPrice;
+  }
+
+  clearActiveNewPrice() {
+    runInAction(() => {
+      this.activeNewPrice = null;
+    });
+  }
 }
 
 const appStore = new AppStore();

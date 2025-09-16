@@ -30,6 +30,7 @@ export const LOCAL_STORAGE_KEY = {
     USER_CONFIG: "user_config", // 用户合约配置
     CONTRACT_ASSETS: "contract_assets", // 合约资产
     CURRENT_CONTRACT_INFO: "current_contract_info", // 当前合约信息
+    MARKET_INFO: "market_info", // 市场信息
     FINANCIAL_CONFIG: "financial_config", // 理财配置
 };
 

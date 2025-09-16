@@ -101,16 +101,16 @@ interface SymbolData {
 }
 
 const ContractContent: React.FC = observer(() => {
-    const {t} = useLanguage(["contract", "spot", "common"])
-    const { isLoggedIn } = useAuth();
-    // 获取时间间隔
-    const { 
-        timeInterval: currentTimeInterval, 
-        updateDepthData, 
-        updateKlineData, 
-        updateOrderData,
-    } = useContract();
-    const orderListRef = useRef<any>(null);
+  const {t} = useLanguage(["contract", "spot", "common"])
+  const { isLoggedIn } = useAuth();
+  // 获取时间间隔
+  const { 
+      timeInterval: currentTimeInterval, 
+      updateDepthData, 
+      updateKlineData, 
+      updateOrderData,
+  } = useContract();
+  const orderListRef = useRef<any>(null);
   const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
   const [orderBookData, setOrderBookData] = useState<any>(null); // 订单簿数据
@@ -507,6 +507,11 @@ const ContractContent: React.FC = observer(() => {
     initializeClientData();
   }, [getContractBalance]);
 
+  // 更新价格
+  useEffect(() => {
+     appStore.setActiveNewPrice(priceData);
+  }, [priceData])
+
   // 获取币对列表
   useEffect(() => {
     appStore.loadPublicInfo();
@@ -727,7 +732,7 @@ const ContractContent: React.FC = observer(() => {
 
     return (
         <div className="pb-[76px]">
-            <ContractHeader priceData={priceData}/>
+            <ContractHeader />
             {/* 图表、最新成交 */}
             <ContractTabs />
             {/* 仓位、普通委托、条件委托、资产 */}

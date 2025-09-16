@@ -78,12 +78,7 @@ const UserIcon: React.FC = observer(() => {
                     key: '/contractAssets', 
                     value: '/contractAssets', 
                     title: t('assets:assets.futureAccount'), //'合约账户',
-                },
-                {
-                    title: t('assets:assets.billDetails'), // 账户明细
-                    key: '/assets/bill',
-                    value: '/assets/bill',
-                },
+                }
             ]
         },
         {
@@ -101,6 +96,11 @@ const UserIcon: React.FC = observer(() => {
                     key: '/contractOrder', //'/spot/assets',
                     value: '/contractOrder',
                     title: t('contract:order.title'), //'合约订单',
+                },
+                {
+                    title: t('assets:assets.billDetails'), // 账户明细
+                    key: '/assets/bill',
+                    value: '/assets/bill',
                 },
             ]
         },

@@ -107,21 +107,21 @@ const ContractHeader: React.FC= observer(() => {
 						<Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e]" />
 					</div>
 					<div
-						className={`text-[var(--text-color5)] font-[600] text-[28px] mb-[5px] ${isPriceUp
+						className={`text-[var(--text-color5)] font-[600] text-[28px] mb-[5px] ${priceData?.isUp
 						? "text-[var(--success-color)]"
 						: "text-[var(--error-color)]"
 						}`}
 					>
-						{formatPriceWithPrecision(marketInfo?.indexPrice)}
+						{formatPriceWithPrecision(priceData?.price)}
 					</div>
 					<div className="h-[17px] flex items-center text-[12px] mb-[3px]">
-						<span className="tip-color mr-[19px]">≈ ${marketInfo?.indexPrice ? getPairsRate(marketInfo?.indexPrice, 'USD').rate.toFixed(2) : '--' }</span>
+						<span className="tip-color mr-[19px]">≈ ${priceData?.price ? getPairsRate(priceData?.price, 'USD').rate.toFixed(2) : '--' }</span>
 						<span 
-							className={`${isPriceUp
+							className={`${priceData?.price
 							? "text-[var(--success-color)]"
 							: "text-[var(--error-color)]"
 							}`}
-						>{formatFundRate(marketInfo?.currentFundRate)}</span>
+						>{formatFundRate(priceData?.changePercent)}</span>
 					</div>
 					<div className="h-[14px] text-[10px] flex items-center">
 						<span className="tip-color border-b border-dashed border-[#9e9e9e] mr-[4px]">{t("contractHeader.markPrice")}</span>

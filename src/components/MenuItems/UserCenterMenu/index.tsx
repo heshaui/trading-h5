@@ -52,11 +52,6 @@ const withUserCenterLayout = <P extends object>(
                         icon: <OrderSvg className="w-[24px] h-[24px] " />,
                         title: t('assets:assets.futureAccount'), //'合约账户',
                     },
-                    {
-                        title: t('assets:assets.billDetails'), // 账户明细
-                        icon: <BillingSvg className="w-[24px] h-[24px] " />,
-                        path: '/assets/bill'
-                    },
                 ]
             },
             {
@@ -73,6 +68,11 @@ const withUserCenterLayout = <P extends object>(
                         path: '/contractOrder', //'/spot/assets',
                         icon: <OrderSvg className="w-[24px] h-[24px] " />,
                         title: t('contract:order.title'), //'合约订单',
+                    },
+                    {
+                        title: t('assets:assets.billDetails'), // 账户明细
+                        icon: <BillingSvg className="w-[24px] h-[24px] " />,
+                        path: '/assets/bill'
                     },
                 ]
             },
@@ -91,11 +91,11 @@ const withUserCenterLayout = <P extends object>(
                 icon: <InviteSvg className="w-[24px] h-[24px]" />,
                 path: '/invite'
             },
-            // {
-            //     title: t('router.setting'),
-            //     icon: 'icon-park-outline:setting-two',
-            //     path: '/userCenter/setting'
-            // }
+            {
+                title: t('router.setting'),
+                icon: 'icon-park-outline:setting-two',
+                path: '/userCenter/setting'
+            }
         ];
 
         const userCenterList = useMemo(() => {

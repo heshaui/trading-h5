@@ -47,13 +47,15 @@ const formatNumWithPrecision = (num: number | string | null | undefined, precisi
 };
 
 // 辅助函数：格式化大额数字
-const formatAmount = (amount: number, t: Function) => {
+const formatAmount = (amount: number | string | null | undefined, t: Function) => {
+    if (!amount || amount === '' || amount === null || amount === undefined) return '--';  
+    amount = Number(amount)
     if (amount >= 100000000) {
         return formatted((amount / 100000000).toFixed(2)) + t('spot:spot.header.billion');
     } else if (amount >= 10000) {
         return formatted((amount / 10000).toFixed(2)) + t('spot:spot.header.tenThousand');
     } else {
-        return amount.toFixed(2);
+        return amount?.toFixed(2);
     }
 };
 

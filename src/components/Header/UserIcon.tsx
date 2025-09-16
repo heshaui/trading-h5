@@ -73,12 +73,7 @@ const UserIcon: React.FC = observer(() => {
                     title: t('assets:assets.assetsAccount'), // 现货账单
                     key: '/assets',
                     value: '/assets',
-                },
-                {
-                    title: t('assets:assets.billDetails'), // 账户明细
-                    key: '/assets/bill',
-                    value: '/assets/bill',
-                },
+                }
             ]
         },
         {
@@ -91,6 +86,11 @@ const UserIcon: React.FC = observer(() => {
                     title: t('spot:spot.spotOrder'), // 现货账单
                     key: '/spotOrder',
                     value: '/spotOrder',
+                },
+                {
+                    title: t('assets:assets.billDetails'), // 账户明细
+                    key: '/assets/bill',
+                    value: '/assets/bill',
                 }
             ]
         },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { observer } from 'mobx-react-lite';
 import { Iconify } from "@/components/icon";
@@ -7,6 +7,7 @@ import { NoData } from '@/components/noData';
 import type { SymbolData } from '.';
 import { getContractCategory } from '.';
 import { useUserConfig } from "@/hooks/useUserConfig";
+import { useContract } from '@/context/exchange-providers/ContractProvider';
 
 interface SelectContentProps {
     searchValue: string;
@@ -20,11 +21,46 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
     onSelect
 }) => {
     const { t } = useLanguage(['contract']);
+    // 获取合约市场信息
+    const { marketInfoData } = useContract();
     const { loadUserConfig } = useUserConfig();
     const symbolList = appStore.getPublicInfo()?.contractList ?? [];
     // 处理排序
     const [sortField, setSortField] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    console.log('marketInfoData', marketInfoData)
+
+    // 将 marketInfoData 的数据合并到 symbolList 中
+    const enrichedSymbolList = useMemo(() => {
+        if (!marketInfoData || !symbolList) return symbolList;
+
+        return symbolList.map((symbol:SymbolData) => {
+        // 构建匹配的键，格式如 "e_btcusdt" 或 "s_btcusdt"
+        const contractPrefix = symbol.contractType === 'E' ? 'e_' : 's_';
+        // 移除合约名称中的连字符和前缀，转换为小写
+        // E-BTC-USDT -> btcusdt, S-BTC-USDT -> btcusdt
+        const cleanContractName = symbol.contractName.toLowerCase().replace(/^[es]-/, '').replace(/-/g, '');
+        const marketKey = `${contractPrefix}${cleanContractName}`;
+        
+        const marketData = marketInfoData[marketKey];
+        
+
+        
+        if (marketData) {
+            return {
+            ...symbol,
+            price: marketData.close || '--',
+            changePercent: marketData.rose !== undefined && marketData.rose !== null ? `${marketData.rose}%` : '0.00%',
+            high: marketData.high,
+            low: marketData.low,
+            volume: marketData.vol,
+            amount: marketData.amount
+            };
+        }
+        
+        return symbol;
+        });
+    }, [symbolList, marketInfoData]);
     const handleSort = (field: string) => {
         if (sortField === field) {
             setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -36,9 +72,9 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
 
     // 获取排序后的数据
     const getSortedPairs = () => {
-        if (!sortField) return symbolList;
+        if (!sortField) return enrichedSymbolList;
 
-        return [...symbolList].sort((a, b) => {
+        return [...enrichedSymbolList].sort((a, b) => {
             if (sortField === 'name') {
                 const nameA = a.contractName || '';
                 const nameB = b.contractName || '';
@@ -64,10 +100,11 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         });
     };
 
-    const sortedPairList = getSortedPairs();
+    const sortedPairList = useMemo(() => getSortedPairs(), [enrichedSymbolList]);
 
     // 根据类别过滤合约
     const filteredSymbols = sortedPairList.filter((item: SymbolData) => {
+        // console.log('item', item)
         // 搜索过滤
         const matchesSearch = item.base.toLowerCase().includes(searchValue.toLowerCase()) ||
             item.quote.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -83,6 +120,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
         loadUserConfig({
             contractId: symbol.id,
         });
+        onSelect?.()
     };
 
     return (
@@ -158,7 +196,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                         >
                             {/* 币种名称 */}
                             <div className="flex items-center flex-1 font-medium">
-                                {pair.contractName}
+                                {pair.base}/{pair.quote}
                             </div>
                             {/* 最新价 */}
                             <div className="text-right flex-1 font-medium">
@@ -168,7 +206,7 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                             <div
                                 className={`${pair.changePercent ? parseFloat(pair.changePercent) > 0 ? 'success_icon' : parseFloat(pair.realTimeChange) < 0 : pair.priceChangePercent < 0 ? 'error_icon' : ''} text-right flex-1`}
                             >
-                                {pair.changePercent ? `${pair.changePercent}%` : '0.00%'}
+                                {pair.changePercent || '--'}
                             </div>
                         </li>
                 ))

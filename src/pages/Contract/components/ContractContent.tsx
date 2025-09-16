@@ -109,7 +109,11 @@ const ContractContent: React.FC = observer(() => {
       updateDepthData, 
       updateKlineData, 
       updateOrderData,
+      setMarketInfoData
   } = useContract();
+  // 获取 publicInfo
+  const publicInfoFromStore = appStore.getPublicInfo();
+
   const orderListRef = useRef<any>(null);
   const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
@@ -473,9 +477,8 @@ const ContractContent: React.FC = observer(() => {
   // 初始化数据和客户端状态
   useEffect(() => {
     const initializeClientData = async () => {
-        // 获取公共数据
-        const info = appStore.getPublicInfo();
-        setPublicInfo(info);
+        const info = publicInfoFromStore;
+        setPublicInfo(publicInfoFromStore);
 
         if (info.contractList) {
           setSymbolList(info.contractList);
@@ -486,13 +489,13 @@ const ContractContent: React.FC = observer(() => {
         setCurrentContractInfo(contractInfo);
         console.log(contractInfo)
 
-        // 获取账户余额
-        getContractBalance();
-        getSpotBalance();
 
         // 获取用户合约配置
-        if (info.contractList && contractInfo.id) {
+        if (info.contractList && contractInfo.id && isLoggedIn) {
           try {
+            // 获取账户余额
+            getContractBalance();
+            getSpotBalance();
             const userConfig = await appStore.loadUserConfig({
               contractId: contractInfo.id,
             });
@@ -505,17 +508,13 @@ const ContractContent: React.FC = observer(() => {
         }
     };
     initializeClientData();
-  }, [getContractBalance]);
+  }, [isLoggedIn, publicInfoFromStore]);
 
   // 更新价格
   useEffect(() => {
-     appStore.setActiveNewPrice(priceData);
+    console.log('更新价格对象', priceData)
+    appStore.setActiveNewPrice(priceData);
   }, [priceData])
-
-  // 获取币对列表
-  useEffect(() => {
-    appStore.loadPublicInfo();
-  }, [])
 
   // 监听store中currentContractInfo的变化
   useEffect(() => {
@@ -595,7 +594,7 @@ const ContractContent: React.FC = observer(() => {
     const handleMessage = (message: string) => {
       try {
         // 如果消息看起来像是乱码，尝试打印十六进制
-        if (message.includes("�") || message.length < 10) {
+        if (message?.includes("�") || message?.length < 10) {
           const encoder = new TextEncoder();
           const bytes = encoder.encode(message);
         }
@@ -643,7 +642,7 @@ const ContractContent: React.FC = observer(() => {
               price: data.tick.close.toString(),
             }));
           }
-        } else if (data.channel && data.channel.includes("_depth_step0")) {
+        } else if (data.channel && data.channel.includes("_depth_")) {
           // 处理OrderBook深度数据
           console.log("收到OrderBook数据:", data);
           if (data.tick) {
@@ -662,6 +661,15 @@ const ContractContent: React.FC = observer(() => {
             // 更新最新价格
             if (sortedData.length > 0) {
               const latestTrade = sortedData[0];
+              const newPriceData = {
+                price: latestTrade.price,
+                lastSide: latestTrade.side,
+                lastTradeTime: latestTrade.ds,
+                symbol: currentContractInfo?.symbol,
+                contractId: currentContractInfo?.id,
+                timestamp: Date.now(),
+              };
+              
               setPriceData((prevPriceData: any) => ({
                 ...prevPriceData,
                 price: latestTrade.price,
@@ -670,9 +678,11 @@ const ContractContent: React.FC = observer(() => {
               }));
             }
           }
+        } else if(data.channel && data.channel.includes("review")){
+          setMarketInfoData(data.data);
         }
       } catch (error) {
-        console.error("解析WebSocket消息失败:", error);
+        console.log("解析WebSocket消息失败:", error);
         console.log("原始消息:", message);
         console.log("消息类型:", typeof message);
         console.log("消息长度:", message.length);
@@ -711,9 +721,9 @@ const ContractContent: React.FC = observer(() => {
     };
   }, [
     publicInfo.wsUrl,
-    currentContractInfo,
-    currentTimeInterval,
-    sendSubscriptions,
+    currentContractInfo.id,
+    currentContractInfo.contractType,
+    currentContractInfo.symbol,
   ]);
 
   // 当合约信息准备好且WebSocket已连接时，发送初始订阅

@@ -89,6 +89,9 @@ interface ContractContextValue {
   setConditionOrderCount: (count: number) => void;
   assetsCount: number;
   setAssetsCount: (count: number) => void;
+  // 合约价格信息
+  marketInfoData: any;
+  setMarketInfoData: (data: any) => void;
 }
 
 // 创建Context
@@ -110,6 +113,7 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [defaultOrderCount, setDefaultOrderCount] = useState<number>(0);
   const [conditionOrderCount, setConditionOrderCount] = useState<number>(0);
   const [assetsCount, setAssetsCount] = useState<number>(0);
+  const [marketInfoData, setMarketInfoData] = useState();
 
   // 更新方法
   const updateTimeInterval = useCallback((interval: string) => {
@@ -189,7 +193,9 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	conditionOrderCount,
 	setConditionOrderCount,
 	assetsCount,
-	setAssetsCount
+	setAssetsCount,
+  marketInfoData, 
+  setMarketInfoData
   };
 
   return (

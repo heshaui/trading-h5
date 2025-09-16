@@ -459,7 +459,7 @@ const SpotOrderPage = () => {
 					<span className={`mr-1 `}>
 						{getStatus(recordData?.status)}
 					</span>
-					{getCompletion()}
+					{recordData?.status !== 3 && recordData?.status !== 6 && getCompletion()}
 				</div>
 			</div>
 			<div className={`${styles.content_body}`}>

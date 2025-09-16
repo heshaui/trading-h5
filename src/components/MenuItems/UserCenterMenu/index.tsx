@@ -46,12 +46,7 @@ const withUserCenterLayout = <P extends object>(
                         title: t('assets:assets.assetsAccount'), // 现货账单
                         icon: <SpotSvg className="w-[24px] h-[24px] " />,
                         path: '/assets'
-                    },
-                    {
-                        title: t('assets:assets.billDetails'), // 账户明细
-                        icon: <BillingSvg className="w-[24px] h-[24px] " />,
-                        path: '/assets/bill'
-                    },
+                    }
                 ]
             },
             {
@@ -60,9 +55,14 @@ const withUserCenterLayout = <P extends object>(
                 path: '/spotOrder',
                 children: [
                     {
-                        title: t('spot:spot.spotOrder'), // 现货账单
+                        title: t('spot:spot.spotOrder'), // 现货订单
                         icon: <SpotSvg className="w-[24px] h-[24px] " />,
                         path: '/spotOrder',
+                    },
+                    {
+                        title: t('assets:assets.billDetails'), // 账户明细
+                        icon: <BillingSvg className="w-[24px] h-[24px] " />,
+                        path: '/assets/bill'
                     }
                 ]
             },
@@ -81,11 +81,11 @@ const withUserCenterLayout = <P extends object>(
                 icon: <InviteSvg className="w-[24px] h-[24px]" />,
                 path: '/invite'
             },
-            // {
-            //     title: t('router.setting'),
-            //     icon: 'icon-park-outline:setting-two',
-            //     path: '/userCenter/setting'
-            // }
+            {
+                title: t('router.setting'),
+                icon: 'icon-park-outline:setting-two',
+                path: '/userCenter/setting'
+            }
         ];
 
         const userCenterList = useMemo(() => {

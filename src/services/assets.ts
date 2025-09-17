@@ -71,9 +71,16 @@ export function getCoinById(coinId: number|string): Promise<any> {
     method: 'POST',
   });
 }
-// 币种协议(网络)
+// 币种协议(网络)-非充值
 export function getcoinExtList(tenantId: number): Promise<any> {
   return request(`${fixUrl}/user-web/v1/withdraw-deposit/coinExtList?coinId=${tenantId}`, {
+    method: 'POST',
+    //   body: JSON.stringify({coinId:tenantId})
+  });
+}
+// 币种协议(网络)-充值
+export function getcoinExtList2(tenantId: number|string): Promise<any> {
+  return request(`${fixUrl}/user-web/v2/withdraw-deposit/coinExtList?coinId=${tenantId}`, {
     method: 'POST',
     //   body: JSON.stringify({coinId:tenantId})
   });
@@ -157,7 +164,7 @@ export function getUserALlLimit(): Promise<any> {
     method: 'GET',
   });
 }
-interface   paramsType3 {
+interface paramsType3 {
   pageNo: number
   pageSize: number
   billType: string
@@ -170,5 +177,38 @@ export function getOrderList(data: paramsType3): Promise<any> {
   return request(`${fixUrl}/user-web/v1/bill/queryByCategory`, {
     method: 'POST',
     body: JSON.stringify(data)
+  });
+}
+
+// 合约账户转现货账户
+export function transferAll(data:any): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/transfer/all`, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+}
+
+// 获取充值支持的币种列表
+export function getTopUpChainsAll(): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/supported-chains`, {
+    method: 'GET',
+  });
+}
+// 根据链类型获取支持的代币列表
+export function getChainType(chainType: string): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/token/supported-chain/${chainType}`, {
+    method: 'GET',
+  });
+}
+// 查询钱包地址
+export function getWalletAddress(blockchain: string): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/address/query?blockchain=${blockchain}`, {
+    method: 'GET',
+  });
+}
+// /assets-web/v1/wallet-feign/address/create
+export function createWalletAddress(data: { blockchain: string, label: string }): Promise<any> {
+  return request(`${fixUrl2}/assets-web/v1/wallet-feign/address/create?blockchain=${data.blockchain}&label=${data.label}`, {
+    method: 'POST',
   });
 }

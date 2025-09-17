@@ -539,7 +539,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
         symbol: currentPair?.symbol,
         type: priceDisabled ? 0 : 1,
       };
-      console.log(params, "params");
+      // console.log(params, "params");
       setLoading(true);
       try {
         const data = await encryptData(params);
@@ -688,7 +688,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
         type: priceDisabled ? 0 : 1,
         direction: segmentedvalue === "buy" ? 0 : 1,
       };
-      console.log(priceDisabled);
+      // console.log(priceDisabled);
       let noRemind;
       if (!priceDisabled) {
         noRemind = localStorage.getItem("limitOrderConfirm");
@@ -696,7 +696,7 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
         noRemind = localStorage.getItem("marketOrderConfirm");
       }
 
-      console.log(noRemind, "noRemind");
+      // console.log(noRemind, "noRemind");
       if (noRemind === "true") {
         setModalData(modalData);
         // setModalOpen(true);

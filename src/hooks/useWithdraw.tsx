@@ -22,7 +22,7 @@ export const useWithdraw = () => {
     const { t } = useLanguage('assets');
     const navigate = useNavigate();
     const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
-    const goWithdraw = useCallback((userInfo?: UserInfo) => {
+    const goWithdraw = useCallback((userInfo?: UserInfo,coinId?:string|number,coinName?:string) => {
         // 如果没有传入 userInfo，从 store 获取
         const currentUserInfo = userInfo || appStore.getUserInfo();
         // const verified11 = currentUserInfo?.verifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 1 //已认证且实名-允许
@@ -68,7 +68,7 @@ export const useWithdraw = () => {
         }
 
         // 所有条件满足，跳转到提现页面
-        navigate('/assets/withdraw');
+        navigate(`/assets/withdraw?coinId=${coinId}&coinName=${coinName}`);
     }, [navigate, t]);
 
     return {

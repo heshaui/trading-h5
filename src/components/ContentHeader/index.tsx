@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface ContentLayoutProps {
   children: React.ReactNode;
-  title?: string;
+  title?: string|null;
   onBack?: () => void;
   rightAction?: {
     icon?: string;
@@ -59,9 +59,9 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
         
         {/* 标题容器 */}
         <div className={`flex-1 flex-x-cc ${showBackButton ? 'pr-3' : ''}`}>
-          <span className={`${showBackButton ? 'ml-4' : ''} ${styles.header_title} content-heaer-title`}>
+          {title&&<span className={`${showBackButton ? 'ml-4' : ''} ${styles.header_title} content-heaer-title`}>
             {title || t('assets.withdrawDetail')}
-          </span>
+          </span>}
         </div>
 
         {/* 右侧操作按钮 */}

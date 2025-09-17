@@ -18,6 +18,7 @@ import {
 } from "@/services/assets";
 import { useWithdraw } from "@/hooks/useWithdraw";
 import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
+import { log } from 'console';
 
 
 
@@ -177,9 +178,9 @@ const LanguageToggle: React.FC<Props> = ({ open = false, onClose, recordData }) 
       if (data?.[config.permission] === 1) {
         // 权限通过，执行跳转
         if (type === ActionType.WITHDRAW) {
-          goWithdraw();
+          goWithdraw(undefined,coinId);
         } else {
-          navigate(config.route || '/');
+          navigate(`${config.route}?coinId=${coinId}` || '/');
         }
         // navigate(config.route || '/');
         // console.log('提现充值执行跳转');

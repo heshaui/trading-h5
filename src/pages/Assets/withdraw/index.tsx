@@ -5,7 +5,7 @@ import { Iconify } from "@/components/icon"
 import dayjs from 'dayjs';
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { useThemeMode } from '@/hooks/useThemeMode';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { NoData, NoAddress } from '@/components/noData';
 // import WithdrawMoneyCheck from '@/components/assetsModal/withdrawMoneyCheck'
 import { getuserAddressList, getWithdrawCoinAll, getcoinExtList, getUserBalance, getProtocolTypeAll, getUserALlLimit, getUserBalanceAll } from '@/services/assets'
@@ -24,6 +24,7 @@ import { Image } from 'antd-mobile';
 import { SelectPopAntdWrapper } from '@/components/SelectPop';
 import SelectPop from '@/components/SelectPop';
 import WithdrawMoneyCheck from '../components/withDrawPop/WithdrawCheck';
+import { useParams } from 'react-router-dom';
 
 
 export const layout = 'header-only';
@@ -37,7 +38,7 @@ const WithdrawMoneyPage = observer(() => {
   const token = appStore.getToken();
   const allConfig = appStore.getKvConfigAll();
   const navigate = useNavigate();
-
+  const [searchParams] = useSearchParams();
   // 商户支持的币种协议(网络)
   const [protocolTypeList, setProtocolTypeList] = useState<coinExtAllListType[]>([])
   // 币种
@@ -623,12 +624,69 @@ const WithdrawMoneyPage = observer(() => {
         icon: 'fail'
       })
     }
-  }, [userInfo, token])
+    if (coinSelect.length === 0||!token || needsWithdraw || needsKyc || needsGoogleAuth) return
+    
+    // 获取路由参数
+    const urlCoinId = searchParams.get('coinId');
+    const urlCoinName = searchParams.get('coinName');
+    
+    // 如果没有路由参数，则不执行匹配逻辑
+    if (!urlCoinId && !urlCoinName) return;
+    
+    // 查找匹配的币种
+    let matchedCoin = null;
+    
+    if (urlCoinId) {
+      // 优先匹配 coinId
+      matchedCoin = coinSelect.find(coin => String(coin.coinId) === String(urlCoinId));
+    } else if (urlCoinName) {
+      // 如果没有 coinId，则匹配 coinName
+      matchedCoin = coinSelect.find(coin => coin.coinName === urlCoinName);
+    }
+    
+    if (matchedCoin) {
+      // 设置表单的 tenantId 值
+      form.setFieldValue('tenantId', matchedCoin.value);
+      
+      // 执行后续默认选中 tenantId 的步骤
+      coinChange(matchedCoin.value, matchedCoin);
+    }
+  }, [userInfo, token,coinSelect, searchParams, form])
   useEffect(() => {
     getCoinAllData()
     getAllProtocolTypeList()
     getUserALlLimitData()
   }, [])
+
+  useEffect(() => {
+    if (coinSelect.length === 0) return
+    
+    // 获取路由参数
+    const urlCoinId = searchParams.get('coinId');
+    const urlCoinName = searchParams.get('coinName');
+    
+    // 如果没有路由参数，则不执行匹配逻辑
+    if (!urlCoinId && !urlCoinName) return;
+    
+    // 查找匹配的币种
+    let matchedCoin = null;
+    
+    if (urlCoinId) {
+      // 优先匹配 coinId
+      matchedCoin = coinSelect.find(coin => String(coin.coinId) === String(urlCoinId));
+    } else if (urlCoinName) {
+      // 如果没有 coinId，则匹配 coinName
+      matchedCoin = coinSelect.find(coin => coin.coinName === urlCoinName);
+    }
+    
+    if (matchedCoin) {
+      // 设置表单的 tenantId 值
+      form.setFieldValue('tenantId', matchedCoin.value);
+      
+      // 执行后续默认选中 tenantId 的步骤
+      coinChange(matchedCoin.value, matchedCoin);
+    }
+  }, [coinSelect, searchParams, form])
 
   return (<ContentLayout
     title={t('assets.withdraw')}

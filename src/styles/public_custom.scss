@@ -471,3 +471,44 @@
         box-shadow: var(--shadow-notification);
     }
 }
+
+/* modal选择框placeholder颜色 */
+.custom-sleect .ant-select-selection-placeholder,
+.custom-select .ant-select-selection-placeholder {
+    color: var(--text-color4) !important;
+}
+
+.select-text-right .ant-select-selection-placeholder {
+    color: var(--text-color5) !important;
+    text-align: right !important;
+}
+
+.custom-select .ant-select-selection-item {
+    color: var(--text-color5) !important;
+}
+
+.select-text-right .ant-select-selection-item {
+    color: var(--text-color5) !important;
+}
+
+/* 选择框右侧角标按钮颜色 */
+.custom-select .ant-select-arrow,
+.select-text-right .ant-select-arrow {
+    color: var(--text-color6) !important;
+}
+
+.autoComplete-custom .ant-input::placeholder {
+    color: var(--text-color4) !important;
+    font-size: 16px !important;
+}
+
+/* 选择框边框颜色 */
+.custom-select .ant-select-selector {
+    border-color: var(--border-color4) !important;
+}
+.custom-select .ant-select-item:hover,
+.ant-select-item-option-active,
+.ant-select-item-option-selected{
+    background-color: var(--background6) !important;
+    color: var(--text-color5) !important;
+}

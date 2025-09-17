@@ -94,6 +94,8 @@ export interface UserInfoType {
     merchantWithdrawalStatus: number,
     unverifiedWithdrawalStatus: number,
     verifiedWithdrawalStatus: number
+    verifiedRechargeStatus: number,
+    unverifiedRechargeStatus: number,
 }
 export interface inviteInfoType {
     inviteCode: string,

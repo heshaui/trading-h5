@@ -128,6 +128,8 @@
   "tradingSettings": {
     "title": "交易设置",
     "confirm": "确定",
+    "editSuccess": "设置成功",
+    "editFailed": "设置失败",
     "positionType": "持仓类型",
     "positionTypeNote": "（持有任何合约仓位/有挂单时不可更改持仓类型）",
     "singlePosition": "单向持仓",
@@ -386,7 +388,12 @@
     "indexPrice": "指数价格",
     "fundingRate": "资金费率/倒计时",
     "volume24h": "24H 成交量",
-    "turnover24h": "24H 成交额(USD)"
+    "turnover24h": "24H 成交额",
+    "tooltip": {
+      "markPrice": "标记价格用于结算盈亏和触发强制减仓。标记价格可能会偏离市场最新价格，以防因市场被恶意操纵造成损失。",
+      "indexPrice": "标的货币的市场公允现货价格。",
+      "fundingRate": "费率为正，多头仓位支付空头仓位。费率为负，空头仓位支付多头仓位。预计本期多头需支付给空头持仓价值的{{rate}}，实际资金费率以结算时间为准。"
+    }
   },
   "orderBookList": {
     "title": "委托列表",

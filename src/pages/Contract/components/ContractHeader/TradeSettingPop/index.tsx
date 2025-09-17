@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Popup, Switch } from 'antd-mobile';
+import { Popup, Switch, Toast } from 'antd-mobile';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
+import {editUserPageConfig} from "@/services/contract";
+import appStore from '@/store';
 
 import { ReactComponent as UncheckIcon } from '@/assets/images/exchange/icon_uncheck.svg';
 import { ReactComponent as CheckIcon } from '@/assets/images/exchange/icon_check.svg';
@@ -22,6 +24,26 @@ const TradeSettingPop:React.FC<Props> = ({
   const [preOrderConfirm, setPreOrderConfirm] = useState(true);
   const [reverseConfirm, setReverseConfirm] = useState(true);
   const [isShow, setIsShow] = useState(false);
+  const userConfig = appStore.getUserConfig();
+  const ContractInfo = appStore.getCurrentContractInfo();
+
+  // 检查是否可以切换持仓模式
+  const canSwitchPositionMode = userConfig?.positionModelCanSwitch !== 0;
+  const handleEditUserPageConfig = async () => {
+    // 如果不能切换持仓模式，跳过API调用
+    if (!canSwitchPositionMode) {
+      return;
+    }
+    const res = await editUserPageConfig({
+      contractId: ContractInfo.id,
+      positionModel: positionMode === 'single' ? 1 : 2,
+    });
+    if (res.code === '0') {
+      Toast.show({icon: 'success', content: t('tradingSettings.editSuccess')});
+    } else {
+      Toast.show({icon: 'fail', content: res.message || t('tradingSettings.editFailed')});
+    }
+  };
 
   // 组件装载时从 localStorage 读取设置
   useEffect(() => {
@@ -40,6 +62,19 @@ const TradeSettingPop:React.FC<Props> = ({
     }
   }, [currentLanguage]);
 
+  // 当抽屉打开时，重新读取设置以确保状态同步
+  useEffect(() => {
+    if (open) {
+      try {
+        // 检查是否有其他地方修改了设置（比如placeOrder_modal）
+        const dontShowOrderConfirm = localStorage.getItem('dontShowOrderConfirm') === 'true';
+        setPreOrderConfirm(!dontShowOrderConfirm);
+      } catch (error) {
+        console.error('同步设置状态失败:', error);
+      }
+    }
+  }, [open]);
+
   const handleConfirm = () => {
     try {
       // 保存设置到 localStorage
@@ -51,8 +86,9 @@ const TradeSettingPop:React.FC<Props> = ({
         reverseConfirm,
         updatedAt: Date.now()
       };
-      localStorage.setItem('tradingSettings', JSON.stringify(settings));
-      
+      appStore.updateSettings(settings);
+      // localStorage.setItem('tradingSettings', JSON.stringify(settings));
+      handleEditUserPageConfig()
       // 同步更新旧的 localStorage 键（保持向后兼容）
       localStorage.setItem('dontShowOrderConfirm', (!preOrderConfirm).toString());
       
@@ -80,7 +116,7 @@ const TradeSettingPop:React.FC<Props> = ({
       case '张':
         return t('tradingSettings.units.sheet');
       case 'BTC':
-        return t('tradingSettings.units.btc');
+        return ContractInfo?.base || t('tradingSettings.units.btc');
       case 'USDT':
         return t('tradingSettings.units.usdt');
       default:

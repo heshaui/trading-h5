@@ -320,6 +320,7 @@ export const editUserPageConfig = async (params: any) => {
         body: JSON.stringify(formattedParams),
       }
     );
+    return response
   } catch (error) {
     console.error("编辑用户页面配置失败:", error);
     throw error;

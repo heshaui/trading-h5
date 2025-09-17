@@ -32,6 +32,7 @@ export const LOCAL_STORAGE_KEY = {
     CURRENT_CONTRACT_INFO: "current_contract_info", // 当前合约信息
     MARKET_INFO: "market_info", // 市场信息
     FINANCIAL_CONFIG: "financial_config", // 理财配置
+    TRADEING_SETTINGS: "tradingSettings", //交易设置
 };
 
 export const KV_KEYS = [

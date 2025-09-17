@@ -71,3 +71,13 @@ export interface UseUserConfigReturn {
   /** 获取用户合约配置的特定字段 */
   getConfigValue: (key: string, defaultValue?: any) => any;
 } 
+
+// 交易设置
+export type TradingSetting = {
+  positionMode?: 'single' | 'hedge',
+  contractUnit?: '张' | 'BTC' | 'USDT',
+  orderValidity?: '24H' | '7天' | '14天' | '长期有效', 
+  preOrderConfirm?: boolean,
+  reverseConfirm?: boolean,
+  [key: string]: any
+}

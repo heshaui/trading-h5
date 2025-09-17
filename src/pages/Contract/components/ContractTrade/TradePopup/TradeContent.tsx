@@ -879,7 +879,6 @@ const SpotTradePage = observer(({
                   100: " ",
                 }}
                 tooltip={{
-                  open: true,
                   zIndex: 1000,
                   placement: "top",
                   arrow: false,

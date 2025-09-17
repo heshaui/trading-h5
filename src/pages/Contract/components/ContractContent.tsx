@@ -12,7 +12,6 @@ import useAuth from '@/hooks/useAuth';
 import {
   createCoId,
   createOrder,
-  getPublicMarketInfo,
 } from "@/services/contract";
 import { getUserBalanceAll } from "@/services/assets";
 
@@ -682,10 +681,10 @@ const ContractContent: React.FC = observer(() => {
           setMarketInfoData(data.data);
         }
       } catch (error) {
-        console.log("解析WebSocket消息失败:", error);
-        console.log("原始消息:", message);
-        console.log("消息类型:", typeof message);
-        console.log("消息长度:", message.length);
+        // console.log("解析WebSocket消息失败:", error);
+        // console.log("原始消息:", message);
+        // console.log("消息类型:", typeof message);
+        // console.log("消息长度:", message.length);
       }
     };
 

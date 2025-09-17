@@ -77,16 +77,32 @@ const SpotChart: React.FC = () => {
     // 获取depthData
     const getDepthMapData = async () => {
         if (!currentContractInfo.symbol) return;
-        const res = await getDepthMap({
-            symbol: currentContractInfo.symbol,
-            contractId: currentContractInfo.id,
-        });
-        console.log("res:", res);
-        setDepthData(res.data);
+        try {
+            const res = await getDepthMap({
+                symbol: currentContractInfo.symbol,
+                contractId: currentContractInfo.id,
+            });
+            if (res.code === '0')
+            console.log("res:", res);
+            const data = {
+                ...res.data,
+                bids: res.data.buys,
+            }
+            setDepthData(data);
+        } catch (err) {} 
     }
 
     useEffect(() => {
-        getDepthMapData();
+        // 立即请求一次
+        getDepthMapData()
+
+        // const intervalId = setInterval(() => {
+        //     getDepthMapData()
+        // }, 1000) // 1000ms = 1s
+
+        return () => {
+            //clearInterval(intervalId) // 组件卸载或依赖变更时清理
+        }
     }, [currentContractInfo.symbol, currentContractInfo.id])
 
     // 全屏

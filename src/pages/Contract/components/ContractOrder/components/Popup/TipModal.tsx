@@ -51,7 +51,7 @@ const TipModal: React.FC<Props> = ({open, onCancel, title, content}) => {
 				visible={open}
 				title={ <ModalTitle /> }
 				content={ <ModalContent /> }
-				bodyClassName="!pt-0 !bg-[var(--background17)] !w-[91.47vw] !h-[274px]"
+				bodyClassName="!pt-0 !bg-[var(--background17)] !w-[91.47vw] !h-auto"
 				closeOnMaskClick={true}
 				onClose={onCancel}
 			/>

@@ -8,7 +8,9 @@ interface DepthChartProps {
   data: {
     bids: [number, number][];
     asks: [number, number][];
+    buys?:[number, number][];
     spot_log_last_seq?: number;
+    middle?: number;
   } | null;  // 修改为对象类型
 }
 
@@ -51,7 +53,10 @@ const DepthChart = ({ data }: DepthChartProps) => {
     const lowestAsk = data.asks.length > 0 ? Math.min(...data.asks.map(ask => ask[0])) : 0;
     
     let midPrice;
-    if (highestBid === 0) {
+    if (data.middle) {
+      // 优先使用后端提供的中间价
+      midPrice = data.middle;
+    }else if (highestBid === 0) {
       midPrice = lowestAsk;
     } else if (lowestAsk === 0) {
       midPrice = highestBid;

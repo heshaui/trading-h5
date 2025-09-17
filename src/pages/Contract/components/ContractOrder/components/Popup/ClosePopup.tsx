@@ -142,7 +142,6 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                         100: " ",
                     }}
                     tooltip={{
-                        open: true,
                         zIndex: 1000,
                         placement: "top",
                         arrow: false,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '@/hooks';
 import { observer } from 'mobx-react-lite';
 import { getPublicMarketInfo } from "@/services/contract";
@@ -11,6 +11,7 @@ import { useMarketInfo } from "@/hooks/useMarketInfo";
 import SelectPopup from './SelectPopup/index';
 import TradeSettingPop from './TradeSettingPop';
 import CalculatorPop from './CalculatorPop';
+import TipModal from '../ContractOrder/components/Popup/TipModal';
 
 import { ReactComponent as SettingIcon } from '@/assets/images/exchange/icon_settings1.svg';
 import { ReactComponent as CalendarIcon } from '@/assets/images/exchange/icon_calendar.svg';
@@ -27,6 +28,12 @@ const ContractHeader: React.FC= observer(() => {
 	const [calculatorPopupOpen, setCalculatorPopupOpen] = useState<boolean>(false);
 	const [currentSymbol, setCurrentSymbol] = useState<any>(currentContractInfo);
 	const [isPriceUp, setIsPriceUp] = useState<boolean>(false)
+	const [tipData, setTipData] = useState({
+		title: '',
+		content: ''
+	});
+	const [tipVisible, setTipVisible] = useState(false);
+	const [unit, setUnit] = useState('张');
 
 	const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision
 	
@@ -40,8 +47,10 @@ const ContractHeader: React.FC= observer(() => {
 		if (currentContractInfo && Object.keys(currentContractInfo).length > 0) {
 			setCurrentSymbol(currentContractInfo);
 			console.log('当前合约信息', currentContractInfo)
+			const uint = appStore.getUnit(currentContractInfo.base);
+			setUnit(uint);
 		}
-	}, [currentContractInfo]);
+	}, [currentContractInfo, appStore.tradingSetting.contractUnit]);
 
 	useEffect(() => {
 		if (currentContractInfo?.id) {
@@ -63,12 +72,12 @@ const ContractHeader: React.FC= observer(() => {
 	 * @param rate 资金费率（如 -0.00375）
 	 * @returns 格式化后的字符串（如 "-37.50%" 或 "+37.50%"）
 	 */
-	const formatFundRate = (rate: number): string => {
-		if (isNaN(rate)) return "--";
-		const percent = (rate * 100).toFixed(2); // 转换成百分比
-		const sign = rate > 0 ? "+" : ""; // 负数自带 '-', 正数补 '+'
-		return `${sign}${percent}%`;
-	};
+	// const formatFundRate = (rate: number): string => {
+	// 	if (isNaN(rate)) return "--";
+	// 	const percent = (rate * 100).toFixed(2); // 转换成百分比
+	// 	const sign = rate > 0 ? "+" : ""; // 负数自带 '-', 正数补 '+'
+	// 	return `${sign}${percent}%`;
+	// };
 
 	/**
 	 * 把秒数转成 HH:mm:ss 格式
@@ -88,9 +97,8 @@ const ContractHeader: React.FC= observer(() => {
 	};
 
 	// 显示changePercent
-	const getChangePercent = () => {
-		const priceChangePercent = priceData?.changePercent
-		return priceChangePercent && priceChangePercent !== 'NaN' ? priceChangePercent + '%' : '--'
+	const formatFundRate = (rate: string | number) => {
+		return rate && rate !== 'NaN' ? rate + '%' : '--'
 	}
 
 	return (
@@ -99,8 +107,8 @@ const ContractHeader: React.FC= observer(() => {
 				<CalendarIcon className="!h-[24px] !w-[24px] mr-[16px]" onClick={() => setCalculatorPopupOpen(true)}/>
 				<SettingIcon className="!h-[24px] !w-[24px]" onClick={() => setSettingPopupOpen(true)}/>
 			</div>
-			<div className="flex">
-				<div className="shrink-0 mr-[30px]">
+			<div className="flex justify-between gap-x-[20px]">
+				<div className="shrink-0">
 					<div className="h-[22px] flex items-center mb-[6px]" onClick={() => setSelectPopupOpen(true)}>
 						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol ? `${currentSymbol.base}/${currentSymbol.quote}` : '--'}</span>
 						<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center mr-1">{getContractShowType()}</span>
@@ -115,43 +123,60 @@ const ContractHeader: React.FC= observer(() => {
 						{formatPriceWithPrecision(priceData?.price)}
 					</div>
 					<div className="h-[17px] flex items-center text-[12px] mb-[3px]">
-						<span className="tip-color mr-[19px]">≈ ${priceData?.price ? getPairsRate(priceData?.price, 'USD').rate.toFixed(2) : '--' }</span>
+						{/* getPairsRate(priceData?.price, 'USD').rate.toFixed(2) */}
+						<span className="tip-color mr-[19px]">≈ ${priceData?.price ? priceData?.price : '--' }</span>
 						<span 
-							className={`${priceData?.price
+							className={`${priceData?.isUp
 							? "text-[var(--success-color)]"
 							: "text-[var(--error-color)]"
 							}`}
 						>{formatFundRate(priceData?.changePercent)}</span>
 					</div>
 					<div className="h-[14px] text-[10px] flex items-center">
-						<span className="tip-color border-b border-dashed border-[#9e9e9e] mr-[4px]">{t("contractHeader.markPrice")}</span>
+						<span className="tip-color border-b border-dashed border-[#9e9e9e] mr-[4px]"
+							onClick={() => {
+								setTipData({
+									title: t("contractHeader.markPrice"),
+									content: t('contractHeader.tooltip.markPrice')
+								})
+								setTipVisible(true)
+							}}
+						>{t("contractHeader.markPrice")}</span>
 						<span>{formatPriceWithPrecision(marketInfo?.tagPrice)}</span>
 					</div>
 				</div>
 				<div className="flex-1 shrink-0">
-					<div className="flex mb-[8px]">
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px] mr-[20px]">
+					<div className="flex mb-[8px] justify-between gap-x-[10px]">
+						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
 							<span className="tip-color mb-[2px]">{t('24hHigh')}</span>
-							<span>{formatPriceWithPrecision(priceData?.high24h || 4079.098)}</span>
+							<span>{formatPriceWithPrecision(priceData?.high24h || '--')}</span>
 						</p>
 						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({currentSymbol.multiplierCoin})</span>
-							<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : formatAmount(89876539.9809, t)}</span>
+							<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({unit})</span>
+							<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : '--'}</span>
 						</p>
 					</div>
-					<div className="flex mb-[8px]">
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px] mr-[20px]">
+					<div className="flex mb-[8px] justify-between gap-x-[10px]">
+						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
 							<span className="tip-color mb-[2px]">{t('24hLow')}</span>
-							<span>{formatPriceWithPrecision(priceData?.low24h || 4079.098)}</span>
+							<span>{formatPriceWithPrecision(priceData?.low24h || '--')}</span>
 						</p>
 						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('contractHeader.turnover24h')}</span>
-							<span>{priceData?.turnover24h ? formatAmount(priceData?.turnover24h, t) : formatAmount(8987653999.9809, t)}</span>
+							<span className="tip-color mb-[2px]">{t('contractHeader.turnover24h')}(USD)</span>
+							<span>{priceData?.turnover24h ? formatAmount(priceData?.turnover24h, t) : '--'}</span>
 						</p>
 					</div>
 					<div className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-						<span className="tip-color w-fit mb-[2px] border-b border-dashed border-[#9e9e9e]">{t('contractHeader.fundingRate')}</span>
-						<span>{marketInfo?.currentFundRate ?? '--'}/{formatSeconds(689)}</span>
+						<span className="tip-color w-fit mb-[2px] border-b border-dashed border-[#9e9e9e]"
+							onClick={() => {
+								setTipData({
+									title: t("contractHeader.fundingRate"),
+									content: t('contractHeader.tooltip.fundingRate', {rate: marketInfo?.currentFundRate ?? '0.0066%'})
+								})
+								setTipVisible(true)
+							}}
+						>{t('contractHeader.fundingRate')}</span>
+						<span>{formatFundRate(marketInfo?.currentFundRate)}</span>
 					</div>
 				</div>
 			</div>
@@ -170,6 +195,13 @@ const ContractHeader: React.FC= observer(() => {
 			<CalculatorPop
 				open={calculatorPopupOpen}
                 onCancel={() => setCalculatorPopupOpen(false)}
+			/>
+			{/* 提示 */}
+			<TipModal
+				open={tipVisible}
+				title={tipData.title}
+				content={tipData.content}
+				onCancel={() => setTipVisible(false)}
 			/>
 		</div>
 	)

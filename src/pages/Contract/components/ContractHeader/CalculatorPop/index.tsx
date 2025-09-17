@@ -433,7 +433,6 @@ const CalculatorMode = observer(({ open, onCancel, dataInfo }: CalculatorModePro
               onChange={(value) => setLeverage(value)}
               marks={leverageMarks}
               tooltip={{
-                open: true,
                 zIndex: 1000,
                 placement: "top",
                 arrow: false,

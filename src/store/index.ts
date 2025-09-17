@@ -25,7 +25,7 @@ import {
   getAssetsList,
   getPublicMarketInfo
 } from "@/services/contract";
-import { UserConfigType } from "@/type/contract/userConfig";
+import { UserConfigType, TradingSetting } from "@/type/contract/userConfig";
 
 // 添加这个辅助函数来检查是否在浏览器环境
 const isBrowser = () => typeof window !== 'undefined';
@@ -108,6 +108,9 @@ class AppStore {
         contractSwitch: true, //是否开启
     };
 
+    // 交易设置
+    tradingSetting: TradingSetting = {}
+
     constructor() {
         // 使状态响应式
         makeAutoObservable(this);
@@ -127,6 +130,7 @@ class AppStore {
             this.initFlashConfigFromStorage(); // 初始化闪兑配置
             this.initUsdtRateFromStorage(); //初始化USDT和USD汇率
             this.initTheme(); //初始化主题
+            this.initTradingSetting(); // 初始化交易设置
         }
     }
     initTheme() {
@@ -1254,6 +1258,44 @@ class AppStore {
       this.activeNewPrice = null;
     });
   }
+
+  // 交易设置
+  initTradingSetting() {
+    // 初始化时从 localStorage 读取
+    const STORAGE_KEY = LOCAL_STORAGE_KEY.TRADEING_SETTINGS
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      try {
+        this.tradingSetting = JSON.parse(stored)
+      } catch {
+        this.tradingSetting = {}
+      }
+    }
+  }
+
+  /** 批量更新设置 */
+  updateSettings(newValues: Partial<TradingSetting>) {
+    runInAction(() => {
+      this.tradingSetting = { ...this.tradingSetting, ...newValues }
+      localStorage.setItem(LOCAL_STORAGE_KEY.TRADEING_SETTINGS, JSON.stringify(this.tradingSetting))
+    })
+  }
+
+  /** 单独更新某个字段 */
+  updateSetting<K extends keyof TradingSetting>(key: K, value: TradingSetting[K]) {
+    runInAction(() => {
+      this.tradingSetting[key] = value
+      localStorage.setItem(LOCAL_STORAGE_KEY.TRADEING_SETTINGS, JSON.stringify(this.tradingSetting))
+    })
+  }
+
+  /** 获取单位，如果是 BTC 就返回 base，否则返回设置的单位或者默认 "张" */
+  getUnit(base = "BTC") {
+    return this.tradingSetting.contractUnit === "BTC"
+      ? base
+      : this.tradingSetting.contractUnit || "张"
+  }
+
 }
 
 const appStore = new AppStore();

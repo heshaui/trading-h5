@@ -131,6 +131,10 @@ class AppStore {
             this.initUsdtRateFromStorage(); //初始化USDT和USD汇率
             this.initTheme(); //初始化主题
             this.initTradingSetting(); // 初始化交易设置
+            this.initPublicInfoFromStorage(); // 初始化公共数据
+            this.initUserConfigFromStorage(); // 初始化用户合约配置
+            this.initContractAssetsFromStorage(); // 初始化合约资产
+            this.initMarketInfoFromStorage(); // 初始化市场信息
         }
     }
     initTheme() {

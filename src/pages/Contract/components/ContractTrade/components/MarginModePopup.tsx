@@ -52,6 +52,7 @@ const MarginModePopup:React.FC<Props> = ({
 							itemHoverBg: "transparent",
 							itemActiveBg: "transparent",
 							itemColor: "var(--text-color6)",
+							itemSelectedColor: "#fff",
 							trackPadding: 3,
 							borderRadius: 50,
 							borderRadiusSM: 50,
@@ -88,7 +89,7 @@ const MarginModePopup:React.FC<Props> = ({
 							setSelectedMode(value as 1 | 2)
 						}}
 					/>
-					<div className="text-[16px] text-justify leading-[23px] tip-color mb-[42px]">
+					<div className="text-[16px] text-justify leading-[23px] tip-color h-[95px] mb-[42px]">
 						{selectedMode === 2 ? t('marginMode.isolatedDescription') : t('marginMode.crossDescription')}
 					</div>
 					<button

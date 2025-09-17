@@ -35,11 +35,12 @@ const ContractInfo:React.FC = observer(() => {
 			<div className="flex flex-col gap-[10px]">
 				<div className="flex justify-between items-center">
 					<div className="text-[var(--text-color6)]">{t("contractInfo.contractId")}</div>
-					<div className="text-[var(--text-color5)]">{currentContractInfo?.symbol}</div>
+					<div className="text-[var(--text-color5)]">{currentContractInfo?.symbol || '--'}</div>
 				</div>
 				<div className="flex justify-between items-center">
 					<div className="text-[var(--text-color6)]">{t("contractInfo.deliveryDate")}</div>
-					<div className="text-[var(--text-color5)]">{t("contractInfo.perpetual")}</div>
+					{/* t("contractInfo.perpetual") */}
+					<div className="text-[var(--text-color5)]">{currentContractInfo.contractShowType}</div>
 				</div>
 				<div className="flex justify-between items-center">
 					<div className="text-[var(--text-color6)]">{t("contractInfo.contractTarget")}</div>

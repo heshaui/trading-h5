@@ -64,7 +64,7 @@ const ContractHeader: React.FC= observer(() => {
 	// 显示合约类型
 	const getContractShowType = () => {
 		const type = currentSymbol.contractShowType;
-		return type ? type.replace('合约', '') : ''
+		return type ? type.replace('合约', '') : '模拟'
 	}
 
 	/**
@@ -110,7 +110,7 @@ const ContractHeader: React.FC= observer(() => {
 			<div className="flex justify-between gap-x-[20px]">
 				<div className="shrink-0">
 					<div className="h-[22px] flex items-center mb-[6px]" onClick={() => setSelectPopupOpen(true)}>
-						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol ? `${currentSymbol.base}/${currentSymbol.quote}` : '--'}</span>
+						<span className="text-[16px] font-medium mr-[4px]">{currentSymbol ? `${currentSymbol.base || 'BTC'}/${currentSymbol.quote || 'USDT'}` : '--'}</span>
 						<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center mr-1">{getContractShowType()}</span>
 						<Iconify icon="eva:arrow-down-fill" className="text-[16px] text-[#9e9e9e]" />
 					</div>
@@ -146,25 +146,27 @@ const ContractHeader: React.FC= observer(() => {
 					</div>
 				</div>
 				<div className="flex-1 shrink-0">
-					<div className="flex mb-[8px] justify-between gap-x-[10px]">
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('24hHigh')}</span>
-							<span>{formatPriceWithPrecision(priceData?.high24h || '--')}</span>
-						</p>
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({unit})</span>
-							<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : '--'}</span>
-						</p>
-					</div>
-					<div className="flex mb-[8px] justify-between gap-x-[10px]">
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('24hLow')}</span>
-							<span>{formatPriceWithPrecision(priceData?.low24h || '--')}</span>
-						</p>
-						<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-							<span className="tip-color mb-[2px]">{t('contractHeader.turnover24h')}(USD)</span>
-							<span>{priceData?.turnover24h ? formatAmount(priceData?.turnover24h, t) : '--'}</span>
-						</p>
+					<div className="flex justify-between gap-x-[10px]">
+						<div className="flex-col gap-y-[8px] mb-[8px]">
+							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
+								<span className="tip-color mb-[2px]">{t('24hHigh')}</span>
+								<span>{formatPriceWithPrecision(priceData?.high24h || '--')}</span>
+							</p>
+							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
+								<span className="tip-color mb-[2px]">{t('24hLow')}</span>
+								<span>{formatPriceWithPrecision(priceData?.low24h || '--')}</span>
+							</p>
+						</div>
+						<div className="flex-col gap-y-[8px]">
+							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
+								<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({unit})</span>
+								<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : '--'}</span>
+							</p>
+							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
+								<span className="tip-color mb-[2px]">{t('contractHeader.turnover24h')}(USD)</span>
+								<span>{priceData?.turnover24h ? formatAmount(priceData?.turnover24h, t) : '--'}</span>
+							</p>
+						</div>
 					</div>
 					<div className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
 						<span className="tip-color w-fit mb-[2px] border-b border-dashed border-[#9e9e9e]"

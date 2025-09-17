@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Image } from 'antd-mobile';
 import { useLanguage } from "@/hooks";
 import appStore from "@/store";
+import { observer } from "mobx-react-lite";
 import { nul } from "@/utils/index";
 import { Iconify } from '@/components/icon'
 import { useContract } from "@/context/exchange-providers/ContractProvider";
@@ -11,6 +12,8 @@ import { NoData } from "@/components/noData";
 import SelectPop from '@/components/SelectPop';
 import { getRound } from '@/utils/getUseRate';
 import { roundDown } from '@/utils/index'
+import { BigNumber } from "bignumber.js";
+import { useMarketInfo } from "@/hooks/useMarketInfo";
 
 import OrderHoverIcon from '@/assets/images/exchange/icon_order_hover.png';
 import OrderIcon from '@/assets/images/exchange/icon_order.png';
@@ -35,38 +38,33 @@ interface PrecisionItem {
   value: number;
 }
 
-const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
+const OrderBookPanel = observer(({type = 'orderbook'}: {type: string}) => {
   const { t } = useLanguage (["spot", "contract"]);
   const {depthData: bookData, orderData, klineData, updateTradePrice } = useContract();
   // 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
   const currentContractInfo = appStore.getCurrentContractInfo();
+  const { marketInfo, loadMarketInfo } = useMarketInfo();
   const [sellOrders, setSellOrders] = useState<Order[]>([]);
   const [buyOrders, setBuyOrders] = useState<Order[]>([]);
-  const [currentPrice, setCurrentPrice] = useState(0);
   const [buyRatio, setBuyRatio] = useState(0);
   const [sellRatio, setSellRatio] = useState(0);
-  const [priceScale, setPriceScale] = useState();
-  const [colorMode, setColorMode] = useState(1);
+  const [colorMode, setColorMode] = useState(1); // 1: 全部 2: 买单 3: 卖单
   const [priceDirection, setPriceDirection] = useState<"up" | "down" | "">("");
-  const [priceSource, setPriceSource] = useState<"buy" | "sell" | "">("");
-  const [lastPrice, setLastPrice] = useState(0);
   // 当前聚合区间
   const [mergeDepth, setMergeDepth] = useState<number>(0.01);
   // 合约精度
   const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision ?? 2;
 
-  console.log('精度', symbolPricePrecision)
-
   // 动态设置深度精度，即聚合区间 币对设置中的深度精度：1-9表示小数位数，10即以上表示具体区间
   const depthPrecisionList = useMemo(() => {
-    const precisionList = currentContractInfo?.coinResultVo?.depth.filter(Boolean).map((item:string) => Number(item));
+    const precisionList = currentContractInfo?.coinResultVo?.depth.filter(Boolean).map((item:string) => Number(item)) ?? [];
     console.log('精度列表', precisionList)
     const result = precisionList.map((num: number) => ({
       label: num,
       value: num < 10 ? Number((1 / Math.pow(10, num)).toFixed(num)) : num
     }));
-    setMergeDepth(result[0].value)
-    return result
+    result.length && setMergeDepth(result[0].value)
+    return result ?? [{label: 2, value: 0.01}]
   }, [currentContractInfo.symbol, currentContractInfo.id])
 
   // 反显深度精度的值
@@ -74,11 +72,6 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 		const currentData = depthPrecisionList.find((item: PrecisionItem) => item.value === value)
 		return currentData?.label
 	}
-
-  // 添加最新成交数据状态
-  const [trades, setTrades] = useState<
-    { price: number; amount: number; time?: string; type: "buy" | "sell" }[]
-  >([]);
 
   // 处理价格和数量的精度
   const formatPrice = (price: number) => {
@@ -140,18 +133,16 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
   useEffect(() => {
     setSellOrders([]);
     setBuyOrders([]);
-    setCurrentPrice(0);
-    setTrades([]);
-    setPriceDirection("");
-    setPriceSource("");
+    setPriceDirection("up");
   }, [currentContractInfo.symbol, currentContractInfo.id]);
 
   useEffect(() => {
-    
     // 直接使用WebSocket推送的完整档位数据
     if (bookData && bookData.tick) {
       console.log('委托列表', bookData)
-      const {asks, buys: bids} = bookData.tick;
+      const {asks, buys: bids, priceChange} = bookData.tick;
+      const  direction = priceChange ? priceChange >=0 ? 'up' : 'down' : 'up';
+      setPriceDirection(direction);
       // 处理卖单数据
       if (asks && Array.isArray(asks)) {
         const aggregatedSells = aggregateOrders(asks, mergeDepth, true);
@@ -170,8 +161,6 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
 
       // 计算当前价格和买卖比例
       if (asks?.length > 0 && bids?.length > 0) {
-        const topAskPrice = Number(asks[0][0]);
-        const topBidPrice = Number(bids[0][0]);
         
         // 计算买卖比例
         const totalSellAmount = asks.reduce(
@@ -190,109 +179,44 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
         }
       } 
     }
-  }, [bookData, mergeDepth, colorMode]); // 将sellOrders和buyOrders从依赖数组中排除，以避免潜在的循环更新
-  // 注意：这里故意不将sellOrders和buyOrders添加到依赖数组中，因为每次更新这些状态会触发新的effect执行，造成无限循环
+  }, [bookData, mergeDepth, colorMode]);
 
-  // 添加处理交易数据的效果
-  useEffect(() => {
-    if (orderData && Array.isArray(orderData)) {
-      console.log("实时成交", orderData)
-      const processedTrades = orderData
-        .map((item) => {
-          // 解析JSON字符串
-          const tradeData = item.data;
-          // 检查数据是否有效
-          if (!tradeData) return null;
-
-          return {
-            price: Number(tradeData?.buy_price) || 0, // 确保数值有效
-            amount: Number(tradeData?.quantity) || 0,
-            time: tradeData?.timestamp
-              ? new Date(tradeData.timestamp).toLocaleTimeString()
-              : "--",
-            type: tradeData?.taker_side === "Buy" ? "buy" : "sell",
-            tradePrice: tradeData?.trade_price || 0,
-          };
-        })
-        .filter((trade) => trade !== null); // 过滤掉无效的交易数据
-
-      // 确保 processedTrades 中的 type 字段是 "buy" 或 "sell"
-      const typedProcessedTrades = processedTrades.map((trade) => ({
-        ...trade,
-        price: Number(trade?.price),
-        amount: Number(trade?.amount),
-        type: trade?.type === "buy" ? "buy" : ("sell" as "buy" | "sell"),
-      }));
-
-      setTrades(typedProcessedTrades);
-
-      // 更新最后成交价
-      if (typedProcessedTrades.length > 0) {
-        const newPrice = typedProcessedTrades[0].price;
-        const newType = typedProcessedTrades[0].type;
-
-        setLastPrice((prevPrice) => {
-          if (prevPrice > 0) {
-            // 设置价格方向
-            setPriceDirection(
-              newPrice > prevPrice ? "up" : newPrice < prevPrice ? "down" : ""
-            );
-          }
-
-          setPriceSource(newType);
-
-          return newPrice;
-        });
-      }
-
-      // 计算最近20条交易的买卖单占比
-      const recentTrades = typedProcessedTrades;
-      let buyCount = 0;
-      let sellCount = 0;
-
-      recentTrades.forEach((trade) => {
-        if (trade.type === "buy") {
-          buyCount++;
-        } else {
-          sellCount++;
-        }
+  // 使用 useMemo 优化性能，处理实时成交数据
+  const trades = useMemo(() => {
+    // 只使用真实的实时成交数据
+    if (orderData && Array.isArray(orderData) && orderData.length > 0) {
+      // 限制显示的数据量，只显示最新的50条记录
+      return orderData.slice(0, 50);
+    }
+    return [];
+  }, [orderData]);
+  // 格式化时间显示
+  const formatTime = (timeStr: string) => {
+    try {
+      // 尝试解析时间字符串 "2025-08-25 14:31:28"
+      const date = new Date(timeStr);
+      return date.toLocaleTimeString('zh-CN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
       });
-
-      const totalCount = buyCount + sellCount;
-      if (totalCount > 0) {
-        const newBuyRatio = (buyCount / totalCount) * 100;
-        const newSellRatio = (sellCount / totalCount) * 100;
-        setBuyRatio(Number(newBuyRatio.toFixed(2)));
-        setSellRatio(Number(newSellRatio.toFixed(2)));
-      }
+    } catch {
+      // 如果解析失败，返回原字符串的时间部分
+      return timeStr.split(' ')[1] || timeStr;
     }
-  
-  }, [orderData]); // 保持正确的依赖项
+  };
 
-  // 使用klineData的收盘价更新currentPrice
-  useEffect(() => {
-
-    if (klineData && klineData.data && Array.isArray(klineData.data) && klineData.data.length > 0) {
-      // 获取最新的K线数据（最后一个元素）
-      const latestKline = klineData.data[klineData.data.length - 1];
-      if (latestKline && Array.isArray(latestKline) && latestKline.length > 4) {
-        const closePrice = Number(latestKline[4]); // 收盘价在索引4的位置
-        if (closePrice > 0) {
-          setCurrentPrice((prevPrice) => {
-            if (prevPrice > 0) {
-              // 设置价格方向
-              setPriceDirection(
-                closePrice > prevPrice ? "up" : closePrice < prevPrice ? "down" : ""
-              );
-            }
-            return closePrice;
-          });
-        }
-      }
+  const getPriceColor = (side: "BUY" | "SELL") => {
+    if (side === "SELL") {
+      return colorMode === 1 || colorMode === 3
+        ? "error_icon"
+        : "success_icon";
+    } else {
+      return colorMode === 1 || colorMode === 2
+        ? "success_icon"
+        : "error_icon";
     }
-  }, [klineData]);
-
-  // 移除之前的精度列表更新 useEffect，因为现在使用固定的合并区间
+  };
 
   const renderColorModeButtons = () => {
     return (
@@ -363,16 +287,15 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
           {trades.length ? trades.map((trade, index) => (
             <li key={index} className="flex justify-between h-[17px] mb-[15px] last:mb-0 items-center text-[12px]">
               <span
-                className={`flex-1 text-left ${
-                  trade.type === "buy" ? styles.buyPrice : styles.sellPrice
-                }`}
+                className={`flex-1 text-left ${getPriceColor(trade.side)}`}
+                onClick={() => updateTradePrice(trade.price)}
               >
-                {trade.price.toFixed(symbolPricePrecision ?? 1)}
+                {trade.price}
               </span>
               <span className="flex-1 text-right">
-                {trade.amount.toFixed(8)}
+                {trade.vol}
               </span>
-              <span className="flex-1 text-right">{trade.time}</span>
+              <span className="flex-1 text-right">{formatTime(trade.ds)}</span>
             </li>
           )):
           (
@@ -450,20 +373,20 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
           )}
 
           {/* 当前价格 */}
-          <div className="h-[24px] flex items-center justify-between my-[10px]">
+          {colorMode === 1 && <div className="h-[24px] flex items-center justify-between my-[10px]">
             <div className="flex items-center">
               <span
                 className="text-[20px] font-medium mr-1"
                 style={{
                   color:
-                    priceSource === "buy" || priceDirection === "up"
+                    priceDirection === "up"
                       ? "#00b373" // 绿色
-                      : priceSource === "sell" || priceDirection === "down"
+                      : priceDirection === "down"
                       ? "#ff5252" // 红色
                       : "inherit",
                 }}
               >
-                {currentPrice.toFixed(symbolPricePrecision || 1)}
+                {orderData?.length ? new BigNumber(orderData[0].price).toFixed(symbolPricePrecision || 2) : '--'}
               </span>
               <span
                 className={styles.priceChange}
@@ -487,9 +410,9 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
             </div>
             <div className="flex items-center">
                 <TagIcon className="!w-[12px] !h-[12px] theme-color mr-1" />
-                <span className="text-[12px] theme-color">{currentPrice}</span>
+                <span className="text-[12px] theme-color">{marketInfo?.tagPrice ? new BigNumber(marketInfo.tagPrice).toFixed(symbolPricePrecision || 2): '--'}</span>
             </div>
-          </div>
+          </div>}
 
           {/* 买单 */}
           {(colorMode === 1 || colorMode === 2) && (
@@ -557,6 +480,6 @@ const OrderBookPanel = ({type = 'orderbook'}: {type: string}) => {
         </div>
     </div>
   );
-};
+});
 
 export default OrderBookPanel; 

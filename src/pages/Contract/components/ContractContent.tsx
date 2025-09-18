@@ -114,85 +114,12 @@ const ContractContent: React.FC = observer(() => {
   const publicInfoFromStore = appStore.getPublicInfo();
 
   const orderListRef = useRef<any>(null);
-  const priceSetterRef = useRef<((price: number) => void) | null>(null); // 价格设置函数ref
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false); // 风险确认书模态框
-  const [orderBookData, setOrderBookData] = useState<any>(null); // 订单簿数据
-  const [contractAssets, setContractAssets] = useState<ContractAsset[]>([]); // 合约账户数据
   const [currentContractInfo, setCurrentContractInfo] = useState<any>({}); // 当前合约信息
   const [publicInfo, setPublicInfo] = useState<any>({}); // 公共数据
-  const [symbolList, setSymbolList] = useState<SymbolData[]>([]); // 币种列表
   const [priceData, setPriceData] = useState<any>(null); // 价格数据
-  const [klineData, setKlineData] = useState<any>(null); // K线数据
   const [wsInstance, setWsInstance] = useState<WebSocketService | null>(null); // WebSocket实例
   const [depthPrecision, setDepthPrecision] = useState<number>(0); // 深度精度
-
-  const [spotBalance, setSpotBalance] = useState<any[]>([]); // 现货账户余额数组
-  const [realtimeTradeData, setRealtimeTradeData] = useState<any[]>([]); // 实时交易数据
-
-  // 获取现货账户余额
-  const getSpotBalance = async () => {
-    try {
-      const res = await getUserBalanceAll();
-
-      if (res.code === "0" && Array.isArray(res.data)) {
-        setSpotBalance(res.data);
-      } else {
-        setSpotBalance([]);
-      }
-    } catch (error) {
-      setSpotBalance([]);
-    }
-  };
-
-  // 获取合约账户余额
-  const getContractBalance = useCallback(async () => {
-    try {
-      const accountList = await appStore.loadContractAssets();
-      setContractAssets(accountList);
-    } catch (error) { }
-  }, []);
-
-  // 获取特定币种的资产信息
-  const getAssetBySymbol = (symbol: string): ContractAsset | undefined => {
-    if (!contractAssets) return;
-    return contractAssets.find((asset) => asset.symbol === symbol);
-  };
-
-  // 获取USDT资产可用余额，用于交易面板
-  const getAvailableUSDTBalance = (): number => {
-    const usdtAsset = getAssetBySymbol(currentContractInfo.marginCoin);
-    return parseFloat(usdtAsset?.canUseAmount || "0");
-  };
-
-  // 处理订单提交
-  const handleOrderSubmit = async (orderData: any) => {
-    const params = {
-      contractId: appStore.getCurrentContractInfo().id,
-      ...orderData,
-    };
-
-    // 这里处理订单提交逻辑
-
-    const res = await createOrder(params);
-
-    if (res.code === "0") {
-        Toast.show({
-            icon: 'success',
-            content: t("contract:orderSubmitSuccess"),
-        });
-      // 更新仓位
-      orderListRef.current.getPosition();
-      // 更新普通委托
-      orderListRef.current.getOrdinaryCommission();
-      // 更新历史委托
-      orderListRef.current.getHistoryCommission();
-    } else {
-        Toast.show({
-            icon: 'fail',
-            content: res.msg,
-        });
-    }
-  };
 
   // 处理风险确认书取消
   const handleRiskDisclosureCancel = () => {
@@ -455,33 +382,11 @@ const ContractContent: React.FC = observer(() => {
     }
   }, [currentTimeInterval])
 
-  // 处理深度精度变化
-  const handleDepthPrecisionChange = (precision: number) => {
-
-    setDepthPrecision(precision);
-
-    // 如果WebSocket已连接且合约信息完整，重新发送深度订阅
-    if (wsInstance && currentContractInfo.id) {
-      sendSubscriptions(wsInstance, currentContractInfo, currentTimeInterval, true, precision);  // 精度变化时先取消旧订阅
-    }
-  };
-
-  // 处理价格点击事件
-  const handlePriceClick = (price: number) => {
-    if (priceSetterRef.current) {
-      priceSetterRef.current(price);
-    }
-  };
-
   // 初始化数据和客户端状态
   useEffect(() => {
     const initializeClientData = async () => {
         const info = publicInfoFromStore;
         setPublicInfo(publicInfoFromStore);
-
-        if (info.contractList) {
-          setSymbolList(info.contractList);
-        }
 
         // 获取当前合约信息
         const contractInfo = appStore.getCurrentContractInfo();
@@ -492,9 +397,6 @@ const ContractContent: React.FC = observer(() => {
         // 获取用户合约配置
         if (info.contractList && contractInfo.id && isLoggedIn) {
           try {
-            // 获取账户余额
-            getContractBalance();
-            getSpotBalance();
             const userConfig = await appStore.loadUserConfig({
               contractId: contractInfo.id,
             });
@@ -559,9 +461,6 @@ const ContractContent: React.FC = observer(() => {
           ); // 先取消旧订阅
         } else {
         }
-
-        // 重新获取账户余额（因为可能需要不同的保证金币种）
-        getContractBalance();
       }
     };
 
@@ -574,8 +473,7 @@ const ContractContent: React.FC = observer(() => {
     currentContractInfo.id,
     wsInstance,
     currentTimeInterval,
-    sendSubscriptions,
-    getContractBalance,
+    sendSubscriptions
   ]);
 
   // WebSocket连接管理（只负责建立连接）

@@ -22,25 +22,21 @@ const MarginModePopup:React.FC<Props> = ({
   symbol = 'BTCUSDT'
 }) => {
 	const {t} = useLanguage('contract');
-
-  const [selectedMode, setSelectedMode] = React.useState<1 | 2>(2); // 默认选择逐仓
-  const { currentContractInfo } = appStore;
-  const handleConfirm = async () => {
-
-    onClose();
-    const res = await marginModelEdit({
-      marginModel: selectedMode,
-      contractId: currentContractInfo.id,
-    });
-    console.log(res);
-    if (res.code === '0') {
-      onModeChange(selectedMode);
-      onClose();
-      message.success(t('marginMode.settingSuccess'));
-    } else {
-      message.error(res.msg);
-    }
-  };
+	const [selectedMode, setSelectedMode] = React.useState<1 | 2>(2); // 默认选择逐仓
+	const { currentContractInfo } = appStore;
+	const handleConfirm = async () => {
+		const res = await marginModelEdit({
+			marginModel: selectedMode,
+			contractId: currentContractInfo.id,
+		});
+		if (res.code === '0') {
+			onModeChange(selectedMode);
+			onClose();
+			message.success(t('marginMode.settingSuccess'));
+		} else {
+			message.error(res.msg);
+		}
+	};
 
 	const PopupContent = () => {
 		return (

@@ -444,6 +444,7 @@
     display: flex;
     border: 1px solid var(--border-color4);
     border-radius: 8px;
+    padding-right: 1px;
     &:focus-within {
         border-color: var(--text-color3);
     }

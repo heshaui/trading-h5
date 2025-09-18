@@ -24,11 +24,13 @@ import { CustomTab } from "@/components/CustomCom";
 import appStore from "@/store";
 import { observer } from 'mobx-react-lite';
 import useAuth from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import { usePosition } from "../../ContractOrder/hooks/usePosition";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 import { useUserConfig } from "@/hooks/useUserConfig";
 import { getUserBalanceAll, transferAll } from "@/services/assets";
+import { getLabel } from "@/utils";
 
 import {
   createCoId,
@@ -41,7 +43,9 @@ import MarginModeModal from "../components/MarginModePopup";
 import LeverageModal from "../components/LeveragePopup";
 import FundTransferModal from "../components/FundTransferPopup";
 import RiskDisclosureModal from '../../RiskDisclosureModal';
-import { useNavigate } from "react-router-dom";
+import TipModal from '../../ContractOrder/components/Popup/TipModal';
+import SelectPop from "@/components/SelectPop";
+
 
 export interface AccountBalance {
   canUseAmount: string; // 可用余额
@@ -77,7 +81,7 @@ const SpotTradePage = observer(({
   const { isLoggedIn } = useAuth();
   const { isLight } = useTheme();
   const { popType, setPopType } = usePopTypeContext();
-  const { tradePrice, depthData: orderBookData } = useContract();
+  const { tradePrice, depthData: orderBookData, setAddOrderNotice } = useContract();
   const priceData = appStore.getActiveNewPrice();
   const [form] = Form.useForm();
 
@@ -96,13 +100,16 @@ const SpotTradePage = observer(({
   const [showMarginModeModal, setShowMarginModeModal] = useState(false);
   const [showLeverageModal, setShowLeverageModal] = useState(false);
   const [showOrderSettingsModal, setShowOrderSettingsModal] = useState(false);
-  const [showTradingSettingsDrawer, setShowTradingSettingsDrawer] = useState(false);
   const [showFundTransferModal, setShowFundTransferModal] = useState(false);
-  const [showOrderConfirmModal, setShowOrderConfirmModal] = useState(false);
   const [orderUnit, setOrderUnit] = useState<"BTC" | "USDT" | "张">("BTC");
-  const [showCalculator, setShowCalculator] = useState(false);
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false);
+  const [advSetting, setAdvSetting] = useState('1');
+  const [tipData, setTipData] = useState({
+    title: '',
+    content: ''
+  });
+  const [tipVisible, setTipVisible] = useState(false);
   // 新增触发价状态
   // 下单确认设置状态
   const [settingsUpdateTrigger, setSettingsUpdateTrigger] = useState(0);
@@ -195,6 +202,14 @@ const SpotTradePage = observer(({
   const availableBalance = React.useMemo(() => {
     return getAvailableUSDTBalance();
   }, [currentContractInfo.marginCoin, contractAssets]);
+
+  // 高级设置选项
+  const settingOptions = [
+    { value: '1', label: "GTC"},
+    { value: "5", label: "P/O" },
+    { value: "3", label: "IOC" },
+    { value: "4", label: "FOK" },
+  ]
   
   // 获取当前订单类型
   const getOrderType = useCallback(() => {
@@ -503,16 +518,15 @@ const SpotTradePage = observer(({
 
   // 将最新成交点击的价格传进来
   useEffect(() => {
-    handleSetPriceFromExternal(tradePrice);
+    tradePrice && handleSetPriceFromExternal(tradePrice);
   }, [tradePrice, handleSetPriceFromExternal]);
 
   // 监听 userConfig.nowLevel 变化，同步更新本地 leverageLevel 状态
   useEffect(() => {
     if (userConfig?.nowLevel && userConfig.nowLevel !== leverageLevel) {
-
       setLeverageLevel(userConfig.nowLevel);
     }
-  }, [userConfig?.nowLevel, leverageLevel]);
+  }, [userConfig?.nowLevel]);
 
   // 处理百分比滑块变化
   const handlePercentageChange = (value: number) => {
@@ -541,9 +555,29 @@ const SpotTradePage = observer(({
   // 检查是否应该跳过下单确认
   const getShouldSkipConfirm = useCallback((): boolean => {
     return localStorage.getItem("dontShowOrderConfirm") === "true";
-  }, [settingsUpdateTrigger]);
+  }, []);
 
   // 处理订单提交
+  const orderSubmit = async (orderData: any) => {
+    const params = {
+      contractId: appStore.getCurrentContractInfo().id,
+      ...orderData,
+    };
+    const res = await createOrder(params);
+    if (res.code === "0") {
+        Toast.show({
+            icon: 'success',
+            content: t("contract:orderSubmitSuccess"),
+        });
+        setAddOrderNotice((prev:any) => prev++);
+    } else {
+        Toast.show({
+            icon: 'fail',
+            content: res.msg,
+        });
+    }
+  }
+
   const handleSubmit = (side: "BUY" | "SELL") => {
     // 检查用户是否登录
     if (!isLoggedIn) {
@@ -593,7 +627,7 @@ const SpotTradePage = observer(({
               : "conditional",
       };
       // 直接提交订单，不需要调用handleConfirmOrder（避免重置设置）
-      onOrderSubmit?.(orderData);
+      orderSubmit(orderData);
       return;
     }
 
@@ -618,7 +652,8 @@ const SpotTradePage = observer(({
     };
 
     setConfirmData(orderData);
-    setShowOrderConfirmModal(true);
+    //setShowOrderConfirmModal(true);
+    setPopType(PopTypeEnum.PLACE_OREER);
   };
 
   // 表单验证函数
@@ -822,7 +857,7 @@ const SpotTradePage = observer(({
   };
 
   // 处理确认下单
-  const handleConfirmOrder = (orderData: any, dontRemind: boolean) => {
+  const handleConfirmOrder = () => {
     const data = {
       positionType: 1, // 持仓类型(1 全仓，2 仓逐)
       side: side,
@@ -844,14 +879,9 @@ const SpotTradePage = observer(({
       marginModel: marginModel,
     };
 
-    // 保存设置
-    localStorage.setItem("dontShowOrderConfirm", dontRemind ? "true" : "false");
-    
-    // 触发设置更新
-    setSettingsUpdateTrigger(prev => prev + 1);
-
-    onOrderSubmit?.(data);
-    setShowOrderConfirmModal(false);
+    orderSubmit(data);
+    // setShowOrderConfirmModal(false);
+    onCancel()
   };
 
   // 处理保证金模式变更
@@ -896,14 +926,8 @@ const SpotTradePage = observer(({
   const orderTypeTabs = [
     { key: 1, label: t("tradingPanel.limitOrder") },
     { key: 2, label: t("tradingPanel.marketOrder") },
-    // { key: 3, label: t("tradingPanel.conditionalOrder") } 2027-07-29 zyj暂时注释
+    { key: 3, label: t("tradingPanel.conditionalOrder") }
   ];
-
-
-
-  const handelSubmitOrder = () => {
-
-  }
 
   // 处理风险确认书取消
   const handleRiskDisclosureCancel = () => {
@@ -933,13 +957,13 @@ const SpotTradePage = observer(({
   if (popType === PopTypeEnum.PLACE_OREER) {
     return <ConfirmOrder 
       orderData={confirmData}
-      onOk={() => handelSubmitOrder()} 
+      onOk={handleConfirmOrder} 
       onCancel={onCancel} 
     />
   }
 
   return (
-    <div className="px-[16px] pt-[10px] pb-[20px]">
+    <div className="px-[16px] pt-[10px] pb-[20px] flex-1 min-h-0 hideScrollBar">
       <ConfigProvider
         theme={{
           components: {
@@ -981,16 +1005,22 @@ const SpotTradePage = observer(({
           <button
             type="button"
             className="min-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
-            onClick={() => setShowMarginModeModal(true)}
+            onClick={() => {
+              if(!isLoggedIn) navigate('/login')
+              setShowMarginModeModal(true)
+            }}
           >
             {marginModel === 1 ? t("tradingPanel.crossMargin") : t("tradingPanel.isolatedMargin")}
           </button>
           <button
             type="button"
             className="min-w-[78px] px-[10px] h-[28px] flex justify-center items-center bg-[var(--background14)] text-[12] rounded-[28px] font-medium"
-            onClick={() => setShowLeverageModal(true)}
+            onClick={() => {
+              if(!isLoggedIn) navigate('/login')
+              setShowLeverageModal(true)
+            }}
           >
-            {userConfig.nowLevel}x
+            {leverageLevel}x
           </button>
         </div>
         <Segmented
@@ -1044,7 +1074,15 @@ const SpotTradePage = observer(({
          {/* 可用余额 */}
             <div className="flex items-center mb-[10px] text-[14px] text-[var(--text-color5)] gap-[4px]">
               <div className="flex items-center gap-[8px]">
-                <span className="border-b border-dashed border-[var(--text-color5)]">{t("tradingPanel.available")}:</span>
+                <span className="border-b border-dashed border-[var(--text-color5)]"
+                  onClick={() => {
+                    setTipData({
+                      title: t("tradingPanel.available"),
+                      content: t("tradingPanel.tips.available")
+                    })
+                    setTipVisible(true)
+                  }}
+                >{t("tradingPanel.available")}:</span>
                 {/* {JSON.stringify(currentContractInfo)} */}
                 <span>{availableBalance.toFixed(2)} {currentContractInfo.marginCoin}</span>
               </div>
@@ -1079,15 +1117,20 @@ const SpotTradePage = observer(({
               {/* 委托价格 (限价单和条件单显示) */}
               {(currentCategory === 1 || currentCategory === 3) && (
                 <Form.Item style={{ marginBottom: "16px" }}>
-                  <Input
-                    value={price}
-                    onChange={handlePriceChange}
-                    placeholder={t("tradingPanel.orderPrice")}
-                    className={`trade-input ${validationErrors.price ? styles.inputError : ''}`}
-                    suffix="USDT"
-                    style={{ width: currentCategory === 3 ? "80%" : "100%" }}
-                  />
-                  {currentCategory === 3 && <Button type="text">{t("tradingPanel.marketPrice")}</Button>}
+                  <div className="flex gap-x-[5px]">
+                    <Input
+                      value={price}
+                      onChange={handlePriceChange}
+                      placeholder={t("tradingPanel.orderPrice")}
+                      className={`trade-input flex-1 w-full ${validationErrors.price ? styles.inputError : ''}`}
+                      suffix="USDT"
+                    />
+                    {currentCategory === 3 && <span 
+                      className="w-[90px] h-[50px] border input-border rounded-[8px] text-[14px] text-[var(--text-color5)] pr-[15px] flex items-center justify-end"
+                    >
+                        {t("tradingPanel.marketPrice")}
+                    </span>}
+                  </div>
                   {validationErrors.price && (
                     <span className={styles.errorText}>{validationErrors.price}</span>
                   )}
@@ -1151,122 +1194,129 @@ const SpotTradePage = observer(({
               </div>
 
               {/* 止盈止损 */}
-              {/* <div className={styles.tpslHeader}>
+              {currentCategory !== 3 && <div className={`flex items-center h-[20px] gap-x-[8px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
                 <Checkbox
                   checked={enableTPSL}
                   onChange={(e) => setEnableTPSL(e.target.checked)}
                   className="custom-checkbox"
                 />
-                <span className="text-[var(--text-color5)]">止盈止损</span> 
-              </div>  */}
+                <span className="text-[var(--text-color5)] text-[14px]">{t('tpsl')}</span> 
+              </div>} 
 
               {/* 止盈止损输入框 */}
-              {/* {enableTPSL && (
-            <div className={styles.tpslInputs}>
-              <div className={styles.tpslInputRow}>
+              {enableTPSL && (
+              <div className={`flex-col gap-y-[ß10px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
                 <Input
-                  value={takeProfitPrice}
-                  onChange={(e) => setTakeProfitPrice(Number(e.target.value) || 0)}
-                  placeholder="止盈触发价"
-                  className={styles.tpslInput}
-                  suffix="USDT"
+                    value={takeProfitPrice}
+                    onChange={(e) => setTakeProfitPrice(Number(e.target.value) || 0)}
+                    placeholder={t('tradingPanel.profitPrice')}
+                    className="trade-input"
+                    suffix="USDT"
                 />
-              </div>
-              <div className={styles.tpslInputRow}>
                 <Input
                   value={stopLossPrice}
                   onChange={(e) => setStopLossPrice(Number(e.target.value) || 0)}
-                  placeholder="止损触发价"
-                  className={styles.tpslInput}
+                  placeholder={t('tradingPanel.lossPrice')}
+                  className="trade-input"
                   suffix="USDT"
                 />
               </div>
-            </div>
-          )}
-        </div> 2027-07-29 zyj暂时注释*/}
+            )}
 
-              {/* 高级设置 */}
-              {/* <div className="flex items-center mb-[22px] gap-[4px]">
-                <span className="text-[14px] text-[var(--text-color6)] font-[400]">
-                  {t("tradingPanel.advancedSettings")}
-                </span>
-                <Dropdown
-                  trigger={["click"]}
-                  menu={{
-                    items: [
-                      { key: "5", label: "P/O" },
-                      { key: "3", label: "IOC" },
-                      { key: "4", label: "FOK" },
-                    ],
-                  }}
-                >
-                  <Space size={4}>
-                    GTC
-                    <Iconify icon="mdi:chevron-down" />
-                  </Space>
-                </Dropdown>
-              </div> 2027-08-28 zyj暂时注释*/}
+            {/* 高级设置 */}
+            {currentCategory !==2 && <div className="flex items-center mb-[22px] gap-[4px] h-[20px]">
+              <span className="text-[14px] tip-color">
+                {t("tradingPanel.advancedSettings")}
+              </span>
+              <SelectPop 
+                  value={advSetting}
+                  options={settingOptions}
+                  title={t('placeholder')} 
+                  onChange={(value:any) => setAdvSetting(value)}
+                  activeType="icon"
+                  renderBtn={(open) => (
+                      <button 
+                          type="button" 
+                          className="flex items-center text-[14px] text-[var(--text-color5)]"
+                          onClick={open}
+                      >
+                          <span>{getLabel(advSetting, settingOptions)}</span>
+                          <Iconify icon="mdi:chevron-down" className="text-[24px]" />
+                      </button>
+                  )}
+              />
+            </div>}
 
-              {/* 提交按钮 */}
-              <div className="mb-[10px] flex justify-between gap-[12px]">
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={() => handleSubmit("BUY")}
-                  block
-                  shape="round"
-                  className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
-                  style={{
-                    background: "#00C788",
-                  }}
-                  disabled={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors])}
-                  title={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) ? t("tradingPanel.validation.solveErrorsFirst") : ""}
-                >
-                  {transactionType === 1 ? t("tradingPanel.buyLong") : t("tradingPanel.buyClose")}
-                </Button>
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={() => handleSubmit("SELL")}
-                  className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
-                  style={{
-                    background: "#FF4D4F",
-                  }}
-                  block
-                  shape="round"
-                  disabled={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors])}
-                  title={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) ? t("tradingPanel.validation.solveErrorsFirst") : ""}
-                >
-                  {transactionType === 2 ? t("tradingPanel.sellClose") : t("tradingPanel.sellShort")}
-                </Button>
+            {/* 提交按钮 */}
+            {isLoggedIn ? <div className="mb-[10px] flex justify-between gap-[12px]">
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => handleSubmit("BUY")}
+                block
+                shape="round"
+                className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
+                style={{
+                  background: "#00C788",
+                }}
+                disabled={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors])}
+                title={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) ? t("tradingPanel.validation.solveErrorsFirst") : ""}
+              >
+                {transactionType === 1 ? t("tradingPanel.buyLong") : t("tradingPanel.buyClose")}
+              </Button>
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => handleSubmit("SELL")}
+                className="h-[50px] text-[16px] font-[500] text-[#FFF] w-[144px]"
+                style={{
+                  background: "#FF4D4F",
+                }}
+                block
+                shape="round"
+                disabled={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors])}
+                title={Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) ? t("tradingPanel.validation.solveErrorsFirst") : ""}
+              >
+                {transactionType === 2 ? t("tradingPanel.sellClose") : t("tradingPanel.sellShort")}
+              </Button>
+            </div>:
+            <button
+              className="w-full h-[50px] rounded-[32px] bg-[var(--theme-color)] flex items-center justify-center text-[16px] font-medium text-[#fff]"
+              type="button"
+              onClick={() => {
+                navigate('/login')
+              }}
+            >
+              {t("spot:spot.modal.login")}
+            </button>
+            }
+
+            {/* 验证错误提示 */}
+            {Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) && (
+              <div className={styles.validationError}>
+                <div className={styles.validationErrorTitle}>
+                  {t("tradingPanel.validation.solveFollowingProblems")}
+                </div>
+                <ul className={styles.validationErrorList}>
+                  {Object.entries(validationErrors).map(([key, error]) =>
+                    error ? <li key={key}>• {error}</li> : null
+                  )}
+                </ul>
               </div>
+            )}
 
-              {/* 验证错误提示 */}
-              {Object.keys(validationErrors).some(key => validationErrors[key as keyof typeof validationErrors]) && (
-                <div className={styles.validationError}>
-                  <div className={styles.validationErrorTitle}>
-                    {t("tradingPanel.validation.solveFollowingProblems")}
-                  </div>
-                  <ul className={styles.validationErrorList}>
-                    {Object.entries(validationErrors).map(([key, error]) =>
-                      error ? <li key={key}>• {error}</li> : null
-                    )}
-                  </ul>
-                </div>
-              )}
-
-              {/* 成本显示 */}
-              <div className="flex items-center justify-between  font-[400] text-[14px] text-[var(--text-color6)]">
-                <div className="flex gap-[4px]">
-                  <span>{t("tradingPanel.cost")}</span>
-                  <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
-                </div>
-                <div className="flex gap-[4px]">
-                  <span>{t("tradingPanel.cost")}</span>
-                  <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
-                </div>
+            {/* 成本显示 */}
+            {isLoggedIn && <div className="flex items-center justify-between  font-[400] text-[14px] text-[var(--text-color6)]">
+              <div className="flex gap-[4px]">
+                <span>{t("tradingPanel.cost")}</span>
+                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
               </div>
-            </Form>
+              <div className="flex gap-[4px]">
+                <span>{t("tradingPanel.cost")}</span>
+                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
+              </div>
+            </div>}
+          </Form>
       </ConfigProvider>
        {/* 保证金模式弹框 */}
         <MarginModeModal
@@ -1299,6 +1349,13 @@ const SpotTradePage = observer(({
             open={showRiskDisclosure}
             onCancel={handleRiskDisclosureCancel}
             onConfirm={handleRiskDisclosureConfirm}
+        />
+        {/* 提示 */}
+        <TipModal
+          open={tipVisible}
+          title={tipData.title}
+          content={tipData.content}
+          onCancel={() => setTipVisible(false)}
         />
     </div>
   );

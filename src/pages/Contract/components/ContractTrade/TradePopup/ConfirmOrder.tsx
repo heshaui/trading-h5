@@ -44,20 +44,9 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 	};
 
 	const handOk = async () => {
-        console.log('提交订单');
-        
-        // 如果用户选择不再提醒，保存到本地存储
-        if (noRemind) {
-            console.log(orderData,'orderData')
-            if(orderData.type===1){
-                localStorage.setItem('limitOrderConfirm', 'false');
-            }else{
-                localStorage.setItem('marketOrderConfirm', 'false');
-            }
-            
-        }
+		// 保存设置
+    	localStorage.setItem("dontShowOrderConfirm", noRemind ? "true" : "false");
         onOk()
-        // 这里可以添加点击验证码弹窗确认按钮后的处理逻辑
     };
 
 	return (

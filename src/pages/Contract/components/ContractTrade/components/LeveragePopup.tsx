@@ -32,9 +32,12 @@ const LeveragePopup:React.FC<Props> = ({
 	console.log('ContractInfo',ContractInfo)
 	const maxLeverage = ContractInfo.maxLever;
 
-
 	const { loadUserConfig } = useUserConfig();
 	const currentUserConfig = appStore.getUserConfig();
+
+	useEffect(() => {
+		setTempLeverage(currentLeverage);
+	}, [currentLeverage])
 
 	const handleSliderChange = (value: number) => {
 		setTempLeverage(value);
@@ -42,7 +45,7 @@ const LeveragePopup:React.FC<Props> = ({
 
 	const handleInputChange = (value: number | null) => {
 		if (value && value >= 1 && value <= maxLeverage) {
-		setTempLeverage(value);
+			setTempLeverage(value);
 		}
 	};
 
@@ -50,7 +53,7 @@ const LeveragePopup:React.FC<Props> = ({
 	useEffect(() => {
 		const initialValue = currentUserConfig.leverCeiling?.[currentLeverage];
 		if (initialValue !== undefined && initialValue !== null && lastValidLimitValue === null) {
-		setLastValidLimitValue(initialValue);
+			setLastValidLimitValue(initialValue);
 		}
 	}, [currentUserConfig.leverCeiling, currentLeverage, lastValidLimitValue]);
 
@@ -58,48 +61,48 @@ const LeveragePopup:React.FC<Props> = ({
 	const getDisplayLimitValue = () => {
 		const currentValue = currentUserConfig.leverCeiling?.[tempLeverage];
 		if (currentValue !== undefined && currentValue !== null) {
-		// 如果当前杠杆有对应值，更新最后有效值并返回当前值
-		if (lastValidLimitValue !== currentValue) {
-			setLastValidLimitValue(currentValue);
-		}
-		return currentValue;
+			// 如果当前杠杆有对应值，更新最后有效值并返回当前值
+			if (lastValidLimitValue !== currentValue) {
+				setLastValidLimitValue(currentValue);
+			}
+			return currentValue;
 		} else {
-		// 如果当前杠杆没有值，返回最后有效值
-		return lastValidLimitValue !== null ? lastValidLimitValue : (currentUserConfig.leverCeiling?.[currentLeverage] ?? '');
+			// 如果当前杠杆没有值，返回最后有效值
+			return lastValidLimitValue !== null ? lastValidLimitValue : (currentUserConfig.leverCeiling?.[currentLeverage] ?? '');
 		}
 	};
 
 	const handleConfirm = async () => {
 		try {
-		const res = await levelEdit({
-			contractId: ContractInfo.id,
-			nowLevel: tempLeverage,
-		});
-
-		if (res.code === '0') {
-			message.success(t('leverageModal.settingSuccess'));
-
-			// 立即更新 store 中的 userConfig.nowLevel，确保 UI 立即响应
-		
-			appStore.setUserConfig({
-			...currentUserConfig,
-			nowLevel: tempLeverage
+			const res = await levelEdit({
+				contractId: ContractInfo.id,
+				nowLevel: tempLeverage,
 			});
 
-			// 先通知父组件杠杆值变化
-			onLeverageChange(tempLeverage);
+			if (res.code === '0') {
+				message.success(t('leverageModal.settingSuccess'));
 
-			// 异步重新获取用户配置，确保数据同步
-			await loadUserConfig();
+				// 立即更新 store 中的 userConfig.nowLevel，确保 UI 立即响应
+			
+				appStore.setUserConfig({
+					...currentUserConfig,
+					nowLevel: tempLeverage
+				});
 
-			// 最后关闭模态框
-			onClose();
-		} else {
-			message.error(res.message || t('leverageModal.settingFailed'));
-		}
+				// 先通知父组件杠杆值变化
+				onLeverageChange(tempLeverage);
+				// 最后关闭模态框
+				onClose();
+				// 异步重新获取用户配置，确保数据同步
+				await loadUserConfig();
+
+				
+			} else {
+				message.error(res.message || t('leverageModal.settingFailed'));
+			}
 		} catch (error) {
-		console.error('杠杆设置失败:', error);
-		message.error(t('leverageModal.settingFailedRetry'));
+			console.error('杠杆设置失败:', error);
+			message.error(t('leverageModal.settingFailedRetry'));
 		}
 	};
 
@@ -160,8 +163,8 @@ const LeveragePopup:React.FC<Props> = ({
 						<InputNumber
 							className={`spot_number_input`}
 							style={{
-							width: "100%",
-							boxSizing: "border-box",
+								width: "100%",
+								boxSizing: "border-box",
 							}}
 							min={1}
 							max={100}
@@ -171,14 +174,14 @@ const LeveragePopup:React.FC<Props> = ({
 							controls={false}
 						/>
 						<div className="controls">
-							<button type="button" className="border-bottom" onClick={() => setTempLeverage(prev => prev++)}>
+							<button type="button" className="border-bottom" onClick={() => setTempLeverage(prev => Number(prev)+1)}>
 								<Iconify
 									icon="mdi:chevron-up"
 									size={20}
 									className={`text-[var(--text-color5)] hover:text-[var(--theme-color)]`}
 								/>
 							</button>
-							<button type="button" onClick={() => setTempLeverage(prev => prev--)}>
+							<button type="button" onClick={() => setTempLeverage(prev => Number(prev)-1)}>
 								<Iconify
 									icon="mdi:chevron-down"
 									size={20}
@@ -189,19 +192,21 @@ const LeveragePopup:React.FC<Props> = ({
 					</div>
 
 					{/* 杠杆滑块 */}
-					<Slider
-						min={1}
-						max={maxLeverage}
-						marks={marks}
-						step={1}
-						value={tempLeverage}
-						onChange={handleSliderChange}
-						className="spotSlider"
-						tooltip={{ open: false }}
-					/>
+					<div className="h-[36px]">
+						<Slider
+							min={1}
+							max={maxLeverage}
+							marks={marks}
+							step={1}
+							value={tempLeverage}
+							onChange={handleSliderChange}
+							className="spotSlider"
+							tooltip={{ open: false }}
+						/>
+					</div>
 
 					{/* 风险提示 */}
-					<div className="text-[14px] leading-[20px] text-[#ff8a26] mb-[20px]">
+					<div className="text-[14px] leading-[20px] text-[#ff8a26] mb-[20px] mt-[16px]">
 						{t('leverageModal.riskWarning')}
 					</div>
 

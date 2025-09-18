@@ -92,6 +92,9 @@ interface ContractContextValue {
   // 合约价格信息
   marketInfoData: any;
   setMarketInfoData: (data: any) => void;
+  // 新增交易,用来通知仓位等刷新列表
+  addOrderNotice: number;
+  setAddOrderNotice: (count: any) => void;
 }
 
 // 创建Context
@@ -114,6 +117,7 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [conditionOrderCount, setConditionOrderCount] = useState<number>(0);
   const [assetsCount, setAssetsCount] = useState<number>(0);
   const [marketInfoData, setMarketInfoData] = useState();
+  const [addOrderNotice, setAddOrderNotice] = useState(0);
 
   // 更新方法
   const updateTimeInterval = useCallback((interval: string) => {
@@ -195,7 +199,9 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	assetsCount,
 	setAssetsCount,
   marketInfoData, 
-  setMarketInfoData
+  setMarketInfoData,
+  addOrderNotice,
+  setAddOrderNotice
   };
 
   return (

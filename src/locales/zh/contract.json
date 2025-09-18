@@ -372,6 +372,8 @@
     "cost": "成本",
     "transferSuccess": "划转成功",
     "transferFailed": "划转失败",
+    "profitPrice": "止盈触发价",
+    "lossPrice": "止损触发价",
     "validation": {
       "required": "此字段为必填项",
       "invalidNumber": "请输入有效的数字",
@@ -388,6 +390,9 @@
       "quantityExceedsMax": "委托数量超过最大可{{action}}数量",
       "solveErrorsFirst": "请先解决表单验证错误",
       "solveFollowingProblems": "请解决以下问题后重试："
+    },
+    "tips": {
+      "available": "可用余额为用户可自由支配的资金.可用余额会优先作为全仓保证金,当全仓仓位亏损时,可用就会减少."
     }
   },
   "contractHeader": {

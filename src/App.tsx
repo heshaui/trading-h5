@@ -9,6 +9,7 @@ import './styles/public.scss'
 import './styles/init.scss'
 import './styles/public_custom.scss'
 import { getKvObject } from '@/services/kv';
+import { LOCAL_STORAGE_KEY } from '@/config/apiConfig';
 import appStore from '@/store';
 import { useEffect } from 'react';
 // 在非组件ts中使用路由跳转
@@ -29,6 +30,24 @@ const App: React.FC = observer(() => {
   useThemeEffect();
   // kv配置请求
   const { config, loading } = useWebConfig();
+  // 设置浏览器标题为交易所名称（来自 kv_config.tenant_cache_name）
+  const allConfig = appStore.getKvConfigAll();
+  useEffect(() => {
+    try {
+      let exchangeName: string | undefined = allConfig?.tenant_cache_name;
+      if (!exchangeName) {
+        const kv = localStorage.getItem(LOCAL_STORAGE_KEY.KV_CONFIG);
+        if (kv) {
+          exchangeName = JSON.parse(kv)?.tenant_cache_name;
+        }
+      }
+      if (exchangeName && typeof document !== 'undefined') {
+        document.title = exchangeName;
+      }
+    } catch (_) {
+      // ignore
+    }
+  }, [allConfig?.tenant_cache_name]);
   useEffect(() => {
     appStore.loadGetLangList();
     appStore.loadGetRateList();

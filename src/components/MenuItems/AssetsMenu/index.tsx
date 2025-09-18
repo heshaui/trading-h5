@@ -8,7 +8,7 @@ import styles from '../styles/layout.module.scss'
 import RouterMenu from "../RouterMenuPublic/Menu"
 import { useLanguage } from '@/hooks/useLanguage';
 import { MenuType, IconType } from '@/type/public/menu';
-import  {useWithdraw} from "@/hooks/useWithdraw";
+import { useWithdraw, useRecharge } from "@/hooks/useWithdraw";
 
 
 // 高阶组件函数
@@ -18,18 +18,21 @@ const withAssetsLayout = <P extends object>(
     const LayoutWrapper: React.FC<P> = (props) => {
         const { t } = useLanguage('assets');
         const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
+        const { goRecharge, RechargeStatusPopComponent } = useRecharge();
 
         // 默认菜单列表
         const defaultMenuList: MenuType[] = [
             {
-                path: '/assets/toUp', 
+                path: '/assets/toUp',
                 icon: <CashSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.deposit', { ns: 'assets' }), //'充值',
                 type: 'p2',
-                
+                onClick: () => {
+                    goRecharge()
+                }
             },
             {
-                path: '/assets/withdraw', 
+                path: '/assets/withdraw',
                 icon: <DepositSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.withdraw', { ns: 'assets' }), //'提现',
                 type: 'p2',
@@ -38,18 +41,18 @@ const withAssetsLayout = <P extends object>(
                 }
             },
             {
-                path: '/assets', 
+                path: '/assets',
                 icon: <SpotSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.assetsAccount', { ns: 'assets' }), //'现货账户',
                 type: 'p3',
             },
             {
-                path: '/assets/bill', 
+                path: '/assets/bill',
                 icon: <BillingSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.billDetails', { ns: 'assets' }), //'账单',
                 type: 'p3',
             },
-            
+
         ];
 
         return (
@@ -64,6 +67,8 @@ const withAssetsLayout = <P extends object>(
                 <div className={`flex-1 ${styles.contentContainer}`}>
                     <WrappedComponent {...props} />
                 </div>
+                <WithdrawStatusPopComponent />
+                <RechargeStatusPopComponent />
             </div>
         );
     };

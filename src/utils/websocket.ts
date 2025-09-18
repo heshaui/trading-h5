@@ -2,7 +2,7 @@ type MessageCallback = (message: string) => void;
 type ErrorCallback = (error: Event) => void;
 type ConnectedCallback = () => void;
 
-enum ConnectionState {
+export enum ConnectionState {
   CONNECTING,
   OPEN,
   CLOSED,

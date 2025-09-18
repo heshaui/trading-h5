@@ -92,7 +92,7 @@ const NetworkSteps = ({ coinInfo,goSteps }: NetworkStepsProps) => {
         try {
             const params = {
                 blockchain: value.symbol || selectedProtocolInfo.symbol,
-                label: value.coinName
+                label: value.coinId
             }
             const res = await createWalletAddress(params)
             if (res.code === '0') {

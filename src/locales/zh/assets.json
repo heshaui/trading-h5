@@ -327,6 +327,7 @@
         "searchCoin": "搜索币种",
         "cancel": "取消",
         "contractAddress": "*合约地址：",
-        "coinTitle": "充值{{name}}"
+        "coinTitle": "充值{{name}}",
+        "noRecord": "暂无数据"
       }
 }

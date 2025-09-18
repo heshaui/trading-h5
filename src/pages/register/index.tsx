@@ -10,9 +10,10 @@ import styles from './styles/login.module.scss'
 import PhoneEmailAuthcode from "./components/authCode_phoneAndMail";
 import { useLanguage } from '@/hooks/useLanguage';
 import appStore from '@/store';
+import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
 
 export const meta = {
-	layout: 'blank',
+	layout: 'header-only',
 	requireAuth: false
 }
 function Register() {
@@ -38,7 +39,7 @@ function Register() {
 	// }, [allConfig]);
 
 	return (
-		<div className={`relative flex h-max w-full flex-row ${styles.page_box}`} >
+		<div className={`relative flex h-max w-full flex-row ${styles.page_box} position-relative`} >
 
 			<div className="m-auto flex flex-ai-center w-full flex-col flex-1 position-relative">
 				<div style={{ width: "100%" }}>
@@ -51,6 +52,8 @@ function Register() {
 						{/* <GoogleAuthcode /> */}
 					</LoginStateProvider>
 				</div>
+
+
 			</div>
 		</div>
 	);

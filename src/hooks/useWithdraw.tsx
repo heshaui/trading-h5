@@ -16,6 +16,8 @@ interface UserInfo {
     unverifiedWithdrawalStatus?: number;
     verifiedWithdrawalStatus?: number;
     googleCode?: boolean;
+    verifiedRechargeStatus?: number;
+    unverifiedRechargeStatus?: number;
 }
 
 export const useWithdraw = () => {
@@ -79,6 +81,42 @@ export const useWithdraw = () => {
             <WithdrawStatusPop
                 open={withdrawStatusPopOpen}
                 onClose={() => setWithdrawStatusPopOpen(false)}
+            />
+        )
+    };
+}; 
+export const useRecharge = () => {
+    const { t } = useLanguage('assets');
+    const navigate = useNavigate();
+    const [rechargeStatusPopOpen, setRechargeStatusPopOpen] = useState(false);
+    const goRecharge = useCallback((userInfo?: UserInfo,coinId?:string|number) => {
+         // const verified11 = currentUserInfo?.verifiedRechargeStatus === 1 && currentUserInfo?.realnessStatus === 1 //已认证且实名-允许
+         const verified10 = userInfo?.verifiedRechargeStatus === 1 && userInfo?.realnessStatus !== 1 //已认证且未实名-判断unverifiedRechargeStatus
+         // const unverifie10 = userInfo?.unverifiedRechargeStatus === 1 && userInfo?.realnessStatus === 0 //未认证且未实名-允许
+         const unverifie11 = userInfo?.unverifiedRechargeStatus === 1 && userInfo?.realnessStatus === 1 //未认证且实名-判断verifiedRechargeStatus
+
+         const needsKyc = verified10 && userInfo?.unverifiedRechargeStatus !== 1
+         // const needsGoogleAuth = !userInfo?.isGoogleAuth || !userInfo?.googleCode
+         const needsMerchantRecharge = (userInfo?.verifiedRechargeStatus !== 1 && userInfo?.unverifiedRechargeStatus !== 1) ||
+           (unverifie11 && userInfo?.verifiedRechargeStatus !== 1)
+
+         // TODO: Implement permission check components
+         if (needsKyc || needsMerchantRecharge) {
+            setRechargeStatusPopOpen(true);
+            return;
+         }
+        // 所有条件满足，跳转到提现页面
+        navigate(`/assets/toUp?coinId=${coinId}`);
+    }, [navigate, t]);
+
+    return {
+        goRecharge,
+        rechargeStatusPopOpen,
+        setRechargeStatusPopOpen,
+        RechargeStatusPopComponent: () => (
+            <WithdrawStatusPop
+                open={rechargeStatusPopOpen}
+                onClose={() => setRechargeStatusPopOpen(false)}
             />
         )
     };

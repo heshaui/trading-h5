@@ -20,10 +20,9 @@ interface LoginPicType {
 }
 
 export const meta = {
-	layout: 'blank',
+	layout: 'header-only',
 	requireAuth: false
 }
-
 function Login() {
 	const navigate = useNavigate();
 	const { t } = useLanguage('login');

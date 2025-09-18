@@ -197,6 +197,8 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
 
 
 
+
+
   return (<>
     <div className={` page-h w-full bg-[var(--page-background)] flex-y align-center `}>
       <div className={`${styles.card_box} w-full`}>
@@ -233,6 +235,7 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
         >
           <Form form={form} disabled={isNotAllowToUp} style={{ width: '100%' }}>
             <Form.Item name="coinName" >
+              <div className="flex-x align-center">
               <Input
                 placeholder={t("withdrawMoney.select")}
                 className={`${styles.input_box} modal-input w-full`}
@@ -242,7 +245,12 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
                 onChange={handleSearchChange}
                 onClear={handleSearchClear}
               />
-            </Form.Item>
+              <Button type="text" htmlType="button" 
+              style={{padding:0}}
+              className="ml-2"
+              onClick={handleSearchClear}>{t("toUpSteps.cancel")}</Button>
+            
+              </div></Form.Item>
             <div className="">
               <div className={`${styles.tip_color2} w-full flex-x justify-between`}
               >
@@ -257,8 +265,8 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
                   />
                 </button>
               </div>
-              <div className="mt-2_5 flex-x flex-wrap">
-                {searchHistory.length > 0 && searchHistory.map((item, index) => (
+              {searchHistory.length > 0 ?<div className="mt-2_5 flex-x flex-wrap">
+                { searchHistory.map((item, index) => (
                   <button
                     key={`key-${index}`}
                     className={`${styles.btn_style} cancel_btn5 mr-2`}
@@ -270,7 +278,9 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
                     {item.coinName}
                   </button>
                 ))}
-              </div>
+              </div> : <p className="mt-2 mb-2_5">
+                              {t("withdrawMoney.noRecord")}
+                            </p>}
 
             </div>
           </Form>
@@ -329,7 +339,7 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
                       ) : (
                         <List.Item>
                           <div className={`${styles.tip_color} text-center py-1 font-12`}>
-                            暂无币种
+                             {t("toUpSteps.noRecord")}
                           </div>
                         </List.Item>
                       )}

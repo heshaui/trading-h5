@@ -155,6 +155,26 @@ const Position: React.FC = () => {
 				setTipTitle(t("reducePosition.title"));
 				setTipContent(t('reducePosition.content'));
 				break;
+			case 'cost':
+				setTipTitle(t('order.positionColumn.costPrice'));
+				setTipContent(t('order.positionColumn.tips.openAvgPrice'));
+				break;
+			case 'index':
+				setTipTitle(t('order.positionColumn.markPrice'));
+				setTipContent(t('order.positionColumn.tips.indexPrice'));
+				break;
+			case 'hold':
+				setTipTitle(t('margin'));
+				setTipContent(t('order.positionColumn.tips.holdAmount'));
+				break;
+			case 'rate':
+				setTipTitle(t('order.positionColumn.marginRate'));
+				setTipContent(t('order.positionColumn.tips.marginRate'));
+				break;
+			case 'reduce':
+				setTipTitle(t('order.positionColumn.strongParity'));
+				setTipContent(t('order.positionColumn.tips.reducePrice'));
+				break;
 		}
 	}
 	// 反向开仓、平仓
@@ -241,35 +261,47 @@ const Position: React.FC = () => {
 							<div className="flex justify-between">
 								<div className="flex gap-x-[30px]">
 									<div className="flex flex-col gap-y-[12px]">
+										{/* 仓位/可平 */}
 										<p className="flex flex-col gap-y-[4px]">
 											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.positionVolume')}/{t('order.positionColumn.canCloseVolume')}({currentContractInfo?.marginCoin})</span>
-											<span className="text-[14px] font-medium">{new BigNumber(item.positionVolume).toFormat(symbolPricePrecision)}</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.positionVolume).toFormat(symbolPricePrecision)}/{new BigNumber(item.canCloseVolume).toFormat(symbolPricePrecision)}</span>
 										</p>
+										{/* 成本价 */}
 										<p className="flex flex-col gap-y-[4px]">
-											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.costPrice')}</span>
-											<span className="text-[14px] font-medium">{new BigNumber(item.indexPrice).toFormat(symbolPricePrecision)}</span>
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]"
+												onClick={() => handleTip('cost')}
+											>{t('order.positionColumn.costPrice')}</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.openAvgPrice).toFormat(symbolPricePrecision)}</span>
 										</p>
 									</div>
 									<div className="flex flex-col gap-y-[12px]">
+										{/* 保证金 */}
 										<p className="flex flex-col gap-y-[4px]">
-											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]" onClick={() => setAdjustVisible(true)}>{t('margin')}({currentContractInfo?.marginCoin})</span>
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]" onClick={
+												() => handleTip('hold')
+											}>{t('margin')}({currentContractInfo?.marginCoin})</span>
 											<span className="text-[14px] font-medium">{new BigNumber(item.holdAmount).toFormat(symbolPricePrecision)}</span>
 										</p>
+										{/* 标记价格 */}
 										<p className="flex flex-col gap-y-[4px]">
-											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('contractHeader.markPrice')}</span>
-											<span className="text-[14px] font-medium">{new BigNumber(item.openAvgPrice).toFormat(symbolPricePrecision)}</span>
+											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]"
+												onClick={() => handleTip('index')}
+											>{t('contractHeader.markPrice')}</span>
+											<span className="text-[14px] font-medium">{new BigNumber(item.indexPrice).toFormat(symbolPricePrecision)}</span>
 										</p>	
 									</div>
 								</div>
 								<div className="flex flex-col gap-y-[12px]">
+									{/* 保证金率 */}
 									<p className="flex flex-col gap-y-[4px]">
-										<div className="flex justify-end">
+										<div className="flex justify-end" onClick={() => handleTip('rate')}>
 											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('marginRatio')}</span>
 										</div>
 										<span className="text-[14px] font-medium text-right">{new BigNumber(item.marginRate).toFormat(symbolPricePrecision)}%</span>
 									</p>
+									{/* 预估强平价 */}
 									<p className="flex flex-col gap-y-[4px]">
-										<div className="flex justify-end">
+										<div className="flex justify-end" onClick={() => handleTip('reduce')}>
 											<span className="text-[12px] w-fit text-[#9e9e9e] border-b border-dashed border-[#9e9e9e]">{t('order.positionColumn.strongParity')}</span>
 										</div>
 										<span className="text-[14px] font-medium text-right">{new BigNumber(item.reducePrice).toFormat(symbolPricePrecision)}</span>

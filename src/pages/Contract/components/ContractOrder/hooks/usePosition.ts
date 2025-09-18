@@ -49,9 +49,9 @@ export const usePosition = (options: UsePositionOptions = {}) => {
   // 币对精度
 
   // 获取仓位数据
-  const getPosition = useCallback(async () => {
+  const getPosition = useCallback(async ({ showLoading = true, showMessage = true }: { showLoading?: boolean, showMessage?: boolean } = {}) => {
     try {
-      setLoading(true);
+      showLoading && setLoading(true);
       console.log("获取仓位");
       const res = await getAssetsList({
         contractId: contractId,
@@ -62,7 +62,7 @@ export const usePosition = (options: UsePositionOptions = {}) => {
         setPositionNumber(res.data.positionList.length);
       } else {
         setPositions([]);
-        message.error(res.msg);
+        showMessage && message.error(res.msg);
       }
     } catch (error) {
       console.error("获取仓位失败:", error);

@@ -153,7 +153,7 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                     }}
                     className="spotSlider"
                 />
-                <div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px] mt-[-13px]">
+                <div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px] mt-[10px]">
                     <span className="tip-color">{t('closeModal.canCloseVolume')}</span>
                     <span>63.19 USDT</span>
                 </div>

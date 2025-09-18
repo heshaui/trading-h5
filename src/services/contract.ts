@@ -594,3 +594,18 @@ export const getTradeInfo = async (params: any) => {
     throw error;
   }
 };
+
+// 获取阶梯配置
+export const getLadderInfo = async (params: any) => {
+  try {
+    const response = await request<any>("/fe-co-api/common/get_ladder_info", {
+      method: "POST",
+      headers: formatHeaders(),
+      body: JSON.stringify(params),
+    });
+    return response;
+  } catch (error) {
+    console.error("获取成交记录失败:", error);
+    throw error;
+  }
+};

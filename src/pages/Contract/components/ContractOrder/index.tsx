@@ -79,7 +79,7 @@ const SpotTabs: React.FC = () => {
                     activeLineMode='fixed'
                     className="spotTabs noBoder safeTabs flex-1"
                 />
-                <OrderIcon className="!w-[24px] !h-[24px] text-[var(--text-color5)]" onClick={() => setReducePositionOpen(true)} />
+                <OrderIcon className="!w-[24px] !h-[24px] text-[var(--text-color5)]" onClick={() => navigate('/contractOrder')} />
             </div>
             {!isLoggedIn ? <NoLogin /> : TabContent()}
         </div>

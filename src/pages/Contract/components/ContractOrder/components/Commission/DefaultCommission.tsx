@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
 import { Switch } from 'antd-mobile';
+import { message } from 'antd';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 import { useOrdinaryCommission, OrdinaryCommission } from "../../hooks";
 import { NoData } from '@/components/noData';
@@ -9,6 +10,8 @@ import { Iconify } from '@/components/icon';
 import { Side, SideMap, Type, PositionType, Open, Status, TypeMap, PositionTypeMap } from '../../configs/columns';
 import BigNumber from "bignumber.js";
 import dayjs from 'dayjs';
+
+import DelectModal from '@/pages/SpotOrder/components/TipPop/Delect_modal';
 
 const DefaultCommission:React.FC = () => {
     const {t} = useLanguage('contract');
@@ -20,6 +23,9 @@ const DefaultCommission:React.FC = () => {
 
     const [onlyCurrentSymbol, setOnlyCurrentSymbol] = useState(false);
     const [orderList, setOrderList] = useState<OrdinaryCommission[]>([]);
+    const [delVisible, setDelVisible] = useState(false);
+    const [currentOrder, setCurrentOrder] = useState<OrdinaryCommission>();
+    const [delType, setDelType] = useState(0); // 0:全部 1: 单个
     // 普通委托
     const {
         ordinaryCommissionNumber,
@@ -93,6 +99,24 @@ const DefaultCommission:React.FC = () => {
         return (Number(num)/Number(total)).toFixed(2)+'%';
     }
 
+    // 全部撤销
+    const handleCancelAllOrders = async () => {
+        for (const record of orderList) {
+            try {
+                await handleCancelOrdinaryOrder(record, true)
+            } catch (error) {
+                console.error("撤销失败:", error)
+            }
+        }
+        message.success(t("cancelled"))
+        getOrdinaryCommission()
+    }
+	// 撤单确认
+	const handleDelOk = () => {
+		setDelVisible(false);
+		delType ? handleCancelOrdinaryOrder(currentOrder!) : handleCancelAllOrders();
+	}
+
     return (
         <>
             <div className="h-[48px] px-4 flex justify-between items-center text-[14px] border-b border-color">
@@ -111,6 +135,10 @@ const DefaultCommission:React.FC = () => {
                 <button 
                     type="button" 
                     className="m-w-[68px] h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
+                    onClick={() => {
+                        setDelType(0)
+						setDelVisible(true)
+                    }}
                 >
                     {t('cancelAll')}
                 </button>
@@ -139,6 +167,11 @@ const DefaultCommission:React.FC = () => {
                                 <button 
                                     type="button" 
                                     className="h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
+                                    onClick={() => {
+                                        setDelType(1)
+                                        setDelVisible(true)
+                                        setCurrentOrder(item)
+                                    }}
                                 >
                                     {t('cancel')}
                                 </button>
@@ -149,7 +182,7 @@ const DefaultCommission:React.FC = () => {
                                     <span>{setFinally(item.dealVolume, item.volume)}</span>
                                 </p>
                                 <p className="flex items-center justify-between h-[20px] text-[14px]">
-                                    <span className="text-[#9e9e9e]">{t('order.ordinaryColumn.volume')}USDT</span>
+                                    <span className="text-[#9e9e9e]">{t('order.ordinaryColumn.volume')}(USDT)</span>
                                     <span>{item.dealVolume.toFixed(2)}/{item.volume.toFixed(2)}</span>
                                 </p>
                                 <p className="flex items-center justify-between h-[20px] text-[14px]">
@@ -168,6 +201,13 @@ const DefaultCommission:React.FC = () => {
 					</li>
 				}
 			</ul>
+            <DelectModal 
+				open={delVisible}
+				orderId={[]}
+				type={delType}
+				onCancel={() => setDelVisible(false)}
+				onOk={handleDelOk} 
+			/>
         </>
     )
 }

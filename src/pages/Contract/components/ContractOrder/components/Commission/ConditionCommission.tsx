@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
+import { message } from 'antd';
 import { Switch } from 'antd-mobile';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 import { useConditionalCommission, ConditionalCommission } from "../../hooks";
@@ -9,6 +10,8 @@ import { Iconify } from '@/components/icon';
 import { Side, SideMap, Type, PositionType, Open, Status, TypeMap, PositionTypeMap } from '../../configs/columns';
 import BigNumber from "bignumber.js";
 import dayjs from 'dayjs';
+
+import DelectModal from '@/pages/SpotOrder/components/TipPop/Delect_modal';
 
 const ConditionCommission:React.FC = () => {
     const {t} = useLanguage('contract');
@@ -20,6 +23,9 @@ const ConditionCommission:React.FC = () => {
 
     const [onlyCurrentSymbol, setOnlyCurrentSymbol] = useState(false);
     const [orderList, setOrderList] = useState<ConditionalCommission[]>([]);
+    const [delVisible, setDelVisible] = useState(false);
+    const [currentOrder, setCurrentOrder] = useState<ConditionalCommission>();
+    const [delType, setDelType] = useState(0); // 0:全部 1: 单个
     // 普通委托
     const {
         conditionalCommission,
@@ -91,6 +97,24 @@ const ConditionCommission:React.FC = () => {
 		return t(`contractInfo.${type ?? 'demo'}`)
 	}
 
+    // 全部撤销
+    const handleCancelAllOrders = async () => {
+        for (const record of orderList) {
+            try {
+                await handleCancelConditionalOrder(record, true)
+            } catch (error) {
+                console.error("撤销失败:", error)
+            }
+        }
+        message.success(t("cancelled"))
+        getConditionalCommission()
+    }
+    // 撤单确认
+    const handleDelOk = () => {
+        setDelVisible(false);
+        delType ? handleCancelConditionalOrder(currentOrder!) : handleCancelAllOrders();
+    }
+
     return (
         <>
             <div className="h-[48px] px-4 flex justify-between items-center text-[14px] border-b border-color">
@@ -109,6 +133,10 @@ const ConditionCommission:React.FC = () => {
                 <button 
                     type="button" 
                     className="m-w-[68px] h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
+                    onClick={() => {
+                        setDelType(0)
+						setDelVisible(true)
+                    }}
                 >
                     {t('cancelAll')}
                 </button>
@@ -137,6 +165,11 @@ const ConditionCommission:React.FC = () => {
                                 <button 
                                     type="button" 
                                     className="h-[25px] px-[10px] flex justify-center items-center bg-[var(--border-color-light)] rounded-[25px] text-[12px]"
+                                    onClick={() => {
+                                        setDelType(1)
+                                        setDelVisible(true)
+                                        setCurrentOrder(item)
+                                    }}
                                 >
                                     {t('cancel')}
                                 </button>
@@ -166,6 +199,13 @@ const ConditionCommission:React.FC = () => {
 					</li>
 				}
 			</ul>
+            <DelectModal 
+				open={delVisible}
+				orderId={[]}
+				type={delType}
+				onCancel={() => setDelVisible(false)}
+				onOk={handleDelOk} 
+			/>
         </>
     )
 }

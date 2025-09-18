@@ -237,7 +237,7 @@ const PopupContent:React.FC = () => {
               />
             </div>
             {/* 可平仓位 */}
-            <div className="text-[14px] text-[var(--text-color6)] mt-[-12px]">
+            <div className="text-[14px] text-[var(--text-color6)] mt-[10px]">
               可平仓位：63.19 USDT
             </div>
           </div>

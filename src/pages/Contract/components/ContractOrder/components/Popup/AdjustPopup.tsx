@@ -123,7 +123,7 @@ const PopupContent:React.FC = () => {
             className="spotSlider"
           />
           {/* 可用资产 */}
-          <div className="flex gap-[4px] text-[14px] h-[20px] items-center font-[400] mb-[16px] mt-[-12px]">
+          <div className="flex gap-[4px] text-[14px] h-[20px] items-center font-[400] mb-[16px] mt-[10px]">
             <span className="text-[var(--text-color6)]">{t('availableBalance')}:</span>
             <span className="text-[var(--text-color5)]">63.19 USDT</span>
           </div>

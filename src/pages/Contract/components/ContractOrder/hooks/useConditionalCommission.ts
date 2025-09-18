@@ -60,7 +60,7 @@ export const useConditionalCommission = (
 
   // 取消条件委托
   const handleCancelConditionalOrder = useCallback(
-    async (record: ConditionalCommission) => {
+    async (record: ConditionalCommission, isAll: boolean = false) => {
       try {
         const params = {
           orderId: record.id,
@@ -69,9 +69,9 @@ export const useConditionalCommission = (
         };
         const res = await cancelOrder(params);
         if (res.code === "0") {
-          message.success(res.msg);
+          !isAll && message.success(res.msg);
           // 刷新数据
-          getConditionalCommission();
+          !isAll && getConditionalCommission();
         } else {
           message.error(res.msg);
         }

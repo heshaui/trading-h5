@@ -24,15 +24,36 @@ import { CustomTab } from "@/components/CustomCom";
 import appStore from "@/store";
 import { observer } from 'mobx-react-lite';
 import useAuth from "@/hooks/useAuth";
+import { usePosition } from "../../ContractOrder/hooks/usePosition";
 import { usePopTypeContext, PopTypeEnum } from '@/hooks/usePopProvider';
 import { useContract } from '@/context/exchange-providers/ContractProvider';
 import { useUserConfig } from "@/hooks/useUserConfig";
-import { transferAll } from "@/services/assets";
+import { getUserBalanceAll, transferAll } from "@/services/assets";
+
+import {
+  createCoId,
+  createOrder,
+} from "@/services/contract";
+
 
 import ConfirmOrder from "./ConfirmOrder";
 import MarginModeModal from "../components/MarginModePopup";
 import LeverageModal from "../components/LeveragePopup";
 import FundTransferModal from "../components/FundTransferPopup";
+import RiskDisclosureModal from '../../RiskDisclosureModal';
+import { useNavigate } from "react-router-dom";
+
+export interface AccountBalance {
+  canUseAmount: string; // 可用余额
+  isolateMargin: string; // 逐仓保证金
+  lockAmount: string; // 锁定金额
+  realizedAmount: string; // 已实现盈亏
+  symbol: string; // 币种
+  totalAmount: string; // 总余额
+  totalMargin: string; // 总保证金
+  totalMarginRate: string; // 总保证金率
+  unRealizedAmount: string; // 未实现盈亏
+}
 
 type Props = {
   segmentedType?: string;
@@ -49,13 +70,17 @@ type Props = {
 };
 const SpotTradePage = observer(({ 
   segmentedType, onOk, onCancel,
-  symbol, availableBalance = 1, spotBalance, onOrderSubmit, onBalanceUpdate,
-  priceSetterRef, priceData, contractBalance=1
+  symbol, onOrderSubmit,
 }: Props) => {
   const { t } = useLanguage('contract');
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const { isLight } = useTheme();
   const { popType, setPopType } = usePopTypeContext();
+  const { tradePrice, depthData: orderBookData } = useContract();
+  const priceData = appStore.getActiveNewPrice();
   const [form] = Form.useForm();
+
 
   // 状态管理 - 按固定顺序声明所有状态
   const [currentCategory, setCurrentCategory] = useState<1 | 2 | 3>(1);
@@ -71,16 +96,19 @@ const SpotTradePage = observer(({
   const [showMarginModeModal, setShowMarginModeModal] = useState(false);
   const [showLeverageModal, setShowLeverageModal] = useState(false);
   const [showOrderSettingsModal, setShowOrderSettingsModal] = useState(false);
-  const [showTradingSettingsDrawer, setShowTradingSettingsDrawer] =
-    useState(false);
+  const [showTradingSettingsDrawer, setShowTradingSettingsDrawer] = useState(false);
   const [showFundTransferModal, setShowFundTransferModal] = useState(false);
   const [showOrderConfirmModal, setShowOrderConfirmModal] = useState(false);
   const [orderUnit, setOrderUnit] = useState<"BTC" | "USDT" | "张">("BTC");
   const [showCalculator, setShowCalculator] = useState(false);
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
+  const [showRiskDisclosure, setShowRiskDisclosure] = useState(false);
   // 新增触发价状态
+  // 下单确认设置状态
+  const [settingsUpdateTrigger, setSettingsUpdateTrigger] = useState(0);
   const [triggerPrice, setTriggerPrice] = useState<string>("");
   const [submitData, setSubmitData] = useState({}); //下单提交数据
+  //二次确认数据
   const [confirmData, setConfirmData] = useState({
     direction: 0,
     type: 1,
@@ -91,7 +119,11 @@ const SpotTradePage = observer(({
     marginMode: 1 as number,
     leverage: 65,
     orderType: "limit",
-  }); //二次确认数据
+  }); 
+  
+  // 余额
+  const [contractAssets, setContractAssets] = useState<AccountBalance[]>([]); // 合约账户数据
+  const [spotBalance, setSpotBalance] = useState<any[]>([]); // 现货账户余额数组
 
   // 新增验证错误状态
   const [validationErrors, setValidationErrors] = useState<{
@@ -102,16 +134,67 @@ const SpotTradePage = observer(({
 
   // 在所有Hooks声明之后获取store数据
   const currentContractInfo = appStore.getCurrentContractInfo();
+  /**
+   * maxLimitMoney:限价最大成交金额
+   * maxLimitVolume:限价最大成交量
+   * maxMarketMoney: 市价最大成交金额
+   * maxMarketVolume: 市价最大成交量
+   */
+  const {symbolPricePrecision,priceRange,maxLimitMoney,maxLimitVolume,maxMarketMoney,maxMarketVolume,minOrderVolume,minOrderMoney} =currentContractInfo.coinResultVo
   const { userConfig } = useUserConfig();
-  const symbolPricePrecision=currentContractInfo?.coinResultVo?.symbolPricePrecision
-  //限价最大成交金额
-  const maxLimitMoney=currentContractInfo?.coinResultVo?.maxLimitMoney
-  //限价最大成交量
-  const maxLimitVolume=currentContractInfo?.coinResultVo?.maxLimitVolume
-  //市价最大成交金额
-  const maxMarketMoney=currentContractInfo?.coinResultVo?.maxMarketMoney
-  //市价最大成交量
-  const maxMarketVolume=currentContractInfo?.coinResultVo?.maxMarketVolume
+  // 获取持仓数据
+  const { positions, getPosition } = usePosition({
+    contractId: currentContractInfo?.id
+  });
+
+  // 获取合约账户余额
+	const getContractBalance = async () => {
+		try {
+			const accountList = await appStore.loadContractAssets();
+			setContractAssets(accountList);
+		} catch (error) { }
+	}
+
+	// 获取现货账户余额
+	const getSpotBalance = async () => {
+		try {
+		const res = await getUserBalanceAll();
+		console.log("getUserBalanceAll response:", res);
+		console.log("getUserBalanceAll res.data:", res.data);
+		console.log("getUserBalanceAll res.data type:", typeof res.data);
+
+		if (res.code === "0" && Array.isArray(res.data)) {
+			setSpotBalance(res.data);
+		} else {
+			console.error("获取现货余额失败:", res);
+			setSpotBalance([]);
+		}
+		} catch (error) {
+			console.error("获取现货余额异常:", error);
+			setSpotBalance([]);
+		}
+	};
+
+   // 获取特定币种的资产信息
+  const getAssetBySymbol = (symbol: string): AccountBalance | undefined => {
+    if (!contractAssets) return;
+    return contractAssets.find((asset) => asset.symbol === symbol);
+  };
+
+  // 获取USDT资产可用余额，用于交易面板
+  const getAvailableUSDTBalance = (): number => {
+    // 如果保证金币种还没有加载，返回0
+    if (!currentContractInfo.marginCoin) {
+      return 0;
+    }
+    const usdtAsset = getAssetBySymbol(currentContractInfo.marginCoin);
+    return parseFloat(usdtAsset?.canUseAmount || "0");
+  };
+
+  // 使用useMemo来计算可用余额，确保在相关状态变化时重新计算
+  const availableBalance = React.useMemo(() => {
+    return getAvailableUSDTBalance();
+  }, [currentContractInfo.marginCoin, contractAssets]);
   
   // 获取当前订单类型
   const getOrderType = useCallback(() => {
@@ -133,108 +216,184 @@ const SpotTradePage = observer(({
     return formatted;
   }, []);
 
-  // 计算可买/可卖数量
+  // 根据表格实现可买/可卖数量计算
   const calculateMaxQuantity = useCallback((side?: "BUY" | "SELL") => {
-    if (availableBalance <= 0 || leverageLevel <= 0) return 0;
+    // 基础检查：必须有余额、杠杆、价格数据
+    if (availableBalance <= 0 || leverageLevel <= 0 || !priceData?.price) return 0;
+    
+    // 如果是限价单或条件单，且价格为空，则返回0
+    if ((currentCategory === 1 || currentCategory === 3) && (!price || price.toString().trim() === "")) {
+      return 0;
+    }
 
     // 获取合约信息
     const contractInfo = currentContractInfo;
-    const faceValue = contractInfo?.multiplier || 1; // 面值
-    const marginRate = contractInfo?.marginRate || 1; // 保证金汇率
-    const contractSide = contractInfo?.contractSide; // 1: 正向合约, 2: 反向合约
+    if (!contractInfo) return 0;
+    
+    const faceValue = contractInfo.multiplier || 1; // 面值(multiplier)
+    const marginRate = contractInfo.marginRate || 1; // 保证金汇率
+    const contractSide = contractInfo.contractSide; // 1: 正向合约, 0: 反向合约
+    const coUnitType = contractInfo.coUnitType || 2; // 1: 量(标的货币), 2: 张
 
     let calculationPrice = 0;
 
-    // 根据订单类型和方向确定价格
-    if (orderType === "limit") {
-      // 限价单使用输入的价格
-      const priceNum = typeof price === "string" ? parseFloat(price as string) : price;
-      if (!priceNum || priceNum <= 0) return 0;
-      calculationPrice = priceNum;
-    } else {
-      // 市价单根据买卖方向使用不同价格
-      const lastPrice = priceData?.lastPrice || priceData?.close || 1;
-      const bidPrice = priceData?.bidPrice || lastPrice; // 买一价
-      const askPrice = priceData?.askPrice || lastPrice; // 卖一价
+    // 获取当前最新价格
+    const lastPrice = parseFloat(priceData.price);
+    if (!lastPrice || lastPrice <= 0) return 0;
 
-      if (side === "BUY") {
-        // 买入使用卖一价
-        calculationPrice = typeof askPrice === "string" ? parseFloat(askPrice) : askPrice;
-      } else if (side === "SELL") {
-        // 卖出使用买一价
-        calculationPrice = typeof bidPrice === "string" ? parseFloat(bidPrice) : bidPrice;
-      } else {
-        // 默认使用最新价
-        calculationPrice = typeof lastPrice === "string" ? parseFloat(lastPrice) : lastPrice;
-      }
+    // 从深度数据中获取真实的买一价和卖一价
+    const bidPrice = orderBookData?.tick?.buys?.[0]?.[0] ? 
+      parseFloat(orderBookData.tick.buys[0][0] as any) : lastPrice;
+    const askPrice = orderBookData?.tick?.asks?.[0]?.[0] ? 
+      parseFloat(orderBookData.tick.asks[0][0] as any) : lastPrice;
+
+    if (side === "BUY") {
+      calculationPrice = askPrice; // 买入使用卖一价(ask price)
+    } else if (side === "SELL") {
+      calculationPrice = bidPrice; // 卖出使用买一价(bid price)
+    } else {
+      calculationPrice = lastPrice;
     }
 
     if (calculationPrice <= 0) return 0;
 
-    // 计算最大数量
     let maxQuantity = 0;
-    const totalBalance = availableBalance * leverageLevel * marginRate;
 
-    if (contractSide === 2) {
-      // 反向合约：可用余额 * 杠杆 * 价格 / 面值
-      maxQuantity = totalBalance * calculationPrice / faceValue;
+    // 根据表格实现计算逻辑
+    if (contractSide === 1) {
+      // 正向合约
+      if (coUnitType === 2) {
+        // 数量单位: 张 - 公式: (余额×杠杆÷汇率)÷(价格×面值)
+        maxQuantity = (availableBalance * leverageLevel / marginRate) / (calculationPrice * faceValue);
+      } else {
+        // 数量单位: 量 - 公式: (余额×杠杆÷汇率)÷价格
+        maxQuantity = (availableBalance * leverageLevel / marginRate) / calculationPrice;
+      }
     } else {
-      // 正向合约：可用余额 * 杠杆 / (面值 * 价格)
-      maxQuantity = totalBalance / (faceValue * calculationPrice);
+      // 反向合约 (contractSide === 0)
+      if (coUnitType === 2) {
+        // 数量单位: 张 - 公式: (余额×杠杆×价格)÷面值
+        maxQuantity = (availableBalance * leverageLevel * calculationPrice) / faceValue;
+      } else {
+        // 数量单位: 量 - 公式: 余额×杠杆×价格
+        maxQuantity = availableBalance * leverageLevel * calculationPrice;
+      }
     }
 
     return Math.max(0, maxQuantity);
-  }, [priceData, price, orderType, availableBalance, leverageLevel, currentContractInfo]);
+  }, [priceData, orderBookData, availableBalance, leverageLevel, currentContractInfo, price, currentCategory]);
 
-  // 计算成本 - 支持指定方向
+  // 计算可平数量 - 平仓时使用
+  const calculateCloseableQuantity = useCallback((side: "BUY" | "SELL") => {
+    if (!positions || positions.length === 0) return 0;
+
+    // 找到对应方向的持仓
+    const position = positions.find((pos:any) =>
+      pos.contractId === currentContractInfo?.id &&
+      pos.orderSide === side
+    );
+
+    return position?.canCloseVolume || 0;
+  }, [positions, currentContractInfo?.id]);
+
+  // 根据表格实现成本计算 - 区分限价单和市价单
   const calculateCost = useCallback((side?: "BUY" | "SELL") => {
     const quantityNum = typeof quantity === "string" ? parseFloat(quantity) : quantity;
-    const priceNum = typeof price === "string" ? parseFloat(price) : price;
-
+    
+    // 必须有输入数量才计算成本
     if (!quantityNum || quantityNum <= 0) return 0;
+    
+    // 必须有有效的价格数据和杠杆
+    if (!priceData?.price || !leverageLevel || leverageLevel <= 0) return 0;
 
     // 获取合约信息
     const contractInfo = currentContractInfo;
-    const faceValue = contractInfo?.multiplier || 1; // 面值
-    const marginRate = contractInfo?.marginRate || 1; // 保证金汇率，默认为1
-    const contractSide = contractInfo?.contractSide; // 1: 正向合约, 2: 反向合约
+    if (!contractInfo) return 0;
+    
+    const faceValue = contractInfo.multiplier || 1; // 面值(multiplier)
+    const marginRate = contractInfo.marginRate || 1; // 保证金汇率
+    const contractSide = contractInfo.contractSide; // 1: 正向合约, 0: 反向合约
+    const isMarketOrder = currentCategory === 2; // 是否为市价单
 
-    let cost = 0;
     let calculationPrice = 0;
 
-    if (currentCategory === 1 || currentCategory === 3) { // 限价单或条件限价单
-      if (!priceNum || priceNum <= 0) return 0;
-      calculationPrice = priceNum;
-    } else if (currentCategory === 2) { // 市价单
-      // 市价单根据做多做空方向使用不同价格
-      const lastPrice = priceData?.lastPrice || priceData?.close || 1;
-      const bidPrice = priceData?.bidPrice || lastPrice; // 买一价
-      const askPrice = priceData?.askPrice || lastPrice; // 卖一价
+    // 获取当前最新价格
+    const lastPrice = parseFloat(priceData.price);
+    if (!lastPrice || lastPrice <= 0) return 0;
 
-      if (side === "BUY") {
-        // 做多使用卖一价（买入时需要支付卖方的价格）
-        calculationPrice = typeof askPrice === "string" ? parseFloat(askPrice) : askPrice;
-      } else if (side === "SELL") {
-        // 做空使用买一价（卖出时按照买方的价格）
-        calculationPrice = typeof bidPrice === "string" ? parseFloat(bidPrice) : bidPrice;
+    // 限价单使用用户输入的价格，市价单使用市场价格
+    if (!isMarketOrder) {
+      // 限价单：使用用户输入的委托价格
+      const userInputPrice = typeof price === "string" ? parseFloat(price) : price;
+      if (userInputPrice && userInputPrice > 0) {
+        calculationPrice = userInputPrice;
       } else {
-        // 默认使用最新价
-        calculationPrice = typeof lastPrice === "string" ? parseFloat(lastPrice) : lastPrice;
+        // 如果没有用户输入价格，回退到最新价
+        calculationPrice = lastPrice;
       }
+    } else {
+      // 市价单：使用最新价估算
+      calculationPrice = lastPrice;
     }
 
-    if (calculationPrice > 0) {
-      if (contractSide === 2) {
-        // 反向合约：成本 = (张数 × 面值 ÷ 价格 ÷ 杠杆) × 保证金汇率
+    if (calculationPrice <= 0) return 0;
+
+    let cost = 0;
+
+    // 统一的成本计算公式，市价单和限价单使用相同逻辑，只是价格来源不同
+    const coUnitType = contractInfo.coUnitType || 2; // 1: 量(标的货币), 2: 张
+
+    if (contractSide === 1) {
+      // 正向合约
+      if (coUnitType === 2) {
+        // 数量单位: 张 - 公式: (量×面值×价格÷杠杆)×汇率
+        cost = (quantityNum * faceValue * calculationPrice / leverageLevel) * marginRate;
+      } else {
+        // 数量单位: 量 - 公式: (量×价格÷杠杆)×汇率
+        cost = (quantityNum * calculationPrice / leverageLevel) * marginRate;
+      }
+    } else {
+      // 反向合约 (contractSide === 0)
+      if (coUnitType === 2) {
+        // 数量单位: 张 - 公式: (量×面值÷价格÷杠杆)×汇率
         cost = (quantityNum * faceValue / calculationPrice / leverageLevel) * marginRate;
       } else {
-        // 正向合约：成本 = (张数 × 面值 × 价格 ÷ 杠杆) × 保证金汇率
-        cost = (quantityNum * faceValue * calculationPrice / leverageLevel) * marginRate;
+        // 数量单位: 量 - 公式: (量÷价格÷杠杆)×汇率
+        cost = (quantityNum / calculationPrice / leverageLevel) * marginRate;
       }
     }
 
-    return cost;
-  }, [quantity, price, currentCategory, leverageLevel, currentContractInfo, priceData]);
+    return Math.max(0, cost);
+  }, [quantity, leverageLevel, currentContractInfo, priceData, orderBookData, currentCategory]);
+
+   // 根据activeNewPrice和priceRange计算允许的价格范围
+  const getPriceRangeInfo = () => {
+    const activeNewPrice = appStore.getActiveNewPrice();
+    const currentPrice = activeNewPrice?.price;
+    
+
+    
+    if (!currentPrice || !priceRange) {
+
+      return { minPrice: 0, maxPrice: 0, currentPrice: 0, isValid: false };
+    }
+
+    const rangePercent = priceRange / 100; // 转换为小数
+    const minPrice = currentPrice * (1 - rangePercent);
+    const maxPrice = currentPrice * (1 + rangePercent);
+    
+    const result = { 
+      minPrice: Number(minPrice.toFixed(8)), 
+      maxPrice: Number(maxPrice.toFixed(8)), 
+      currentPrice: Number(currentPrice), 
+      isValid: true 
+    };
+    
+
+    return result;
+  };
+
+  const priceRangeInfo = getPriceRangeInfo();
 
   // 实时验证函数
   const validateField = useCallback((field: 'price' | 'quantity' | 'triggerPrice', value: string | number): string | undefined => {
@@ -263,11 +422,31 @@ const SpotTradePage = observer(({
       }
     }
 
+    // 价格范围验证（仅限价格字段）
+    if (field === 'price') {
+      const currentPriceRangeInfo = getPriceRangeInfo();
+      if (currentPriceRangeInfo.isValid) {
+        const { minPrice, maxPrice } = currentPriceRangeInfo;
+        
+        if (numValue < minPrice || numValue > maxPrice) {
+          return t('tradingPanel.validation.priceOutOfRange', { 
+            minPrice, 
+            maxPrice 
+          }) || `价格范围：${minPrice} - ${maxPrice}`;
+        }
+      }
+    }
+
     // 特定字段的额外验证
     if (field === 'quantity') {
       // 验证是否为正整数
       if (!Number.isInteger(numValue)) {
         return t("tradingPanel.validation.mustBeInteger");
+      }
+      
+      // 验证最小成交量限制
+      if (minOrderVolume && numValue < minOrderVolume) {
+        return t("tradingPanel.validation.belowMinVolume", { min: minOrderVolume }) || `最小委托数量: ${minOrderVolume}`;
       }
       
       // 验证最大成交量限制
@@ -278,14 +457,9 @@ const SpotTradePage = observer(({
       if (orderType === 'market' && maxMarketVolume && numValue > maxMarketVolume) {
         return t("tradingPanel.validation.exceedsMaxMarketVolume", { max: maxMarketVolume });
       }
-      
-      const maxQuantity = transactionType === 1 ? calculateMaxQuantity("BUY") : calculateMaxQuantity("SELL");
-      if (numValue > maxQuantity) {
-        return t("tradingPanel.validation.exceedsMaxQuantity", { action: transactionType === 1 ? t("buy") : t("sell") });
-      }
     }
 
-    // 价格和数量组合验证 - 验证最大成交金额
+    // 价格和数量组合验证 - 验证最小和最大成交金额
     if ((field === 'price' || field === 'quantity') && price && quantity) {
       const priceNum = typeof price === 'string' ? parseFloat(price) : price;
       const quantityNum = typeof quantity === 'string' ? parseFloat(quantity) : quantity;
@@ -294,6 +468,12 @@ const SpotTradePage = observer(({
         const orderAmount = priceNum * quantityNum;
         const orderType = getOrderType();
         
+        // 验证最小成交金额
+        if (minOrderMoney && orderAmount < minOrderMoney) {
+          return t("tradingPanel.validation.belowMinAmount", { min: minOrderMoney }) || `最小委托金额: ${minOrderMoney}`;
+        }
+        
+        // 验证最大成交金额
         if (orderType === 'limit' && maxLimitMoney && orderAmount > maxLimitMoney) {
           return t("tradingPanel.validation.exceedsMaxLimitAmount", { max: maxLimitMoney });
         }
@@ -304,7 +484,7 @@ const SpotTradePage = observer(({
     }
 
     return undefined;
-  }, [calculateMaxQuantity, transactionType, symbolPricePrecision, getOrderType, maxLimitVolume, maxMarketVolume, maxLimitMoney, maxMarketMoney, price, quantity, t]);
+  }, [calculateMaxQuantity, transactionType, symbolPricePrecision, getOrderType, maxLimitVolume, maxMarketVolume, maxLimitMoney, maxMarketMoney, minOrderVolume, minOrderMoney, price, quantity, t, getPriceRangeInfo]);
 
   // 处理外部设置价格 - 使用 useCallback 避免依赖项问题
   const handleSetPriceFromExternal = useCallback((newPrice: number) => {
@@ -321,6 +501,11 @@ const SpotTradePage = observer(({
     }
   }, [currentCategory, validateField]);
 
+  // 将最新成交点击的价格传进来
+  useEffect(() => {
+    handleSetPriceFromExternal(tradePrice);
+  }, [tradePrice, handleSetPriceFromExternal]);
+
   // 监听 userConfig.nowLevel 变化，同步更新本地 leverageLevel 状态
   useEffect(() => {
     if (userConfig?.nowLevel && userConfig.nowLevel !== leverageLevel) {
@@ -329,51 +514,56 @@ const SpotTradePage = observer(({
     }
   }, [userConfig?.nowLevel, leverageLevel]);
 
-  // 将设置价格的函数暴露给父组件
-  useEffect(() => {
-    if (priceSetterRef) {
-      priceSetterRef.current = handleSetPriceFromExternal;
-    }
-  }, [priceSetterRef, handleSetPriceFromExternal]);
-
   // 处理百分比滑块变化
   const handlePercentageChange = (value: number) => {
     setPercentage(value);
-    // 根据当前交易类型计算最大数量
-    const maxQuantity = transactionType === 1 ? calculateMaxQuantity("BUY") : calculateMaxQuantity("SELL");
+    // 根据当前交易类型和开仓/平仓状态计算最大数量
+    let maxQuantity = 0;
+    if (transactionType === 1) {
+      // 开仓模式
+      maxQuantity = calculateMaxQuantity("BUY");
+    } else {
+      // 平仓模式 - 根据当前选择的买入/卖出方向选择对应的可平数量
+      // 注意：平空使用SELL持仓，平多使用BUY持仓
+      maxQuantity = calculateCloseableQuantity("SELL"); // 这里需要根据具体的买卖方向调整
+    }
     const newQuantity = (maxQuantity * value) / 100;
     setQuantity(newQuantity);
   };
 
-  const handleSettings = () => {
-    setShowTradingSettingsDrawer(true);
-  };
+  // 获取持仓数据 - 合约变化时刷新
+  useEffect(() => {
+    if (currentContractInfo?.id && getPosition) {
+      getPosition({ showLoading: false, showMessage: false });
+    }
+  }, [currentContractInfo?.id, getPosition]);
 
   // 检查是否应该跳过下单确认
-  const getShouldSkipConfirm = (): boolean => {
-    try {
-      // 优先检查新的设置格式
-      const savedSettings = localStorage.getItem('tradingSettings');
-      if (savedSettings) {
-        const settings = JSON.parse(savedSettings);
-        return !settings.preOrderConfirm; // preOrderConfirm为false时跳过确认
-      }
-      
-      // 兼容旧的设置格式
-      return localStorage.getItem("dontShowOrderConfirm") === "true";
-    } catch (error) {
-      console.error('读取下单确认设置失败:', error);
-      // 出错时默认显示确认框
-      return false;
-    }
-  };
+  const getShouldSkipConfirm = useCallback((): boolean => {
+    return localStorage.getItem("dontShowOrderConfirm") === "true";
+  }, [settingsUpdateTrigger]);
 
   // 处理订单提交
   const handleSubmit = (side: "BUY" | "SELL") => {
+    // 检查用户是否登录
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
+
+    // 检查用户是否已开通合约交易
+    if (userConfig.openContract !== 1) {
+      // 用户未开通合约，触发风险确认书
+      setShowRiskDisclosure(true)
+    }
+
+
     // 表单验证
     if (!validateForm()) {
       return;
     }
+
 
     setSide(side);
     
@@ -402,7 +592,8 @@ const SpotTradePage = observer(({
               ? "market"
               : "conditional",
       };
-      handleConfirmOrder(orderData, false);
+      // 直接提交订单，不需要调用handleConfirmOrder（避免重置设置）
+      onOrderSubmit?.(orderData);
       return;
     }
 
@@ -469,6 +660,12 @@ const SpotTradePage = observer(({
       return false;
     }
 
+    // 验证最小委托数量
+    if (minOrderVolume && quantityNum < minOrderVolume) {
+      message.error(t("tradingPanel.validation.belowMinVolume", { min: minOrderVolume }) || `最小委托数量: ${minOrderVolume}`);
+      return false;
+    }
+
     // 验证可用余额
     if (availableBalance <= 0) {
       message.error(t("tradingPanel.validation.insufficientBalance"));
@@ -481,12 +678,12 @@ const SpotTradePage = observer(({
       return false;
     }
 
-    // 验证数量是否超过可买/可卖数量
-    const maxQuantity = transactionType === 1 ? calculateMaxQuantity("BUY") : calculateMaxQuantity("SELL");
-    if (quantityNum > maxQuantity) {
-      message.error(t("tradingPanel.validation.quantityExceedsMax", { action: transactionType === 1 ? t("buy") : t("sell") }));
-      return false;
-    }
+    // // 验证数量是否超过余额限制
+    // const maxQuantity = transactionType === 1 ? calculateMaxQuantity("BUY") : calculateMaxQuantity("SELL");
+    // if (quantityNum > maxQuantity) {
+    //   message.error(t("tradingPanel.validation.insufficientMargin") || "保证金余额不足");
+    //   return false;
+    // }
 
     // 验证最大成交量限制
     const orderType = getOrderType();
@@ -499,11 +696,19 @@ const SpotTradePage = observer(({
       return false;
     }
 
-    // 验证最大成交金额限制
+    // 验证最小和最大成交金额限制
     if (currentCategory === 1 || currentCategory === 3) { // 限价单或条件单需要价格
       const priceNum = parseFloat(price?.toString() || '0');
       if (priceNum > 0) {
         const orderAmount = priceNum * quantityNum;
+        
+        // 验证最小成交金额
+        if (minOrderMoney && orderAmount < minOrderMoney) {
+          message.error(t("tradingPanel.validation.belowMinAmount", { min: minOrderMoney }) || `最小委托金额: ${minOrderMoney}`);
+          return false;
+        }
+        
+        // 验证最大成交金额
         if (orderType === 'limit' && maxLimitMoney && orderAmount > maxLimitMoney) {
           message.error(t("tradingPanel.validation.exceedsMaxLimitAmount", { max: maxLimitMoney }));
           return false;
@@ -515,6 +720,14 @@ const SpotTradePage = observer(({
       const marketPrice = typeof lastPrice === 'string' ? parseFloat(lastPrice) : lastPrice;
       if (marketPrice > 0) {
         const orderAmount = marketPrice * quantityNum;
+        
+        // 验证最小成交金额
+        if (minOrderMoney && orderAmount < minOrderMoney) {
+          message.error(t("tradingPanel.validation.belowMinAmount", { min: minOrderMoney }) || `最小委托金额: ${minOrderMoney}`);
+          return false;
+        }
+        
+        // 验证最大成交金额
         if (maxMarketMoney && orderAmount > maxMarketMoney) {
           message.error(t("tradingPanel.validation.exceedsMaxMarketAmount", { max: maxMarketMoney }));
           return false;
@@ -631,11 +844,11 @@ const SpotTradePage = observer(({
       marginModel: marginModel,
     };
 
-    // 如果用户选择不再提醒，可以在这里保存设置
-    if (dontRemind) {
-      // 保存到本地存储或全局状态
-      localStorage.setItem("dontShowOrderConfirm", "true");
-    }
+    // 保存设置
+    localStorage.setItem("dontShowOrderConfirm", dontRemind ? "true" : "false");
+    
+    // 触发设置更新
+    setSettingsUpdateTrigger(prev => prev + 1);
 
     onOrderSubmit?.(data);
     setShowOrderConfirmModal(false);
@@ -660,17 +873,23 @@ const SpotTradePage = observer(({
     setShowFundTransferModal(true);
   };
 
+  const onBalanceUpdate = () => {
+    getContractBalance();
+    getSpotBalance();
+  };
+  
   // 处理资金划转确认
   const handleFundTransferConfirm = async (transferData: any) => {
     const dataEncrypt = await encryptData(transferData);
     const res = await transferAll(dataEncrypt);
+    console.log("res:", res);
     if (res.code === "0" && res.data) {
-      message.success(t("tradingPanel.transferSuccess"));
+      Toast.show({icon: 'success', content: t('contract:tradingPanel.transferSuccess')});
       // 通知父组件更新余额
     } else {
-      message.error(t("tradingPanel.transferFailed"));
+      Toast.show({icon: 'fail', content: t('contract:tradingPanel.transferFailed')});
     }
-    onBalanceUpdate?.();
+    onBalanceUpdate();
   };
 
   // 订单类型标签
@@ -685,6 +904,31 @@ const SpotTradePage = observer(({
   const handelSubmitOrder = () => {
 
   }
+
+  // 处理风险确认书取消
+  const handleRiskDisclosureCancel = () => {
+    setShowRiskDisclosure(false);
+  };
+
+  // 处理风险确认书确认
+  const handleRiskDisclosureConfirm = async () => {
+    setShowRiskDisclosure(false);
+    // 这里可以处理用户确认风险的逻辑，比如开通合约交易
+    try {
+      const res = await createCoId({
+        contractId: currentContractInfo.id,
+        openContract: 1,
+      });
+      if (res.code === "0") {
+        Toast.show({
+            icon: 'success',
+            content: t("contract:contractOpenSuccess"),
+        });
+      }
+    } catch (error) {
+      console.error("开通合约交易失败:", error);
+    }
+  };
 
   if (popType === PopTypeEnum.PLACE_OREER) {
     return <ConfirmOrder 
@@ -1046,9 +1290,15 @@ const SpotTradePage = observer(({
         <FundTransferModal
           visible={showFundTransferModal}
           spotBalance={spotBalance}
-          contractBalance={contractBalance}
+          contractBalance={contractAssets}
           onClose={() => setShowFundTransferModal(false)}
           onConfirm={handleFundTransferConfirm}
+        />
+        {/* 风险确认书模态框 */}
+        <RiskDisclosureModal
+            open={showRiskDisclosure}
+            onCancel={handleRiskDisclosureCancel}
+            onConfirm={handleRiskDisclosureConfirm}
         />
     </div>
   );

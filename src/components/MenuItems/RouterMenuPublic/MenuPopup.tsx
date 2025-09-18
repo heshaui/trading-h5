@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Iconify } from '@/components/icon';
 import { Popup } from 'antd-mobile';
@@ -18,6 +18,23 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, theme, onClose, menuList
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+      
+  // 切换展开状态
+  const toggleExpand = (key: string) => {
+      setExpandedItems(prev => ({
+          ...prev,
+          [key]: !prev[key]
+      }));
+  };
+
+  useEffect(() => {
+      menuList.forEach(item => {
+          if (item.children?.some(child => child.path === currentPath)) {
+            setExpandedItems(prev => ({ ...prev, [item.path]: true }));
+          }
+      });
+  }, [currentPath, visible]);
 
   const pendingPathRef = useRef<string | null>(null);
 
@@ -105,21 +122,61 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, theme, onClose, menuList
       {/* p1 类型菜单 - 纵向排列 */}
       {p1MenuList.length > 0 && <ul className="pr-[20px]  mt-[20px]">
         {p1MenuList.map((menu: MenuType) => {
-          const active = currentPath === menu.path;
+          let active = currentPath === menu.path;
+          const isShow = expandedItems[menu.path];
+          if (menu.children && menu.children.map(item => item.path).includes(currentPath)) {
+            active = true
+          }
           return (
-            <li
-              key={menu.path}
-              className={active ? `${styles.user_menu_item} ${styles.active}` : styles.user_menu_item}
-              onClick={() => handleMenuClick(menu.path)}
-            >
-              <div className={`${styles.left_border}`}></div>
-              {typeof menu.icon === 'string' ? (
-                <Iconify icon={menu.icon} className="text-[24px]" />
-              ) : (
-                menu.icon
-              )}
-              <span className="ml-[18px]">{menu.title}</span>
-            </li>
+            <>
+            {menu.children ? 
+              <>
+                <li 
+                  key={menu.path}
+                  className={`${styles.user_menu_item} ${active ? styles.active : ''} justify-between`}
+                  onClick={() => toggleExpand(menu.path)}
+                >
+                  <div className="flex items-center h-full">
+                    <div className={`${styles.left_border}`}></div>
+                    {typeof menu.icon === 'string' ? (
+                      <Iconify icon={menu.icon} className="text-[24px]" />
+                    ) : (
+                      menu.icon
+                    )}
+                    <span className="ml-[18px]">{menu.title}</span>
+                  </div>
+                  <Iconify icon={isShow ? 'icon-park-outline:up' : 'icon-park-outline:down'} className="text-[24px] text-[var(--text-color5)]"/>
+                </li>
+                {
+                  isShow && <ul>
+                    {
+                        menu.children.map(child => {
+                            const isChildActive = currentPath === child.path
+                            return (
+                                <li className={`${styles.user_menu_item} pl-[58px] tip-color ${isChildActive ? '!text-[var(--theme-color)] !font-medium' : 'font-[400]'}`}
+                                onClick={() => handleMenuClick(child.path)}
+                                >{child.title}</li>
+                            )
+                        })
+                    }
+                  </ul>
+                }
+              </> :
+              <li
+                key={menu.path}
+                className={active ? `${styles.user_menu_item} ${styles.active}` : styles.user_menu_item}
+                onClick={() => handleMenuClick(menu.path)}
+              >
+                <div className={`${styles.left_border}`}></div>
+                {typeof menu.icon === 'string' ? (
+                  <Iconify icon={menu.icon} className="text-[24px]" />
+                ) : (
+                  menu.icon
+                )}
+                <span className="ml-[18px]">{menu.title}</span>
+              </li>
+            }
+            </>
           );
         })}
       </ul>}

@@ -397,6 +397,30 @@
         }
     }
 }
+.spot_number_box {
+    position: relative;
+    .controls {
+        position: absolute;
+        right: 2px;
+        top: 1px;
+        z-index: 10;
+        flex-shrink: 0;
+        width: 20px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0 8px 8px 0;
+        border-left: 1px solid var(--border-color4);
+        button {
+            width: 20px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+        }
+        .border-bottom {
+            border-bottom: 1px solid var(--border-color4);
+        }
+    }
+}
 .spot_number_input {
     .ant-input-number-input{
         text-align: right !important;
@@ -416,6 +440,11 @@
     }
     &.ant-input-number-outlined:hover {
         background-color: transparent !important;
+    }
+    &.spot_controls {
+        .ant-input-number-suffix {
+            margin-right: 31px;
+        }
     }
 }
 .adm-popover.adm-popover-dark {

@@ -26,6 +26,7 @@ import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import type { DataType, DataLogsType } from '@/type/spot/table';
 import { getRound } from '@/utils/getUseRate'
 import { division, nul, roundDown } from '@/utils';
+import { BigNumber } from 'bignumber.js';
 import appStore from '@/store';
 import { getOrderInfo } from '@/services/spot'
 
@@ -385,11 +386,13 @@ const SpotOrderPage = () => {
 				const flag = orderDirection(record.takerSide, record.buyerUserId, record.sellerUserId)
 				// const price=nul(record.tradePrice,record.quantity)
 				if (flag === 0) {
+					const buyFee = new BigNumber(_buyFee).toFormat(8)
 					const { baseScaleResult, baseSymbol, coinSymbol } = getRound(symbolName, _buyFee || 0)
-					return <span>{`${baseScaleResult} ${coinSymbol || '--'}`}</span>
+					return <span>{`${buyFee} ${coinSymbol || '--'}`}</span>
 				} else if (flag === 1) {
+					const sellFee = new BigNumber(record.sellFee).toFormat(8)
 					const { baseScaleResult, baseSymbol } = getRound(symbolName, record.sellFee || 0)
-					return <span>{`${baseScaleResult} ${baseSymbol || '--'}`}</span>
+					return <span>{`${sellFee} ${baseSymbol || '--'}`}</span>
 				} else {
 					return '--'
 				}
@@ -456,7 +459,7 @@ const SpotOrderPage = () => {
 					<span className={`mr-1 `}>
 						{getStatus(recordData?.status)}
 					</span>
-					{getCompletion()}
+					{recordData?.status !== 3 && recordData?.status !== 6 && getCompletion()}
 				</div>
 			</div>
 			<div className={`${styles.content_body}`}>

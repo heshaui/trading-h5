@@ -137,7 +137,7 @@ const AssetsMainPage = observer(() => {
                 const text = add(record.balance || 0, record.releaseBalance || 0);
                 const text2 = add(text, record.frozenBalance || 0);
                 // 添加默认值和检查
-                const rateKeyName = rateKey.split("-")[0].trim();
+                // const rateKeyName = rateKey.split("-")[0].trim();
 
                 // 确保 rateKeyName 有值
                 // const { rate,symbol } = getRate(record.coinName, text2, rateKeyName);
@@ -167,76 +167,6 @@ const AssetsMainPage = observer(() => {
 
     const goFlash = async (coinName: string) => {
         navigate(`/flash?${coinName}`);
-    };
-
-    const getCoinList = async (
-        type: string,
-        coinId: any,
-        coinCan?: any,
-        coinPair?: boolean
-    ) => {
-        if (type === "1" || type === "2") {
-            try {
-                const res = await getCoinById(coinId);
-                const { data, code } = res;
-                if (code === "0") {
-                    if (type === "1") {
-                        if (data?.canWithdraw === 1) {
-                            //   navigate(ROUTER_KEY_ASSETS.WITHDRAW_MONEY);
-                        } else {
-                            Toast.show({
-                                content: t("assetsAccount.button.withdrawError2"),
-                                icon: 'fail'
-                            });
-                        }
-                        // //重新加载币种数据
-                        // if (coinCan !== data?.canWithdraw) {
-                        //     appStore.loadCoinList() //加载币种数据
-                        // }
-                    } else if (type === "2") {
-                        if (data?.canRecharge === 1) {
-                            //   navigate(ROUTER_KEY_ASSETS.TOP_UP);
-                        } else {
-                            Toast.show({
-                                content: t("assetsAccount.button.depositError2"),
-                                icon: 'fail'
-                            });
-                        }
-                        // //重新加载币种数据
-                        // if (coinCan !== data?.canRecharge) {
-                        //     appStore.loadCoinList() //加载币种数据
-                        // }
-                    }
-                } else {
-                    Toast.show({
-                        content: res.message,
-                        icon: 'fail'
-                    });
-                }
-            } catch (error) {
-                Toast.show({
-                    content: String(error),
-                    icon: 'fail'
-                });
-            }
-        } else if (type === "3") {
-            if (coinPair) {
-                // router.push(ROUTER_KEY_SPOT.INDEX);
-            } else {
-                Toast.show({
-                    content: t("assetsAccount.button.tradeError2"),
-                    icon: 'fail'
-                });
-            }
-        }
-    };
-    const pageChange = async (page: number, pageSize: number) => {
-        const pageData = {
-            page: page,
-            pageSize: pageSize,
-        };
-        setPageParam(pageData);
-        paramdataRef.current = pageData;
     };
     const searchInputChange = (e: any) => {
         const value = e.target.value;
@@ -269,21 +199,23 @@ const AssetsMainPage = observer(() => {
         try {
             const res = await getUserBalanceAll();
             if (res.code === "0") {
-                setInitTableData(res.data || []);
-                setTableData(res.data || []);
-                // const totalUsd = res.data.reduce((sum: number, curr: any) => {
-                //     const coinTotal = add(
-                //         add(curr.balance || 0, curr.releaseBalance || 0),
-                //         curr.frozenBalance || 0
-                //     );
-                //     const coinTotalToday=coinTotalCount(coinTotal, curr.recharge, curr.withdrawal, curr.gift)
-                //     const balance = getCoinRate(curr.coinName, coinTotal).coinRate
-                //     const todayBalance = getCoinRate(curr.coinName, coinTotalToday).coinRate
-                //     return {
-                //         balance: sum + Number(balance) || 0,
-                //         todayBalance: sum + Number(todayBalance) || 0
-                //     }
-                // }, { balance: 0, todayBalance: 0 });
+                const shortData = res.data.slice()?.sort((a:any,b:any)=>{
+                    const aTotal = add(
+                        add(a.balance || 0, a.releaseBalance || 0),
+                        a.frozenBalance || 0
+                    );
+                    const aUsdt = nul(aTotal, a.rateValue || 0);
+                    const bTotal = add(
+                        add(b.balance || 0, b.releaseBalance || 0),
+                        b.frozenBalance || 0
+                    );
+                    const bUsdt = nul(bTotal, b.rateValue || 0);
+                    return bUsdt - aUsdt;
+                })
+                setInitTableData(shortData || []);
+                setTableData(shortData || []);
+
+
                 const balance = res.data.reduce((sum: number, curr: any) => {
                     const coinTotal = add(
                         add(curr.balance || 0, curr.releaseBalance || 0),
@@ -413,7 +345,7 @@ const AssetsMainPage = observer(() => {
 
     try {
       const websocket = new WebSocketService(
-        `${process.env.NEXT_PUBLIC_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
+        `${process.env.REACT_APP_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
       );
       balanceDataRef.current = websocket;
       // });

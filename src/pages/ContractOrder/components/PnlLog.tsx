@@ -70,12 +70,6 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	const getContractShowType = () => {
 		return t(`contractInfo.${'demo'}`)
 	}
-	
-	// 计算完成度
-	const setFinally = (num: number, total: number) => {
-		if (!num || !total) return '0%';
-		return (Number(num)/Number(total)).toFixed(2)+'%';
-	}
 
 	const handleSelect = <K extends keyof ParamData>(value: ParamData[K], type: K) => {
 		if (value || value?.toString() === '0') {

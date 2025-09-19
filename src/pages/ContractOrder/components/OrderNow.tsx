@@ -13,7 +13,7 @@ import { BigNumber } from 'bignumber.js';
 
 import DelectModal from '@/pages/SpotOrder/components/TipPop/Delect_modal';
 
-import { OrdinaryCommission as DataType } from "@/pages/Contract/components/ContractOrder/hooks";
+import { useOrdinaryCommission, OrdinaryCommission as DataType } from "@/pages/Contract/components/ContractOrder/hooks";
 import { Side, SideMap, Type, PositionType, Open, Status, TypeMap, PositionTypeMap } from '@/pages/Contract/components/ContractOrder/configs/columns';
 import { getCurrentOrderList, getPlanOrderList, cancelOrder } from "@/services/contract";
 
@@ -35,8 +35,11 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
     const currentSymbol = currentContractInfo?.symbol || "";
     const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
 
+	// 普通委托
+	const { handleCancelOrdinaryOrder } = useOrdinaryCommission();
+
 	const [delVisible, setDelVisible] = useState(false);
-	const [orderIds, setOrderIds] = useState<string[]>([]);
+	const [currentOrder, setCurrentOrder] = useState<DataType>();
 	const [delType, setDelType] = useState(0); // 0:全部 1: 单个
 	const [orderList, setOrderList] = useState<DataType[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -150,42 +153,35 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 				status: Status.PENDING
 			}
 		])
+		getOrderListData();
 	}
 
 	// 条件变化时需要初始化页数
 	useEffect(() => {
 		initData();
-		//getOrderListData();
 	}, [currentLanguage])
 
 	// 撤销订单
 	const delOrder = async() => {
-		try {
-			const params = {
-				orderId: orderIds,
-				isConditionOrder: false,
+		await handleCancelOrdinaryOrder(currentOrder!, true);
+		message.success(t("cancelled"))
+	}
+	// 全部撤销
+	const handleCancelAllOrders = async () => {
+		for (const record of orderList) {
+			try {
+				await handleCancelOrdinaryOrder(record, true)
+			} catch (error) {
+				console.error("撤销失败:", error)
 			}
-			const res = await cancelOrder(params)
-			if (res.code === '0') {
-				message.success('spot:spot.toastModal.canceled')
-			} else {
-				Toast.show({
-					content: res.message,
-					icon: 'fail',
-				})
-			}
-			getOrderListData()
-		} catch (error) {
-			Toast.show({
-				content: String(error),
-				icon: 'fail',
-			})
 		}
+		message.success(t("cancelled"))
+		getOrderListData();
 	}
 	// 撤单确认
 	const handleDelOk = () => {
 		setDelVisible(false);
-		delOrder();
+		delType ? delOrder() : handleCancelAllOrders();
 	}
 
 	return (
@@ -255,7 +251,6 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 					onClick={() => {
 						setDelType(0)
 						setDelVisible(true)
-						setOrderIds(orderIds.map((item:any) => item.id))
 					}}
                 >
                     {t('cancelAll')}
@@ -288,7 +283,7 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 									onClick={() => {
 										setDelType(1)
 										setDelVisible(true)
-										setOrderIds([item.id])
+										setCurrentOrder(item)
 									}}
 								>
 									{t('cancel')}
@@ -322,7 +317,7 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 			{orderList.length > 0 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
 			<DelectModal 
 				open={delVisible}
-				orderId={orderIds}
+				orderId={[]}
 				type={delType}
 				onCancel={() => setDelVisible(false)}
 				onOk={handleDelOk} 

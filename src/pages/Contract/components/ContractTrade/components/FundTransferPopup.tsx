@@ -6,6 +6,7 @@ import { Iconify } from '@/components/icon';
 import { getLabel } from '@/utils';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
+import { useUserConfig } from "@/hooks/useUserConfig";
 import styles from './FundTransferPopup.module.scss';
 
 import { ReactComponent as TransferIcon } from '@/assets/images/exchange/icon-convert.svg';
@@ -35,22 +36,15 @@ const FundTransferPopup:React.FC<Props> = ({
 	const [availableBalance] = useState(11111555503.012312338123); // 可用余额
 	const [openContract, setOpenContract] = useState(false);
 	const coinList = appStore.getCoinList();
+	const publicInfo=appStore.getPublicInfo()
+  	const marginCoinList=publicInfo.marginCoinList
+	const { userConfig } = useUserConfig();
 
-	// 获取合约账户状态
-	const getContractStatus = async () => {
-		// 获取当前合约信息 
-		const contractInfo = appStore.getCurrentContractInfo();
-		const userConfig = await appStore.loadUserConfig({
-			contractId: contractInfo.id,
-		});
+	useEffect(() => {
 		if (userConfig && userConfig.openContract === 1) {
 			setOpenContract(true)
 		}
-	}
-
-	useEffect(() => {
-		getContractStatus();
-	}, [])
+	}, [userConfig])
 
 
 	// 监听币种和账户变化，更新可用余额
@@ -72,12 +66,13 @@ const FundTransferPopup:React.FC<Props> = ({
 	//   { value: 'BTC', label: 'BTC', subLabel: 'Bitcoin' },
 	//   { value: 'ETH', label: 'ETH', subLabel: 'Ethereum' }
 	// ];
+
 	console.log(coinList);
-	const coinOptions = coinList.map(coin => ({
+	const coinOptions =  coinList.filter(coin => marginCoinList.includes(coin.coinName)).map(coin => ({
 		value: coin.coinName,
 		label: (
 			<div className="flex items-center">
-				<Image src={coin.iconUrl} alt={coin.coinName} className="!w-[20px] !-[20px] rounded-full" preview={false} />
+				<Image src={coin.iconUrl} alt={coin.coinName} className="!w-[20px] !h-[20px] rounded-full" />
 				<span className="leading-[20px] text-[14px] ml-[10px]">{coin.coinName}</span>
 			</div>
 		),
@@ -350,7 +345,7 @@ const FundTransferPopup:React.FC<Props> = ({
 			destroyOnClose
 			position="bottom"
 			bodyStyle={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-			bodyClassName={`h-[99.9vh] !bg-[var(--background17)] !text-[var(--text-color5)]`}
+			bodyClassName={`h-[99.9dvh] !bg-[var(--background17)] !text-[var(--text-color5)]`}
 		>
 			<p className="flex justify-between items-center h-[50px] text-[16px] font-medium px-4 border-b border-[var(--border-color6)]">
 				<span>{t('fundTransfer.title')}</span>

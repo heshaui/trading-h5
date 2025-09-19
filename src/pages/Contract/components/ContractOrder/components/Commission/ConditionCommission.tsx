@@ -19,7 +19,7 @@ const ConditionCommission:React.FC = () => {
     const currentContractInfo = appStore.getCurrentContractInfo();
     const currentSymbol = currentContractInfo?.symbol || "";
     const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
-    const { setConditionOrderCount } = useContract();
+    const { setConditionOrderCount, addOrderNotice } = useContract();
 
     const [onlyCurrentSymbol, setOnlyCurrentSymbol] = useState(false);
     const [orderList, setOrderList] = useState<ConditionalCommission[]>([]);
@@ -38,55 +38,55 @@ const ConditionCommission:React.FC = () => {
     });
 
     useEffect(() => {
-        // getConditionalCommission();
-    }, [getConditionalCommission, currentSymbol, currentContractInfo?.id]);
+        getConditionalCommission();
+    }, [getConditionalCommission, currentSymbol, currentContractInfo?.id, addOrderNotice]);
 
     useEffect(() => {
-		const data:ConditionalCommission[]  = [
-			{
-				id: '',
-				contractId: 0,
-				symbol: 'BTCUSDT',
-				type: Type.LIMIT,
-				side: Side.BUY,
-				triggerPrice: 40987.092,
-				price: 40987.092,
-				size: 98712,
-				orderType: '',
-				onlyReduce: false,
-				createTime: Date.now(),
-				expireTime: Date.now()
-			},
-			{
-				id: '',
-				contractId: 0,
-				symbol: 'BTCUSDT',
-				type: Type.LIMIT,
-				side: Side.BUY,
-				triggerPrice: 40987.092,
-				price: 40987.092,
-				size: 98712,
-				orderType: '',
-				onlyReduce: false,
-				createTime: Date.now(),
-				expireTime: Date.now()
-			},
-			{
-				id: '',
-				contractId: 0,
-				symbol: 'BTCUSDT',
-				type: Type.LIMIT,
-				side: Side.BUY,
-				triggerPrice: 40987.092,
-				price: 40987.092,
-				size: 98712,
-				orderType: '',
-				onlyReduce: false,
-				createTime: Date.now(),
-				expireTime: Date.now()
-			}
-		]
-		// const data = getFilteredConditionalCommission(currentSymbol, onlyCurrentSymbol);
+		// const data:ConditionalCommission[]  = [
+		// 	{
+		// 		id: '',
+		// 		contractId: 0,
+		// 		symbol: 'BTCUSDT',
+		// 		type: Type.LIMIT,
+		// 		side: Side.BUY,
+		// 		triggerPrice: 40987.092,
+		// 		price: 40987.092,
+		// 		size: 98712,
+		// 		orderType: '',
+		// 		onlyReduce: false,
+		// 		createTime: Date.now(),
+		// 		expireTime: Date.now()
+		// 	},
+		// 	{
+		// 		id: '',
+		// 		contractId: 0,
+		// 		symbol: 'BTCUSDT',
+		// 		type: Type.LIMIT,
+		// 		side: Side.BUY,
+		// 		triggerPrice: 40987.092,
+		// 		price: 40987.092,
+		// 		size: 98712,
+		// 		orderType: '',
+		// 		onlyReduce: false,
+		// 		createTime: Date.now(),
+		// 		expireTime: Date.now()
+		// 	},
+		// 	{
+		// 		id: '',
+		// 		contractId: 0,
+		// 		symbol: 'BTCUSDT',
+		// 		type: Type.LIMIT,
+		// 		side: Side.BUY,
+		// 		triggerPrice: 40987.092,
+		// 		price: 40987.092,
+		// 		size: 98712,
+		// 		orderType: '',
+		// 		onlyReduce: false,
+		// 		createTime: Date.now(),
+		// 		expireTime: Date.now()
+		// 	}
+		// ]
+		const data = getFilteredConditionalCommission(currentSymbol, onlyCurrentSymbol);
 		setOrderList(data);
 		setConditionOrderCount(data?.length ?? 0);
 	}, [getConditionalCommission, onlyCurrentSymbol])

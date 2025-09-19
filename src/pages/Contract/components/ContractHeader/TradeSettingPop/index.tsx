@@ -177,7 +177,7 @@ const TradeSettingPop:React.FC<Props> = ({
         </div>
 
         {/* 合约单位 */}
-        <div className="text-[16px] font-medium leading-[22px] mb-[13px]">
+        {/* <div className="text-[16px] font-medium leading-[22px] mb-[13px]">
           {t('tradingSettings.contractUnit')}： 
         </div>
         <div className="flex gap-x-[40px] mb-10">
@@ -191,10 +191,10 @@ const TradeSettingPop:React.FC<Props> = ({
               <span className="text-[16px] font-medium">{getContractUnitText(unit)}</span>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* 条件单/止盈止损有效期 */}
-        <div className="text-[16px] font-medium leading-[22px] mb-[12px]">
+        {/* <div className="text-[16px] font-medium leading-[22px] mb-[12px]">
           {t('tradingSettings.orderValidity')}：
         </div>
         <div className="grid grid-cols-2 [grid-template-columns:repeat(2,max-content)] gap-x-[40px] gap-y-[10px] mb-10">
@@ -208,7 +208,7 @@ const TradeSettingPop:React.FC<Props> = ({
               <span className="text-[16px] font-medium">{getValidityText(period)}</span>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* 下单前弹窗确认 */}
         <div className="text-[16px] font-medium leading-[22px] mb-[19px]">
@@ -226,7 +226,7 @@ const TradeSettingPop:React.FC<Props> = ({
               }}
             />
         </div>
-        <div className="flex justify-between items-center text-[16px] font-medium h-[22px]">
+        {/* <div className="flex justify-between items-center text-[16px] font-medium h-[22px]">
             <span>{t('tradingSettings.reverseConfirm')} </span>
             <Switch
               checked={reverseConfirm}
@@ -237,7 +237,7 @@ const TradeSettingPop:React.FC<Props> = ({
                   '--width': '28px',
               }}
             />
-        </div>
+        </div> */}
 
         <button type="button"
           className="h-[50px] w-full bg-[var(--theme-color)] rounded-[25px] flex items-center justify-center text-[#fff] mt-[100px]"

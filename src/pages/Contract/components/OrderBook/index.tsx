@@ -277,7 +277,7 @@ const OrderBookPanel = observer(({type = 'orderbook'}: {type: string}) => {
             {t("spot.orderBook.price")}({currentContractInfo?.quote})
           </span>
           <span className="text-right">
-            {t("spot.orderBook.amount")}({currentContractInfo?.base})
+            {t("spot.orderBook.amount")}({t("contract:tradingSettings.units.sheet")})
           </span>
           <span className="text-right">{t("spot.orderBook.time")}</span>
         </div>
@@ -321,10 +321,10 @@ const OrderBookPanel = observer(({type = 'orderbook'}: {type: string}) => {
               {t("spot.orderBook.price")}({currentContractInfo?.quote})
             </span>
             <span className="text-right">
-              {t("spot.orderBook.amount")}({currentContractInfo?.base})
+              {t("spot.orderBook.amount")}({t("contract:tradingSettings.units.sheet")})
             </span>
             <span className="text-right">
-              {t("contract:orderBookList.total")}({currentContractInfo?.quote})
+              {t("contract:orderBookList.total")}({t("contract:tradingSettings.units.sheet")})
             </span>
           </div>
 

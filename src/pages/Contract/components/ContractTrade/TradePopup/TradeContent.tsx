@@ -45,6 +45,7 @@ import FundTransferModal from "../components/FundTransferPopup";
 import RiskDisclosureModal from '../../RiskDisclosureModal';
 import TipModal from '../../ContractOrder/components/Popup/TipModal';
 import SelectPop from "@/components/SelectPop";
+import ContractInfo from "../../ContractInfo";
 
 
 export interface AccountBalance {
@@ -101,7 +102,7 @@ const SpotTradePage = observer(({
   const [showLeverageModal, setShowLeverageModal] = useState(false);
   const [showOrderSettingsModal, setShowOrderSettingsModal] = useState(false);
   const [showFundTransferModal, setShowFundTransferModal] = useState(false);
-  const [orderUnit, setOrderUnit] = useState<"BTC" | "USDT" | "张">("BTC");
+  const [orderUnit, setOrderUnit] = useState<"BTC" | "USDT" | "张">("张");
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [showRiskDisclosure, setShowRiskDisclosure] = useState(false);
   const [advSetting, setAdvSetting] = useState('1');
@@ -126,6 +127,7 @@ const SpotTradePage = observer(({
     marginMode: 1 as number,
     leverage: 65,
     orderType: "limit",
+    btnText: '' // 按钮文本内容
   }); 
   
   // 余额
@@ -153,6 +155,11 @@ const SpotTradePage = observer(({
   const { positions, getPosition } = usePosition({
     contractId: currentContractInfo?.id
   });
+
+  // 根据设置初始化单位
+  // useEffect(() => {
+	// 	setOrderUnit(appStore.tradingSetting.contractUnit as "BTC" | "USDT" | "张");
+  // }, [currentContractInfo, [currentContractInfo, appStore.tradingSetting.contractUnit]])
 
   // 获取合约账户余额
 	const getContractBalance = async () => {
@@ -210,6 +217,13 @@ const SpotTradePage = observer(({
     { value: "3", label: "IOC" },
     { value: "4", label: "FOK" },
   ]
+
+  // 数量单位选项
+  const unitOptions = [
+    {label: '张', value: '张'},
+    {label: currentContractInfo.base ?? 'BTC', value: 'BTC'},
+    {label: 'USDT', value: 'USDT'}
+  ]
   
   // 获取当前订单类型
   const getOrderType = useCallback(() => {
@@ -225,7 +239,7 @@ const SpotTradePage = observer(({
   const formatNumber = useCallback((num: number, precision: number = 4) => {
     if (num === 0) return "0";
 
-    const fixed = num.toFixed(precision);
+    const fixed = new BigNumber(num).toFormat(precision, BigNumber.ROUND_DOWN);
     // 移除末尾的0和小数点
     const formatted = fixed.replace(/\.?0+$/, "");
     return formatted;
@@ -578,6 +592,14 @@ const SpotTradePage = observer(({
     }
   }
 
+  // 按钮文本
+  const getBtnText = (side: "BUY" | "SELL") => {
+    switch (side) {
+      case 'BUY': return transactionType === 1 ? t("tradingPanel.buyLong") : t("tradingPanel.buyClose");
+      case 'SELL': return transactionType === 2 ? t("tradingPanel.sellClose") : t("tradingPanel.sellShort");
+    }
+  }
+
   const handleSubmit = (side: "BUY" | "SELL") => {
     // 检查用户是否登录
     if (!isLoggedIn) {
@@ -603,10 +625,7 @@ const SpotTradePage = observer(({
     
     // 检查用户的下单确认设置
     const shouldSkipConfirm = getShouldSkipConfirm();
-
-    if (shouldSkipConfirm) {
-      // 直接执行下单，不显示确认框
-      const orderData = {
+    const orderData = {
         direction: transactionType === 1 ? 0 : 1,
         type: currentCategory === 1 ? 1 : 0,
         price: price,
@@ -625,33 +644,16 @@ const SpotTradePage = observer(({
             : currentCategory === 2
               ? "market"
               : "conditional",
+        btnText: getBtnText(side)
       };
+
+    if (shouldSkipConfirm) {
       // 直接提交订单，不需要调用handleConfirmOrder（避免重置设置）
       orderSubmit(orderData);
       return;
     }
 
-    const orderData = {
-      direction: transactionType === 1 ? 0 : 1, // 0: 买入, 1: 卖出
-      type: currentCategory === 1 ? 1 : 0, // 1: 限价, 0: 市价
-      price: price || 0,
-      amount: quantity || 0,
-      account:
-        (typeof quantity === "string" ? parseFloat(quantity) : quantity || 0) *
-        (typeof price === "string" ? parseFloat(price) : price || 0),
-      symbol: symbol,
-      marginMode: marginModel,
-      leverage: leverageLevel,
-      btnText: side,
-      orderType:
-        currentCategory === 1
-          ? "limit"
-          : currentCategory === 2
-            ? "market"
-            : "conditional",
-    };
-
-    setConfirmData(orderData);
+    setConfirmData(orderData as any);
     //setShowOrderConfirmModal(true);
     setPopType(PopTypeEnum.PLACE_OREER);
   };
@@ -896,6 +898,7 @@ const SpotTradePage = observer(({
 
   // 处理下单单位变更
   const handleOrderUnitChange = (unit: "BTC" | "USDT" | "张") => {
+    appStore.updateSetting('contractUnit', unit)
     setOrderUnit(unit);
   };
 
@@ -1144,7 +1147,30 @@ const SpotTradePage = observer(({
                   onChange={handleQuantityChange}
                   placeholder={t("tradingPanel.orderQuantity")}
                   className={`trade-input ${validationErrors.quantity ? styles.inputError : ''}`}
-                  suffix={t("tradingPanel.unit")}
+                  suffix={orderUnit
+                    // <SelectPop 
+                    //   value={orderUnit}
+                    //   options={unitOptions}
+                    //   title={t('placeholder')} 
+                    //   onChange={(value: any) => handleOrderUnitChange(value)}
+                    //   activeType="icon"
+                    //   showSearch={false}
+                    //   renderBtn={(open) => (
+                    //       <button 
+                    //           type="button" 
+                    //           className="flex items-center text-[14px] text-[var(--text-color5)]"
+                    //           onClick={(e) => {
+                    //             e.preventDefault(); // 阻止默认行为
+                    //             e.stopPropagation();  // 阻止冒泡到 Input
+                    //             open()
+                    //           }}
+                    //       >
+                    //           <span>{getLabel(orderUnit, unitOptions)}</span>
+                    //           <Iconify icon="mdi:chevron-down" className="text-[24px]" />
+                    //       </button>
+                    //   )}
+                    // />
+                  }
                 />
                 {validationErrors.quantity && (
                   <span className={styles.errorText}>{validationErrors.quantity}</span>
@@ -1205,7 +1231,7 @@ const SpotTradePage = observer(({
 
               {/* 止盈止损输入框 */}
               {enableTPSL && (
-              <div className={`flex-col gap-y-[ß10px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
+              <div className={`flex-col gap-y-[10px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
                 <Input
                     value={takeProfitPrice}
                     onChange={(e) => setTakeProfitPrice(Number(e.target.value) || 0)}
@@ -1234,6 +1260,7 @@ const SpotTradePage = observer(({
                   title={t('placeholder')} 
                   onChange={(value:any) => setAdvSetting(value)}
                   activeType="icon"
+                  showSearch={false}
                   renderBtn={(open) => (
                       <button 
                           type="button" 
@@ -1309,11 +1336,11 @@ const SpotTradePage = observer(({
             {isLoggedIn && <div className="flex items-center justify-between  font-[400] text-[14px] text-[var(--text-color6)]">
               <div className="flex gap-[4px]">
                 <span>{t("tradingPanel.cost")}</span>
-                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
+                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("BUY"), symbolPricePrecision || 4)} {t("contract:tradingSettings.units.sheet")}</span>
               </div>
               <div className="flex gap-[4px]">
                 <span>{t("tradingPanel.cost")}</span>
-                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {currentContractInfo.marginCoin}</span>
+                <span className="text-[var(--text-color5)]">{formatNumber(calculateCost("SELL"), symbolPricePrecision || 4)} {t("contract:tradingSettings.units.sheet")}</span>
               </div>
             </div>}
           </Form>

@@ -22,7 +22,7 @@ const MarginModePopup:React.FC<Props> = ({
   symbol = 'BTCUSDT'
 }) => {
 	const {t} = useLanguage('contract');
-	const [selectedMode, setSelectedMode] = React.useState<1 | 2>(2); // 默认选择逐仓
+	const [selectedMode, setSelectedMode] = React.useState<1 | 2>(1); // 默认选择逐仓
 	const { currentContractInfo } = appStore;
 	const handleConfirm = async () => {
 		const res = await marginModelEdit({

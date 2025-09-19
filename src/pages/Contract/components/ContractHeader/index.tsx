@@ -47,10 +47,10 @@ const ContractHeader: React.FC= observer(() => {
 		if (currentContractInfo && Object.keys(currentContractInfo).length > 0) {
 			setCurrentSymbol(currentContractInfo);
 			console.log('当前合约信息', currentContractInfo)
-			const uint = appStore.getUnit(currentContractInfo.base);
-			setUnit(uint);
+			// const uint = appStore.getUnit(currentContractInfo.base);
+			// setUnit(uint);
 		}
-	}, [currentContractInfo, appStore.tradingSetting.contractUnit]);
+	}, [currentContractInfo]);
 
 	useEffect(() => {
 		if (currentContractInfo?.id) {
@@ -159,7 +159,7 @@ const ContractHeader: React.FC= observer(() => {
 						</div>
 						<div className="flex-col gap-y-[8px]">
 							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">
-								<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({unit})</span>
+								<span className="tip-color mb-[2px]">{t('contractHeader.volume24h')}({t("contract:tradingSettings.units.sheet")})</span>
 								<span>{priceData?.volume24h ? formatAmount(priceData?.volume24h, t) : '--'}</span>
 							</p>
 							<p className="flex flex-col gap-y-[2px] text-[10px] leading-[14px]">

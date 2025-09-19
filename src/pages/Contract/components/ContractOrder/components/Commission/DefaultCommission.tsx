@@ -19,7 +19,7 @@ const DefaultCommission:React.FC = () => {
     const currentContractInfo = appStore.getCurrentContractInfo();
     const currentSymbol = currentContractInfo?.symbol || "";
     const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
-    const { setDefaultOrderCount } = useContract();
+    const { setDefaultOrderCount, addOrderNotice } = useContract();
 
     const [onlyCurrentSymbol, setOnlyCurrentSymbol] = useState(false);
     const [orderList, setOrderList] = useState<OrdinaryCommission[]>([]);
@@ -38,51 +38,51 @@ const DefaultCommission:React.FC = () => {
     });
 
     useEffect(() => {
-        // getOrdinaryCommission();
-    }, [getOrdinaryCommission, currentSymbol, currentContractInfo?.id]);
+        getOrdinaryCommission();
+    }, [getOrdinaryCommission, currentSymbol, currentContractInfo?.id, addOrderNotice]);
 
     useEffect(() => {
-		const data:OrdinaryCommission[]  = [
-			{
-                symbol: 'BSCUSDT',
-                pricePrecision: 0,
-                side: Side.BUY,
-                positionType: PositionType.CROSS_MARGIN,
-                avgPrice: 0,
-                tradeFee: 0,
-                type: Type.LIMIT,
-                mtime: 0,
-                volume: 876.98,
-                dealVolume: 10,
-                price: 109987.098,
-                contractId: 0,
-                ctime: Date.now(),
-                contractName: '',
-                id: '',
-                open: Open.OPEN,
-                status: Status.PENDING
-            },
-            {
-                symbol: 'ETHUSDT',
-                pricePrecision: 0,
-                side: Side.SELL,
-                positionType: PositionType.ISOLATED_MARGIN,
-                avgPrice: 0,
-                tradeFee: 0,
-                type: Type.MARKET,
-                mtime: 0,
-                volume: 876.98,
-                dealVolume: 10,
-                price: 109987.098,
-                contractId: 0,
-                ctime: Date.now(),
-                contractName: '',
-                id: '',
-                open: Open.OPEN,
-                status: Status.PENDING
-            },
-		]
-		// const data = getFilteredOrdinaryCommission(currentSymbol, onlyCurrentSymbol);
+		// const data:OrdinaryCommission[]  = [
+		// 	{
+        //         symbol: 'BSCUSDT',
+        //         pricePrecision: 0,
+        //         side: Side.BUY,
+        //         positionType: PositionType.CROSS_MARGIN,
+        //         avgPrice: 0,
+        //         tradeFee: 0,
+        //         type: Type.LIMIT,
+        //         mtime: 0,
+        //         volume: 876.98,
+        //         dealVolume: 10,
+        //         price: 109987.098,
+        //         contractId: 0,
+        //         ctime: Date.now(),
+        //         contractName: '',
+        //         id: '',
+        //         open: Open.OPEN,
+        //         status: Status.PENDING
+        //     },
+        //     {
+        //         symbol: 'ETHUSDT',
+        //         pricePrecision: 0,
+        //         side: Side.SELL,
+        //         positionType: PositionType.ISOLATED_MARGIN,
+        //         avgPrice: 0,
+        //         tradeFee: 0,
+        //         type: Type.MARKET,
+        //         mtime: 0,
+        //         volume: 876.98,
+        //         dealVolume: 10,
+        //         price: 109987.098,
+        //         contractId: 0,
+        //         ctime: Date.now(),
+        //         contractName: '',
+        //         id: '',
+        //         open: Open.OPEN,
+        //         status: Status.PENDING
+        //     },
+		// ]
+		const data = getFilteredOrdinaryCommission(currentSymbol, onlyCurrentSymbol);
 		setOrderList(data);
 		setDefaultOrderCount(data?.length ?? 0);
 	}, [getOrdinaryCommission, onlyCurrentSymbol])

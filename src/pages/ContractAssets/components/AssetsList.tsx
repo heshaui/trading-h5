@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon';
 import { Image, Toast, SearchBar,  } from 'antd-mobile';
-import { getUserBalanceAll } from "@/services/assets";
-import { add, roundDown, cut, nul } from "@/utils";
-import { getRate } from "@/utils/getUseRate";
 import appStore from "@/store";
 import { NoData } from '@/components/noData';
 import BigNumber from "bignumber.js";
+import { getContractFinancialRecords } from '@/services/contract'
+import dayjs from 'dayjs';
 
 import type {AccountBalance} from '../index';
 
@@ -16,12 +15,55 @@ interface Props {
 	contractAssets: AccountBalance[]
 }
 
-const Assets: React.FC<Props> = ({contractAssets, loading}) => {
+const Assets: React.FC<Props> = () => {
 	const { t } = useLanguage(['assets', 'spot']);
+	const coinList = appStore.getCoinList();
 	const [searchValue, setSearchValue] = useState('');
 	const [assetsList, setAssetsList] = useState<AccountBalance[]>([]);
 	const [allAssetsList, setAllAssetsList] = useState<AccountBalance[]>([]);
 	const [hideSmall, setHideSmall] = useState(false);
+	const [loading, setLoading] = useState(false);
+
+	// 给数据加icon
+	const handleData = (data:AccountBalance[]) => {
+		const result = data.map((item:AccountBalance) => {
+			const targetCoin = coinList.find(coin => coin.coinName === item.symbol);
+			return {
+				...item,
+				iconUrl: targetCoin?.iconUrl ?? '',
+				defaultName: targetCoin?.nameDefault ?? '--'
+			}
+		})
+		return result;
+	}
+
+	const getData = async () => {
+		setLoading(true)
+		try {
+			const res = await getContractFinancialRecords({
+				onlyAccount: 1,
+				uaTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+			});
+			if (res.code === "0") {
+				const data = handleData(res.data.accountList);
+				setAssetsList(data);
+				setAllAssetsList(data);
+			} else {
+				Toast.show({
+					icon: 'fail',
+					content: res.msg,
+				})
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	useEffect(() => {
+		getData();
+	}, [])
 
 	// 查询
 	const handleSearch = (value: string) => {
@@ -53,7 +95,7 @@ const Assets: React.FC<Props> = ({contractAssets, loading}) => {
 
 			if (newHideSmall && allAssetsList.length > 0) {
 				const newData = allAssetsList.filter(
-					(item) => Number(item.totalAmount) < 1
+					(item) => Number(item.totalAmount) >= 1
 				);
 				setAssetsList(newData);
 			} else {
@@ -64,40 +106,9 @@ const Assets: React.FC<Props> = ({contractAssets, loading}) => {
 		});
 	};
 
-	useEffect(() => {
-		const data: AccountBalance[] = [
-			{
-				canUseAmount: '1',
-				isolateMargin: '1',
-				lockAmount: '1',
-				realizedAmount: '1',
-				symbol: 'BTC',
-				totalAmount: '1',
-				totalMargin: '1',
-				totalMarginRate: '1',
-				unRealizedAmount: '1'
-			},
-			{
-				canUseAmount: '1',
-				isolateMargin: '1',
-				lockAmount: '1',
-				realizedAmount: '1',
-				symbol: 'USDT',
-				totalAmount: '1',
-				totalMargin: '1',
-				totalMarginRate: '1',
-				unRealizedAmount: '1'
-			},
-		]
-		//setAssetsList(contractAssets);
-		//setAllAssetsList(contractAssets);
-		setAssetsList(data);
-		setAllAssetsList(data);
-	}, [])
-
 	return (
 		<>
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between items-center sticky">
 				<SearchBar 
 					icon={<Iconify icon="garden:search-26" className="text-[16px]" />}
 					placeholder={t('spot:spot.header.search')}
@@ -112,7 +123,7 @@ const Assets: React.FC<Props> = ({contractAssets, loading}) => {
                     <span>{t('futureAccount.hideSmall')}</span>
                 </button>
 			</div>
-			<ul className="max-h-[350px] hideScrollBar mt-[29px]">
+			<ul className="mt-[29px]">
 				{
 				loading ? 
 				<li className="h-[200px] flex justify-center items-center">
@@ -123,13 +134,13 @@ const Assets: React.FC<Props> = ({contractAssets, loading}) => {
 					return (<li key={item.symbol} className="mb-[30px] last:mb-0">
 						<div className="flex items-center mb-[12px]">
 							<Image
-								src='/404'
+								src={item.iconUrl}
 								alt={item.symbol}
 								className="!w-[28px] !h-[28px] rounded-full mr-[6px]"
 							/>
 							<div className="flex-col">
 								<span className="leading-[20px] text-[14px] font-medium">{item.symbol}</span>
-								<span className="leading-[17px] text-[12px] tip-color">--</span>
+								<span className="leading-[17px] text-[12px] tip-color">{item.defaultName}</span>
 							</div>
 						</div>
 						<div className="pl-[34px]">

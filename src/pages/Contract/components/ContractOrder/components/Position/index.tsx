@@ -26,7 +26,7 @@ const Position: React.FC = () => {
 	const currentContractInfo = appStore.getCurrentContractInfo();
 	const currentSymbol = currentContractInfo?.symbol || "";
 	const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
-	const { setPositionCount } = useContract();
+	const { setPositionCount, addOrderNotice } = useContract();
 	// 仓位
 	const {
 		loading,
@@ -55,88 +55,88 @@ const Position: React.FC = () => {
 	const [closeVisible, setCloseVisible] = useState(false);
 
 	useEffect(() => {
-		// getPosition();
-	}, [getPosition, currentSymbol, currentContractInfo?.id])
+		getPosition();
+	}, [getPosition, currentSymbol, currentContractInfo?.id, addOrderNotice])
 
 	useEffect(() => {
-		const data:PositionType[]  = [
-			{
-				id: 0,
-				contractId: 0,
-				contractName: '',
-				symbol: 'BTC-USDT',
-				positionVolume: 0,
-				canCloseVolume: 0,
-				openAvgPrice: 0,
-				indexPrice: 0,
-				reducePrice: 0,
-				holdAmount: 0,
-				marginRate: 0,
-				realizedAmount: 0,
-				returnRate: 7.08,
-				orderSide: Side.BUY,
-				positionType: 1,
-				canUseAmount: 0,
-				canSubMarginAmount: 0,
-				openRealizedAmount: 0,
-				keepRate: 0,
-				maxFeeRate: 0,
-				unRealizedAmount: 98712.498,
-				leverageLevel: 20,
-				positionBalance: 0
-			},
-			{
-				id: 0,
-				contractId: 0,
-				contractName: '',
-				symbol: 'BTC-USDT',
-				positionVolume: 0,
-				canCloseVolume: 0,
-				openAvgPrice: 0,
-				indexPrice: 0,
-				reducePrice: 0,
-				holdAmount: 0,
-				marginRate: 0,
-				realizedAmount: 0,
-				returnRate: 12334.23,
-				orderSide: Side.SELL,
-				positionType: 2,
-				canUseAmount: 0,
-				canSubMarginAmount: 0,
-				openRealizedAmount: 0,
-				keepRate: 0,
-				maxFeeRate: 0,
-				unRealizedAmount: 98712.498,
-				leverageLevel: 20,
-				positionBalance: 0
-			},
-			{
-				id: 0,
-				contractId: 0,
-				contractName: '',
-				symbol: 'BTC-USDT',
-				positionVolume: 0,
-				canCloseVolume: 0,
-				openAvgPrice: 0,
-				indexPrice: 0,
-				reducePrice: 0,
-				holdAmount: 0,
-				marginRate: 0,
-				realizedAmount: 0,
-				returnRate: 12334.23,
-				orderSide: Side.BUY,
-				positionType: 1,
-				canUseAmount: 0,
-				canSubMarginAmount: 0,
-				openRealizedAmount: 0,
-				keepRate: 0,
-				maxFeeRate: 0,
-				unRealizedAmount: 98712.498,
-				leverageLevel: 20,
-				positionBalance: 0
-			}
-		]
-		// const data = getFilteredPositions(currentSymbol, onlyCurrentSymbol);
+		// const data:PositionType[]  = [
+		// 	{
+		// 		id: 0,
+		// 		contractId: 0,
+		// 		contractName: '',
+		// 		symbol: 'BTC-USDT',
+		// 		positionVolume: 0,
+		// 		canCloseVolume: 0,
+		// 		openAvgPrice: 0,
+		// 		indexPrice: 0,
+		// 		reducePrice: 0,
+		// 		holdAmount: 0,
+		// 		marginRate: 0,
+		// 		realizedAmount: 0,
+		// 		returnRate: 7.08,
+		// 		orderSide: Side.BUY,
+		// 		positionType: 1,
+		// 		canUseAmount: 0,
+		// 		canSubMarginAmount: 0,
+		// 		openRealizedAmount: 0,
+		// 		keepRate: 0,
+		// 		maxFeeRate: 0,
+		// 		unRealizedAmount: 98712.498,
+		// 		leverageLevel: 20,
+		// 		positionBalance: 0
+		// 	},
+		// 	{
+		// 		id: 0,
+		// 		contractId: 0,
+		// 		contractName: '',
+		// 		symbol: 'BTC-USDT',
+		// 		positionVolume: 0,
+		// 		canCloseVolume: 0,
+		// 		openAvgPrice: 0,
+		// 		indexPrice: 0,
+		// 		reducePrice: 0,
+		// 		holdAmount: 0,
+		// 		marginRate: 0,
+		// 		realizedAmount: 0,
+		// 		returnRate: 12334.23,
+		// 		orderSide: Side.SELL,
+		// 		positionType: 2,
+		// 		canUseAmount: 0,
+		// 		canSubMarginAmount: 0,
+		// 		openRealizedAmount: 0,
+		// 		keepRate: 0,
+		// 		maxFeeRate: 0,
+		// 		unRealizedAmount: 98712.498,
+		// 		leverageLevel: 20,
+		// 		positionBalance: 0
+		// 	},
+		// 	{
+		// 		id: 0,
+		// 		contractId: 0,
+		// 		contractName: '',
+		// 		symbol: 'BTC-USDT',
+		// 		positionVolume: 0,
+		// 		canCloseVolume: 0,
+		// 		openAvgPrice: 0,
+		// 		indexPrice: 0,
+		// 		reducePrice: 0,
+		// 		holdAmount: 0,
+		// 		marginRate: 0,
+		// 		realizedAmount: 0,
+		// 		returnRate: 12334.23,
+		// 		orderSide: Side.BUY,
+		// 		positionType: 1,
+		// 		canUseAmount: 0,
+		// 		canSubMarginAmount: 0,
+		// 		openRealizedAmount: 0,
+		// 		keepRate: 0,
+		// 		maxFeeRate: 0,
+		// 		unRealizedAmount: 98712.498,
+		// 		leverageLevel: 20,
+		// 		positionBalance: 0
+		// 	}
+		// ]
+		const data = getFilteredPositions(currentSymbol, onlyCurrentSymbol);
 		setPositionList(data);
 		setPositionCount(data?.length ?? 0);
 	}, [getPosition, onlyCurrentSymbol])

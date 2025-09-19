@@ -37,10 +37,10 @@ const SpotTabs: React.FC = () => {
                 key: '3',
                 title: `${t('order.conditionCommission')}${conditionOrderCount>0 ? `(${conditionOrderCount})` : ''}` // 条件委托
             },
-            {
-                key: '4',
-                title: `${t('assets')}${assetsCount>0 ? `(${assetsCount})` : ''}` // 资产
-            }
+            // {
+            //     key: '4',
+            //     title: `${t('assets')}${assetsCount>0 ? `(${assetsCount})` : ''}` // 资产
+            // }
         ]
     }, [positionCount, defaultOrderCount, conditionOrderCount, assetsCount, currentLanguage])
 

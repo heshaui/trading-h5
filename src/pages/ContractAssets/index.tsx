@@ -3,12 +3,12 @@ import { Toast, Image, Checkbox, Modal } from "antd-mobile";
 import { UserCenterLayout } from "@/components/MenuItems";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from '@/hooks/useLanguage';
-import { NoData } from "@/components/noData";
 import { observer } from 'mobx-react-lite';
 import appStore from '@/store';
 import { encryptData } from "@/utils/encrypt";
 import BigNumber from "bignumber.js";
 import { getUserBalanceAll, transferAll } from "@/services/assets";
+import { getCoinRate, getRate } from "@/utils/getUseRate";
 
 import AssetsList from "./components/AssetsList";
 import FundTransferPopup from "../Contract/components/ContractTrade/components/FundTransferPopup";
@@ -26,6 +26,8 @@ export interface AccountBalance {
   totalMargin: string; // 总保证金
   totalMarginRate: string; // 总保证金率
   unRealizedAmount: string; // 未实现盈亏
+  iconUrl?: string; // 图标,
+  defaultName?: string; // 币名称
 }
 const ContractAssets:React.FC = observer(() => {
 	const {t} = useLanguage(['assets', 'userCenter', 'contract']);
@@ -72,6 +74,13 @@ const ContractAssets:React.FC = observer(() => {
 		return balance ?? contractAssets[1]
 	}, [contractAssets])
 
+	const totalBalance = useMemo(() => {
+		return new BigNumber(accountBalance?.realizedAmount || 0)
+					.plus(Number(accountBalance?.totalMargin) || 0)
+					.plus(accountBalance?.isolateMargin || 0)
+					.toFixed(2)
+	}, [accountBalance])
+
 	const onBalanceUpdate = () => {
 		getContractBalance();
 		getSpotBalance();
@@ -92,7 +101,7 @@ const ContractAssets:React.FC = observer(() => {
 	};
 
 	useEffect(() => {
-		getContractBalance()
+		onBalanceUpdate()
 	}, [])
 
 	const todayProfit = 1
@@ -113,20 +122,17 @@ const ContractAssets:React.FC = observer(() => {
 			<div>
 				<span className="leading-[29px] text-[24px] mr-1">
 					{/* 合约账户总权益。账户总权益=全仓总权益+逐仓总权益+冻结保证金 */}
-					{banlanceShow ? new BigNumber(accountBalance?.realizedAmount || 0)
-						.plus(Number(accountBalance?.totalMargin) || 0)
-						.plus(accountBalance?.isolateMargin || 0)
-						.toFixed(2) : '******'}
+					{banlanceShow ? totalBalance : '******'}
 				</span>
-				<span className="leading-[17px]">
+				{banlanceShow && <span className="leading-[17px]">
 					{accountBalance?.symbol}	
-				</span>
+				</span>}
 			</div>
 			<div className="mt-[2px] leading-[17px] text-[12px] tip-color font-medium mb-[10px]">
-				{banlanceShow ? `≈ 9807.08 USD` : '******'}
+				{banlanceShow ? `≈ ${totalBalance} USD` : '******'}
 			</div>
-			<div className='font-14 flex-x align-center line-20 mb-[20px]'>
-				{/* 今日盈亏 */}
+			{/* 今日盈亏 */}
+			{/* <div className='font-14 flex-x align-center line-20 mb-[20px]'>
 				<span className="mr-1">{t('userCenter:overview.assets.todayProfitLoss')}</span>
 				{banlanceShow ? <span className={`ltr-text font-medium ${Number(todayProfit) > 0 ? 'success_icon' : Number(todayProfit) < 0 ? 'error_icon' : 'error_icon'} font-12`}>
 					{Number(todayProfit) < 0 ? "-" : "+"}
@@ -135,7 +141,7 @@ const ContractAssets:React.FC = observer(() => {
 				</span> :
 					<span className={`tip-color font-12 flex-x-cc`}>******</span>
 				}
-			</div>	
+			</div>	 */}
 			<div className="flex gap-x-[22px] mb-[30px]">
 				<button
 					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
@@ -144,13 +150,13 @@ const ContractAssets:React.FC = observer(() => {
 					{/* 划转 */}
 					{t("futureAccount.transfer")}
 				</button>
-				<button
+				{/* 流水  */}
+				{/* <button
 					className="min-w-[100px] px-[10px] h-[32px] flex items-center justify-center bg-[var(--background14)] rounded-[30px] text-[12px] font-medium"
 					onClick={() => navigate('/contractAssets/account')}
 				>
-					{/* 流水  */}
 					{t("futureAccount.fundFlow")}
-				</button>
+				</button> */}
 			</div>
 			<AssetsList 
 				contractAssets={contractAssets}

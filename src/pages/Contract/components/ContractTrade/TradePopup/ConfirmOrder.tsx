@@ -3,7 +3,7 @@ import { useLanguage } from '@/hooks';
 import { Iconify } from '@/components/icon';
 import { Checkbox } from "antd";
 import appStore from '@/store';
-import { getRound } from '@/utils/getUseRate';
+import { BigNumber } from 'bignumber.js';
 
 interface Props {
 	orderData: any;
@@ -12,36 +12,17 @@ interface Props {
 }
 
 const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
-	const { t } = useLanguage('spot');
+	const { t } = useLanguage(['contract','spot']);
 	// 获取当前选中的货币对，如果没有则使用币对列表的第一个数据
-    const currentPair = appStore.getCurrentPair() || appStore.currencyPairs[0];
+    const currentContractInfo = appStore.getCurrentContractInfo();
+	const {symbolPricePrecision} =currentContractInfo.coinResultVo;
 	const [noRemind, setNoRemind] = useState(false);
+	const unit = appStore.getUnit(currentContractInfo.base)
 
 	// 处理复选框选中状态变化
     const handleCheckboxChange = (e: any) => {
         setNoRemind(e.target.checked);
     };
-
-	// 处理价格和数量的精度
-	const formatPrice = (price: string | number) => {
-		const priceInfo = getRound(
-			`${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
-			price,
-			currentPair?.coinSymbol,
-			currentPair?.baseSymbol
-		);
-		return priceInfo.baseScaleResult;
-	};
-
-	const formatAmount = (amount: string | number) => {
-		const amountInfo = getRound(
-			`${currentPair?.coinSymbol}/${currentPair?.baseSymbol}`,
-			amount,
-			currentPair?.coinSymbol,
-			currentPair?.baseSymbol
-		);
-		return amountInfo.scaleResult;
-	};
 
 	const handOk = async () => {
 		// 保存设置
@@ -49,13 +30,23 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
         onOk()
     };
 
+	// 格式化数字显示 - 如果小数点后都是0则显示整数
+	  const formatNumber = (num: number, precision: number = 4) => {
+		if (num === 0) return "0";
+	
+		const fixed = new BigNumber(num).toFormat(precision);
+		// 移除末尾的0和小数点
+		const formatted = fixed.replace(/\.?0+$/, "");
+		return formatted;
+	  }
+
 	return (
 		<div className="p-4 pb-5">
-			<h3 className="text-[18px] leading-[25px] font-medium text-center">{currentPair?.coinSymbol}/{currentPair?.baseSymbol}</h3>
-			<p className={`success_icon font-14 font-w-400 mt-1 leading-[20px] text-center`}>
-				{/* 买入/市价 */}
-				{orderData.direction===0?t('spot.modal.buy'):t('spot.modal.sell')} / {orderData.type===0?t('spot.modal.market'):t('spot.select.limit')}
-			</p>
+			<div className="text-[18px] font-medium mb-1">{orderData.btnText}{currentContractInfo.base}{currentContractInfo.quote}</div>
+			<div className="text-[14px] tip-color">
+				<span className="mr-1">{orderData.marginModel === 1 ? t("tradingPanel.crossMargin") : t("tradingPanel.isolatedMargin")}</span>
+				<span>{orderData.leverageLevel}x</span>
+			</div>
 			 <ul className={`font-14 font-w-400 mt-[18px] mb-[10px] border border-color rounded-lg p-4`}>
 				<li className="flex-x align-center justify-between">
 					<p className="tip-color">
@@ -64,7 +55,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 					</p>
 					<p>
 						{/* 市价 */}
-						{orderData.type===0 ? t('spot.modal.market') : formatPrice(orderData.price)} {currentPair?.baseSymbol}
+						{orderData.orderType==='market' ? t('spot.modal.market') : formatNumber(orderData.price)}(USDT)
 					</p>
 				</li>
 				{/* 市价买单不显示数量 */}
@@ -74,27 +65,10 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 							{/* 数量 */}
 							{t('spot.modal.amount')}
 						</p>
-						<p>{formatAmount(orderData.amount)} {currentPair?.coinSymbol}</p>
-					</li>
-				)}
-				{/* 市价卖单不显示成交额 */}
-				{!(orderData.type===0 && orderData.direction===1) && (
-					<li className="flex-x align-center justify-between mt-5">
-						<p className="tip-color">
-							{/* 成交额 */}
-							{t('spot.trade.amount2')}
-						</p>
-						<p>{formatPrice(orderData.account)} {currentPair?.baseSymbol}</p>
+						<p>{formatNumber(orderData.amount)} {unit}</p>
 					</li>
 				)}
 			</ul>
-			{ orderData.type===0 && <div className="bg-[#ff8a26] bg-opacity-[8%] mb-[10px] text-[#ff8a26] text-[12px] rounded-lg px-[10px] py-4 leading-[17px] text-justify flex items-start">
-				<Iconify icon="ep:warning-filled" className="warning_color mr-1 text-[16px]" />
-				<span>
-					{/* 市场行情千变万化，市价单交易伴随着滑点，其最终成交价可能低于/高于最新价，请留意市场深度及价格波动 */}
-					{t('spot.modal.warning')}
-				</span>
-			</div>}
 			<Checkbox 
 				className="mb-[30px] custom-checkbox" 
 				checked={noRemind}

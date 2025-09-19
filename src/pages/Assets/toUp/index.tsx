@@ -94,10 +94,6 @@ const TopUpPage = () => {
       setCoinLoading(false);
     }
   };
-
-  useEffect(() => {
-    getTopUpCoinAllList();
-  }, [])
   useEffect(() => {
     // 只在客户端执
     if (typeof window === "undefined") return;
@@ -109,7 +105,10 @@ const TopUpPage = () => {
       console.error("初始化货币对数据错误:", error);
     }
   }, []);
-
+  useEffect(() => {
+    if(isNotAllowToUp) return;
+    getTopUpCoinAllList();
+  }, [isNotAllowToUp])
 
   useEffect(() => {
     if (routeAppliedRef.current) return;

@@ -661,8 +661,22 @@ const WithdrawMoneyPage = observer(() => {
     getUserALlLimitData()
   }, [])
 
+  const isNotAllowWithdraw = useMemo(() => {
+    // const verified11 = currentUserInfo?.verifiedWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 1 //已认证且实名-允许
+    const verified10 = userInfo?.verifiedWithdrawalStatus === 1 && userInfo?.realnessStatus !== 1 //已认证且未实名-判断unverifiedWithdrawalStatus
+    // const unverifie10 = userInfo?.unverifiedWithdrawalStatus === 1 && userInfo?.realnessStatus === 0 //未认证且未实名-允许
+    const unverifie11 = userInfo?.unverifiedWithdrawalStatus === 1 && userInfo?.realnessStatus === 1 //未认证且实名-判断verifiedWithdrawalStatus
+
+    const needsKyc = verified10 && userInfo?.unverifiedWithdrawalStatus !== 1
+    const needsGoogleAuth = !userInfo?.isGoogleAuth || !userInfo?.googleCode
+    const needsMerchantWithdrawal = userInfo?.withdrawalStatus !== 1 ||
+      (userInfo?.verifiedWithdrawalStatus !== 1 && userInfo?.unverifiedWithdrawalStatus !== 1) ||
+      (unverifie11 && userInfo?.verifiedWithdrawalStatus !== 1)
+    return needsKyc || needsGoogleAuth || needsMerchantWithdrawal
+  }, [userInfo])
   useEffect(() => {
     if (coinSelect.length === 0) return
+    if(isNotAllowWithdraw) return;
 
     // 获取路由参数
     const urlCoinId = searchParams.get('coinId');
@@ -670,7 +684,6 @@ const WithdrawMoneyPage = observer(() => {
 
     // 如果没有路由参数，则不执行匹配逻辑
     if (!urlCoinId && !urlCoinName) return;
-
     // 查找匹配的币种
     let matchedCoin = null;
 
@@ -689,7 +702,7 @@ const WithdrawMoneyPage = observer(() => {
       // 执行后续默认选中 tenantId 的步骤
       coinChange(matchedCoin.value, matchedCoin);
     }
-  }, [coinSelect, searchParams, form])
+  }, [coinSelect, searchParams, form, isNotAllowWithdraw])
 
   return (<ContentLayout
     title={t('assets.withdraw')}

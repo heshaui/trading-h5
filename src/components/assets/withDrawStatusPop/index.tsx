@@ -13,10 +13,11 @@ import { useNavigate } from 'react-router-dom';
 type Props = {
     open?: boolean;
     onClose?: () => void;
+    type?: 'withdraw' | 'recharge';
 }
 
 
-const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
+const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose, type = 'withdraw' }) => {
     const { t } = useLanguage('assets');
     const userInfo = appStore.getUserInfo();
     const navigate = useNavigate();
@@ -42,7 +43,7 @@ const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
                         <CloseOutline fontSize={20} />
                     </button>
                 </div>
-                <div className={`${styles.pop_content} flex-1 px-4 mt-4`}>
+                {type === 'withdraw' ? <div className={`${styles.pop_content} flex-1 px-4 mt-4`}>
                     <div className={`${styles.pop_content_header} flex-y`}>
                         <span className={`${styles.tip_color} font-12 font-w-400`}>{t('withdrawMoney.tipText3')}</span>
                     </div>
@@ -96,6 +97,41 @@ const WithdrawStatusPop: React.FC<Props> = ({ open = false, onClose }) => {
 
                     </ul>
                 </div>
+                    :
+                    <div className={`${styles.pop_content} flex-1 px-4 mt-4`}>
+                        <div className={`${styles.pop_content_header} flex-y`}>
+                            <span className={`${styles.tip_color} font-12 font-w-400`}>{t('toUpSteps.tipText3')}</span>
+                        </div>
+                        <ul className={`${styles.pop_content_body} flex-y `}>
+                            {userInfo?.unverifiedRechargeStatus == 1 ? null :
+                             <>{(userInfo?.verifiedRechargeStatus === 1 && userInfo?.realnessStatus !== 1) ? <li className='flex-x-cc mt-5'>
+                                <IdCard className="w-[20px] h-[20px] title-color mr-2_5" />
+                                <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
+                                    <span className={`${styles.status_title} flex-x algin-center justify-start`}>{t('assetsAccount.button.withdrawtip2')}</span>
+                                    <Iconify icon="clarity:error-standard-solid" size={22} className={` ${styles.error_color}`} />
+                                </div>
+                                <button className={`${styles.btn_style2} default_btn`}
+                                    onClick={() => {
+                                        navigate('/userCenter/identity')
+                                    }}>
+                                    {t('assetsAccount.button.toAuthentication')}
+                                </button>
+
+                            </li> :
+                                (userInfo?.verifiedRechargeStatus === 1 && userInfo?.realnessStatus === 1) ? <li className='flex-x-cc mt-5'>
+                                    <IdCard className="w-[20px] h-[20px] title-color mr-2_5" />
+                                    <div className={`${styles.titlw_color} font-16 font-w-500 flex-x algin-center flex-1`}>
+                                        <span className={`${styles.status_title} flex-x algin-center justify-start`}>
+                                            {t('assetsAccount.button.withdrawtip3')}</span>
+                                        <Iconify icon="mdi:success-circle" size={22} className={` ${styles.success_color}`} />
+                                    </div>
+
+                                </li> : null}</>}
+
+                        </ul>
+                    </div>
+
+                }
             </div>
         </Popup>
     );

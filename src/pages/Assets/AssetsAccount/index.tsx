@@ -67,7 +67,7 @@ const AssetsMainPage = observer(() => {
     const [accountPopData, setAccountPopData] = useState<DataType>({} as DataType);
     // const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
     const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
-    const { goRecharge } = useRecharge();
+    const { goRecharge, RechargeStatusPopComponent } = useRecharge();
 
     // 使用 store 中的余额显示状态
     const banlanceShow = appStore.getBanlanceShow();
@@ -745,7 +745,7 @@ const AssetsMainPage = observer(() => {
                     onClose={() => setWithdrawStatusPopOpen(false)}
                 /> */}
                 <WithdrawStatusPopComponent />
-                {/* <RechargeStatusPopComponent /> */}
+                <RechargeStatusPopComponent />
             </ConfigProvider>
         </div>
     );

@@ -24,6 +24,7 @@ export const useWithdraw = () => {
     const { t } = useLanguage('assets');
     const navigate = useNavigate();
     const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
+    const [rechargeStatusPopOpen, setRechargeStatusPopOpen] = useState(false);
     const goWithdraw = useCallback((userInfo?: UserInfo,coinId?:string|number,coinName?:string) => {
         // 如果没有传入 userInfo，从 store 获取
         const currentUserInfo = userInfo || appStore.getUserInfo();
@@ -62,15 +63,15 @@ export const useWithdraw = () => {
         // 检查身份认证和安全设置
         // const needsKyc = currentUserInfo?.merchantWithdrawalStatus === 1 && currentUserInfo?.realnessStatus === 0;
         const needsKyc = verified10 && currentUserInfo?.unverifiedWithdrawalStatus !== 1
-        const needsGoogleAuth = !currentUserInfo?.isGoogleAuth || !currentUserInfo?.googleCode
+        // const needsGoogleAuth = !currentUserInfo?.isGoogleAuth || !currentUserInfo?.googleCode
 
-        if (needsKyc || needsGoogleAuth) {
-            setWithdrawStatusPopOpen(true);
+        if (needsKyc) {
+            setRechargeStatusPopOpen(true);
             return;
         }
 
         // 所有条件满足，跳转到提现页面
-        navigate(`/assets/withdraw?coinId=${coinId}&coinName=${coinName}`);
+        navigate((coinId||coinName)?`/assets/withdraw?coinId=${coinId}&coinName=${coinName}`:`/assets/withdraw`);
     }, [navigate, t]);
 
     return {
@@ -113,11 +114,12 @@ export const useRecharge = () => {
         goRecharge,
         rechargeStatusPopOpen,
         setRechargeStatusPopOpen,
-        // RechargeStatusPopComponent: () => (
-        //     <RechargeStatusPop
-        //         open={rechargeStatusPopOpen}
-        //         onClose={() => setRechargeStatusPopOpen(false)}
-        //     />
-        // )
+        RechargeStatusPopComponent: () => (
+            <WithdrawStatusPop
+                open={rechargeStatusPopOpen}
+                onClose={() => setRechargeStatusPopOpen(false)}
+                type="recharge"
+            />
+        )
     };
 }; 

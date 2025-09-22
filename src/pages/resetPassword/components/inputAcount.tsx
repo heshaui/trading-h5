@@ -89,12 +89,12 @@ function ResetPassword() {
                     if (res.code === '0') {
                         const dataInfo = Object.assign({}, data, res.data)
                         setAcount(dataInfo)
-                        if (res.data.message) {
-                            Toast.show(t('codeError'))
+                        // if (res.data.message) {
+                        //     Toast.show(t('codeError'))
 
-                        } else {
-                            Toast.show(res.message)
-                        }
+                        // } else {
+                        //     Toast.show(res.message)
+                        // }
                         setResetState(ResetStateEnum.SENTCODE)
 
                     } else {

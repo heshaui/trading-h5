@@ -13,6 +13,8 @@ import { CustomTab } from '@/components/CustomCom';
 import { NoData } from '@/components/noData';
 import { ReactComponent as DownSvg } from '@/assets/icons/public/icon_down.svg';
 import { ReactComponent as CloseSvg } from '@/assets/icons/public/icon_close.svg';
+import { updateLanguage } from '@/services/public';
+import { Toast } from 'antd-mobile';
 
 interface ListItem {
   key: string;
@@ -34,10 +36,23 @@ const LanguageToggle: React.FC<Props> = ({ isMenu = false, open = false, onClose
   const langList = appStore.getLangList() || appStore.languageList;
   const [langFilterValue, setLangFilterValue] = useState<string>('')
   const [rateFilterValue, setRateFilterValue] = useState<string>('')
+  const token = appStore.getToken();
+  const fetchLanguage = async () => {
+    if (!token) return;
+    try {
+      await updateLanguage();
 
-  const handleLanguageSelect = (lang: string) => {
+    } catch (error) {
+      Toast.show( {
+          content: String(error),
+          icon: 'fail'
+        });
+    }
+  }
+  const handleLanguageSelect =async (lang: string) => {
     if (lang !== currentLanguage) {
-      changeLanguage(lang);
+      await changeLanguage(lang);
+      await fetchLanguage();
       setVisible(false);
       // 当isMenu为true时，调用回调函数返回当前语言和汇率信息
       if (isMenu && onLanguageChange) {

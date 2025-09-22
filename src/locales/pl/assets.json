@@ -297,5 +297,41 @@
         "stepTip3": "Please confirm the withdrawal amount and fees.",
         "stepTitle4": "Order Review",
         "stepTip4": "After blockchain confirmation, your withdrawal information will be transferred to the deposit platform."
-    }
+    },
+    "toUpSteps": {
+        "title": "How to Deposit Cryptocurrency",
+        "stepTitle1": "Select Currency and Network",
+        "stepTip1": "Select the currency and network you want to deposit. Please ensure that the network you select matches the withdrawal platform's network, otherwise it will cause asset loss.",
+        "stepTitle2": "Get Deposit Address",
+        "stepTip2": "Copy the deposit address, or use the scanned deposit QR code, ensure that both networks match; if Memo is required, please fill in the Memo information.",
+        "stepTitle3": "Initiate Withdrawal",
+        "stepTip3": "Check the address on the withdrawal platform and initiate withdrawal.",
+        "stepTitle4": "Order Review",
+        "stepTip4": "After blockchain confirmation, we will deposit the assets directly into the spot account.",
+        "network": "Network",
+        "rechargeCoin": "Deposit Currency",
+        "minRecharge": "Minimum Deposit Amount",
+        "confirmCount": "Blockchain Confirmation Count",
+        "confirmCountTip": "Confirmations",
+        "confirmCountTip2": "{{confirmCount}}Confirmations",
+        "confirmCountTip3": "Confirmations",
+        "placeholder": "Select Network",
+        "rechargeAddress": "Deposit Address",
+        "networkWarning": "Please note that only deposit networks supported by {{platformName}} platform are shown here. Using unsupported networks may result in asset loss.",
+        "rechargeTo": "Deposit To",
+        "rechargeTo2": "Spot Account",
+        "memoTip1": "Correctly fill in the address and MEMO to deposit to the account",
+        "memoTip2": "When depositing, you must fill in the deposit address and tag, which is your account's unique identifier, and if you do not fill in or fill in incorrectly, your assets will be lost.",
+        "memoTip3": "OK, please display the address",
+        "networkWarning2": "Please do not deposit any non-local currency assets to the above address, otherwise your assets will not be recoverable.",
+        "searchCoin": "Search Currency",
+        "cancel": "Cancel",
+        "contractAddress": "*Contract Address：",
+        "coinTitle": "Deposit {{name}}",
+        "noRecord": "No Data",
+        "tipText3": "You need to complete the following actions to unlock the deposit function",
+        "withdrawError3": "Deposit Prohibited",
+        "withdrawError4": "The exchange has prohibited deposits. If you have any questions, please contact customer service!"
+
+      }
 }

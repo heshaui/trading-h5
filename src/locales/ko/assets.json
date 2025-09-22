@@ -297,5 +297,41 @@
         "stepTip3": "출금 금액과 수수료를 확인하세요.",
         "stepTitle4": "주문 확인",
         "stepTip4": "블록체인 확인 후, 출금 정보가 입금 플랫폼으로 전송됩니다."
-    }
+    },
+    "toUpSteps": {
+        "title": "암호화폐 입금 방법",
+        "stepTitle1": "통화 및 네트워크 선택",
+        "stepTip1": "입금하고자 하는 통화와 네트워크를 선택하세요. 선택한 네트워크가 출금 플랫폼의 네트워크와 일치하는지 확인하세요. 일치하지 않으면 자산 손실이 발생할 수 있습니다.",
+        "stepTitle2": "입금 주소 확인",
+        "stepTip2": "입금 플랫폼의 주소를 복사하거나 입금 이미지를 스캔하여 네트워크가 일치하는지 확인하세요. 메모가 필요한 경우 메모 정보를 입력하세요.",
+        "stepTitle3": "입금 요청",
+        "stepTip3": "출금 플랫폼에서 주소를 확인하고 입금을 요청하세요.",
+        "stepTitle4": "주문 확인",
+        "stepTip4": "블록체인 확인 후, 출금 정보가 입금 플랫폼으로 전송됩니다.",
+        "network": "네트워크",
+        "rechargeCoin": "입금 통화",
+        "minRecharge": "최소 입금 금액",
+        "confirmCount": "블록체인 확인 횟수",
+        "confirmCountTip": "번 확인",
+        "confirmCountTip2": "{{confirmCount}}번 확인",
+        "confirmCountTip3": "번",
+        "placeholder": "네트워크를 선택하세요",
+        "rechargeAddress": "입금 주소",
+        "networkWarning": "주의하십시오. 여기에 {{platformName}} 플랫폼이 지원하는 입금 네트워크만 표시되었습니다. 만약 귀하가 본 플랫폼에서 지원하지 않는 네트워크를 통해 자산을 입금할 경우, 자산 손실이 발생할 수 있습니다.",
+        "rechargeTo": "입금 주소",
+        "rechargeTo2": "현물 계정",
+        "memoTip1": "주소와 MEMO를 반드시 입력해야 합니다.",
+        "memoTip2": "입금 시 반드시 입금 주소와 태그를 입력해야 합니다. 이는 계정의 고유 식별자이며, 누락 또는 잘못된 입력으로 인해 자산 손실이 발생할 수 있습니다.",
+        "memoTip3": "좋습니다, 주소를 표시하세요",
+        "networkWarning2": "위 주소로 입금하지 마세요. 자산 손실이 발생할 수 있습니다.",
+        "searchCoin": "통화 검색",
+        "cancel": "취소",
+        "contractAddress": "*계약 주소：",
+        "coinTitle": "입금 {{name}}",
+        "noRecord": "데이터 없음",
+        "tipText3": "입금 기능을 사용하려면 아래 항목을 완료하세요",
+        "withdrawError3": "입금 금지",
+        "withdrawError4": "거래소가 입금을 금지했습니다. 문의하세요!"
+
+      }
 }

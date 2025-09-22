@@ -200,11 +200,11 @@ const SelectContent: React.FC<SelectContentProps> = observer(({
                             </div>
                             {/* 最新价 */}
                             <div className="text-right flex-1 font-medium">
-                                {pair.price ? pair.price.toFixed(2) : '--'}
+                                {pair.price ? pair.price: '--'}
                             </div>
                             {/* 24h涨跌/24h成交量 */}
                             <div
-                                className={`${pair.changePercent ? parseFloat(pair.changePercent) > 0 ? 'success_icon' : parseFloat(pair.realTimeChange) < 0 : pair.priceChangePercent < 0 ? 'error_icon' : ''} text-right flex-1`}
+                                className={`${pair.changePercent ? pair.changePercent?.startsWith('+')  ? 'success_icon' : pair.changePercent?.startsWith('-') ? 'error_icon' : '' : ''} text-right flex-1`}
                             >
                                 {pair.changePercent || '--'}
                             </div>

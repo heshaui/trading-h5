@@ -30,6 +30,7 @@ const Position: React.FC = () => {
 	// 仓位
 	const {
 		loading,
+		positions,
 		getPosition,
 		getFilteredPositions,
 		quickClose,
@@ -139,12 +140,12 @@ const Position: React.FC = () => {
 		const data = getFilteredPositions(currentSymbol, onlyCurrentSymbol);
 		setPositionList(data);
 		setPositionCount(data?.length ?? 0);
-	}, [getPosition, onlyCurrentSymbol])
+	}, [getPosition, positions, onlyCurrentSymbol])
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentSymbol.contractShowType?.toLowerCase();
-		return t(`contractInfo.${type ?? 'demo'}`)
+		const type = currentSymbol.contractShowType;
+		return type ? type.replace('合约', '') : '模拟'
 	}
 
 	// 显示提示
@@ -201,7 +202,8 @@ const Position: React.FC = () => {
 					/>
 					<span className="ml-1">{t("order.onlyCurrentSymbol")}</span>
 				</div>
-				<button type="button" className="theme-color">{t('order.flattening')}</button>
+				{/* 一键全平 */}
+				{/* <button type="button" className="theme-color">{t('order.flattening')}</button> */}
 			</div>
 			<ul className="max-h-[350px] hideScrollBar">
 				{
@@ -245,7 +247,7 @@ const Position: React.FC = () => {
 										className={`text-[16px] font-medium
 											${item.unRealizedAmount > 0 ? 'success_icon' : item.unRealizedAmount < 0 ? 'error_icon' : ''}
 										`}
-									>{item.unRealizedAmount > 0 ? '+' : item.unRealizedAmount < 0 ? '-' : ''}{new BigNumber(item.unRealizedAmount).toFormat(symbolPricePrecision)}</span>
+									>{item.unRealizedAmount > 0 ? '+' : item.unRealizedAmount < 0 ? '' : ''}{new BigNumber(item.unRealizedAmount).toFormat(symbolPricePrecision)}</span>
 								</p>
 								<p>
 									<p className="flex flex-col gap-y-[4px]">
@@ -254,7 +256,7 @@ const Position: React.FC = () => {
 										className={`text-[16px] font-medium text-right
 											${item.returnRate > 0 ? 'success_icon' : item.returnRate < 0 ? 'error_icon' : ''}
 										`}
-									>{item.returnRate > 0 ? '+' : item.returnRate < 0 ? '-' : ''}{new BigNumber(item.returnRate).toFormat(symbolPricePrecision)}%</span>
+									>{item.returnRate > 0 ? '+' : item.returnRate < 0 ? '' : ''}{new BigNumber(item.returnRate).toFormat(symbolPricePrecision)}%</span>
 								</p>		
 								</p>
 							</div>
@@ -367,7 +369,6 @@ const Position: React.FC = () => {
 				onConfirm={() => setTpslVisible(false)}
 			/>
 			{/* 平仓 */}
-			{/* 反向开仓 */}
 			<ClosePopup
 				open={closeVisible}
 				currentData={currentData!}

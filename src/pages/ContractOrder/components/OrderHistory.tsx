@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { useLanguage } from '@/hooks';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -35,8 +35,6 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	const navigate = useNavigate();
 	// 获取当前合约信息
 	const currentContractInfo = appStore.getCurrentContractInfo();
-	const currentSymbol = currentContractInfo?.symbol || "";
-	const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
 
 	const [datePopVisible, setDatePopVisible] = useState(false);
 	const [orderId, setOrderId] = useState();
@@ -44,20 +42,24 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	const [loading, setLoading] = useState(false);
 	const [total, setTotal] = useState(0);
 	const [hasMore, setHasMore] = useState(true)
+	const [currentContract, setCurrentContract] = useState(currentContractInfo);
 	const paramdataRef = useRef<ParamData>({
 		page: 1,
 		pageSize: 10,
 		type: '',
-		contractId: '',
+		contractId: currentContractInfo.id,
 		orderType: '1',
 		beginTime: dayjs().subtract(6, 'day').startOf('day').valueOf(),
 		endTime: dayjs().endOf('day').valueOf()
 	});
+	const symbolPricePrecision = useMemo(() => {
+		return currentContract?.coinResultVo?.symbolPricePrecision;
+	}, [currentContract])
 
 	const typeOptions = [
 		{label: t('order.select.allType'), value: ''},
 		{label: t('order.select.limitOrder'), value: 1},
-		{label: t('order.select.postOnly'), value: 5}
+		{label: t('order.select.marketOrder'), value: 2}
 	]
 
 	const orderTypeOptions = [
@@ -66,7 +68,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	]
 
 	const contractOptions = [
-		{label: t('order.select.allContract'), value: ''},
+		// {label: t('order.select.allContract'), value: ''},
 		...contractList.map(item => ({
 			label: item.contractName,
 			value: item.id
@@ -74,24 +76,29 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	]
 
 	// 显示合约类型
-	const getContractShowType = () => {
-		return t(`contractInfo.${'demo'}`)
+	const getCurrentContract = () => {
+		const target = contractList.find(item => item.id === paramdataRef.current.contractId)
+		setCurrentContract(target)
 	}
-	
-	// 计算完成度
-	const setFinally = (num: number, total: number) => {
-		if (!num || !total) return '0%';
-		return (Number(num)/Number(total)).toFixed(2)+'%';
+
+	// 显示合约类型
+	const getContractShowType = () => {
+		const type = currentContract.contractShowType;
+		return type ? type.replace('合约', '') : '模拟'
 	}
 
 	const handleSelect = <K extends keyof ParamData>(value: ParamData[K], type: K) => {
 		if (value || value?.toString() === '0') {
 			paramdataRef.current[type] = value
 		} else {
-			paramdataRef.current[type] = ''
+			paramdataRef.current[type] = '';
+			switch (type) {
+				case 'orderType': paramdataRef.current[type] = '1'; break;
+				case 'contractId': paramdataRef.current[type] = currentContractInfo.id; break;
+			}
 		}
+		type === 'contractId' && getCurrentContract();
 		initData();
-		getOrderListData();
 	}
 
 	const getOrderListData = async () => {
@@ -108,16 +115,16 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 		console.log('条件变了')
 		try {
 			const res = paramdataRef.current.orderType === '1' ? await getHistoryOrderList(params) : await getHistoryPlanOrderList(params)
-			const resData = paramdataRef.current.orderType === '1' ? res.data.orderList : res.data.trigOrderList;
 			if (res.code === '0') {
+				const resData = paramdataRef.current.orderType === '1' ? res.data?.orderList ?? [] : res.data?.trigOrderList ?? [];
 				setOrderList(prev => paramdataRef.current.page === 1 ? resData : [...prev, ...resData]);
 				setTotal(res.data.count);
 				setHasMore(orderList.length + resData.length < res.data.count)
 			} else {
-				Toast.show(res.message);
+				Toast.show({icon: 'fail', content: res.msg});
 			}
 		} catch (error) {
-			Toast.show(String(error))
+			Toast.show({icon: 'fail', content: String(error)});
 		} finally {
 			setLoading(false)
 		}
@@ -164,28 +171,8 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	const initData = () => {
 		paramdataRef.current.page = 1
 		setTotal(0)
-		setOrderList([
-			{
-				symbol: 'BSCUSDT',
-				pricePrecision: 0,
-				side: Side.BUY,
-				positionType: PositionType.CROSS_MARGIN,
-				avgPrice: 0,
-				tradeFee: 0,
-				type: Type.LIMIT,
-				mtime: Date.now(),
-				volume: 876.98,
-				dealVolume: 10,
-				price: 109987.098,
-				contractId: 0,
-				ctime: Date.now(),
-				contractName: '',
-				id: '123',
-				open: Open.OPEN,
-				status: Status.PENDING,
-				realizedAmount: 0
-			}
-		])
+		setOrderList([])
+		getOrderListData();
 	}
 
 	const toDetail = (record: DataType) => {
@@ -202,7 +189,6 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	// 条件变化时需要初始化页数
 	useEffect(() => {
 		initData();
-		//getOrderListData();
 	}, [currentLanguage])
 
 	return (

@@ -81,7 +81,22 @@ const SpotTabs: React.FC = () => {
                 />
                 <OrderIcon className="!w-[24px] !h-[24px] text-[var(--text-color5)]" onClick={() => navigate('/contractOrder')} />
             </div>
-            {!isLoggedIn ? <NoLogin /> : TabContent()}
+            {/* {!isLoggedIn ? <NoLogin /> : TabContent()} */}
+            {!isLoggedIn ? (
+                <NoLogin />
+            ) : (
+                <>
+                    <div style={{ display: activeTab === '1' ? 'block' : 'none' }}>
+                        <Position />
+                    </div>
+                    <div style={{ display: activeTab === '2' ? 'block' : 'none' }}>
+                        <DefaultCommission />
+                    </div>
+                    <div style={{ display: activeTab === '3' ? 'block' : 'none' }}>
+                        <ConditionCommission />
+                    </div>
+                </>
+            )}
         </div>
     )
 }

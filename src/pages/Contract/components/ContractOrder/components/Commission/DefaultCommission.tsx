@@ -28,7 +28,7 @@ const DefaultCommission:React.FC = () => {
     const [delType, setDelType] = useState(0); // 0:全部 1: 单个
     // 普通委托
     const {
-        ordinaryCommissionNumber,
+        ordinaryCommission,
         loading,
         getOrdinaryCommission,
         handleCancelOrdinaryOrder,
@@ -85,12 +85,12 @@ const DefaultCommission:React.FC = () => {
 		const data = getFilteredOrdinaryCommission(currentSymbol, onlyCurrentSymbol);
 		setOrderList(data);
 		setDefaultOrderCount(data?.length ?? 0);
-	}, [getOrdinaryCommission, onlyCurrentSymbol])
+	}, [getOrdinaryCommission, ordinaryCommission, onlyCurrentSymbol])
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentSymbol.contractShowType?.toLowerCase();
-		return t(`contractInfo.${type ?? 'demo'}`)
+		const type = currentSymbol.contractShowType;
+		return type ? type.replace('合约', '') : '模拟'
 	}
     
     // 计算完成度

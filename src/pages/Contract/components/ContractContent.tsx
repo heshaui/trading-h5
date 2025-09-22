@@ -106,7 +106,7 @@ const ContractContent: React.FC = observer(() => {
   const { 
       timeInterval: currentTimeInterval, 
       updateDepthData, 
-      updateKlineData, 
+      setKlineData, 
       updateOrderData,
       setMarketInfoData
   } = useContract();
@@ -345,6 +345,9 @@ const ContractContent: React.FC = observer(() => {
       },
     };
 
+    // 市场信息
+    const marketInfo = { event: "req", params: { channel: "review" } };
+
     // 发送所有订阅消息
     ws.send(JSON.stringify(depthEvent));
     ws.send(JSON.stringify(tradeEvent));
@@ -354,6 +357,7 @@ const ContractContent: React.FC = observer(() => {
     ws.send(JSON.stringify(klineReqEvent));
     ws.send(JSON.stringify(klineSubEvent));
     ws.send(JSON.stringify(realtimeTradeRepEvent));
+    ws.send(JSON.stringify(marketInfo));
   }, []);
 
   // 发送WebSocket订阅消息
@@ -444,7 +448,7 @@ const ContractContent: React.FC = observer(() => {
         console.log("🧹 清理旧数据状态");
         updateDepthData(null);
         setPriceData(null);
-        updateKlineData(null);
+        setKlineData(null);
 
         // 更新合约信息
         console.log("📝 更新合约信息");
@@ -508,7 +512,7 @@ const ContractContent: React.FC = observer(() => {
           console.log("📈 ========================================");
           
           // 直接传递原始WebSocket数据给TradingView组件处理
-          updateKlineData(data);
+          setKlineData(data);
 
           // 更新价格数据
           if (

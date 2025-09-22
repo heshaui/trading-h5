@@ -89,12 +89,12 @@ const ConditionCommission:React.FC = () => {
 		const data = getFilteredConditionalCommission(currentSymbol, onlyCurrentSymbol);
 		setOrderList(data);
 		setConditionOrderCount(data?.length ?? 0);
-	}, [getConditionalCommission, onlyCurrentSymbol])
+	}, [getConditionalCommission, conditionalCommission, onlyCurrentSymbol])
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentSymbol.contractShowType?.toLowerCase();
-		return t(`contractInfo.${type ?? 'demo'}`)
+		const type = currentSymbol.contractShowType;
+		return type ? type.replace('合约', '') : '模拟'
 	}
 
     // 全部撤销

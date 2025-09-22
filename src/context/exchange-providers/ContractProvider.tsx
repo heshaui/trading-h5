@@ -61,6 +61,7 @@ interface ContractContextValue {
   tradePrice: number;
   updateTimeInterval: (interval: string) => void;
   updateKlineData: (updater: ((prevData: KLineData | null) => KLineData) | KLineData | null) => void;
+  setKlineData: (data: KLineData | null) => void;
   updateTradePrice: (price: number) => void;
   // 盘口数据
   orderData: OrderData | null;
@@ -175,6 +176,7 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 	updateTimeInterval,
 	updateKlineData,
 	updateTradePrice,
+  setKlineData,
 	
 	orderData,
 	updateOrderData,

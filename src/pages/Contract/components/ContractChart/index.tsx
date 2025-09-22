@@ -8,7 +8,7 @@ import { getDepthMap } from "@/services/contract";
 
 import SelectPop from '@/components/SelectPop';
 import DepthChart from '@/components/DepthChart';
-import Tradingview, { TradingviewRefHandle } from "@/components/Tradingview";
+import Tradingview, { TradingviewRefHandle } from "../Tradingview";
 
 
 import { ReactComponent as StockIcon } from '@/assets/images/exchange/icon_stock.svg';
@@ -100,9 +100,9 @@ const SpotChart: React.FC = () => {
         //     getDepthMapData()
         // }, 1000) // 1000ms = 1s
 
-        return () => {
-            //clearInterval(intervalId) // 组件卸载或依赖变更时清理
-        }
+        // return () => {
+        //     clearInterval(intervalId) // 组件卸载或依赖变更时清理
+        // }
     }, [currentContractInfo.symbol, currentContractInfo.id])
 
     // 全屏

@@ -157,7 +157,7 @@ const OrderDetail = () => {
 			}
 			const res = await getHistoryTradeList(params)
 			if (res.code === "0") {
-				setTradeList(res.data.tradeHisList)
+				setTradeList(res.data?.tradeHisList)
 			} else {
 				Toast.show({icon: 'fail', content: res.msg})
 			}

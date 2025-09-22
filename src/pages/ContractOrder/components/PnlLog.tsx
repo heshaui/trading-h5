@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 import { useLanguage } from '@/hooks';
 import { message } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,6 @@ interface Props {
 type ParamData = {
   page: number;
   pageSize: number;
-  contractId: string;
   [key: string]: any;
 };
 
@@ -33,7 +32,6 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	// 获取当前合约信息
 	const currentContractInfo = appStore.getCurrentContractInfo();
 	const currentSymbol = currentContractInfo?.symbol || "";
-	const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
 
 	const [shareVisible, setShareVisible] = useState(false);
 	const [currentData, setCurrentData] = useState<DataType>();
@@ -41,25 +39,19 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	const [loading, setLoading] = useState(false);
 	const [total, setTotal] = useState(0);
 	const [hasMore, setHasMore] = useState(true)
+	const [currentContract, setCurrentContract] = useState(currentContractInfo);
+	const [contractId, setContractId] = useState(currentContractInfo.id);
 	const paramdataRef = useRef<ParamData>({
 		page: 1,
-		pageSize: 10,
-		contractId: ''
+		pageSize: 10
 	});
 
-	const typeOptions = [
-		{label: t('order.select.allType'), value: ''},
-		{label: t('order.select.limitOrder'), value: 1},
-		{label: t('order.select.postOnly'), value: 5}
-	]
-
-	const orderTypeOptions = [
-		{label: t('order.defaultCommission'), value: '1'},
-		{label: t('order.planCommission'), value: '2'}
-	]
+	const symbolPricePrecision = useMemo(() => {
+		return currentContract?.coinResultVo?.symbolPricePrecision;
+	}, [currentContract])
 
 	const contractOptions = [
-		{label: t('order.select.allContract'), value: ''},
+		// {label: t('order.select.allContract'), value: ''},
 		...contractList.map(item => ({
 			label: item.contractName,
 			value: item.id
@@ -67,39 +59,46 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	]
 
 	// 显示合约类型
-	const getContractShowType = () => {
-		return t(`contractInfo.${'demo'}`)
+	const getCurrentContract = () => {
+		const target = contractList.find(item => item.id === contractId)
+		setCurrentContract(target)
 	}
 
-	const handleSelect = <K extends keyof ParamData>(value: ParamData[K], type: K) => {
+	// 显示合约类型
+	const getContractShowType = () => {
+		const type = currentContract.contractShowType;
+		return type ? type.replace('合约', '') : '模拟'
+	}
+
+	const handleSelect = (value: string) => {
 		if (value || value?.toString() === '0') {
-			paramdataRef.current[type] = value
+			setContractId(value)
 		} else {
-			paramdataRef.current[type] = ''
+			setContractId(currentContractInfo.id)
 		}
+		getCurrentContract();
 		initData();
-		getOrderListData();
 	}
 
 	const getOrderListData = async () => {
 		const params = {
 			page: paramdataRef.current.page,
 			limit: paramdataRef.current.pageSize,
-			contractId: paramdataRef.current.contractId,
+			contractId: contractId,
 			uaTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
 		}
 		paramdataRef.current.page === 1 && setLoading(true)
 		try {
 			const res = await getHistoryPositionList(params)
 			if (res.code === '0') {
-				setOrderList(prev => paramdataRef.current.page === 1 ? res.data.positionList : [...prev, ...res.data.positionList]);
+				setOrderList(prev => paramdataRef.current.page === 1 ? res.data?.positionList : [...prev, ...res.data?.positionList]);
 				setTotal(res.data.count);
 				setHasMore(orderList.length + res.data.positionList.length < res.data.count)
 			} else {
-				Toast.show(res.message);
+				Toast.show({icon: 'fail', content: res.msg});
 			}
 		} catch (error) {
-			Toast.show(String(error))
+			Toast.show({icon: 'fail', content: String(error)});
 		} finally {
 			setLoading(false)
 		}
@@ -117,39 +116,13 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 	const initData = () => {
 		paramdataRef.current.page = 1
 		setTotal(0)
-		setOrderList([
-			{
-							id: 0,
-							contractId: 0,
-							contractName: '',
-							symbol: 'BTC-USDT',
-							positionVolume: 0,
-							canCloseVolume: 0,
-							openAvgPrice: 0,
-							indexPrice: 0,
-							reducePrice: 0,
-							holdAmount: 0,
-							marginRate: 0,
-							realizedAmount: 0,
-							returnRate: 12334.23,
-							orderSide: Side.BUY,
-							positionType: 1,
-							canUseAmount: 0,
-							canSubMarginAmount: 0,
-							openRealizedAmount: 0,
-							keepRate: 0,
-							maxFeeRate: 0,
-							unRealizedAmount: 98712.498,
-							leverageLevel: 20,
-							positionBalance: 0
-						},
-		])
+		setOrderList([])
+		getOrderListData();
 	}
 
 	// 条件变化时需要初始化页数
 	useEffect(() => {
 		initData();
-		//getOrderListData();
 	}, [currentLanguage])
 
 	return (
@@ -157,19 +130,19 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 			<div className="flex h-[44px] px-[16px] items-center justify-between border border-color">
 				<div className="flex gap-x-[14px]">
 					<SelectPop
-						value={paramdataRef.current.contractId}
+						value={contractId}
 						options={contractOptions}
 						placeholder={t('placeholder')}
 						title={t('placeholder')}
 						activeType='icon'
-						onChange={(value:any) => handleSelect(value, 'contractId')}
+						onChange={(value:any) => handleSelect(value)}
 						renderBtn={(open) => (
 							<button 
 								type="button" 
 								className={`text-[14px] leading-[20px] flex items-center`}
 								onClick={open}
 							>
-								<span>{getLabel(paramdataRef.current.contractId, contractOptions)}</span>
+								<span>{getLabel(contractId, contractOptions)}</span>
 								<Iconify icon="eva:arrow-down-fill" className="text-[12px] ml-1" />
 							</button>
 						)}
@@ -187,7 +160,7 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 							<div className="flex items-center justify-between mb-[16px]">
 								<div>
 									<div className="h-[22px] flex items-center mb-[2px]">
-										<span className="text-[14px] font-medium mr-[4px]">{item.symbol ?? '--'}</span>
+										<span className="text-[14px] font-medium mr-[4px]">{item.symbol ?? currentSymbol}</span>
 										<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center">{getContractShowType()}</span>
 									</div>
 									<div className="leading-[17px] text-[12px] flex items-center">

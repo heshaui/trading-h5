@@ -34,7 +34,7 @@ import { getToken } from "@/request";
 import { CustomTable } from "@/components/CustomCom";
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
 import AccountPop from "../components/AccountPop";
-import { useWithdraw } from "@/hooks/useWithdraw";
+import { useWithdraw ,useRecharge} from "@/hooks/useWithdraw";
 import { ReactComponent as EyeSvg } from '@/assets/icons/assets/icon_eye.svg';
 import { ReactComponent as EyeCloseSvg } from '@/assets/icons/assets/icon- closeEye.svg';
 
@@ -67,6 +67,7 @@ const AssetsMainPage = observer(() => {
     const [accountPopData, setAccountPopData] = useState<DataType>({} as DataType);
     // const [withdrawStatusPopOpen, setWithdrawStatusPopOpen] = useState(false);
     const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
+    const { goRecharge } = useRecharge();
 
     // 使用 store 中的余额显示状态
     const banlanceShow = appStore.getBanlanceShow();
@@ -658,7 +659,7 @@ const AssetsMainPage = observer(() => {
                         <div className="flex-row mt-4 w-full">
                             <button
                                 className={`default_btn ${styles.btn_style} mr-4 flex-1`}
-                                onClick={() => navigate('/assets/toUp')}
+                                onClick={() => goRecharge()}
                             >
                                 {/* 充值 */}
                                 {t("assetsAccount.button.deposit")}
@@ -744,6 +745,7 @@ const AssetsMainPage = observer(() => {
                     onClose={() => setWithdrawStatusPopOpen(false)}
                 /> */}
                 <WithdrawStatusPopComponent />
+                {/* <RechargeStatusPopComponent /> */}
             </ConfigProvider>
         </div>
     );

@@ -18,7 +18,7 @@ const withAssetsLayout = <P extends object>(
     const LayoutWrapper: React.FC<P> = (props) => {
         const { t } = useLanguage('assets');
         const { goWithdraw, WithdrawStatusPopComponent } = useWithdraw();
-        const { goRecharge, RechargeStatusPopComponent } = useRecharge();
+        const { goRecharge } = useRecharge();
 
         // 默认菜单列表
         const defaultMenuList: MenuType[] = [
@@ -68,7 +68,7 @@ const withAssetsLayout = <P extends object>(
                     <WrappedComponent {...props} />
                 </div>
                 <WithdrawStatusPopComponent />
-                <RechargeStatusPopComponent />
+                {/* <RechargeStatusPopComponent /> */}
             </div>
         );
     };

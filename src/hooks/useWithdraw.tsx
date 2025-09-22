@@ -5,7 +5,7 @@ import { Modal, Toast, Image } from 'antd-mobile';
 import { Iconify } from '@/components/icon';
 import appStore from '@/store';
 import Icon_NoWithdraw from "@/assets/images/assets/icon_nosm_2.png";
-import WithdrawStatusPop from "@/components/withDrawStatusPop";
+import WithdrawStatusPop from "@/components/assets/withDrawStatusPop";
 
 interface UserInfo {
     withdrawalStatus?: number;
@@ -113,11 +113,11 @@ export const useRecharge = () => {
         goRecharge,
         rechargeStatusPopOpen,
         setRechargeStatusPopOpen,
-        RechargeStatusPopComponent: () => (
-            <WithdrawStatusPop
-                open={rechargeStatusPopOpen}
-                onClose={() => setRechargeStatusPopOpen(false)}
-            />
-        )
+        // RechargeStatusPopComponent: () => (
+        //     <RechargeStatusPop
+        //         open={rechargeStatusPopOpen}
+        //         onClose={() => setRechargeStatusPopOpen(false)}
+        //     />
+        // )
     };
 }; 

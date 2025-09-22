@@ -328,6 +328,10 @@
         "cancel": "取消",
         "contractAddress": "*合约地址：",
         "coinTitle": "充值{{name}}",
-        "noRecord": "暂无数据"
+        "noRecord": "暂无数据",
+        "tipText3": "您需要完成以下操作后才能解锁充值功能",
+        "withdrawError3": "禁止充值",
+        "withdrawError4": "交易所禁止充值，如有问题请与客服联系！"
+
       }
 }

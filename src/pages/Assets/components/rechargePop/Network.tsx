@@ -52,6 +52,7 @@ const NetworkSteps = ({ coinInfo,goSteps }: NetworkStepsProps) => {
     const [selectedProtocolInfo, setSelectedProtocolInfo] = useState<any>(null);
     const allConfig = appStore.getKvConfigAll()
     const { isDayMode } = useThemeMode()
+    const { copyFn } = useCopyToClipboard();
 
     // 4.2币种对应的协议（网络）-通过币种协议获取网络id进行匹配
     const getCoinExt = async (id?: number | string) => {
@@ -259,7 +260,18 @@ const NetworkSteps = ({ coinInfo,goSteps }: NetworkStepsProps) => {
                             <span className="text-[var(--text-color5)]  font-[500] min-w-0 break-all mt-[6px] mr-[24px]">
                                 {walletAddress?.address || '--'}
                             </span>
-                            <Button type="text" style={{ padding: 0 }} icon={<CopySvg className="w-[24px] h-[24px]" />} />
+                            <Button type="text" style={{ padding: 0 }} icon={<CopySvg className="w-[24px] h-[24px]" />}
+                            onClick={() => {
+                                if(walletAddress?.address){
+                                    copyFn(walletAddress?.address || '--')
+                                }else{
+                                    Toast.show({
+                                        content: t("toUpSteps.noRecord"),
+                                        icon: 'fail'
+                                    });
+                                }
+                            }}
+                            />
                         </div>
 
                     </li>

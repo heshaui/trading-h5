@@ -14,7 +14,7 @@ import { diffTime,formatTime } from './time'
 
 const withdrawFee = (amountNum: number, freeNum: number, minFee?: number) => {
     // 将手续费率转换为百分比
-    const feeRate = division(freeNum, 100)
+    const feeRate = division(freeNum||0, 100)
     
     // 计算实际手续费
     const actualFee = nul(amountNum, feeRate)

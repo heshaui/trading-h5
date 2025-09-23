@@ -572,6 +572,8 @@ const WithdrawMoneyPage = observer(() => {
     if (!allowWithdraw) return
     form.validateFields()
       .then((values) => {
+        console.log(values,999);
+        
         const coinExtInfo = coinExtSelect.find(item => item.value === values.protocolId)
         const params = {
           coinId: values.tenantId,

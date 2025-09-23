@@ -308,7 +308,7 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 					</li>
 				}
 			</ul>
-			{orderList.length > 0 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+			{orderList.length > 9 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
 			<DelectModal 
 				open={delVisible}
 				orderId={[]}

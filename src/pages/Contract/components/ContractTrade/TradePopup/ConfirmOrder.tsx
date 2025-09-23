@@ -45,17 +45,17 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 			<div className="text-[18px] font-medium mb-1">{orderData.btnText}{currentContractInfo.base}{currentContractInfo.quote}</div>
 			<div className="text-[14px] tip-color">
 				<span className="mr-1">{orderData.marginModel === 1 ? t("tradingPanel.crossMargin") : t("tradingPanel.isolatedMargin")}</span>
-				<span>{orderData.leverageLevel}x</span>
+				<span>{orderData.leverage}x</span>
 			</div>
 			 <ul className={`font-14 font-w-400 mt-[18px] mb-[10px] border border-color rounded-lg p-4`}>
 				<li className="flex-x align-center justify-between">
 					<p className="tip-color">
 						{/* 价格 */}
-						{t('spot.modal.price')}
+						{t('spot:spot.modal.price')}
 					</p>
 					<p>
 						{/* 市价 */}
-						{orderData.orderType==='market' ? t('spot.modal.market') : formatNumber(orderData.price)}(USDT)
+						{orderData.orderType==='market' ? t('spot:spot.modal.market') : formatNumber(orderData.price)}(USDT)
 					</p>
 				</li>
 				{/* 市价买单不显示数量 */}
@@ -63,7 +63,7 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 					<li className="flex-x align-center justify-between mt-5">
 						<p className="tip-color">
 							{/* 数量 */}
-							{t('spot.modal.amount')}
+							{t('spot:spot.modal.amount')}
 						</p>
 						<p>{formatNumber(orderData.amount)} {unit}</p>
 					</li>
@@ -76,15 +76,15 @@ const ConfirmOrder:React.FC<Props> = ({ orderData, onOk, onCancel }) => {
 			>
 				<p className="text-[14px] text-[var(--text-color5)]">
 					{/* 不再提醒,可在交易设置中，开启或关闭提示。 */}
-					{t('spot.modal.noRemind')}
+					{t('spot:spot.modal.noRemind')}
 				</p>
 			</Checkbox>
 			<div className="flex w-full justify-between gap-x-[10px]">
 				<button className="w-[50%] rounded-[22px] h-[44px] cancel_btn2 flex justify-center items-center" onClick={onCancel}>
-					{t('spot.modal.cancel')}
+					{t('spot:spot.modal.cancel')}
 				</button>
 				<button className="w-[50%] rounded-[22px] h-[44px] default_btn flex justify-center items-center" onClick={handOk}>
-					{t('spot.modal.confirm')}
+					{t('spot:spot.modal.confirm')}
 				</button>
 			</div>
 		</div>

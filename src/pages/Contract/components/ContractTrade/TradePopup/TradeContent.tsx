@@ -31,6 +31,7 @@ import { useContract } from '@/context/exchange-providers/ContractProvider';
 import { useUserConfig } from "@/hooks/useUserConfig";
 import { getUserBalanceAll, transferAll } from "@/services/assets";
 import { getLabel } from "@/utils";
+import { BigNumber } from "bignumber.js";
 
 import {
   createCoId,
@@ -69,7 +70,6 @@ type Props = {
   spotBalance?: any;
   contractBalance?: any;
   onOrderSubmit?: (orderData: any) => void;
-  onBalanceUpdate?: () => void; // 新增余额更新回调
   priceSetterRef?: React.MutableRefObject<((price: number) => void) | null>; // 新增价格设置器ref
   priceData?: any; // 新增价格数据
 };
@@ -583,7 +583,7 @@ const SpotTradePage = observer(({
             icon: 'success',
             content: t("contract:orderSubmitSuccess"),
         });
-        setAddOrderNotice((prev:any) => prev++);
+        setAddOrderNotice((prev:any) => prev+1);
     } else {
         Toast.show({
             icon: 'fail',
@@ -910,6 +910,10 @@ const SpotTradePage = observer(({
     getContractBalance();
     getSpotBalance();
   };
+
+  useEffect(() => {
+    onBalanceUpdate();
+  }, [])
   
   // 处理资金划转确认
   const handleFundTransferConfirm = async (transferData: any) => {
@@ -929,7 +933,7 @@ const SpotTradePage = observer(({
   const orderTypeTabs = [
     { key: 1, label: t("tradingPanel.limitOrder") },
     { key: 2, label: t("tradingPanel.marketOrder") },
-    { key: 3, label: t("tradingPanel.conditionalOrder") }
+    // { key: 3, label: t("tradingPanel.conditionalOrder") }
   ];
 
   // 处理风险确认书取消
@@ -1205,29 +1209,41 @@ const SpotTradePage = observer(({
                 className="spotSlider"
               />
 
-              {/* 可买/可卖数量显示 */}
-              <div className="mb-[5px]">
+              {/* 可买/可卖数量显示 mb-5px*/}
+              <div className="mb-[22px]">
                 <div className="flex items-center justify-between text-[14px] text-[var(--text-color5)] font-[400]">
                   <div className="flex leading-[20px] items-center gap-[4px]">
-                    <span style={{color:'#00C788'}}>{t("tradingPanel.canBuy")}</span>
-                    <span>{formatNumber(calculateMaxQuantity("BUY"), symbolPricePrecision || 4)} {currentContractInfo.coUnit}</span>
+                    <span style={{color:'#00C788'}}> {transactionType === 2 ? t('tradingPanel.canCloseShort') : t('tradingPanel.canBuy')}</span>
+                    <span>
+                       {transactionType === 2
+                        ? formatNumber(calculateCloseableQuantity("SELL"), 0)
+                        : formatNumber(calculateMaxQuantity("BUY"), 0)
+                      }
+                      {currentContractInfo.coUnit}{t("tradingPanel.unit")}
+                    </span>
                   </div>
                   <div className="flex leading-[20px] items-center gap-[4px]">
-                    <span  style={{color:'#FF4D4F'}}>{t("tradingPanel.canSell")}</span>
-                    <span>{formatNumber(calculateMaxQuantity("SELL"), symbolPricePrecision || 4)} {currentContractInfo.coUnit}</span>
+                    <span style={{color:'#FF4D4F'}}> {transactionType === 2 ? t('tradingPanel.canCloseLong') : t('tradingPanel.canSell')}</span>
+                    <span>
+                      {transactionType === 2
+                        ? formatNumber(calculateCloseableQuantity("BUY"), 0)
+                        : formatNumber(calculateMaxQuantity("SELL"), 0)
+                      } 
+                      {currentContractInfo.coUnit}{t("tradingPanel.unit")}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* 止盈止损 */}
-              {currentCategory !== 3 && <div className={`flex items-center h-[20px] gap-x-[8px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
+              {/* {currentCategory !== 3 && <div className={`flex items-center h-[20px] gap-x-[8px] ${currentCategory === 2 ? 'mb-[22px]' : 'mb-[10px]'}`}>
                 <Checkbox
                   checked={enableTPSL}
                   onChange={(e) => setEnableTPSL(e.target.checked)}
                   className="custom-checkbox"
                 />
                 <span className="text-[var(--text-color5)] text-[14px]">{t('tpsl')}</span> 
-              </div>} 
+              </div>}  */}
 
               {/* 止盈止损输入框 */}
               {enableTPSL && (
@@ -1250,7 +1266,7 @@ const SpotTradePage = observer(({
             )}
 
             {/* 高级设置 */}
-            {currentCategory !==2 && <div className="flex items-center mb-[22px] gap-[4px] h-[20px]">
+            {/* {currentCategory !==2 && <div className="flex items-center mb-[22px] gap-[4px] h-[20px]">
               <span className="text-[14px] tip-color">
                 {t("tradingPanel.advancedSettings")}
               </span>
@@ -1272,7 +1288,7 @@ const SpotTradePage = observer(({
                       </button>
                   )}
               />
-            </div>}
+            </div>} */}
 
             {/* 提交按钮 */}
             {isLoggedIn ? <div className="mb-[10px] flex justify-between gap-[12px]">

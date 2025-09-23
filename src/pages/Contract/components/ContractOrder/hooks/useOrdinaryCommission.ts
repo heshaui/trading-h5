@@ -66,7 +66,7 @@ export const useOrdinaryCommission = (
 
   // 取消普通委托
   const handleCancelOrdinaryOrder = useCallback(
-    async (record: OrdinaryCommission, isAll: boolean = false) => {
+    async (record: OrdinaryCommission, isAll: boolean = false, msg: string = '',) => {
       try {
         const params = {
           orderId: record.id,
@@ -75,7 +75,7 @@ export const useOrdinaryCommission = (
         };
         const res = await cancelOrder(params);
         if (res.code === "0") {
-          !isAll && message.success(res.msg);
+          !isAll && message.success(msg || res.msg);
           // 刷新数据
           !isAll && getOrdinaryCommission();
         } else {

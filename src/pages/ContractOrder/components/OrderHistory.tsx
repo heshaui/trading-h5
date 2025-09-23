@@ -310,7 +310,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 					</li>
 				}
 			</ul>
-			{orderList.length > 0 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
+			{orderList.length > 9 && <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />}
 			<DateTimePop
 				popupVisible={datePopVisible}
 				onOpen={() => setDatePopVisible(true)}

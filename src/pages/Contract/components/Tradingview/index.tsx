@@ -364,7 +364,9 @@ const Tradingview: React.ForwardRefRenderFunction<
   const recreateChart = () => {
     if (tvWidget) {
       try {
-        tvWidget.remove();
+        if (tvWidget.remove && typeof tvWidget.remove === 'function') {
+           tvWidget.remove();
+        }
         setTvWidget(null);
         initCompletedRef.current = false;
       } catch (e) {}
@@ -382,7 +384,7 @@ const Tradingview: React.ForwardRefRenderFunction<
     // 如果主题变化，重建图表
     if (prevThemeRef.current !== null && prevThemeRef.current !== isDayMode) {
       recreateChart();
-    } else if (!tvWidget && !initCompletedRef.current) {
+    } else if (!tvWidget) {
       // 确保容器已经挂载后再创建图表
       if (chartContainerRef.current) {
         setTimeout(() => {

@@ -39,6 +39,7 @@ const DefaultCommission:React.FC = () => {
 
     useEffect(() => {
         getOrdinaryCommission();
+        console.log('新委托', addOrderNotice)
     }, [getOrdinaryCommission, currentSymbol, currentContractInfo?.id, addOrderNotice]);
 
     useEffect(() => {
@@ -106,6 +107,7 @@ const DefaultCommission:React.FC = () => {
                 await handleCancelOrdinaryOrder(record, true)
             } catch (error) {
                 console.error("撤销失败:", error)
+                message.error(String(error))
             }
         }
         message.success(t("cancelled"))
@@ -114,7 +116,7 @@ const DefaultCommission:React.FC = () => {
 	// 撤单确认
 	const handleDelOk = () => {
 		setDelVisible(false);
-		delType ? handleCancelOrdinaryOrder(currentOrder!) : handleCancelAllOrders();
+		delType ? handleCancelOrdinaryOrder(currentOrder!, false, t("cancelled")) : handleCancelAllOrders();
 	}
 
     return (

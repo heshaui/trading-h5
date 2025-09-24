@@ -251,13 +251,13 @@ const Position: React.FC = () => {
 								</p>
 								<p>
 									<p className="flex flex-col gap-y-[4px]">
-									<span className="text-[12px] text-[#9e9e9e] text-right">{t('order.positionColumn.returnRate')}</span>
-									<span
-										className={`text-[16px] font-medium text-right
-											${item.returnRate > 0 ? 'success_icon' : item.returnRate < 0 ? 'error_icon' : ''}
-										`}
-									>{item.returnRate > 0 ? '+' : item.returnRate < 0 ? '' : ''}{new BigNumber(item.returnRate).toFormat(symbolPricePrecision)}%</span>
-								</p>		
+										<span className="text-[12px] text-[#9e9e9e] text-right">{t('order.positionColumn.returnRate')}</span>
+										<span
+											className={`text-[16px] font-medium text-right
+												${item.returnRate > 0 ? 'success_icon' : item.returnRate < 0 ? 'error_icon' : ''}
+											`}
+										>{item.returnRate > 0 ? '+' : item.returnRate < 0 ? '' : ''}{new BigNumber(item.returnRate).toFormat(symbolPricePrecision)}%</span>
+									</p>		
 								</p>
 							</div>
 							<div className="flex justify-between">
@@ -311,7 +311,7 @@ const Position: React.FC = () => {
 								</div>
 							</div>
 							<div className="flex gap-x-[5px] mt-4">
-								<button 
+								{/* <button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
 									onClick={() => setTpslVisible(true)}
 								>
@@ -322,18 +322,18 @@ const Position: React.FC = () => {
 									onClick={() => handleOpen('close', item)}
 								>
 									{t('close')}
-								</button>
+								</button> */}
 								<button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
 								>
 									{t('order.positionColumn.quickClose')}
 								</button>
-								<button 
+								{/* <button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
 									onClick={() => handleOpen('reserve', item)}
 								>
 									{t('reverseOpen')}
-								</button>
+								</button> */}
 							</div>
 						</li>)
 					}) :

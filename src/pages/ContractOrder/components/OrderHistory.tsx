@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Iconify } from '@/components/icon';
 import { Toast, InfiniteScroll } from 'antd-mobile';
 import { getLabel } from '@/utils';
+import { Checkbox } from 'antd'
 import SelectPop from '@/components/SelectPop';
 import dayjs, { Dayjs } from 'dayjs';
 import { NoData } from '@/components/noData';
@@ -39,6 +40,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 	const [datePopVisible, setDatePopVisible] = useState(false);
 	const [orderId, setOrderId] = useState();
 	const [orderList, setOrderList] = useState<DataType[]>([]);
+	const [allList, setAllList] = useState<DataType[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [total, setTotal] = useState(0);
 	const [hasMore, setHasMore] = useState(true)
@@ -167,6 +169,18 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 		
 		return current.isBefore(sixMonthsAgo) || current.isAfter(today);
 	};
+
+	// 过滤已撤销的数据
+	const filterCancel = (check: boolean) => {
+		if (check) {
+			setAllList(orderList)
+			setOrderList(prev => {
+				return prev.filter(item => item.status !== 3)
+			})
+		} else {
+			setOrderList(allList)
+		}
+	}
 
 	const initData = () => {
 		paramdataRef.current.page = 1
@@ -327,6 +341,21 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 				maxDate={dayjs().endOf('day')}
 				placeholder={[t('spot:spot.select.startTime'), t('spot:spot.select.endTime')]}
 				disabledDate={disabled7DaysDate}
+				customHeader={
+					<div>
+						<Checkbox
+							defaultChecked={false}
+							onChange={(e) => {
+								filterCancel(e.target.checked)
+							}}
+							className={`custom-checkbox`}
+						>
+							<span className={`tip-color font-14`}>
+								{t('spot:spot.select.hideAllCancel')}
+							</span>
+						</Checkbox>
+					</div>
+				}
 			/>
 		</div>
 	)

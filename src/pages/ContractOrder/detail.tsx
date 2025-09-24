@@ -137,7 +137,7 @@ const OrderDetail = () => {
 	}
 
 	const handleGoBack = () => {
-		navigate('/spotOrder', {
+		navigate('/contractOrder', {
 			state: { fromDetail: true },
 			replace: true
 		});
@@ -187,7 +187,7 @@ const OrderDetail = () => {
 					<span className={`mr-1`}>
 						{getStatus(recordData?.status)}
 					</span>
-					{getCompletion()}
+					{recordData?.status !== 3 && recordData?.status !== 6 && getCompletion()}
 				</div>
 			</div>
 			<div className="flex-col gap-y-[16px] px-4 mt-4">
@@ -199,10 +199,10 @@ const OrderDetail = () => {
 					<span className="text-[#9e9e9e]">{t('orderAmount')}(USDT)</span>
 					<span>{recordData.dealVolume.toFixed(2)}/{recordData.volume.toFixed(2)}</span>
 				</p>
-				<p className="flex recordDatas-center justify-between h-[20px] text-[14px]">
+				{/* <p className="flex recordDatas-center justify-between h-[20px] text-[14px]">
 					<span className="text-[#9e9e9e]">{t('order.tradeRecordColumn.profitRealizedAmount')}(USDT)</span>
 					<span>{0}</span>
-				</p>
+				</p> */}
 				<p className="flex recordDatas-center justify-between h-[20px] text-[14px]">
 					<span className="text-[#9e9e9e]">{t('orderType')}</span>
 					<span>{t(TypeMap[recordData.type])}</span>
@@ -220,7 +220,7 @@ const OrderDetail = () => {
 					{t("filledPrice")}(USDT)
 				</span>
 				<span className="text-right flex-1">
-					{t("filledAmount")}(USDT)
+					{t("filledAmount")}({t('tradingPanel.unit')})
 				</span>
 				<span className="text-right flex-1">{t("fee")}(USDT)</span>
 			</div>

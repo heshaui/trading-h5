@@ -4,7 +4,7 @@ import { Iconify } from '@/components/icon';
 import { useLanguage } from '@/hooks';
 import appStore from "@/store";
 import { Side, SideMap, PositionTypeMap } from '../../configs/columns';
-import { Position as PositionType } from "../../hooks";
+import { usePosition, Position as PositionType } from "../../hooks";
 import BigNumber from "bignumber.js";
 import {
   Button,
@@ -33,13 +33,24 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
     const currentSymbol = currentContractInfo?.symbol || "";
     const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
     const [checked, setChecked] = useState(false);
-    const [price, setPrice] = useState('');
-    const [amount, setAmount] = useState('');
+    const [price, setPrice] = useState();
+    const [amount, setAmount] = useState();
+
+    // 仓位
+    const {
+        quickClose
+    } = usePosition();
 
     // 显示合约类型
     const getContractShowType = () => {
         const type = currentSymbol.contractShowType?.toLowerCase();
         return t(`contractInfo.${type ?? 'demo'}`)
+    }
+
+    const handleConfirm = () => {
+        if (!price || !amount) return
+        quickClose(currentData, {type: 'limit', price: price, volume: amount})
+        onConfirm()
     }
 
   const PopupContent = () => {
@@ -102,7 +113,7 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                     controls={false}
                     onChange={(value:any) => setPrice(value)}
                 />
-                <div className="flex gap-x-[11px] mb-[20px]">
+                {/* <div className="flex gap-x-[11px] mb-[20px]">
                     <button 
                         className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
                     >
@@ -118,7 +129,7 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                     >
                         {t('closeModal.otherBest')}
                     </button>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px]">
                     <span className="tip-color">{t('size')}</span>
                 </div>
@@ -132,8 +143,8 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                 />
                 <Slider
                     min={0}
-                    max={100}
-                    step={1}
+                    max={currentData.canCloseVolume}
+                    // step={1}
                     marks={{
                         0: " ",
                         25: " ",
@@ -152,20 +163,22 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                         autoAdjustOverflow: false,
                     }}
                     className="spotSlider"
+                    onChange={(value:any) => setAmount(value)}
                 />
                 <div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px] mt-[10px]">
                     <span className="tip-color">{t('closeModal.canCloseVolume')}</span>
-                    <span>63.19 USDT</span>
+                    <span>{currentData.canCloseVolume} USDT</span>
                 </div>
-                <div className="flex items-center justify-between text-[14px] h-[20px]">
+                {/* <div className="flex items-center justify-between text-[14px] h-[20px]">
                     <span className="tip-color w-fit border-b border-dashed border-[var(--text-color6)]">{t('closeModal.estimatedReturn')}</span>
                     <span className="success_icon">+0.06 USDT</span>
-                </div>
+                </div> */}
                 <button
                     type="button"
                     className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[30px] rounded-[25px]
-                    bg-[var(--theme-color)] text-[var(--text-color5)]
+                        bg-[var(--theme-color)] text-[var(--text-color5)]
                     `}
+                    onClick={handleConfirm}
                 >{t('closeModal.confirm')}</button>
             </div>
         </ConfigProvider>

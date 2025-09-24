@@ -16,9 +16,6 @@ import {
   Checkbox,
 } from "antd";
 
-import { ReactComponent as UpIcon } from '@/assets/images/order_book/up.svg';
-import { ReactComponent as DownIcon } from '@/assets/images/order_book/down.svg';
-
 type Props = {
   open: boolean;
   onConfirm: () => void;
@@ -32,14 +29,30 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
     const currentContractInfo = appStore.getCurrentContractInfo();
     const currentSymbol = currentContractInfo?.symbol || "";
     const symbolPricePrecision = currentContractInfo?.coinResultVo?.symbolPricePrecision;
-    const [checked, setChecked] = useState(false);
-    const [price, setPrice] = useState();
-    const [amount, setAmount] = useState();
+    const [type, setType] = useState<'limit'|'market'>('limit');
+    const [price, setPrice] = useState<number>();
+    const [amount, setAmount] = useState<number>();
 
     // 仓位
     const {
         quickClose
     } = usePosition();
+
+    // 订单类型标签
+    const orderTypeTabs: {key:  'limit'|'market', label: string}[] = [
+        { key: 'limit', label: t("tradingPanel.limitOrder") },
+        { key: 'market', label: t("tradingPanel.marketOrder") },
+    ];
+
+    const max = currentData?.canCloseVolume || 0
+
+    const marks = {
+        0: "",
+        [Math.floor(max * 0.25)]: '',
+        [Math.floor(max * 0.5)]: '',
+        [Math.floor(max * 0.75)]: '',
+        [max]: '',
+    }
 
     // 显示合约类型
     const getContractShowType = () => {
@@ -49,7 +62,7 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
 
     const handleConfirm = () => {
         if (!price || !amount) return
-        quickClose(currentData, {type: 'limit', price: price, volume: amount})
+        quickClose(currentData, {type, price: price, volume: amount})
         onConfirm()
     }
 
@@ -98,7 +111,26 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                         </span>
                     </div>
                 </div>
-                <div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px]">
+                {/* 订单类型标签 */}
+                <div className="flex gap-[10px] mb-[10px]">
+                {
+                    orderTypeTabs.map((tab) => (
+                    <button
+                        key={tab.key}
+                        onClick={() => {
+                            setType(tab.key)
+                        }}
+                        className={`text-[14px] font-[400] ${type === tab.key
+                        ? "text-[var(--text-color5)] font-[500]"
+                        : "text-[var(--text-color6)]"
+                        }`}
+                    >
+                        {tab.label}
+                    </button>
+                    ))
+                }
+                </div>
+                {type === 'limit' && <><div className="flex items-center justify-between text-[14px] h-[20px] mb-[10px]">
                     <span className="tip-color">{t('closeModal.price')}</span>
                     <div>
                         <span className="tip-color">{t('symbolSelector.lastPrice')}</span>
@@ -107,12 +139,16 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                 </div>
                 <InputNumber
                     value={price}
+                    min={0}
                     placeholder={t('closeModal.price')}
                     className="spot_number_input mb-[10px]"
                     suffix="USDT"
                     controls={false}
-                    onChange={(value:any) => setPrice(value)}
-                />
+                    onBlur={(e) => {
+                        const value = e.target.value;
+                        setPrice(Number(value))
+                    }}
+                /></>}
                 {/* <div className="flex gap-x-[11px] mb-[20px]">
                     <button 
                         className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
@@ -135,23 +171,25 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                 </div>
                 <InputNumber
                     value={amount}
+                    min={0}
                     placeholder={t('size')}
                     className="spot_number_input mb-[12px]"
                     suffix="USDT"
                     controls={false}
-                    onChange={(value:any) => setAmount(value)}
+                    onBlur={(e) => {
+                        const value = e.target.value ? Number(e.target.value) : 0;
+                        if (value && value >= 0 && value <= max) { 
+                            setAmount(value)
+                        } else if (Number(value) > Number(max)) {
+                            setAmount(max as any)
+                        }
+                    }}
                 />
                 <Slider
+                    value={amount}
                     min={0}
-                    max={currentData.canCloseVolume}
-                    // step={1}
-                    marks={{
-                        0: " ",
-                        25: " ",
-                        50: " ",
-                        75: " ",
-                        100: " ",
-                    }}
+                    max={max}
+                    marks={marks}
                     tooltip={{
                         zIndex: 1000,
                         placement: "top",
@@ -176,7 +214,7 @@ const ClosePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) =>
                 <button
                     type="button"
                     className={`h-[50px] w-full flex justify-center items-center text-[14px] font-medium mt-[30px] rounded-[25px]
-                        bg-[var(--theme-color)] text-[var(--text-color5)]
+                        ${price && amount ? 'bg-[var(--theme-color)] text-[var(--text-color5)]' : 'bg-[var(--btncolor10)] text-[var(--text-color10)]'}
                     `}
                     onClick={handleConfirm}
                 >{t('closeModal.confirm')}</button>

@@ -175,7 +175,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 		if (check) {
 			setAllList(orderList)
 			setOrderList(prev => {
-				return prev.filter(item => item.status !== 3)
+				return prev.filter(item => item.status !== 4)
 			})
 		} else {
 			setOrderList(allList)

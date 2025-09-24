@@ -114,7 +114,7 @@ export const usePosition = (options: UsePositionOptions = {}) => {
         const { code, msg } = await createOrder(params);
         if (code === "0") {
           message.success(msg);
-          getPosition();
+          // getPosition();
         } else {
           message.error(msg);
         }

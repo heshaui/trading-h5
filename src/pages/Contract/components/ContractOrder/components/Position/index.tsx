@@ -325,6 +325,7 @@ const Position: React.FC = () => {
 								</button> */}
 								<button 
 									className="flex-1 flex h-[28px] items-center justify-center bg-[var(--background14)] rounded-[4px] text-[14px] tip-color"
+									onClick={() => handleOpen('close', item)}
 								>
 									{t('order.positionColumn.quickClose')}
 								</button>
@@ -373,7 +374,10 @@ const Position: React.FC = () => {
 				open={closeVisible}
 				currentData={currentData!}
 				onCancel={() => setCloseVisible(false)}
-				onConfirm={() => setCloseVisible(false)}
+				onConfirm={() => {
+					setCloseVisible(false)
+					getPosition()
+				}}
 			/>
 			{/* 分享 */}
 			{currentData && <SharePopup

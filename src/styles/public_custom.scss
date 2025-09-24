@@ -442,15 +442,20 @@
 // input-number
 .custom-input-number {
     display: flex;
+    height: 50px;
     border: 1px solid var(--border-color4);
     border-radius: 8px;
-    padding-right: 1px;
+    padding-right: 12px;
+    align-items: center;
     &:focus-within {
         border-color: var(--text-color3);
     }
     .spot_number_input {
         flex: 1;
         border: none;
+        height: 50px;
+        display: flex;
+        align-items: center;
     }
     .ant-input-number-outlined.ant-input-number-status-error:not(.ant-input-number-disabled) {
         border: none;

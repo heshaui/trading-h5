@@ -168,8 +168,10 @@ const LeveragePopup:React.FC<Props> = ({
 							}}
 							min={1}
 							max={100}
-							value={tempLeverage} 
-							onChange={handleInputChange}
+							value={tempLeverage}
+							onBlur={(e) => {
+								handleInputChange(Number(e.target.value))
+							}}
 							suffix='x'
 							controls={false}
 						/>

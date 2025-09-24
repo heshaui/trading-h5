@@ -70,7 +70,7 @@ const OrderDetail = () => {
 	const getStatusIconAndStyle = useCallback(() => {
 		const status = recordData?.status
 		// 成功状态：0, 1, 4, 5
-		if ([0, 1, 4, 5].includes(status)) {
+		if ([0, 1, 2, 3].includes(status)) {
 			return {
 				className: 'success_icon',
 				icon: status === 1
@@ -79,7 +79,7 @@ const OrderDetail = () => {
 			};
 		}
 		// 错误状态：2, 3, 6
-		else if ([2, 3, 6].includes(status)) {
+		else if ([4, 5, 6, 7].includes(status)) {
 			return {
 				className: 'error_icon',
 				icon: status === 2
@@ -95,35 +95,6 @@ const OrderDetail = () => {
 			};
 		}
 	}, [isDayMode, recordData])
-
-	// 判断状态
-	const getStatus = (_status: number) => {
-		if (_status === 0) {
-			// 交易中
-			return <span >{t('spot:spot.select.trading') || '--'}</span>;
-		} else if (_status === 1) {
-			// 完全成交
-			return <span >{t('spot:spot.select.completed') || '--'}</span>;
-		} else if (_status === 2) {
-			// 拒绝
-			return <span >{t('spot:spot.select.failed') || '--'}</span>;
-		} else if (_status === 3 || _status === 6) {
-			// 已撤销
-			return <span >{t('spot:spot.select.canceled') || '--'}</span>;
-		} else if (_status === 4) {
-			// 创建订单
-			return <span >{t('spot:spot.select.created') || '--'}</span>;
-		} else if (_status === 5) {
-			// 部分成交
-			return <span >{t('spot:spot.select.partial') || '--'}</span>;
-		}
-		// else if (_status === 6) {
-		//   return <span >{t('spot:spot.select.canceled2') || '--'}</span>;
-		// }
-		else {
-			return <span >{_status}</span>;
-		}
-	}
 
 	const getCompletion = () => {
 		const result = (Number(recordData.dealVolume) / Number(recordData?.volume)) * 100
@@ -157,7 +128,7 @@ const OrderDetail = () => {
 			}
 			const res = await getHistoryTradeList(params)
 			if (res.code === "0") {
-				setTradeList(res.data?.tradeHisList)
+				setTradeList(res.data?.tradeHisList ?? [])
 			} else {
 				Toast.show({icon: 'fail', content: res.msg})
 			}
@@ -185,9 +156,9 @@ const OrderDetail = () => {
 				</div>
 				<div className={`${getStatusIconAndStyle().className} mt-2 font-14 leading-[20px]`}>
 					<span className={`mr-1`}>
-						{getStatus(recordData?.status)}
+						{t(StatusMap[recordData.status])}
 					</span>
-					{recordData?.status !== 3 && recordData?.status !== 6 && getCompletion()}
+					{recordData?.status !== 4 && recordData?.status !== 6 && getCompletion()}
 				</div>
 			</div>
 			<div className="flex-col gap-y-[16px] px-4 mt-4">

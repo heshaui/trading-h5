@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {Popup} from 'antd-mobile';
-import { Modal, ConfigProvider, Input, Button, Image } from 'antd';
+import { Modal, ConfigProvider, Input, Button, Image, InputNumber } from 'antd';
 import SelectPop from '@/components/SelectPop';
 import { Iconify } from '@/components/icon';
 import { getLabel } from '@/utils';
@@ -302,20 +302,19 @@ const FundTransferPopup:React.FC<Props> = ({
 				{/* 数量输入 */}
 				<div className="mb-[10px]">
 					<div className="text-[14px] leading-[20px] mb-[10px]">{t('fundTransfer.amount')}</div>
-					<Input
-						value={transferAmount}
-						onChange={(e) => setTransferAmount(e.target.value)}
-						placeholder={t('fundTransfer.minAmount')}
-						className="trade-input left"
-						size="large"
-						suffix={
-							<div className="flex items-center h-[20px]">
-								<span className="text-[14px] text-[#9e9e9e]">{selectedCoin}</span>
-								<span className="h-[14px] border-l input-border mx-2"></span>
-								<span className="text-[14px] text-[var(--theme-color)]" onClick={handleMaxAmount}>{t('fundTransfer.max')}</span>
-							</div>
-						}
-					/>
+					<div className="custom-input-number">
+						<InputNumber
+							value={transferAmount}
+							onBlur={(e) => setTransferAmount(e.target.value)}
+							placeholder={t('fundTransfer.minAmount')}
+							className="spot_number_input left"
+						/>
+						<div className="flex items-center shrink-0">
+							<span className="text-[14px] text-[#9e9e9e]">{selectedCoin}</span>
+							<span className="h-[14px] border-l input-border mx-2"></span>
+							<span className="text-[14px] text-[var(--theme-color)]" onClick={handleMaxAmount}>{t('fundTransfer.max')}</span>
+						</div>
+					</div>
 				</div>
 
 				<div className="leading-[17px] text-[12px]">

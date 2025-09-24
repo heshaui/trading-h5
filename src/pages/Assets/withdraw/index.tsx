@@ -589,12 +589,12 @@ const WithdrawMoneyPage = observer(() => {
           maxWithdraw: coninInfo.maxWithdraw,
           minRecharge: coninInfo.minRecharge,
 
-          amountAfter: countNum(amountNum || 0, coninInfo?.withdrawFee, coninInfo?.minWithdrawFee) || 0,
+          amountAfter: countNum(amountNum || 0, coninInfo?.withdrawFee||0, coninInfo?.minWithdrawFee||0) || 0,
           protocolName: coinExtInfo?.protocolName,
           protocol: coinExtInfo?.protocol,
           coinName: coninInfo.coinName,
           // countWithdrawFee: nul(amountNum, coninInfo.withdrawFee) > coninInfo.minWithdrawFee ? nul(amountNum, coninInfo.withdrawFee) : coninInfo.minWithdrawFee,
-          countWithdrawFee: withdrawFee(amountNum || 0, coninInfo?.withdrawFee, coninInfo?.minWithdrawFee) || 0,
+          countWithdrawFee: withdrawFee(amountNum || 0, coninInfo?.withdrawFee||0, coninInfo?.minWithdrawFee||0) || 0,
 
         }
         setWithdrawInfo(params)
@@ -602,6 +602,10 @@ const WithdrawMoneyPage = observer(() => {
       })
       .catch((error) => {
         console.log('Form validation error:', error);
+        Toast.show({
+          content: String(error),
+          icon: 'fail'
+        });
       });
   }
   const checkOK = () => {

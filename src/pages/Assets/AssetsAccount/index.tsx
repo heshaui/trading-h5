@@ -370,12 +370,12 @@ const AssetsMainPage = observer(() => {
             return;
           }
           // 更新余额数据
-          if (data && Array.isArray(data)) {
+          if (data.data && Array.isArray(data.data)) {
             // 初始化表格数据
             const filteredData = initTableData.map((item) => {
               // 在 data 数组中查找匹配的项目
               const matchedItem = data.find(
-                (dataItem) => item.coinId === dataItem.coin_id
+                (dataItem: any) => item.coinId === dataItem.coin_id
               );
               // 如果找到匹配项，则合并数据
               if (matchedItem) {
@@ -392,7 +392,7 @@ const AssetsMainPage = observer(() => {
             // 更新表格数据
             const filteredTableData = tableData.map((item) => {
               const matchedItem = data.find(
-                (dataItem) => item.coinId === dataItem.coin_id
+                (dataItem: any) => item.coinId === dataItem.coin_id
               );
               if (matchedItem) {
                 return {

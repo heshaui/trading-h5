@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 // 在非组件ts中使用路由跳转
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@/utils/history';
+import { useAssetsAndRateWs } from '@/hooks/useAssetsRate';
 
 // 根据环境动态配置基础路径
 const getBasename = () => {
@@ -52,6 +53,10 @@ const App: React.FC = observer(() => {
     appStore.loadGetLangList();
     appStore.loadGetRateList();
   }, []);
+
+   // 组件内
+   const token = appStore.getToken();
+   useAssetsAndRateWs(!!token); // 登录后全局启用
   return (
     <ConfigProvider>
       <HistoryRouter history={history as any} basename={getBasename()}>

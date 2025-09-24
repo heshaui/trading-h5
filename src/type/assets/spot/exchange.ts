@@ -54,3 +54,16 @@ export interface CoinType {
     minTopUp: number
     
 }
+export interface AssetDataType {
+    balance: number,
+    coin_id: number,
+    frozen_balance: number,
+    rateValue: number,
+    release_balance: number,
+    user_id: number
+}
+export interface CoinRateDataType {
+    coinSymbol: string,
+    baseSymbol: string,
+    price: number,
+}

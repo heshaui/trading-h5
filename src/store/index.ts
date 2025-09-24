@@ -11,7 +11,7 @@ import {
     fetchAllCoin,
     fetchUsdtPrice
 } from './currencyPairService';
-import { CurrencyPairType, CoinType } from "@/type/assets/spot/exchange"
+import { CurrencyPairType, CoinType ,AssetDataType, CoinRateDataType} from "@/type/assets/spot/exchange"
 import { getExchangeGroup, getExchangeCoinList, getUserExchangeCoinTypeList } from '@/services/spot';
 import { inviteInfoType, usdtRateType } from "@/type/userCenter/overview"
 import { registerInfoType } from "@/type/store"
@@ -65,7 +65,8 @@ class AppStore {
     isLoadingFlashConfig: boolean = false;
     usdtRate: usdtRateType = {} as usdtRateType;
     theme: 'light' | 'dark' | null = null;
-
+    assetData: AssetDataType[] = [];
+    coinRateData: CoinRateDataType[] = [];
     constructor() {
         // 使状态响应式
         makeAutoObservable(this);
@@ -862,6 +863,47 @@ class AppStore {
     getUsdtRate(): usdtRateType {
         return this.usdtRate;
     }
+
+    // 资产相关方法
+  getAssetData() {
+    return this.assetData;
+  }
+  clearAssetData() {
+    this.assetData = [];
+  }
+  setAssetData(data: AssetDataType[]) {
+    this.assetData = data;
+    if (isBrowser()) {
+      localStorage.setItem("assetsData", JSON.stringify(data));
+    }
+  }
+  initAssetDataFromStorage() {
+    if (!isBrowser()) return;
+    const assetDataJson = localStorage.getItem("assetsData");
+    if (assetDataJson) {
+      this.assetData = JSON.parse(assetDataJson);
+    }
+  }
+  // 获取币种汇率数据
+  getCoinRateData() {
+    return this.coinRateData;
+  }
+  clearCoinRateData() {
+    this.coinRateData = [];
+  }
+  setCoinRateData(data: CoinRateDataType[]) {
+    this.coinRateData = data;
+    if (isBrowser()) {
+      localStorage.setItem("coinRateData", JSON.stringify(data));
+    }
+  }
+  initCoinRateDataFromStorage() {
+    if (!isBrowser()) return;
+    const coinRateDataJson = localStorage.getItem("coinRateData");
+    if (coinRateDataJson) {
+      this.coinRateData = JSON.parse(coinRateDataJson);
+    }
+  }
 }
 
 const appStore = new AppStore();

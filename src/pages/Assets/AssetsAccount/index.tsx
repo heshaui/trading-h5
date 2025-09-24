@@ -75,6 +75,7 @@ const AssetsMainPage = observer(() => {
     const [accountPopVisible, setAccountPopVisible] = useState(false);
     const balanceDataRef = useRef<WebSocketService | null>(null);
     const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const [hideZero, setHideZero] = useState(false);
     const waxAndWane = (
         todayBalance: number | string,
         balanceLastDay: number | string
@@ -92,21 +93,6 @@ const AssetsMainPage = observer(() => {
             symbol: rateInfo?.symbol || '--', // 汇率符号
         }
     }, [rateKey, rateData])
-
-    // 使用 useMemo 缓存 waxAndWane 计算结果，当依赖项变化时自动重新计算
-    //   const todayProfitUSDT = useMemo(() => {
-    //     // return waxAndWane(
-    //     //     balanceAll?.balance || 0,
-    //     //     balanceDay?.balanceAll || 0,
-    //     //     todayEarnings?.balance || 0,
-    //     //     todayEarnings?.withdraw || 0,
-    //     //     todayEarnings?.gift || 0
-    //     // );
-    //     return waxAndWane(
-    //       balanceAll?.todayEarnings || 0,
-    //       balanceDay?.balanceAll || 0
-    //     );
-    //   }, [balanceAll?.todayEarnings, balanceDay?.balanceAll]);
     const columns: ColumnType<DataType>[] = [
         {
             title: (_value, record) => {
@@ -183,15 +169,15 @@ const AssetsMainPage = observer(() => {
     const hideZeroChange = (value: any) => {
         // const value = e.target.checked;
         // setHideZero(!hideZero)
-
-        if (value && initTableData.length > 0) {
-            const newData = initTableData.filter(
-                (item) => item.balance.toString().trim() !== "0"
-            );
-            setTableData(newData);
-        } else {
-            setTableData(initTableData);
-        }
+        setHideZero(value)
+        // if (value && initTableData.length > 0) {
+        //     const newData = initTableData.filter(
+        //         (item) => item.balance.toString().trim() !== "0"
+        //     );
+        //     setTableData(newData);
+        // } else {
+        //     setTableData(initTableData);
+        // }
     };
     // 获取所有币种余额
     const getUserBalanceAllData = async () => {
@@ -324,6 +310,106 @@ const AssetsMainPage = observer(() => {
         }
     };
 
+  const assetData = appStore.getAssetData();
+  const assetsTableData = useMemo(() => {
+    // 初始化表格数据
+    // const filteredData = initTableData.map((item) => {
+    //   // 在 data 数组中查找匹配的项目
+    //   const matchedItem = assetData.find(
+    //     (dataItem: any) => item.coinId === dataItem.coin_id
+    //   );
+    //   // 如果找到匹配项，则合并数据
+    //   if (matchedItem) {
+    //     return {
+    //       ...item,
+    //       balance: matchedItem.balance,
+    //       frozenBalance: matchedItem.frozen_balance,
+    //       releaseBalance: matchedItem.release_balance,
+    //     };
+    //   }
+    //   // 如果没有找到匹配项，则返回原始项目
+    //   return item;
+    // });
+    // 更新表格数据
+    const filteredTableData = tableData.map((item) => {
+      const matchedItem = assetData.find(
+        (dataItem: any) => item.coinId === dataItem.coin_id
+      );
+      if (matchedItem) {
+        return {
+          ...item,
+          balance: matchedItem.balance,
+          frozenBalance: matchedItem.frozen_balance,
+          releaseBalance: matchedItem.release_balance,
+        };
+      }
+      return item;
+    })
+    const balance = filteredTableData.reduce((sum: number, curr: any) => {
+      const coinTotal = add(
+        add(curr.balance || 0, curr.releaseBalance || 0),
+        curr.frozenBalance || 0
+      );
+      const coinUsdt = nul(coinTotal, curr.rateValue || 0);
+      return sum + Number(coinUsdt) || 0;
+    }, 0);
+    const todayBalance = filteredTableData.reduce((sum: number, curr: any) => {
+      const coinTotal = add(
+        add(curr.balance || 0, curr.releaseBalance || 0),
+        curr.frozenBalance || 0
+      );
+      const coinTotalToday = coinTotalCount(
+        coinTotal,
+        curr.recharge,
+        curr.withdrawal,
+        curr.gift
+      );
+      const coinUsdtToday = nul(coinTotalToday, curr.rateValue || 0);
+
+      return sum + Number(coinUsdtToday) || 0;
+    }, 0);
+    // 汇总法币：逐币种 balance * rateValue 转法币相加
+    const usdBalanceSum = filteredTableData.reduce((sum: number, curr: any) => {
+      const coinTotal = add(
+        add(curr.balance || 0, curr.releaseBalance || 0),
+        curr.frozenBalance || 0
+      );
+      const { rate } = nulCoinRate(Number(coinTotal) || 0, curr.rateValue || 0);
+      return sum + Number(rate) || 0;
+    }, 0);
+    const usdTodayEarningsSum = filteredTableData.reduce((sum: number, curr: any) => {
+      const coinTotal = add(
+        add(curr.balance || 0, curr.releaseBalance || 0),
+        curr.frozenBalance || 0
+      );
+      const coinTotalToday = coinTotalCount(
+        coinTotal,
+        curr.recharge,
+        curr.withdrawal,
+        curr.gift
+      );
+      const { rate } = nulCoinRate(Number(coinTotalToday) || 0, curr.rateValue || 0);
+      return sum + Number(rate) || 0;
+    }, 0);
+    setBalanceAll({
+      usdBalance: usdBalanceSum || 0,
+      balance: balance || 0,
+      usdTodayEarnings: usdTodayEarningsSum || 0,
+      todayEarnings: todayBalance || 0,
+    });
+    if (hideZero) {
+      
+      return filteredTableData.filter(
+        (item) => item.balance.toString().trim() !== "0"
+      );
+    }else{
+
+      return filteredTableData
+    }
+
+  }, [assetData, initTableData,hideZero]);
+
+
     const todayProfitFiat = useMemo(() => {
         return waxAndWane(
             balanceAll?.usdTodayEarnings || 0,
@@ -331,158 +417,6 @@ const AssetsMainPage = observer(() => {
         );
     }, [balanceAll?.usdTodayEarnings, balanceDay?.usdBalanceAll]);
 
-  // 设置WebSocket连接
-  const setupBalanceWebSocket = useCallback(() => {
-    // 如果已经有连接，不要重复创建
-    if (balanceDataRef.current && balanceDataRef.current.connectionState !== ConnectionState.CLOSED) return;
-    if (banlanceLoading) return;
-
-    // 创建新的WebSocket连接
-    const token = getToken();
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-
-    try {
-      const websocket = new WebSocketService(
-        `${process.env.REACT_APP_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
-      );
-      balanceDataRef.current = websocket;
-      // });
-
-      websocket.connect((message: string) => {
-        // console.log('收到WebSocket消息:', message);
-
-        try {
-          // 处理纯文本心跳
-          if (typeof message === 'string' && (message.startsWith('ping') || message === '__ping__')) {
-            websocket.send(JSON.stringify({ type: '__pong__' }));
-            // console.log('资产页收到ping，回复pong');
-            return;
-          }
-          const data = JSON.parse(message);
-          // console.log('解析后的数据:', data);
-
-          if (data.type === "__ping__") {
-            websocket.send(JSON.stringify({ type: "__pong__" }));
-            // console.log('资产页收到JSON ping，回复pong');
-            return;
-          }
-          // 更新余额数据
-          if (data.data && Array.isArray(data.data)) {
-            // 初始化表格数据
-            const filteredData = initTableData.map((item) => {
-              // 在 data 数组中查找匹配的项目
-              const matchedItem = data.find(
-                (dataItem: any) => item.coinId === dataItem.coin_id
-              );
-              // 如果找到匹配项，则合并数据
-              if (matchedItem) {
-                return {
-                  ...item,
-                  balance: matchedItem.balance,
-                  frozenBalance: matchedItem.frozen_balance,
-                  releaseBalance: matchedItem.release_balance,
-                };
-              }
-              // 如果没有找到匹配项，则返回原始项目
-              return item;
-            });
-            // 更新表格数据
-            const filteredTableData = tableData.map((item) => {
-              const matchedItem = data.find(
-                (dataItem: any) => item.coinId === dataItem.coin_id
-              );
-              if (matchedItem) {
-                return {
-                  ...item,
-                  balance: matchedItem.balance,
-                  frozenBalance: matchedItem.frozen_balance,
-                  releaseBalance: matchedItem.release_balance,
-                };
-              }
-              return item;
-            });
-            setInitTableData(filteredData);
-            setTableData(filteredTableData);
-            const balance = filteredTableData.reduce((sum: number, curr: any) => {
-              const coinTotal = add(
-                add(curr.balance || 0, curr.releaseBalance || 0),
-                curr.frozenBalance || 0
-              );
-              const coinUsdt = nul(coinTotal, curr.rateValue || 0);
-              return sum + Number(coinUsdt) || 0;
-            }, 0);
-            const todayBalance = filteredTableData.reduce((sum: number, curr: any) => {
-              const coinTotal = add(
-                add(curr.balance || 0, curr.releaseBalance || 0),
-                curr.frozenBalance || 0
-              );
-              const coinTotalToday = coinTotalCount(
-                coinTotal,
-                curr.recharge,
-                curr.withdrawal,
-                curr.gift
-              );
-              const coinUsdtToday = nul(coinTotalToday, curr.rateValue || 0);
-    
-              return sum + Number(coinUsdtToday) || 0;
-            }, 0);
-            // 汇总法币：逐币种 balance * rateValue 转法币相加
-            const usdBalanceSum =filteredTableData.reduce((sum: number, curr: any) => {
-              const coinTotal = add(
-                add(curr.balance || 0, curr.releaseBalance || 0),
-                curr.frozenBalance || 0
-              );
-              const { rate } = nulCoinRate(Number(coinTotal) || 0, curr.rateValue || 0);
-              return sum + Number(rate) || 0;
-            }, 0);
-            const usdTodayEarningsSum =filteredTableData.reduce((sum: number, curr: any) => {
-              const coinTotal = add(
-                add(curr.balance || 0, curr.releaseBalance || 0),
-                curr.frozenBalance || 0
-              );
-              const coinTotalToday = coinTotalCount(
-                coinTotal,
-                curr.recharge,
-                curr.withdrawal,
-                curr.gift
-              );
-              const { rate } = nulCoinRate(Number(coinTotalToday) || 0, curr.rateValue || 0);
-              return sum + Number(rate) || 0;
-            }, 0);
-            setBalanceAll({
-              usdBalance: usdBalanceSum || 0,
-              balance: balance || 0,
-              usdTodayEarnings: usdTodayEarningsSum || 0,
-              todayEarnings: todayBalance || 0,
-            });
-          }
-        } catch (error) {
-          console.error("WebSocket数据处理错误:", error);
-          // 保持连接由底层重连处理，不立即置空引用
-        }
-      }, (err) => {
-        console.error('资产WebSocket连接错误:', err);
-        // 清理ping定时器
-        if (pingIntervalRef.current) {
-          clearInterval(pingIntervalRef.current);
-          pingIntervalRef.current = null;
-        }
-        // 允许后续重建
-        balanceDataRef.current = null;
-        // 延迟重试，避免热循环
-        setTimeout(() => {
-          try { setupBalanceWebSocket(); } catch { }
-        }, 3000);
-      });
-    } catch (err) {
-      console.error("创建资产WebSocket连接失败:", err);
-      // 设置为null以便下次可以重试
-      balanceDataRef.current = null;
-    }
-  }, [userInfo?.userId, banlanceLoading]); // 移除initTableData依赖，减少不必要的重连
 
     useEffect(() => {
         if (!userInfo?.userId) return;
@@ -523,13 +457,7 @@ const AssetsMainPage = observer(() => {
         }
     }, []);
 
-    useEffect(() => {
-        if (!isClient || !userInfo || typeof window === "undefined") return;
-        //  || todayEarningsLoading
-        if (banlanceLoading || kLineLoading) return;
-        // 安全地使用currentPair
-        setupBalanceWebSocket();
-    }, [isClient, userInfo, banlanceLoading, kLineLoading]);
+
 
     useEffect(() => {
         if (!userInfo?.userId) return;
@@ -725,7 +653,7 @@ const AssetsMainPage = observer(() => {
                         <div className={`${styles.table_content} w-full `}>
                             <CustomTable
                                 columns={columns}
-                                dataSource={tableData}
+                                dataSource={assetsTableData}
                                 className={`table-box`}
                                 pagination={false}
                                 loading={tableLoading}

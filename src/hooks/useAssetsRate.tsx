@@ -26,7 +26,7 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
         }
         try {
             const websocket = new WebSocketService(
-                `${process.env.NEXT_PUBLIC_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
+                `${process.env.REACT_APP_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
             );
             balanceDataRef.current = websocket;
 
@@ -79,7 +79,14 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
                         appStore.setAssetData(data);
                     }
                     if (resData.data && resData.eventType === 'Rate') {
-                        appStore.setCoinRateData(data);
+                        const newData = Object.keys(data.rates)?.map((key: any) => {
+                            return {
+                                coinSymbol: key,
+                                baseSymbol: 'USDT',
+                                price: data.rates[key] || 0,
+                            }
+                        });
+                        appStore.setCoinRateData(newData);
                     }
                 } catch (error) {
                     console.error("WebSocket数据处理错误:", error);
@@ -111,13 +118,12 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
         }
     }, [userInfo?.userId, enabled]); // 移除initTableData依赖，减少不必要的重连
     useEffect(() => {
-    if ( !userInfo || typeof window === "undefined") return;
-
+        if (!userInfo || typeof window === "undefined") return;
         if (!enabled) return;
         setupBalanceWebSocket();
         return () => {
             if (balanceDataRef.current) {
-                try { balanceDataRef.current.close(); } catch {}
+                try { balanceDataRef.current.close(); } catch { }
                 balanceDataRef.current = null;
             }
             if (pingIntervalRef.current) {
@@ -125,7 +131,7 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
                 pingIntervalRef.current = null;
             }
         }
-    }, [setupBalanceWebSocket,  userInfo, enabled]);
+    }, [setupBalanceWebSocket, userInfo, enabled]);
 
     return {
         setupBalanceWebSocket,

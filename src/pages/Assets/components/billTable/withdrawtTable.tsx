@@ -88,7 +88,7 @@ export default function WithdrawTable({coinSelect}: PropsType) {
         }
         >
           <div className='mr-1 flex-y  align-end'>
-            <div className={`font-14 font-w-500 ${styles.error_icon}`} >{text || '0'}</div>
+            <div className={`font-14 font-w-500 ${styles.error_icon}`} >-{text || '0'}</div>
             <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
           </div>
           <div className={`${styles.button} font-12 font-w-400`}>

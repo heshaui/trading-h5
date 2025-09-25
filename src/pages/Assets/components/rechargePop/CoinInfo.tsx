@@ -32,29 +32,20 @@ interface CoinInfoStepsProps {
 }
 const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
   const { t } = useLanguage("assets");
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const location = useLocation();
 
-  // 获取路由参数
-  const coinId = searchParams.get('coinId');
-  const coinName = searchParams.get('coinName');
 
   const userInfo = appStore.getUserInfo()
-  const { isDayMode } = useThemeMode(); // 使用 hook
   const [form] = Form.useForm();
   const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
-  const [coinInfo, setCoinInfo] = useState({} as any);
-  const [coinInfoGroups, setCoinInfoGroups] = useState({} as any);
-  const [coinLoading, setCoinLoading] = useState(false);
+  // const [coinLoading, setCoinLoading] = useState(false);
 
-  const [current, setCurrent] = useState(0);
+  // const [current, setCurrent] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState<string>(''); // 搜索关键词
-  const [isMemo, setIsMemo] = useState(false); // 是否为memo币
+  // const [isMemo, setIsMemo] = useState(false); // 是否为memo币
 
   const [protoOpen, setProtoOpen] = useState(false);
   const protoWrapRef = useRef<HTMLDivElement | null>(null);
-  const routeAppliedRef = useRef(false);
+  // const routeAppliedRef = useRef(false);
 
 
 
@@ -85,18 +76,6 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
     document.addEventListener('mousedown', onDocMouseDown);
     return () => document.removeEventListener('mousedown', onDocMouseDown);
   }, [protoOpen]);
-
-  // 按首字母分组函数
-  // 返回数据结构示例（包含完整的A-Z字母）:
-  // [
-  //   { key: 'A', groups: [{ coinName: 'ADA', coinId: 1, ... }, { coinName: 'ATOM', coinId: 2, ... }] },
-  //   { key: 'B', groups: [{ coinName: 'BTC', coinId: 3, ... }, { coinName: 'BNB', coinId: 4, ... }] },
-  //   { key: 'C', groups: [] }, // 如果没有C开头的币种，groups为空数组
-  //   { key: 'D', groups: [] }, // 如果没有D开头的币种，groups为空数组
-  //   { key: 'E', groups: [{ coinName: 'ETH', coinId: 5, ... }] },
-  //   ...
-  //   { key: 'Z', groups: [] } // 所有A-Z字母都会被包含
-  // ]
   const groupCoinsByFirstLetter = (coinList: any[]) => {
     // 初始化所有A-Z字母，确保每个字母都有对应的分组
     const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -120,16 +99,12 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
     const sortedGroups = allLetters.map((letter) => ({
       key: letter,
       groups: grouped[letter] // 可能为空数组
-    }));
+    })).filter((group: any) => group.groups.length > 0);
 
     return sortedGroups;
   };
 
-  // 获取分组后数据的使用示例函数
-  const getCoinsByLetter = (letter: string) => {
-    const group = coinInfoGroups.find((group: any) => group.key === letter);
-    return group ? group.groups : [];
-  };
+
 
   // 使用 useMemo 实现搜索过滤和分组
   const filteredAndGroupedCoins = useMemo(() => {

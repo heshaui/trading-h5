@@ -40,22 +40,22 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
     const setupBalanceWebSocket = useCallback(() => {
         if (!enabled) return;
         // 如果已经有连接（OPEN），但未启动心跳，则仅补齐心跳，不重复创建
-        if (balanceDataRef.current && balanceDataRef.current.connectionState === ConnectionState.OPEN) {
-            if (!pingIntervalRef.current) {
-                pingIntervalRef.current = setInterval(() => {
-                    const ws = balanceDataRef.current;
-                    if (ws && ws.connectionState === ConnectionState.OPEN) {
-                        ws.send('ping');
-                    } else {
-                        if (pingIntervalRef.current) {
-                            clearInterval(pingIntervalRef.current);
-                            pingIntervalRef.current = null;
-                        }
-                    }
-                }, 25000);
-            }
-            return;
-        }
+        // if (balanceDataRef.current && balanceDataRef.current.connectionState === ConnectionState.OPEN) {
+        //     if (!pingIntervalRef.current) {
+        //         pingIntervalRef.current = setInterval(() => {
+        //             const ws = balanceDataRef.current;
+        //             if (ws && ws.connectionState === ConnectionState.OPEN) {
+        //                 ws.send('ping');
+        //             } else {
+        //                 if (pingIntervalRef.current) {
+        //                     clearInterval(pingIntervalRef.current);
+        //                     pingIntervalRef.current = null;
+        //                 }
+        //             }
+        //         }, 25000);
+        //     }
+        //     return;
+        // }
         // 如果全局已标记连接过且当前不处于 OPEN，则交由内部重连，不在此重复创建
         if (typeof window !== "undefined" && (window as any)[WS_CONNECTED_KEY]) return;
         if (balanceDataRef.current && balanceDataRef.current.connectionState !== ConnectionState.CLOSED) return;

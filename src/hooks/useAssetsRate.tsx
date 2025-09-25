@@ -71,8 +71,10 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
             if (typeof window !== "undefined") {
                 (window as any)[WS_CONNECTED_KEY] = true;
             }
+            const base = process.env.REACT_APP_ASSETS_API_BASE;
+            if (!base) return;
             const websocket = new WebSocketService(
-                `${process.env.REACT_APP_ASSETS_API_BASE}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
+                `${base}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
             );
             balanceDataRef.current = websocket;
 

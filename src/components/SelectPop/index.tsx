@@ -280,18 +280,18 @@ const SelectPop = forwardRef<any, SelectPopProps>(({
                     pointerEvents: option.disabled ? 'none' : 'auto'
                   }}
                 >
-                  <div className="flex-x align-center justify-between selectPop-options-label">
+                  <div className="flex-x align-center justify-between selectPop-options-label relative">
                     <div className={`flex-1`}>
                       {getOptionRenderer()(option)}
                     </div>
                     {option.disabled && (
-                      <span className="font-12 text-color6 ml-2 font-italic">
+                      <span className="font-12 text-color6 ml-2 font-italic absolute right-[10px] top-[50%] translate-y-[-50%]">
                         <Iconify icon="lsicon:disable-outline" size={20}  />
                       </span>
                     )}
                     {selectedValue === option.value && activeType === 'icon' && !option.disabled && (
                       // className={`${styles.active_icon} selectPop-active-icon`}
-                      <div>
+                      <div className="absolute right-[10px] top-[50%] translate-y-[-50%]">
                         <Iconify icon='ep:success-filled' size={20} className="theme-color" />
                       </div>
                     )}

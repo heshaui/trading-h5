@@ -55,7 +55,17 @@
     "inputCode": "入力してください",
     "logout": "ログアウト",
     "login": "ログイン",
-    "register": "登録"
+    "register": "登録",
+    "to": "に",
+    "startDate": "かいしじかん",
+    "endDate": "おわりじかん",
+    "dateRangeExceeded": "期間制限超過",
+    "collapse": "隠す",
+    "expand": "展開",
+    "disabled": "無効",
+    "last7Days": "最近7日",
+    "last30Days": "最近30日",
+    "last90Days": "最近90日"
   },
   "titleText": {
     "historyInput": "履歴入力",

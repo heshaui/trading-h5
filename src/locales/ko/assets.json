@@ -177,7 +177,12 @@
         "onlyShowError": "선택된 통화가 없습니다",
         "userCancel": "사용자가 취소했습니다. 다시 출금해주세요",
         "walletProcessing": "출금 지갑 처리 중입니다. 잠시만 기다려주세요",
-        "withdrawSuccess": "출금이 성공했습니다. 수신 주소를 확인하세요"
+        "withdrawSuccess": "출금이 성공했습니다. 수신 주소를 확인하세요",
+        "withdrawPending": "출금 심사 중입니다. 잠시만 기다려주세요",
+
+        "processing": "처리 중",
+        "rejected2": "거절",
+        "canceled2": "취소"
     },
     "withdrawMoneyCheck": {
         "cancel": "취소",

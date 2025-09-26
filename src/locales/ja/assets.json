@@ -177,7 +177,12 @@
         "onlyShowError": "コインが選択されていません",
         "userCancel": "ユーザーがキャンセルしました。再度出金してください",
         "walletProcessing": "出金ウォレット処理中です。しばらくお待ちください",
-        "withdrawSuccess": "出金に成功しました。受取アドレスを確認してください"
+        "withdrawSuccess": "出金に成功しました。受取アドレスを確認してください",
+        "withdrawPending": "出金審査中です。しばらくお待ちください",
+
+        "processing": "処理中",
+        "rejected2": "拒否",
+        "canceled2": "キャンセル"
     },
     "withdrawMoneyCheck": {
         "cancel": "キャンセル",

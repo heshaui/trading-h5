@@ -177,7 +177,12 @@
         "onlyShowError": "暂未选择币种",
         "userCancel": "用户已撤销，请重新提现",
         "walletProcessing": "提币钱包处理中，请耐心等待",
-        "withdrawSuccess": "提现成功,请查看至币地址"
+        "withdrawSuccess": "提现成功,请查看至币地址",
+        "withdrawPending": "提币审核中，请耐心等待",
+
+        "processing": "处理中",
+        "rejected2": "拒绝",
+        "canceled2": "已撤销"
     },
     "withdrawMoneyCheck": {
         "cancel": "取消",

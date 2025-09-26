@@ -55,16 +55,23 @@
     "inputCode": "Please enter",
     "logout": "Logout",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "to": "To",
+    "startDate": "StartTime",
+    "endDate": "EndTime",
+    "dateRangeExceeded": "Date range exceeds limit",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "disabled": "Disabled",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days"
   },
   "titleText": {
     "historyInput": "History Input",
     "history": "History",
     "selectCountry": "Select Country/Region"
   },
- 
-  
-  
   "title": "Welcome",
   "description": "This is the homepage",
   "home1": "IMBIT Digital Currency Exchange: Faster, Better, Stronger",
@@ -148,7 +155,6 @@
       "modifySuccess": "Birthday modified successfully",
       "tip": "Please enter the correct date. It cannot be modified after submission."
     }
-   
   },
   "modal": {
     "confirmCancel": "After confirmation, the withdrawal order will be canceled."
@@ -170,7 +176,7 @@
     "bill": "Transaction History",
     "spotTrade": "Spot Trading",
     "spotOrder": "Spot Orders",
-    "flashOrder":"Flash Orders",
+    "flashOrder": "Flash Orders",
     "overView": "Overview",
     "safetyCenter": "Security Center",
     "identity": "Identity Verification",
@@ -216,12 +222,11 @@
     "searchHistory": "Search History",
     "balance": "Balance"
   },
-  "flash":{
-    "order":{
+  "flash": {
+    "order": {
       "title": "Flash Swap Order"
     }
   },
-
   "nav": {
     "home": "Home",
     "market": "Market",
@@ -282,5 +287,4 @@
     "zh": "中文",
     "en": "English"
   }
-
 }

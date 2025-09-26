@@ -55,7 +55,17 @@
     "inputCode": "Please enter",
     "logout": "Logout",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "to": "To",
+    "startDate": "StartTime",
+    "endDate": "EndTime",
+    "dateRangeExceeded": "Date range exceeds limit",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "disabled": "Disabled",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days"
   },
   "titleText": {
     "historyInput": "History Input",

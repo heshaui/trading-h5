@@ -55,7 +55,17 @@
     "inputCode": "입력해 주세요",
     "logout": "로그아웃",
     "login": "로그인",
-    "register": "회원가입"
+    "register": "회원가입",
+    "to": "에",
+    "startDate": "시작 시간",
+    "endDate": "종료 시간",
+    "dateRangeExceeded": "기간 제한 초과",
+    "collapse": "숨기기",
+    "expand": "확장",
+    "disabled": "비활성화",
+    "last7Days": "최근 7일",
+    "last30Days": "최근 30일",
+    "last90Days": "최근 90일"
   },
   "titleText": {
     "historyInput": "히스토리 입력",

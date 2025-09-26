@@ -5,6 +5,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import {AssetsLayout} from '@/components/MenuItems';
 import { Iconify } from "@/components/icon"
 import { useNavigate } from 'react-router-dom';
+import { ReactComponent as BackSvg } from '@/assets/icons/public/icon_back.svg';
+
 
 interface ContentLayoutProps {
   children: React.ReactNode;
@@ -21,6 +23,7 @@ interface ContentLayoutProps {
   titleClassName?: string;
   footerClassName?: string;
   headerClassName?: string;
+  headerStyle?: React.CSSProperties;
 }
 
 const ContentLayout: React.FC<ContentLayoutProps> = observer(({
@@ -33,7 +36,8 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
   className = '',
   titleClassName = '',
   footerClassName,
-  headerClassName = ''
+  headerClassName = '',
+  headerStyle,
 }) => {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -49,11 +53,11 @@ const ContentLayout: React.FC<ContentLayoutProps> = observer(({
   return (
     <div className={`${styles.layout_wrapper} ${className}`}>
       {/* Header */}
-      <div className={`${styles.user_header} ${headerClassName}`}>
+      <div className={`${styles.user_header} ${headerClassName}`} style={headerStyle}>
         {/* 返回按钮 */}
         {showBackButton && (
           <button onClick={handleGoBack} className={`${styles.back_button} back-button`}>
-            <Iconify icon="teenyicons:left-outline" className={`${styles.left_icon} left-icon ${titleClassName}`} />
+            <BackSvg  className={`${styles.left_icon} left-icon ${titleClassName}`} />
           </button>
         )}
         

@@ -23,7 +23,7 @@ type PropsType = {
   coinSelect: any[]
 }
 
-export default function WithdrawTable({coinSelect}: PropsType) {
+export default function WithdrawTable({ coinSelect }: PropsType) {
   const { t } = useLanguage(['assets']);
   const [tableData, setTableData] = useState<WithdrawDataType[]>([]);
   const navigate = useNavigate();
@@ -44,22 +44,39 @@ export default function WithdrawTable({coinSelect}: PropsType) {
   const getStatus = (status: number) => {
     const statusText = Number(status)
     // 状态: 0-创建, 1-待审核, 2-审核通过, 3-审核拒绝, 4-用户撤销  5 提现完成
-    switch (statusText) {
-      case 0:
-        return t('withdrawTable.create') //'创建';
-      case 1:
-        return t('withdrawTable.pending') //'待审核'
-      case 2:
-        return t('withdrawTable.passed') //审核通过
-      case 3:
-        return t('withdrawTable.rejected') //'审核拒绝'
-      case 4:
-        return t('withdrawTable.canceled') //'用户撤销'
-      case 5:
-        return t('withdrawTable.completed') //'提现完成'
-      default:
-        return statusText || '--'
+
+    /* 0创建  
+      处理中 
+          1待审核
+          2审核通过
+          7处理失败
+          8钱包处理中
+          9钱包驳回 
+      拒绝
+          3审核拒绝
+      已撤销
+          4撤单完成
+          6正在撤单
+      已转出
+          5提现完成 */
+    const code = status === null || status === undefined ? '' : String(status).trim()
+    if (!code) return '--'
+    if (["0", "1"].includes(code)) {
+      return t('withdrawTable.pending')
     }
+    if (["2", "7", "8", "9"].includes(code)) {
+      return t('withdrawTable.processing')
+    }
+    if (code === "3") {
+      return t('withdrawTable.rejected2')
+    }
+    if (["4", "6"].includes(code)) {
+      return t('withdrawTable.canceled2')
+    }
+    if (code === "5") {
+      return t('withdrawTable.completed')
+    }
+    return code || '--'
   }
 
   const columns: ColumnType<WithdrawDataType>[] = [
@@ -78,21 +95,21 @@ export default function WithdrawTable({coinSelect}: PropsType) {
         const coin = coninList.find((item: any) => item.coinName === record.symbol || item.coinId === record.symbol)
         const text = roundDown(record.amount, coin?.unitScale || 0)
         return <button className='flex-x-cc'
-        onClick={  () => {
+          onClick={() => {
             navigate('/assets/bill/withdrawDetail', {
               state: {
                 recordData: record,
               },
             });
           }
-        }
+          }
         >
           <div className='mr-1 flex-y  align-end'>
             <div className={`font-14 font-w-500 ${styles.error_icon}`} >-{text || '0'}</div>
             <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
           </div>
           <div className={`${styles.button} font-12 font-w-400`}>
-            <Iconify icon="mingcute:right-line" size={20} className={`${styles.tip_color}`}/>
+            <Iconify icon="mingcute:right-line" size={20} className={`${styles.tip_color}`} />
           </div>
         </button>
       },
@@ -140,83 +157,83 @@ export default function WithdrawTable({coinSelect}: PropsType) {
   }, [])
 
   return (<>
-      {/* 提现记录 */}
-      <div className={`${styles.table_box} w-full `}>
-        <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
-          <SelectPop
-            options={coinSelect}
-            placeholder={t('assetsAccount.currency')}
-            title={t("billDetails.selectCoin")}
-            onChange={(value) => {
-              // value 可能为 undefined（取消选择时）
-              pageParam.current.symbol = value as string || ''
-              getRecordData();
-            }}
-            value={pageParam.current.symbol}
-            displayMode="value"
-            optionRender={(option) => (
-              <div className="flex-x align-center justify-between">
-                <div className="flex items-center py-1">
-                  <img
-                    src={option.iconUrl}
-                    alt={option.label as string}
-                    width={20}
-                    height={20}
-                    className="mr-2"
-                    style={{
-                      borderRadius: "50%",
-                      height: "20px",
-                      width: "20px",
-                    }}
-                  />
-                  <span className="text-text-color7">
-                    {`${option.coinName}(${option.nameDefault})`}
-                  </span>
-                </div>
+    {/* 提现记录 */}
+    <div className={`${styles.table_box} w-full `}>
+      <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
+        <SelectPop
+          options={coinSelect}
+          placeholder={t('assetsAccount.currency')}
+          title={t("billDetails.selectCoin")}
+          onChange={(value) => {
+            // value 可能为 undefined（取消选择时）
+            pageParam.current.symbol = value as string || ''
+            getRecordData();
+          }}
+          value={pageParam.current.symbol}
+          displayMode="value"
+          optionRender={(option) => (
+            <div className="flex-x align-center justify-between">
+              <div className="flex items-center py-1">
+                <img
+                  src={option.iconUrl}
+                  alt={option.label as string}
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                  style={{
+                    borderRadius: "50%",
+                    height: "20px",
+                    width: "20px",
+                  }}
+                />
+                <span className="text-text-color7">
+                  {`${option.coinName}(${option.nameDefault})`}
+                </span>
               </div>
-            )}
-            // defaultValue={symbolSelect[0]?.value}
-          />
-          <div className='flex-1 flex-x align-center justify-end'>
-            <button
-              onClick={() => setDatePopVisible(true)}
-            >
-              <Iconify icon="mingcute:filter-line" className={`${styles.title_color} ml-1`} size={20} />
-            </button>
-            <DateTimePop
+            </div>
+          )}
+        // defaultValue={symbolSelect[0]?.value}
+        />
+        <div className='flex-1 flex-x align-center justify-end'>
+          <button
+            onClick={() => setDatePopVisible(true)}
+          >
+            <Iconify icon="mingcute:filter-line" className={`${styles.title_color} ml-1`} size={20} />
+          </button>
+          <DateTimePop
             popupVisible={datePopVisible}
             onOpen={() => setDatePopVisible(true)}
             handlePopupClose={() => setDatePopVisible(false)}
-            title={t('btnText.filter',{ns:'common'})}
-            onChange={(value)=>{
+            title={t('btnText.filter', { ns: 'common' })}
+            onChange={(value) => {
               pageParam.current.startTime = value[0]?.startOf('day').format('YYYY-MM-DD') || ''
               pageParam.current.endTime = value[1]?.endOf('day').format('YYYY-MM-DD') || ''
               getRecordData()
             }}
             // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
             quickSelect={true}
-            placeholder={[t('btnText.startDate',{ns:'common'}), t('btnText.endDate',{ns:'common'})]}
-            />
-          </div>
-        </div>
-        <div className={`${styles.table_content} w-full px-4 py-4`}>
-          <CustomTable
-            columns={columns}
-            dataSource={tableData}
-            className={`table-box`}
-            pagination={{
-              current: pageParam.current.page,
-              pageSize: pageParam.current.pageSize,
-              total: pageParam.current.total,
-              hideOnSinglePage: true,
-              onChange: (page, pageSize) => pageChange(page, pageSize),
-            }}
-            loading={loading}
-            locale={{ emptyText: <NoData textColor='#A4A5AC'  /> }}
-            p1cardBorder='none'
+            placeholder={[t('btnText.startDate', { ns: 'common' }), t('btnText.endDate', { ns: 'common' })]}
           />
         </div>
       </div>
+      <div className={`${styles.table_content} w-full px-4 py-4`}>
+        <CustomTable
+          columns={columns}
+          dataSource={tableData}
+          className={`table-box`}
+          pagination={{
+            current: pageParam.current.page,
+            pageSize: pageParam.current.pageSize,
+            total: pageParam.current.total,
+            hideOnSinglePage: true,
+            onChange: (page, pageSize) => pageChange(page, pageSize),
+          }}
+          loading={loading}
+          locale={{ emptyText: <NoData textColor='#A4A5AC' /> }}
+          p1cardBorder='none'
+        />
+      </div>
+    </div>
   </>
   );
 };

@@ -712,6 +712,9 @@ const WithdrawMoneyPage = observer(() => {
 
   return (<ContentLayout
     title={t('assets.withdraw')}
+    headerStyle={{
+      border:'none',
+    }}
     footer={
       // <Button
       //   type="primary"
@@ -746,7 +749,7 @@ const WithdrawMoneyPage = observer(() => {
 
     }
   >
-    <div className='px-4 mt-5 pb-[100px] '>
+    <div className='px-4 pb-[100px] '>
       <ConfigProvider
         theme={{
           components: {
@@ -881,13 +884,13 @@ const WithdrawMoneyPage = observer(() => {
                                 {item.addressTitle}
                               </p>
                               <p
-                                className={`${styles.tip_color2} font-14 font-w-400`}
+                                className={`${styles.tip_color} font-14 font-w-400`}
                               >
                                 {`${t("withdrawMoney.address")}：${item.addressName
                                   }`}
                               </p>
                               <p
-                                className={`${styles.tip_color2} font-14 font-w-400`}
+                                className={`${styles.tip_color} font-14 font-w-400`}
                               >
                                 {`${t("withdrawMoney.network")}：${item.protocolName || "--"
                                   }`}
@@ -1119,7 +1122,7 @@ const WithdrawMoneyPage = observer(() => {
           <ul
             className={`${styles.tip_color} ${styles.icon_btn_bottom} w-full mb-5`}
           >
-            <li className={`flex-x justify-between mb-5`}>
+            <li className={`flex-x justify-between mb-[10px]`}>
               <p>{t("withdrawMoney.spotAvailable")}</p>
               <p className={`${styles.title_color}`}>
                 {/* 50.13USDT */}
@@ -1127,7 +1130,7 @@ const WithdrawMoneyPage = observer(() => {
                 {coninInfo.coinName || "--"}
               </p>
             </li>
-            <li className={`flex-x justify-between mb-5`}>
+            <li className={`flex-x justify-between mb-[10px]`}>
               <p>{t("withdrawMoney.singleLimit")}</p>
               <p className={`${styles.title_color}`}>
                 {/* 10-10,000USDT */}
@@ -1137,7 +1140,7 @@ const WithdrawMoneyPage = observer(() => {
                 {coninInfo.coinName || "--"}
               </p>
             </li>
-            <li className={`flex-x justify-between mb-5 w-full`}>
+            <li className={`flex-x justify-between mb-[10px] w-full`}>
               <p>{t("withdrawMoney.dayLimit")}</p>
               {/* 24h限额 */}
               <p>

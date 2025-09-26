@@ -39,23 +39,7 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
     // 设置WebSocket连接
     const setupBalanceWebSocket = useCallback(() => {
         if (!enabled) return;
-        // 如果已经有连接（OPEN），但未启动心跳，则仅补齐心跳，不重复创建
-        // if (balanceDataRef.current && balanceDataRef.current.connectionState === ConnectionState.OPEN) {
-        //     if (!pingIntervalRef.current) {
-        //         pingIntervalRef.current = setInterval(() => {
-        //             const ws = balanceDataRef.current;
-        //             if (ws && ws.connectionState === ConnectionState.OPEN) {
-        //                 ws.send('ping');
-        //             } else {
-        //                 if (pingIntervalRef.current) {
-        //                     clearInterval(pingIntervalRef.current);
-        //                     pingIntervalRef.current = null;
-        //                 }
-        //             }
-        //         }, 25000);
-        //     }
-        //     return;
-        // }
+
         // 如果全局已标记连接过且当前不处于 OPEN，则交由内部重连，不在此重复创建
         if (typeof window !== "undefined" && (window as any)[WS_CONNECTED_KEY]) return;
         if (balanceDataRef.current && balanceDataRef.current.connectionState !== ConnectionState.CLOSED) return;
@@ -74,7 +58,7 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
             const base = process.env.REACT_APP_ASSETS_API_BASE;
             if (!base) return;
             const websocket = new WebSocketService(
-                `${base}/ws/asset?userId=${userInfo.userId}&sa-token=${token}`
+                `${base}/ws/asset?userId=${userInfo.userId}&sa-token=${token}type=h`
             );
             balanceDataRef.current = websocket;
 
@@ -97,7 +81,24 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
             //         }
             //     }, 10000);
             // });
-
+            // 非手动关闭时，收到 onclose 通知后在本 Hook 内触发重连
+            websocket.setOnCloseCallback((evt, manual) => {
+                if (!manual) {
+                    // 清理旧心跳
+                    if (pingIntervalRef.current) {
+                        clearInterval(pingIntervalRef.current);
+                        pingIntervalRef.current = null;
+                    }
+                    balanceDataRef.current = null;
+                    // 走原有的重连节流逻辑
+                    if (reconnectAttemptsRef.current < MAX_RECONNECT) {
+                        reconnectAttemptsRef.current += 1;
+                        setTimeout(() => {
+                            try { setupBalanceWebSocket(); } catch { }
+                        }, 3000);
+                    }
+                }
+            });
             websocket.connect((message: string) => {
                 // console.log('收到WebSocket消息:', message);
 
@@ -175,7 +176,7 @@ export const useAssetsAndRateWs = (enabled: boolean = true) => {
     }, [userInfo?.userId, enabled]); // 移除initTableData依赖，减少不必要的重连
     useEffect(() => {
         // if (!userInfo || typeof window === "undefined") return;
-        if (!userInfo ||!enabled) return;
+        if (!userInfo || !enabled) return;
         setupBalanceWebSocket();
         return () => {
             // 不在组件卸载时强制清理心跳，避免 StrictMode 造成心跳丢失

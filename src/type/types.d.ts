@@ -175,3 +175,15 @@ export interface ApiResponse<T> {
     reqNo: string | null;
     data: T;
 }
+
+// Browser DecompressionStream typing (not in all TS lib DOM versions)
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    class DecompressionStream {
+        constructor(format: "gzip" | "deflate");
+        readable: ReadableStream<Uint8Array>;
+        writable: WritableStream<Uint8Array>;
+    }
+}
+
+export {};

@@ -222,7 +222,7 @@ const CoinInfoSteps = ({ goSteps,coinList }: CoinInfoStepsProps) => {
               />
               <Button type="text" htmlType="button" 
               style={{padding:0}}
-              className="ml-2"
+              className="ml-2 text-[var(--text-color5)]"
               onClick={handleSearchClear}>{t("toUpSteps.cancel")}</Button>
             
               </div></Form.Item>

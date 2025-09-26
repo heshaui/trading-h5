@@ -63,24 +63,39 @@ const SpotOrderPage = () => {
 	const getStatusIconAndStyle = useCallback((): StatusInfo => {
 		const status = Number(recordData?.status);
 
-		// 状态 0、1、2：处理中状态
-		if ([0, 1, 2].includes(status)) {
+		// 状态 0、1：待审核
+		if ([0, 1].includes(status)) {
 			return {
 				className: styles.warning_icon,
 				icon: <IconMore />, // 或者使用相应的图标组件
-				tip: t('withdrawTable.walletProcessing')  //'提币钱包处理中，请耐心等待'
+				tip: t('withdrawTable.withdrawPending')  //'提币审核中，请耐心等待'
 			};
 		}
 		// 状态 3、4：失败状态
-		else if ([3, 4].includes(status)) {
+		else if ([2, 7, 8, 9].includes(status)) {
 			return {
 				className: styles.error_icon,
 				icon: <IconFail />,
-				tip: status === 3 ? (recordData?.remark || '--') : t('withdrawTable.userCancel')  //用户已撤销，请重新提现
+				tip: t('withdrawTable.walletProcessing')  //'提币钱包处理中，请耐心等待'
 			};
 		}
-		// 状态 5：成功状态
-		else if (status === 5) {
+		// 状态 3：拒绝
+		else if ([3].includes(status)) {
+			return {
+				className: styles.success_icon,
+				icon: <IconSuccess />,
+				tip: (recordData?.remark || '--')
+			};
+		}
+		// 状态 4、6：已撤销
+		else if ([4,6].includes(status)) {
+			return {
+				className: styles.error_icon,
+				icon: <IconFail />,
+				tip:  t('withdrawTable.userCancel')  //用户已撤销，请重新提现
+			};
+		}
+		else if ([5].includes(status)) {
 			return {
 				className: styles.success_icon,
 				icon: <IconSuccess />,
@@ -105,24 +120,38 @@ const SpotOrderPage = () => {
 		});
 	};
 	const getStatus = (status: number) => {
-		const statusText = Number(status)
-		// 状态: 0-创建, 1-待审核, 2-审核通过, 3-审核拒绝, 4-用户撤销  5 提现完成
-		switch (statusText) {
-			case 0:
-				return t('withdrawTable.create') //'创建';
-			case 1:
-				return t('withdrawTable.pending') //'待审核'
-			case 2:
-				return t('withdrawTable.passed') //审核通过
-			case 3:
-				return t('withdrawTable.rejected') //'审核拒绝'
-			case 4:
-				return t('withdrawTable.canceled') //'用户撤销'
-			case 5:
-				return t('withdrawTable.completed') //'提现完成'
-			default:
-				return statusText || '--'
+		/* 0创建  
+		  处理中 
+			  1待审核
+			  2审核通过
+			  7处理失败
+			  8钱包处理中
+			  9钱包驳回 
+		  拒绝
+			  3审核拒绝
+		  已撤销
+			  4撤单完成
+			  6正在撤单
+		  已转出
+			  5提现完成 */
+		const code = status === null || status === undefined ? '' : String(status).trim()
+		if (!code) return '--'
+		if (["0", "1"].includes(code)) {
+			return t('withdrawTable.pending')
 		}
+		if (["2", "7", "8", "9"].includes(code)) {
+			return t('withdrawTable.processing')
+		}
+		if (code === "3") {
+			return t('withdrawTable.rejected2')
+		}
+		if (["4", "6"].includes(code)) {
+			return t('withdrawTable.canceled2')
+		}
+		if (code === "5") {
+			return t('withdrawTable.completed')
+		}
+		return code || '--'
 	}
 
 
@@ -146,7 +175,7 @@ const SpotOrderPage = () => {
 			width: 128,
 			align: "center",
 			render: (_status) => {
-				return <div className={`flex-x algin-start`}>{_status || '--'}
+				return <div className={`flex-x algin-start pl-[8px]`}>{_status || '--'}
 					<button onClick={() => copyFn(_status)}>
 						<Iconify icon="mingcute:copy-2-line" className="ml-2 tip_color" size={14} />
 					</button>
@@ -161,8 +190,9 @@ const SpotOrderPage = () => {
 			width: 128,
 			align: "center",
 			render: (_status) => {
-				return <div className={`flex-x algin-start`}>{_status || '--'}
-					{_status&&<button onClick={() => copyFn(_status)}>
+				return <div className={`flex-x algin-start pl-[8px]`}>
+					{_status || '--'}
+					{_status && <button onClick={() => copyFn(_status)}>
 						<Iconify icon="mingcute:copy-2-line" className="ml-2 tip_color" size={14} />
 					</button>}
 

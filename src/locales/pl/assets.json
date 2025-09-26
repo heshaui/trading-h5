@@ -177,7 +177,12 @@
         "onlyShowError": "No Currency Selected",
         "userCancel": "User has canceled, please withdraw again",
         "walletProcessing": "Withdrawal wallet is processing, please wait patiently",
-        "withdrawSuccess": "Withdrawal successful, please check the receiving address"
+        "withdrawSuccess": "Withdrawal successful, please check the receiving address",
+        "withdrawPending": "Withdrawal review in progress, please wait patiently",
+
+        "processing": "Processing",
+        "rejected2": "Rejected",
+        "canceled2": "Canceled"
     },
     "withdrawMoneyCheck": {
         "cancel": "Cancel",

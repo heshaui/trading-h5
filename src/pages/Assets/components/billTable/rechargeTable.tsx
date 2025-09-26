@@ -25,8 +25,8 @@ type PropsType = {
   coinSelect: any[]
 }
 
-export default function RechargeTable({coinSelect}: PropsType) {
-  const { t } = useLanguage(['assets','common']);
+export default function RechargeTable({ coinSelect }: PropsType) {
+  const { t } = useLanguage(['assets', 'common']);
   const [tableData, setTableData] = useState<RechargeDataType[]>([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ export default function RechargeTable({coinSelect}: PropsType) {
     endTime: ''
   })
   const getStatus = (status: number) => {
-    const statusText = Number(status)
+    const statusText = status?Number(status):''
     switch (statusText) {
       case 0:
         return t('recharge.rechargeStatus0') //'充值中';
@@ -68,17 +68,24 @@ export default function RechargeTable({coinSelect}: PropsType) {
       render: (_value, record) => {
         const coin = coninList.find((item: any) => item.coinName === record.symbol || item.coinId === record.symbol)
         const text = roundDown(record.amount, coin?.unitScale || 0)
-      return <div className='flex-x-cc'>
-        <div className='mr-1'>
-          <div className={`font-14 font-w-500 ${styles.success_icon}`} >+{text || '0'}</div>
-        <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
-        </div>
-        {/* <button className={`${styles.button} font-12 font-w-400`}>
-          <Iconify icon="mingcute:right-line" size={20} className={`${styles.tip_color}`}/>
-        </button> */}
-      </div>},
+        return <button className={`${styles.button} font-12 font-w-400`}
+          onClick={() => {
+            navigate('/assets/bill/rechargeDetail', {
+              state: {
+                recordData: record,
+              },
+            });
+          }}>
+          <div className='mr-1 flex-y align-end'>
+            <div className={`font-14 font-w-500 ${styles.success_icon}`} >+{text || '0'}</div>
+            <div className={`font-12 font-w-400 ${styles.tip_color}`}>{getStatus(Number(record.status)) || '--'}</div>
+          </div>
+          <Iconify icon="mingcute:right-line" size={20} className={`${styles.tip_color}`} />
+
+        </button>
+      },
     },
-    
+
   ];
 
 
@@ -134,8 +141,8 @@ export default function RechargeTable({coinSelect}: PropsType) {
   }, [])
 
   return (<>
-      {/* 邀请奖励 */}
-      <div className={`${styles.table_box} w-full `}>
+    {/* 邀请奖励 */}
+    <div className={`${styles.table_box} w-full `}>
       <div className={`${styles.table_header} w-full  flex align-center pl-1 pr-4`}>
         <SelectPop
           options={coinSelect}
@@ -169,7 +176,7 @@ export default function RechargeTable({coinSelect}: PropsType) {
               </div>
             </div>
           )}
-          // defaultValue={symbolSelect[0]?.value}
+        // defaultValue={symbolSelect[0]?.value}
         />
         <div className='flex-1 flex-x align-center justify-end'>
           <button
@@ -178,12 +185,12 @@ export default function RechargeTable({coinSelect}: PropsType) {
             {/* {t('spot.columns.cancel')} */}
             <Iconify icon="mingcute:filter-line" className={`${styles.title_color} ml-1`} size={20} />
           </button>
-             <DateTimePop
+          <DateTimePop
             popupVisible={datePopVisible}
             onOpen={() => setDatePopVisible(true)}
             handlePopupClose={() => setDatePopVisible(false)}
-            title={t('btnText.filter',{ns:'common'})}
-            onChange={(value)=>{
+            title={t('btnText.filter', { ns: 'common' })}
+            onChange={(value) => {
               pageParam.current.startTime = value[0]?.startOf('day').format('YYYY-MM-DD') || ''
               pageParam.current.endTime = value[1]?.endOf('day').format('YYYY-MM-DD') || ''
               getRecordData()
@@ -191,28 +198,28 @@ export default function RechargeTable({coinSelect}: PropsType) {
             // defaultValue={[dayjs().subtract(6, 'day'), dayjs().endOf('day')]}
             // maxDate={dayjs().endOf('day')}
             quickSelect={true}
-            placeholder={[t('btnText.startDate',{ns:'common'}), t('btnText.endDate',{ns:'common'})]}
-            />
-        </div>
-      </div>
-        <div className={`${styles.table_content} w-full px-4 py-4`}>
-          <CustomTable
-            columns={columns}
-            dataSource={tableData}
-            className={`table-box`}
-            pagination={{
-              current: pageParam.current.page,
-              pageSize: pageParam.current.pageSize,
-              total: pageParam.current.total,
-              hideOnSinglePage: true,
-              onChange: (page, pageSize) => pageChange(page, pageSize),
-            }}
-            loading={loading}
-            locale={{ emptyText: <NoData textColor='#A4A5AC' height='45vh' /> }}
-            p1cardBorder='none'
+            placeholder={[t('btnText.startDate', { ns: 'common' }), t('btnText.endDate', { ns: 'common' })]}
           />
         </div>
       </div>
+      <div className={`${styles.table_content} w-full px-4 py-4`}>
+        <CustomTable
+          columns={columns}
+          dataSource={tableData}
+          className={`table-box`}
+          pagination={{
+            current: pageParam.current.page,
+            pageSize: pageParam.current.pageSize,
+            total: pageParam.current.total,
+            hideOnSinglePage: true,
+            onChange: (page, pageSize) => pageChange(page, pageSize),
+          }}
+          loading={loading}
+          locale={{ emptyText: <NoData textColor='#A4A5AC' height='45vh' /> }}
+          p1cardBorder='none'
+        />
+      </div>
+    </div>
   </>
   );
 };

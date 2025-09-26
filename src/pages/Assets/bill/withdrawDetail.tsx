@@ -1,16 +1,16 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { SpotLayout } from '@/components/MenuItems';
+// import { SpotLayout } from '@/components/MenuItems';
 import styles from '../styles/orderDetail.module.scss'
 // import { Input, Radio, ConfigProvider, Table, Select, Form, Tabs } from 'antd';
 import { CustomTab } from '@/components/CustomCom';
 import { Iconify } from "@/components/icon"
-import type { ColumnsType } from "antd/es/table";
+// import type { ColumnsType } from "antd/es/table";
 import dayjs from 'dayjs';
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useLanguage } from '@/hooks/useLanguage';
-import type { TabsProps } from 'antd';
-import useQueryParams from '@/hooks/useQueryParams';
+// import type { TabsProps } from 'antd';
+// import useQueryParams from '@/hooks/useQueryParams';
 import { useThemeMode } from '@/hooks/useThemeMode';
 import { CustomTable } from '@/components/CustomCom'
 import type { ColumnType } from '@/components/CustomCom/CustomTable';
@@ -61,7 +61,7 @@ const SpotOrderPage = () => {
 
 	// 根据状态返回样式、图标和提示信息的方法
 	const getStatusIconAndStyle = useCallback((): StatusInfo => {
-		const status = Number(recordData?.status);
+		const status =Number(recordData?.status)
 
 		// 状态 0、1：待审核
 		if ([0, 1].includes(status)) {
@@ -176,9 +176,9 @@ const SpotOrderPage = () => {
 			align: "center",
 			render: (_status) => {
 				return <div className={`flex-x algin-start pl-[8px]`}>{_status || '--'}
-					<button onClick={() => copyFn(_status)}>
+					{_status&&<button onClick={() => copyFn(_status)}>
 						<Iconify icon="mingcute:copy-2-line" className="ml-2 tip_color" size={14} />
-					</button>
+					</button>}
 
 				</div>;
 			},

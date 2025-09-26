@@ -40,6 +40,7 @@
         "inviteReward": "Invitation Reward",
         "cashout": "Withdraw",
         "noFind": "Currency Not Found",
+        "wallet": "Wallet",
         "typelist": {
             "create": "Created",
             "pending": "Pending",
@@ -179,6 +180,8 @@
         "walletProcessing": "Withdrawal wallet is processing, please wait patiently",
         "withdrawSuccess": "Withdrawal successful, please check the receiving address",
         "withdrawPending": "Withdrawal review in progress, please wait patiently",
+        "rechargePending": "Recharge review in progress, please wait patiently",
+        "rechargeSuccess": "Recharge successful. You can check your assets in the spot account",
 
         "processing": "Processing",
         "rejected2": "Rejected",

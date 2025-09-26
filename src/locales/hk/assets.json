@@ -40,6 +40,7 @@
         "inviteReward": "邀请奖励",
         "cashout": "提现",
         "noFind": "未找到对应币种",
+        "wallet": "钱包",
         "typelist": {
             "create": "创建",
             "pending": "待审核",
@@ -179,6 +180,8 @@
         "walletProcessing": "提币钱包处理中，请耐心等待",
         "withdrawSuccess": "提现成功,请查看至币地址",
         "withdrawPending": "提币审核中，请耐心等待",
+        "rechargePending": "充值审核中，请耐心等待",
+        "rechargeSuccess": "充值成功，您可在现货账户查看资产",
 
         "processing": "处理中",
         "rejected2": "拒绝",

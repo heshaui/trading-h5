@@ -40,6 +40,7 @@
         "inviteReward": "招待報酬",
         "cashout": "出金",
         "noFind": "対応するコインが見つかりません",
+        "wallet": "ウォレット",
         "typelist": {
             "create": "作成",
             "pending": "審査待ち",
@@ -179,6 +180,8 @@
         "walletProcessing": "出金ウォレット処理中です。しばらくお待ちください",
         "withdrawSuccess": "出金に成功しました。受取アドレスを確認してください",
         "withdrawPending": "出金審査中です。しばらくお待ちください",
+        "rechargePending": "入金が成功しました。スポットアカウントで資産を確認できます",
+        "rechargeSuccess": "入金に成功しました。受取アドレスを確認してください",
 
         "processing": "処理中",
         "rejected2": "拒否",

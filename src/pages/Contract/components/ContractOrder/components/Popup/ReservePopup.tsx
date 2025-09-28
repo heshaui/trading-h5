@@ -49,7 +49,7 @@ const ReservePopup:React.FC<Props> = ({open, onCancel, onConfirm, currentData}) 
                 </span>
                 <span
                   className={`h-[20px] px-[3px] flex items-center text-[14px] font-medium mr-2 rounded-[4px]
-                    ${currentData?.orderSide === Side.BUY_CLOSE || currentData?.orderSide === Side.BUY_OPEN ? 'success_icon success_bg' : 'error_icon error_bg'}
+                    ${currentData?.orderSide.includes('BUY') ? 'success_icon success_bg' : 'error_icon error_bg'}
                   `}
                 >
                   {currentData ? t(SideMap[currentData?.orderSide]) : ''}

@@ -8,7 +8,7 @@ import { Side, PositionType, Type, Open, Status } from "../configs/columns";
 interface OrdinaryCommission {
   symbol: string;
   pricePrecision: number;
-  side: Side;
+  side: 'BUY' | 'SELL';
   positionType: PositionType;
   avgPrice: number;
   tradeFee: number;

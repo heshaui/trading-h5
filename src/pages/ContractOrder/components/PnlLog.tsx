@@ -66,8 +66,9 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentContract.contractShowType;
-		return type ? type.replace('合约', '') : '模拟'
+		const type = currentContract.contractShowType?.toLowerCase() || 'demo';
+		return t(`contractInfo.${type}`)
+		//return type ? type.replace('合约', '') : '模拟'
 	}
 
 	const handleSelect = (value: string) => {
@@ -166,7 +167,7 @@ const PnlLog:React.FC<Props> = ({contractList}) => {
 									<div className="leading-[17px] text-[12px] flex items-center">
 										<span
 											className={`leading-[17px] mr-[22px]
-												${item.orderSide === Side.BUY_CLOSE || item.orderSide === Side.BUY_OPEN ? 'success_icon' : 'error_icon'}
+												${item.orderSide.includes('BUY') ? 'success_icon' : 'error_icon'}
 											`}
 										>
 											{t(PositionTypeMap[item.positionType])}/{t(SideMap[item.orderSide])}

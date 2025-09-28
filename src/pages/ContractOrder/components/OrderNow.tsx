@@ -82,8 +82,9 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentContract.contractShowType;
-		return type ? type.replace('合约', '') : '模拟'
+		const type = currentContract.contractShowType?.toLowerCase() || 'demo';
+		return t(`contractInfo.${type}`)
+		//return type ? type.replace('合约', '') : '模拟'
 	}
     
     // 计算完成度
@@ -265,8 +266,8 @@ const OrderNow:React.FC<Props> = ({contractList}) => {
 										<span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center">{getContractShowType()}</span>
 									</div>
 									<div className="leading-[17px] text-[12px]">
-										<span className={`${item.side === Side.BUY_CLOSE || item.side === Side.BUY_OPEN ? 'success_icon' : 'error_icon'}`}>
-											{t(TypeMap[item.type])}/{t(SideMap[item.side])}
+										<span className={`${item.side.includes('BUY') ? 'success_icon' : 'error_icon'}`}>
+											{t(TypeMap[item.type])}/{t(SideMap[`${item.side}_${item.open}`])}
 										</span>
 										<span className="ml-[10px] tip-color">{dayjs(item.mtime).format("YYYY-MM-DD HH:mm:ss")}</span>
 									</div>

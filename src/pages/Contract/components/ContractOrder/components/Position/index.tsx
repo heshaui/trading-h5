@@ -144,8 +144,9 @@ const Position: React.FC = () => {
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentSymbol.contractShowType;
-		return type ? type.replace('合约', '') : '模拟'
+		const type = currentContractInfo.contractShowType?.toLowerCase() || 'demo';
+		return t(`contractInfo.${type}`)
+		//return type ? type.replace('合约', '') : '模拟'
 	}
 
 	// 显示提示
@@ -226,7 +227,7 @@ const Position: React.FC = () => {
 							<div className="flex items-center">
 								<span
 									className={`h-[20px] px-[3px] flex items-center text-[14px] font-medium mr-2 rounded-[4px]
-										${item.orderSide === Side.BUY_CLOSE || item.orderSide === Side.BUY_OPEN ? 'success_icon success_bg' : 'error_icon error_bg'}
+										${item.orderSide.includes('BUY') ? 'success_icon success_bg' : 'error_icon error_bg'}
 									`}
 								>
 									{t(SideMap[item.orderSide])}

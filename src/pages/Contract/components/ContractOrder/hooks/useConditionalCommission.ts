@@ -10,7 +10,7 @@ interface ConditionalCommission {
   contractId: number;
   symbol: string;
   type: Type;
-  side: Side;
+  side: 'BUY' | 'SELL';
   triggerPrice: number;
   price: number;
   size: number;
@@ -18,6 +18,7 @@ interface ConditionalCommission {
   onlyReduce: boolean;
   createTime: number;
   expireTime: number;
+  open: Open;
 }
 
 interface UseConditionalCommissionOptions {

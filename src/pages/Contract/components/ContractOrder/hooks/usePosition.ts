@@ -102,7 +102,7 @@ export const usePosition = (options: UsePositionOptions = {}) => {
         const params = {
           contractId: record.contractId, // 合约ID
           positionType: record.positionType, // 持仓类型(1 全仓，2 仓逐)
-          side: record.orderSide === "SELL" ? "BUY" : "SELL", // 买卖方向（buy 买入，sell 卖出）
+          side: record.orderSide, // 买卖方向（buy 买入，sell 卖出）
           leverageLevel: record.leverageLevel, // 杠杆倍数
           price: type === "market" ? 0 : price, // 平仓价格(市价单传0)
           volume, // 平仓数量

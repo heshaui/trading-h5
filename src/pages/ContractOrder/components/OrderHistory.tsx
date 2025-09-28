@@ -85,8 +85,9 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentContract.contractShowType;
-		return type ? type.replace('合约', '') : '模拟'
+		const type = currentContract.contractShowType?.toLowerCase() || 'demo';
+		return t(`contractInfo.${type}`)
+		//return type ? type.replace('合约', '') : '模拟'
 	}
 
 	const handleSelect = <K extends keyof ParamData>(value: ParamData[K], type: K) => {
@@ -290,8 +291,8 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 									</div> 
 								</div>
 								<div className="leading-[17px] text-[12px]">
-									<span className={`${item.side === Side.BUY_CLOSE || item.side === Side.BUY_OPEN ? 'success_icon' : 'error_icon'}`}>
-										{t(SideMap[item.side])}
+									<span className={`${item.side.includes('aria-busy:') ? 'success_icon' : 'error_icon'}`}>
+										{t(SideMap[`${item.side}_${item.open}`])}
 									</span>
 								</div>
 							</div>

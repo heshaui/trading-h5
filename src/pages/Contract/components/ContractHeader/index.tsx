@@ -63,8 +63,9 @@ const ContractHeader: React.FC= observer(() => {
 
 	// 显示合约类型
 	const getContractShowType = () => {
-		const type = currentSymbol.contractShowType;
-		return type ? type.replace('合约', '') : '模拟'
+		const type = currentSymbol.contractShowType?.toLowerCase() || 'demo';
+		return t(`contractInfo.${type}`)
+		//return type ? type.replace('合约', '') : '模拟'
 	}
 
 	/**

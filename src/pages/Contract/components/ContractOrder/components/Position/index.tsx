@@ -226,7 +226,7 @@ const Position: React.FC = () => {
 							<div className="flex items-center">
 								<span
 									className={`h-[20px] px-[3px] flex items-center text-[14px] font-medium mr-2 rounded-[4px]
-										${item.orderSide === Side.BUY ? 'success_icon success_bg' : 'error_icon error_bg'}
+										${item.orderSide === Side.BUY_CLOSE || item.orderSide === Side.BUY_OPEN ? 'success_icon success_bg' : 'error_icon error_bg'}
 									`}
 								>
 									{t(SideMap[item.orderSide])}

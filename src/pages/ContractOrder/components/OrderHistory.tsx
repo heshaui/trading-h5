@@ -290,7 +290,7 @@ const OrderHistory:React.FC<Props> = ({contractList}) => {
 									</div> 
 								</div>
 								<div className="leading-[17px] text-[12px]">
-									<span className={`${item.side === Side.BUY ? 'success_icon' : 'error_icon'}`}>
+									<span className={`${item.side === Side.BUY_CLOSE || item.side === Side.BUY_OPEN ? 'success_icon' : 'error_icon'}`}>
 										{t(SideMap[item.side])}
 									</span>
 								</div>

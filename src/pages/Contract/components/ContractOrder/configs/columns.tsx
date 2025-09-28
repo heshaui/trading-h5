@@ -5,8 +5,10 @@ import dayjs from "dayjs";
 import BigNumber from "bignumber.js"; 
 // 方向枚举
 export enum Side {
-  BUY = "BUY",
-  SELL = "SELL",
+  BUY_OPEN = "BUY_OPEN",
+  SELL_OPEN = "SELL_OPEN",
+  BUY_CLOSE = "BUY_CLOSE",
+  SELL_CLOSE = "SELL_CLOSE",
 }
 // 仓位类型枚举
 export enum PositionType {
@@ -50,8 +52,10 @@ export const PositionTypeMap = {
 };
 
 export const SideMap = {
-  [Side.BUY]: "order.common.buy",
-  [Side.SELL]: "order.common.sell",
+  [Side.BUY_OPEN]: "order.common.buy",
+  [Side.SELL_OPEN]: "order.common.sell",
+  [Side.BUY_CLOSE]: "order.common.buyClose",
+  [Side.SELL_CLOSE]: "order.common.sellClose"
 };
 
 export const TypeMap = {

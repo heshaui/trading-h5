@@ -156,7 +156,7 @@ const ConditionCommission:React.FC = () => {
                                         <span className="h-[20px] px-[6px] text-[12px] font-medium bg-[var(--background14)] rounded-[4px] flex items-center">{getContractShowType()}</span>
                                     </div>
                                     <div className="leading-[17px] text-[12px]">
-                                        <span className={`${item.side === Side.BUY ? 'success_icon' : 'error_icon'}`}>
+                                        <span className={`${item.side === Side.BUY_OPEN || item.side === Side.BUY_CLOSE ? 'success_icon' : 'error_icon'}`}>
                                             {t(TypeMap[item.type])}/{t(SideMap[item.side])}
                                         </span>
                                         <span className="ml-[10px]">{dayjs(item.createTime).format("YYYY-MM-DD HH:mm:ss")}</span>

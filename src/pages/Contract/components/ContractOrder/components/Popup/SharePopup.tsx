@@ -63,7 +63,7 @@ const SharePopup:React.FC<Props> = ({open, onConfirm, onCancel, data}) => {
                 <div className="flex items-center text-[12px] font-medium leading-[17px] tip-color mb-[6px]">
                     <span
                         className={`
-                            ${data.orderSide === Side.BUY ? 'success_icon' : 'error_icon'}
+                            ${data.orderSide === Side.BUY_CLOSE || data.orderSide === Side.BUY_OPEN ? 'success_icon' : 'error_icon'}
                         `}
                     >
                         {t(SideMap[data.orderSide])}

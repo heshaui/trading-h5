@@ -47,6 +47,7 @@ import RiskDisclosureModal from '../../RiskDisclosureModal';
 import TipModal from '../../ContractOrder/components/Popup/TipModal';
 import SelectPop from "@/components/SelectPop";
 import ContractInfo from "../../ContractInfo";
+import { Side } from "../../ContractOrder/configs/columns";
 
 
 export interface AccountBalance {
@@ -319,7 +320,7 @@ const SpotTradePage = observer(({
     // 找到对应方向的持仓
     const position = positions.find((pos:any) =>
       pos.contractId === currentContractInfo?.id &&
-      pos.orderSide === side
+      pos.orderSide === (side === "BUY" ? Side.BUY_OPEN : Side.SELL_OPEN)
     );
 
     return position?.canCloseVolume || 0;

@@ -253,7 +253,20 @@
         "error4": "Incorrect verification code"
     },
     "futureAccount": {
-        "title": "Futures Account"
+        "title": "Contract Account",
+        "transfer": "Transfer",
+        "fundFlow": "Fund Flow",
+        "hideSmall": "Hide Small Balances",
+        "total": "Total Equity",
+        "balance": "Wallet Balance",
+        "useBalance": "Available",
+        "unRealizedAmount": "Unrealized PnL",
+        "all": "All",
+        "allType": "All Types",
+        "in": "Deposit",
+        "out": "Withdraw",
+        "cost": "Funding Fee",
+        "handlingFee": "Opening Fee"
     },
     "orderBook": {
         "title": "Order Book",

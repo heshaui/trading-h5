@@ -133,7 +133,7 @@ const MenuPopup: React.FC<MenuPopupProps> = ({ visible, theme, onClose, menuList
               <>
                 <li 
                   key={menu.path}
-                  className={`${styles.user_menu_item} ${active ? styles.active : ''} justify-between`}
+                  className={`${styles.user_menu_item} pr-4 ${active ? styles.active : ''} justify-between`}
                   onClick={() => toggleExpand(menu.path)}
                 >
                   <div className="flex items-center h-full">

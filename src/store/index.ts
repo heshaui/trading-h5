@@ -18,6 +18,14 @@ import { registerInfoType } from "@/type/store"
 import { getConfig } from '@/services/flash';
 import { fetchRateData, fetchLangData } from './langAndRate';
 import { autoConvertLangCode } from '@/utils/stringMap'
+// 合约
+import {
+  getPublicInfo,
+  getUserConfig,
+  getAssetsList,
+  getPublicMarketInfo
+} from "@/services/contract";
+import { UserConfigType, TradingSetting } from "@/type/contract/userConfig";
 
 // 添加这个辅助函数来检查是否在浏览器环境
 const isBrowser = () => typeof window !== 'undefined';
@@ -67,6 +75,44 @@ class AppStore {
     theme: 'light' | 'dark' | null = null;
     assetData: AssetDataType[] = [];
     coinRateData: CoinRateDataType[] = [];
+
+    // 合约模块------start
+    // 添加公共数据状态
+    publicInfo: any = {};
+    currentContractInfo: any = {};
+    isLoadingPublicInfo: boolean = false;
+
+    // 添加最新价格数据状态
+    activeNewPrice: any = null;
+
+    // 添加市场信息状态
+    marketInfo: any = {};
+    isLoadingMarketInfo: boolean = false;
+
+    // 添加用户合约配置状态
+    userConfig: UserConfigType = {};
+    isLoadingUserConfig: boolean = false;
+
+    // 添加合约资产状态
+    contractAssets: any[] = [];
+    isLoadingContractAssets: boolean = false;
+
+    // 理财配置状态
+    financialConfig: any = {
+        financialSwitch: null, //是否开启
+        isRealname: null, //是否实名
+        isDisplayAssets: null, //是否显示资产
+        isDisplayBackground: null, //是否显示背景图片
+    };
+
+    // 合约配置状态
+    contractConfig: any = {
+        contractSwitch: true, //是否开启
+    };
+
+    // 交易设置
+    tradingSetting: TradingSetting = {}
+
     constructor() {
         // 使状态响应式
         makeAutoObservable(this);
@@ -86,6 +132,11 @@ class AppStore {
             this.initFlashConfigFromStorage(); // 初始化闪兑配置
             this.initUsdtRateFromStorage(); //初始化USDT和USD汇率
             this.initTheme(); //初始化主题
+            this.initTradingSetting(); // 初始化交易设置
+            this.initPublicInfoFromStorage(); // 初始化公共数据
+            this.initUserConfigFromStorage(); // 初始化用户合约配置
+            this.initContractAssetsFromStorage(); // 初始化合约资产
+            this.initMarketInfoFromStorage(); // 初始化市场信息
         }
     }
     initTheme() {
@@ -904,6 +955,399 @@ class AppStore {
       this.coinRateData = JSON.parse(coinRateDataJson);
     }
   }
+    // 公共数据相关方法
+    initPublicInfoFromStorage() {
+        if (!isBrowser()) return;
+        try {
+        const publicInfoJson = localStorage.getItem(
+            LOCAL_STORAGE_KEY.PUBLIC_INFO
+        );
+        if (publicInfoJson) {
+            this.publicInfo = JSON.parse(publicInfoJson);
+
+            // 如果 currentContractInfo 为空且 publicInfo.contractList 存在且有数据，则设置第一个合约信息
+            if (
+            !this.currentContractInfo ||
+            Object.keys(this.currentContractInfo).length === 0
+            ) {
+            if (
+                this.publicInfo?.contractList &&
+                Array.isArray(this.publicInfo.contractList) &&
+                this.publicInfo.contractList.length > 0
+            ) {
+                this.currentContractInfo = this.publicInfo.contractList[0];
+            }
+            }
+        }
+        } catch (error) {
+        console.error("Failed to load public info from storage:", error);
+        }
+    }
+
+    async loadPublicInfo() {
+        try {
+        this.isLoadingPublicInfo = true;
+        const result = await getPublicInfo({});
+
+        if (result.code === "0") {
+            this.setPublicInfo(result.data);
+            return result.data;
+        } else {
+            // throw new Error("Failed to load public info");
+        }
+        } catch (error) {
+        console.error("Error loading public info:", error);
+        throw error;
+        } finally {
+        runInAction(() => {
+            this.isLoadingPublicInfo = false;
+        });
+        }
+    }
+
+    setPublicInfo(info: any) {
+        this.publicInfo = info;
+
+        // 首先尝试从本地存储恢复合约信息
+        this.initCurrentContractInfoFromStorage();
+
+        // 如果 currentContractInfo 仍为空且 publicInfo.contractList 存在且有数据，则设置第一个合约信息
+        if (
+        !this.currentContractInfo ||
+        Object.keys(this.currentContractInfo).length === 0
+        ) {
+        if (
+            info?.contractList &&
+            Array.isArray(info.contractList) &&
+            info.contractList.length > 0
+        ) {
+            this.currentContractInfo = info.contractList[0];
+            // 新设置的默认合约也要持久化
+            if (isBrowser()) {
+            localStorage.setItem(
+                LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO,
+                JSON.stringify(this.currentContractInfo)
+            );
+            }
+        }
+        }
+
+        if (isBrowser()) {
+        localStorage.setItem(LOCAL_STORAGE_KEY.PUBLIC_INFO, JSON.stringify(info));
+        }
+    }
+
+    getPublicInfo() {
+        return this.publicInfo;
+    }
+
+    // 设置当前合约信息
+    setCurrentContractInfo(contractId: number) {
+        this.currentContractInfo = this.publicInfo?.contractList?.find(
+        (item: any) => item.id === contractId
+        );
+
+        // 持久化到本地存储
+        if (isBrowser() && this.currentContractInfo) {
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO,
+            JSON.stringify(this.currentContractInfo)
+        );
+        }
+    }
+
+    // 获取当前合约信息
+    getCurrentContractInfo() {
+        return this.currentContractInfo;
+    }
+
+    // 清除当前合约信息
+    clearCurrentContractInfo() {
+        this.currentContractInfo = {};
+        if (isBrowser()) {
+        localStorage.removeItem(LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO);
+        }
+    }
+
+    // 从本地存储初始化当前合约信息
+    initCurrentContractInfoFromStorage() {
+        if (!isBrowser()) return;
+
+        try {
+        const storedInfo = localStorage.getItem(
+            LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO
+        );
+        if (storedInfo) {
+            const parsedInfo = JSON.parse(storedInfo);
+            // 验证存储的合约信息是否仍然有效（在当前的合约列表中存在）
+            if (this.publicInfo?.contractList && parsedInfo?.id) {
+            const isValid = this.publicInfo.contractList.some(
+                (item: any) => item.id === parsedInfo.id
+            );
+            if (isValid) {
+                this.currentContractInfo = parsedInfo;
+            } else {
+                // 如果存储的合约信息无效，清除它
+                localStorage.removeItem(LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO);
+            }
+            }
+        }
+        } catch (error) {
+        console.error("Error loading current contract info from storage:", error);
+        localStorage.removeItem(LOCAL_STORAGE_KEY.CURRENT_CONTRACT_INFO);
+        }
+    }
+
+    // 用户合约配置相关方法
+    initUserConfigFromStorage() {
+        if (!isBrowser()) return;
+        try {
+        const userConfigJson = localStorage.getItem(
+            LOCAL_STORAGE_KEY.USER_CONFIG
+        );
+        if (userConfigJson) {
+            this.userConfig = JSON.parse(userConfigJson);
+        }
+        } catch (error) {
+        console.error("Failed to load user config from storage:", error);
+        }
+    }
+
+    async loadUserConfig(params: any = {}) {
+        try {
+        this.isLoadingUserConfig = true;
+        const result = await getUserConfig(params);
+
+        if (result.code === "0") {
+            this.setUserConfig(result.data);
+            return result.data;
+        } else {
+            // throw new Error("Failed to load user config");
+        }
+        } catch (error) {
+        console.error("Error loading user config:", error);
+        throw error;
+        } finally {
+        runInAction(() => {
+            this.isLoadingUserConfig = false;
+        });
+        }
+    }
+
+    setUserConfig(config: UserConfigType) {
+        runInAction(() => {
+        this.userConfig = config;
+        });
+        if (isBrowser()) {
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY.USER_CONFIG,
+            JSON.stringify(config)
+        );
+        }
+    }
+
+    getUserConfig() {
+        return this.userConfig;
+    }
+
+    clearUserConfig() {
+        this.userConfig = {} as UserConfigType;
+        if (isBrowser()) {
+        localStorage.removeItem(LOCAL_STORAGE_KEY.USER_CONFIG);
+        }
+    }
+
+    // 合约资产相关方法
+    initContractAssetsFromStorage() {
+        if (!isBrowser()) return;
+        try {
+        const contractAssetsJson = localStorage.getItem(
+            LOCAL_STORAGE_KEY.CONTRACT_ASSETS
+        );
+        if (contractAssetsJson) {
+            this.contractAssets = JSON.parse(contractAssetsJson);
+        }
+        } catch (error) {
+        console.error("Failed to load contract assets from storage:", error);
+        }
+    }
+
+    async loadContractAssets() {
+        try {
+        this.isLoadingContractAssets = true;
+        const result = await getAssetsList({});
+
+        if (result.code === "0") {
+            // 只保存accountList部分
+            const accountList = result.data?.accountList || [];
+            this.setContractAssets(accountList);
+            return accountList;
+        } else {
+            // throw new Error("Failed to load contract assets");
+            console.log(result.message || "Failed to load contract assets");
+        }
+        } catch (error) {
+        console.error("Error loading contract assets:", error);
+        throw error;
+        } finally {
+        runInAction(() => {
+            this.isLoadingContractAssets = false;
+        });
+        }
+    }
+
+    setContractAssets(assets: any) {
+        this.contractAssets = assets;
+        if (isBrowser()) {
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY.CONTRACT_ASSETS,
+            JSON.stringify(assets)
+        );
+        }
+    }
+
+    getContractAssets() {
+        return this.contractAssets;
+    }
+
+    clearContractAssets() {
+        this.contractAssets = [];
+        if (isBrowser()) {
+        localStorage.removeItem(LOCAL_STORAGE_KEY.CONTRACT_ASSETS);
+        }
+    }
+
+    // 理财配置相关方法
+    initFinancialConfigFromStorage() {
+        if (!isBrowser()) return;
+        const financialConfigJson = localStorage.getItem(
+        LOCAL_STORAGE_KEY.FINANCIAL_CONFIG
+        );
+        if (financialConfigJson) {
+        this.financialConfig = JSON.parse(financialConfigJson);
+        }
+    }
+
+    // 设置理财配置
+    setFinancialConfig(config: any) {
+        this.financialConfig = config;
+        if (isBrowser()) {
+        localStorage.setItem(
+            LOCAL_STORAGE_KEY.FINANCIAL_CONFIG,
+            JSON.stringify(config)
+        );
+        }
+    }
+
+    // 市场信息相关方法
+  async loadMarketInfo(contractId: number) {
+    try {
+      this.isLoadingMarketInfo = true;
+      const result = await getPublicMarketInfo({ contractId });
+      if (result.code === "0") {
+        runInAction(() => {
+          this.marketInfo = result.data;
+          // 持久化到本地存储
+          if (isBrowser()) {
+            localStorage.setItem(
+              LOCAL_STORAGE_KEY.MARKET_INFO,
+              JSON.stringify(this.marketInfo)
+            );
+          }
+        });
+        return result.data;
+      } else {
+        console.log(result.message || "Failed to load market info");
+      }
+    } catch (error) {
+      console.error("Error loading market info:", error);
+    } finally {
+      runInAction(() => {
+        this.isLoadingMarketInfo = false;
+      });
+    }
+  }
+
+  getMarketInfo() {
+    return this.marketInfo;
+  }
+
+  setMarketInfo(info: any) {
+    this.marketInfo = info;
+    if (isBrowser()) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY.MARKET_INFO,
+        JSON.stringify(info)
+      );
+    }
+  }
+
+  initMarketInfoFromStorage() {
+    if (!isBrowser()) return;
+    try {
+      const marketInfoJson = localStorage.getItem(LOCAL_STORAGE_KEY.MARKET_INFO);
+      if (marketInfoJson) {
+        this.marketInfo = JSON.parse(marketInfoJson);
+      }
+    } catch (error) {
+      console.error("Failed to load market info from storage:", error);
+    }
+  }
+
+   // 最新价格数据相关方法
+  setActiveNewPrice(priceData: any) {
+    runInAction(() => {
+      this.activeNewPrice = priceData;
+    });
+  }
+
+  getActiveNewPrice() {
+    return this.activeNewPrice;
+  }
+
+  clearActiveNewPrice() {
+    runInAction(() => {
+      this.activeNewPrice = null;
+    });
+  }
+
+  // 交易设置
+  initTradingSetting() {
+    // 初始化时从 localStorage 读取
+    const STORAGE_KEY = LOCAL_STORAGE_KEY.TRADEING_SETTINGS
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored) {
+      try {
+        this.tradingSetting = JSON.parse(stored)
+      } catch {
+        this.tradingSetting = {}
+      }
+    }
+  }
+
+  /** 批量更新设置 */
+  updateSettings(newValues: Partial<TradingSetting>) {
+    runInAction(() => {
+      this.tradingSetting = { ...this.tradingSetting, ...newValues }
+      localStorage.setItem(LOCAL_STORAGE_KEY.TRADEING_SETTINGS, JSON.stringify(this.tradingSetting))
+    })
+  }
+
+  /** 单独更新某个字段 */
+  updateSetting<K extends keyof TradingSetting>(key: K, value: TradingSetting[K]) {
+    runInAction(() => {
+      this.tradingSetting[key] = value
+      localStorage.setItem(LOCAL_STORAGE_KEY.TRADEING_SETTINGS, JSON.stringify(this.tradingSetting))
+    })
+  }
+
+  /** 获取单位，如果是 BTC 就返回 base，否则返回设置的单位或者默认 "张" */
+  getUnit(base = "BTC") {
+    return this.tradingSetting.contractUnit === "BTC"
+      ? base
+      : this.tradingSetting.contractUnit || "张"
+  }
+
 }
 
 const appStore = new AppStore();

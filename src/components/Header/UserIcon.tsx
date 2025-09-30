@@ -33,7 +33,7 @@ interface ListItem {
 }
 
 const UserIcon: React.FC = observer(() => {
-    const { t } = useLanguage(['common', 'assets', 'spot']);
+    const { t } = useLanguage(['common', 'assets', 'spot', 'contract']);
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const { isDayMode } = useThemeMode();
@@ -73,6 +73,11 @@ const UserIcon: React.FC = observer(() => {
                     title: t('assets:assets.assetsAccount'), // 现货账单
                     key: '/assets',
                     value: '/assets',
+                },
+                {
+                    key: '/contractAssets', 
+                    value: '/contractAssets', 
+                    title: t('assets:assets.futureAccount'), //'合约账户',
                 }
             ]
         },
@@ -88,10 +93,15 @@ const UserIcon: React.FC = observer(() => {
                     value: '/spotOrder',
                 },
                 {
+                    key: '/contractOrder', //'/spot/assets',
+                    value: '/contractOrder',
+                    title: t('contract:order.title'), //'合约订单',
+                },
+                {
                     title: t('assets:assets.billDetails'), // 账户明细
                     key: '/assets/bill',
                     value: '/assets/bill',
-                }
+                },
             ]
         },
         {

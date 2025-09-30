@@ -14,7 +14,7 @@ const DeleteModal: React.FC<Props> = ({open, onOk, onCancel}) => {
     const { t } = useLanguage('userCenter');
     const ModalTitle: React.FC = () => {
         return (
-            <p className="bg-[var(--background5)] border-b border-b-[var(--border-color6)] font-medium text-[16px] h-[50px] flex items-center justify-start pl-[12px]">
+            <p className="bg-[var(--background17)] border-b border-b-[var(--border-color6)] font-medium text-[16px] h-[50px] flex items-center justify-start pl-[12px]">
                 {/* 确认删除这台设备吗？ */}
                 {t('security.delect.title')}
             </p>
@@ -22,7 +22,7 @@ const DeleteModal: React.FC<Props> = ({open, onOk, onCancel}) => {
     }
     const ModalContent: React.FC = () => {
         return (
-            <div className="bg-[var(--background5)]">
+            <div className="bg-[var(--background17)]">
                 <div className="text-[var(--text-color5)] text-[14px] mb-[20px] pt-[12px]">
                     {/* 移除后，该设备将退出登录态！ */}
                     {t('security.delect.msg')}

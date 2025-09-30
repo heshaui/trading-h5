@@ -3,6 +3,7 @@ import { ReactComponent as SpotSvg } from '@/assets/icons/spotOrder/icon_Spot.sv
 import { ReactComponent as CashSvg } from '@/assets/icons/assets/icon_cash.svg';
 import { ReactComponent as DepositSvg } from '@/assets/icons/assets/icon_deposit.svg';
 import { ReactComponent as BillingSvg } from '@/assets/icons/assets/icon_Billing.svg';
+import { ReactComponent as OrderSvg } from '@/assets/icons/userCenter/order.svg';
 
 import styles from '../styles/layout.module.scss'
 import RouterMenu from "../RouterMenuPublic/Menu"
@@ -47,7 +48,13 @@ const withAssetsLayout = <P extends object>(
                 type: 'p3',
             },
             {
-                path: '/assets/bill',
+                path: '/contractAssets', 
+                icon: <OrderSvg className="w-[24px] h-[24px] " />,
+                title: t('assets.futureAccount', { ns: 'assets' }), //'合约账户',
+                type: 'p3',
+            },
+            {
+                path: '/assets/bill', 
                 icon: <BillingSvg className="w-[24px] h-[24px] " />,
                 title: t('assets.billDetails', { ns: 'assets' }), //'账单',
                 type: 'p3',

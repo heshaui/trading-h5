@@ -88,7 +88,11 @@ const MenuIcon: React.FC = observer(() => {
                     title: t('common.router.futures'),//'合约',
                     onClick: () => {
                         console.log('期货交易点击');
-                        // setVisible(false);
+                        setVisible(false);
+                        // 手动延时跳转，优化体验
+                        setTimeout(() => {
+                            navigate('/contract');
+                        }, 300)
                     }
                 }
             ]

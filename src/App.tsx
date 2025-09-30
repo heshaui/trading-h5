@@ -52,6 +52,7 @@ const App: React.FC = observer(() => {
   useEffect(() => {
     appStore.loadGetLangList();
     appStore.loadGetRateList();
+    appStore.loadPublicInfo();
   }, []);
 
    // 组件内

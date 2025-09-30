@@ -1025,16 +1025,19 @@ const SpotTradePage = observer(({ segmentedType, onOrderSuccess, onOk, onCancel 
               defaultHoverColor: "#fff",
             },
             Slider: {
-              controlSize: 16,
-              dotActiveBorderColor: "var(--theme-05)",
-              dotBorderColor: "var(--background5)",
-              dotSize: 16,
-              handleActiveColor: "var(--theme-color)",
-              handleActiveOutlineColor: "var(--theme-02)",
-              handleColor: "var(--theme-05)",
+              controlSize: 18,
+              dotActiveBorderColor: "var(--background17)",
+              dotBorderColor: "var(--background17)",
+              dotSize: 18,
+              handleActiveColor: "none",
+              handleActiveOutlineColor: "none",
+              handleColor: "var(--background17)",
+              handleLineWidthHover: 2,
+              handleSize: 16,
+              handleSizeHover: 16,
               railBg: "var(--background16)", // 滑块轨道背景色
               railHoverBg: "var(--background16)", // 滑块轨道悬浮背景色
-              trackBg: "var(--theme-05)",
+              trackBg: "var(--theme-color)",
               trackBgDisabled: "var(--background16)",
               trackHoverBg: "var(--theme-color)"
             },

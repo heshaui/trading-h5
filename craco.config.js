@@ -99,7 +99,18 @@ module.exports = {
         target: 'https://ljx.imsaas.work',
         changeOrigin: true,
         secure: false,
-      }
+      },
+      '/fe-co-api': {
+        target: 'https://futures.imbit.work',
+        changeOrigin: true,
+        secure: false,
+        onProxyReq: (proxyReq, req, res) => {
+          console.log(`[ProxyReq] ${req.method} ${req.url} -> ${proxyReq.protocol}//${proxyReq.host}${proxyReq.path}`);
+        },
+        onProxyRes: (proxyRes, req, res) => {
+          console.log(`[ProxyRes] ${req.method} ${req.url} <- ${proxyRes.statusCode}`);
+        },
+      },
     },
   },
 };

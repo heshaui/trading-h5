@@ -374,5 +374,5 @@ export {
   roundOff, // 四舍五入
   roundDown, // 向下取整
   roundUp, // 向上取整
-  formatted // 格式化数字
+  formatted, // 格式化数字
 };

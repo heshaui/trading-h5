@@ -1,0 +1,372 @@
+/* styles/OrderBook.module.css */
+.container {
+  width: 30%;
+  margin: 0 auto;
+  height:640px;
+  border-left: 3px solid var(--background16);
+}
+
+.tabContainer {
+  display: flex;
+  border-bottom: 1px solid var(--background16);
+}
+
+.tab {
+  padding: 15px 25px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #666;
+}
+
+.activeTab {
+  color: var(--text-color5);
+  font-weight: 600;
+  border-bottom: 3px solid var(--text-color5);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--background16);
+}
+
+.colorModes {
+  display: flex;
+  gap: 12px;
+}
+
+.colorMode {
+  width: 25px;
+  height: 30px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.active {
+  border-color: #007bff;
+}
+
+.colorTop {
+  height: 50%;
+  width: 100%;
+}
+
+.colorBottom {
+  height: 50%;
+  width: 100%;
+}
+
+.dropdown {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dropdown option {
+  padding: 5px;
+}
+
+.labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-size: 12px;
+  line-height: 17px;
+  margin-bottom: 8px;
+}
+.labels span{
+  color: var(--text-color6);
+}
+
+.sortIcon {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 12px;
+  color: #bbb;
+}
+
+.orderList {
+  width: 100%;
+}
+
+.orderRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 17px;
+  line-height: 17px;
+  margin-bottom: 3px;
+}
+
+.price {
+  text-align: left;
+}
+
+.amount {
+  text-align: right;
+}
+
+.totalColumn {
+  position: relative;
+  height: 100%;
+}
+
+.total {
+  text-align: right;
+  padding-right: 10px;
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  z-index: 0;
+}
+
+.sell .background {
+  background-color: rgba(255, 77, 79, 0.1);
+}
+
+.buy .background {
+  background-color: rgba(0, 199, 136, 0.1);
+}
+
+.sell .price {
+  color: #ff4d4f;
+}
+
+.buy .price {
+  color: #00c788;
+}
+
+.currentPrice {
+  display: flex;
+
+
+  height: 40px;
+  margin: 2px 0 2px 10px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.priceValue {
+  font-size: 20px;
+  font-weight: bold;
+  color: #FF4D4F;
+}
+
+.priceChange {
+  color: #FF4D4F;
+  font-size: 18px;
+}
+
+.priceCny {
+  color: #999;
+  font-size: 12px;
+}
+
+.ratio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+
+.ratioBar {
+  display: flex;
+  flex: 1;
+  height: 30px;
+  position: relative;
+  overflow: visible;
+}
+
+.buyRatio {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: rgba(0, 199, 136, 0.10);
+  height: 100%;
+  transition: width 0.3s ease;
+  min-width: 50px;
+  padding: 0 15px;
+  position: relative;
+}
+
+.buyRatio::after {
+  content: "";
+  position: absolute;
+  right: -2.5px; /* 宽度的一半，保证缝隙对齐 */
+  top: 0;
+  height: 100%;
+  width: 5px; /* 缝隙视觉宽度 */
+  background-color: var(--background-primary);
+  transform: skewX(-10deg);
+  z-index: 1;
+  overflow: hidden; /* 防止边角溢出 */
+}
+
+.sellRatio {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: rgba(255, 77, 79, 0.10);
+  height: 100%;
+  transition: width 0.3s ease;
+  min-width: 50px;
+  padding: 0 15px;
+  position: relative;
+}
+
+
+.sellRatio::before {
+  content: "";
+  position: absolute;
+  left: -2.5px; /* 宽度的一半 */
+  top: 0;
+  height: 100%;
+  width: 5px;
+  background-color: var(--background-primary);
+  transform: skewX(-10deg);
+  z-index: 1;
+  overflow: hidden;
+}
+
+
+.buyBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  height: 30px;
+  color: #00c788;
+  border: 2px solid #00c788;
+  border-radius: 4px;
+  background-color: var(--background-primary);
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 2;
+}
+
+.sellBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  height: 30px;
+  color: #FF4D4F;
+  border: 2px solid #FF4D4F;
+  border-radius: 4px;
+  background-color: var(--background-primary);
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 2;
+}
+
+.buyPercent {
+  color: #00c788;
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.sellPercent {
+  color: #FF4D4F;
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* 订单行的进入和退出动画 */
+.orderRow {
+  animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.3s ease;
+}
+
+/* 当前价格的动画效果 */
+.priceValue {
+  transition: color 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tradesContainer {
+  width: 100%;
+}
+
+.tradesList {
+  height: 450px;
+  overflow-y: auto;
+}
+
+.tradeRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 15px;
+  font-size: 14px;
+}
+
+.tradePrice {
+  flex: 1;
+  text-align: left;
+}
+
+.buyPrice {
+  color: #00c788;
+}
+
+.sellPrice {
+  color: #FF4D4F;
+}
+
+.tradeAmount {
+  flex: 1;
+  text-align: center;
+}
+
+.tradeTime {
+  flex: 1;
+  text-align: right;
+}
+
+.background {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  z-index: 0;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.buy .background {
+  background-color: var(--buy-color, rgba(0, 199, 136, 0.1));
+}
+
+.sell .background {
+  background-color: var(--sell-color, rgba(255, 77, 79, 0.1));
+}

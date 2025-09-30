@@ -1,0 +1,90 @@
+
+/* 买入/卖出切换 */
+.categorySelectBox {
+  position: relative;
+  display: flex;
+  border-radius: 25px;
+  padding: 3px;
+  height: 50px;
+  border: 1px solid #f5f5f5;
+  margin-bottom: 16px;
+}
+
+.tabActiveBg {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.tab {
+  flex: 1;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+}
+
+/* 最大持仓提示 */
+.maxPosition {
+  font-size: 14px;
+  color: var(--text-color6);
+  margin-bottom: 16px;
+}
+
+.maxNumber {
+  color:var(--text-color5);
+  font-weight: 500;
+}
+
+/* 计算结果区域 */
+.resultSection {
+  border-radius: 8px;
+  padding: 20px 10px;
+  background:  var(--background14);
+}
+
+.resultTitle {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: var(--text-color5);
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.resultLabel {
+  font-size: 14px;
+  color: var(--text-color6);
+  font-weight: 400;
+}
+
+.resultValue {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-color5);
+}
+
+.disclaimer {
+  font-size: 12px;
+  text-align: justify;
+  color: #ff8a26;
+  line-height: 16px;
+}

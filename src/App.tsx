@@ -32,6 +32,7 @@ const App: React.FC = observer(() => {
   useEffect(() => {
     appStore.loadGetLangList();
     appStore.loadGetRateList();
+    appStore.loadPublicInfo();
   }, []);
   return (
     <ConfigProvider>

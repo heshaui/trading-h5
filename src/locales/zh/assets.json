@@ -253,7 +253,20 @@
         "error4": "验证码错误"
     },
     "futureAccount": {
-        "title": "合约账户"
+        "title": "合约账户",
+        "transfer": "划转",
+        "fundFlow": "资金流水",
+        "hideSmall": "隐藏小额资产",
+        "total": "总权益",
+        "balance": "钱包余额",
+        "useBalance": "可用",
+        "unRealizedAmount": "未实现盈亏",
+        "all": "全部",
+        "allType": "全部类型",
+        "in": "转入",
+        "out": "转出",
+        "cost": "资金费用",
+        "handlingFee": "开仓手续费"
     },
     "orderBook": {
         "title": "盘口",

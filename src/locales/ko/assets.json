@@ -253,7 +253,20 @@
         "error4": "잘못된 인증 코드입니다"
     },
     "futureAccount": {
-        "title": "선물 계정"
+        "title": "계약 계정",
+        "transfer": "이체",
+        "fundFlow": "자금 흐름",
+        "hideSmall": "소액 자산 숨기기",
+        "total": "총 자산",
+        "balance": "지갑 잔액",
+        "useBalance": "사용 가능",
+        "unRealizedAmount": "미실현 손익",
+        "all": "전체",
+        "allType": "전체 유형",
+        "in": "입금",
+        "out": "출금",
+        "cost": "자금 비용",
+        "handlingFee": "진입 수수료"
     },
     "orderBook": {
         "title": "호가창",
